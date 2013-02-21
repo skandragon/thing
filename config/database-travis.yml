@@ -1,0 +1,9 @@
+test: &test
+  adapter: postgresql
+  encoding: unicode
+  database: thing_test
+  pool: 5
+  username: postgresql
+
+cucumber:
+  <<: *test
