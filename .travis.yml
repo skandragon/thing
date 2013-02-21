@@ -5,6 +5,7 @@ rvm:
 
 before_install:
   - gem update --system
+  - gem --version
 
 before_script:
   - cp config/secrets.yml.sample config/secrets.yml

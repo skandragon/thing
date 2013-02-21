@@ -1,3 +1,5 @@
+{<img src="https://travis-ci.org/skandragon/thing.png" />}[https://travis-ci.org/skandragon/thing]
+
 == Welcome to Rails
 
 Rails is a web-application framework that includes everything needed to create
