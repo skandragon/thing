@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -41,15 +41,15 @@ group :development, :test do
   gem "annotate"
   gem "simplecov", :platform => :ruby, :require => false, :group => :test
   gem "railroady"
-  gem "rspec-rails"
+  gem "rspec-rails", '>= 2.12'
   gem "autotest"
   gem "autotest-growl"
   gem "thin"
   gem "factory_girl_rails"
   gem "capybara"
-  gem "poltergeist"
+  gem "poltergeist", git: 'git://github.com/jonleighton/poltergeist.git', branch: 'master'
   gem "database_cleaner"
-  gem "cucumber-rails"
+#  gem "cucumber-rails"
   gem "launchy"
 end
 

@@ -7,7 +7,7 @@ describe InstructorProfilesController do
     visit edit_user_instructor_profile_path(current_user)
     fill_in 'SCA name', with: 'Fred the Butcher'
     fill_in 'Legal name', with: 'Fred Baker'
-    fill_in 'Phone number', with: '+1 405.555.1212'
+    find('#instructor_profile_phone_number').set '+1 405.555.1212'
     click_button 'Update profile'
     profile.reload
     profile.sca_name.should == 'Fred the Butcher'
@@ -20,7 +20,7 @@ describe InstructorProfilesController do
     original_name = profile.sca_name
     fill_in 'SCA name', with: ''
     fill_in 'Legal name', with: 'Fred Baker'
-    fill_in 'Phone number', with: '+1 405.555.1212'
+    find('#instructor_profile_phone_number').set '+1 405.555.1212'
     click_button 'Update profile'
     profile.reload
     profile.sca_name.should == original_name
@@ -31,7 +31,7 @@ describe InstructorProfilesController do
     visit new_user_instructor_profile_path(current_user)
     fill_in 'SCA name', with: 'Fred the Butcher'
     fill_in 'Legal name', with: 'Fred Baker'
-    fill_in 'Phone number', with: '+1 405.555.1212'
+    find('#instructor_profile_phone_number').set '+1 405.555.1212'
     select 'Ansteorra', from: 'SCA kingdom'
     click_button 'Create profile'
     page.should have_content 'Instructor profile created.'
@@ -46,7 +46,7 @@ describe InstructorProfilesController do
     visit new_user_instructor_profile_path(current_user)
     fill_in 'SCA name', with: ''
     fill_in 'Legal name', with: 'Fred Baker'
-    fill_in 'Phone number', with: '+1 405.555.1212'
+    find('#instructor_profile_phone_number').set '+1 405.555.1212'
     select 'Ansteorra', from: 'SCA kingdom'
     click_button 'Create profile'
     page.should_not have_content 'Instructor profile created.'
