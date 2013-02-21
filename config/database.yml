@@ -32,8 +32,8 @@ production:
   database: thing_production
   pool: 5
   host: 127.0.0.1
-  username: <% MultaArcana::secret_for(:db_username) %>
-  password: <% MultaArcana::secret_for(:db_password) %>
+  username: <%= MultaArcana::secret_for(:db_username) %>
+  password: <%= MultaArcana::secret_for(:db_password) %>
 
 cucumber:
   <<: *test
