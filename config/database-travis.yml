@@ -3,7 +3,7 @@ test: &test
   encoding: unicode
   database: thing_test
   pool: 5
-  username: postgresql
+  username: postgres
 
 cucumber:
   <<: *test
