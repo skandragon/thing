@@ -35,6 +35,11 @@ namespace :deploy do
     end
   end
 
+  task :copy_secrets, except: { no_release: true } do
+    run "cp #{deploy_to}/private/secrets.yml #{release_path}/config/secrets.yml"
+  end
+  after "deploy:update_code", "deploy:copy_secrets"
+
   namespace :resque do
     desc "start or restart resque workers"
     task :start_or_restart, roles: :app, except: {no_release: true} do
