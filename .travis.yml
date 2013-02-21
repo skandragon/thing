@@ -8,7 +8,6 @@ before_install:
   - gem --version
 
 before_script:
-  - cp config/secrets.yml.sample config/secrets.yml
   - cp config/database-travis.yml config/database.yml
-  - psql -c 'create database thing_test;' -U postgres
+  - cp config/secrets-travis.yml config/secrets.yml
   - rake db:setup
