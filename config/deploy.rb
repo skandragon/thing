@@ -2,7 +2,7 @@ load 'deploy/assets'
 require "bundler/capistrano"
 
 set :application, 'thing'
-set :repository,  "explorer@kechara.flame.org:/home/source/#{application}.git"
+set :repository,  "git://github.com/skandragon/#{application}.git"
 set :deploy_to, "/www/#{application}"
 set :use_sudo, false
 set :scm, :git
