@@ -1,0 +1,15 @@
+defaults: &defaults
+  google_analytics_id: nil
+
+development:
+  domain: localhost:3000
+  <<: *defaults
+
+test:
+  domain: test.host
+  <<: *defaults
+
+production:
+  domain: thing.pennsicuniversity.org
+  google_analytics_id: UA-38111558-1
+  <<: *defaults

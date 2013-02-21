@@ -1,0 +1,10 @@
+- title 'Your Instructor Status'
+
+%h2 Instructor Status
+- if @user.instructor?
+  You are registered as an instructor.
+- else
+  You are not registered as an instructor.
+
+- if @user.instructor?
+  You may teach up to #{@user.instructor_profile.class_limit} classes.

@@ -1,0 +1,50 @@
+- title "Introduction"
+
+%header#overview.jumbotron.subhead
+
+.hero-unit
+  %h1
+    Pennsic University
+  - unless user_signed_in?
+    %p
+      %a.btn.btn-primary.btn-large{:href => new_user_session_path } Sign in
+      or
+      %a.btn.btn-primary.btn-large{:href => new_user_registration_path } Sign up
+  - else
+    %p
+      - if instructor?
+        %a.btn.btn-primary{:href => edit_user_instructor_profile_path(current_user) } Update instructor profile
+        %a.btn.btn-primary{:href => user_instructables_path(current_user) } Your classes
+      - else
+        %a.btn.btn-primary{:href => new_user_instructor_profile_path(current_user) } Become an instructor
+
+//%section.marketing
+//  .row
+//    .span4
+//      %h3 Woot!
+//      %p
+//        I can has...
+//    .span4
+//      %h3 Woot!
+//      %p
+//        I can has...
+//    .span4
+//      %h3 Woot!
+//      %p
+//        I can has...
+//
+//  .row
+//    .span4
+//      %h3 Woot!
+//      %p
+//        I can has...
+//      .g-plusone
+//
+//    .span4
+//      %h3 Woot!
+//      %p
+//        I can has...
+//    .span4
+//      %h3 Contact Us
+//      %p
+//        I can has...

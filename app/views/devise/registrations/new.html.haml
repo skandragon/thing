@@ -1,0 +1,15 @@
+- title "Sign up"
+%h2 Sign up
+
+= simple_form_for @user, :url => user_registration_path, :html => { :class => "form-horizontal" } do |f|
+  = devise_error_messages!
+
+  = f.input :email, :required => true, :hint => "A valid email address is required to use this service."
+  = f.input :name
+
+  = f.input :password, :required => true
+  = f.input :password_confirmation, :required => true
+
+  = f.button :submit, "Sign up", :class => "btn btn-primary btn-large"
+
+= render :partial => "links"

@@ -1,0 +1,57 @@
+!!! 5
+%html{lang: "#{I18n.locale}"}
+  %head
+    %meta{charset: "utf-8"}
+    %title= title_content
+    /[if lt IE 9]
+      %script{src: "http://html5shim.googlecode.com/svn/trunk/html5.js", media: "all"}
+    = stylesheet_link_tag "screen", media: "all"
+    = stylesheet_link_tag "print", media: "print"
+    = javascript_include_tag "application", media: "all"
+    = csrf_meta_tags
+    = favicon_links
+    %meta{name: "viewport", content: 'width=device-width, initial-scale=1.0' }
+    = yield(:meta_block)
+    = yield(:head)
+
+  %body{data: {spy: "scroll", target: ".subnav", offset: 50}}
+    %div
+      = render :partial => "layouts/navigation"
+
+      %div.container-fluid
+        = render_flashes
+        = yield
+
+    .footer.container-fluid
+      .row
+        .span3.offset1
+          %h1 University
+          %ul.unstyled
+            %li= link_to 'pennsicuniversity.org', 'http://pennsicuniversity.org', target: '_blank'
+            %li= link_to "Teacher's FAQ", 'http://pennsicuniversity.org/univfaq.html', target: '_blank'
+            %li= link_to 'Registration FAQ', 'http://pennsicuniversity.org/regfaq.html', target: '_blank'
+            %li= link_to 'Facebook', 'http://www.facebook.com/pages/Pennsic-University/151527028266551', target: '_blank'
+        .span3
+          %h1 Pennsic
+          %ul.unstyled
+            %li= link_to 'pennsicwar.org', 'http://pennsicwar.org', target: '_blank'
+            %li= link_to 'Registration', 'https://www.cooperslake.com/prereg/home/index.php', target: '_blank'
+            %li= link_to 'Pennsic FAQ', 'http://pennsicwp.org/about/faq/', target: '_blank'
+        .span3
+          %h1 SCA
+          %ul.unstyled
+            %li= link_to 'sca.org', 'http://sca.org', target: '_blank'
+            %li= link_to 'Membership', 'http://sca.org/members/', target: '_blank'
+            %li= link_to 'Resources', 'http://sca.org/links/', target: '_blank'
+        .span2
+          %h1 About
+          %ul.unstyled
+            %li= link_to 'Contact', '#', target: '_blank'
+            %li= link_to 'Thing?', 'http://en.wikipedia.org/wiki/Thing_(assembly)', target: '_blank'
+      .row
+        .span12
+          .copyright Copyright &copy; 2011-2013 by Michael Graff.
+
+    = google_analytics
+    
+    = revision

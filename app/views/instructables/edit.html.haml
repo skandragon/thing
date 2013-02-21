@@ -1,0 +1,77 @@
+- create_or_update = @instructable.new_record? ? 'Create' : 'Update'
+- title "#{create_or_update} University Class"
+
+= simple_form_for [@target_user, @instructable], html: { :class => "form-horizontal" } do |f|
+  %fieldset
+    %legend Class Information
+    = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }
+    = f.input :description_book, label: "Description (book)", input_html: { rows: 3, maxlength: 150, class: 'input-xxlarge' }, hint: "Book description limited to 150 characters"
+    = f.input :description_web, label: "Description (web)", input_html: { rows: 3, class: 'input-xxlarge' }, hint: "Web description is not limited, but please keep it concise.  If this is blank, the book description will be used."
+    = f.input :duration, label: "Duration (hours)", input_html: { step: 0.25, class: 'input-mini', min: "0.25", max: 4 }
+    = f.input :additional_instructors_expanded, label: "Additional instructors", hint: "Enter the SCA names of other instructors, separated by commas, of any additional instructors.  Leave it blank if none."
+    = f.input :repeat_count, as: :select, input_html: { class: "input-mini" }, collection: [ 1, 2, 3, 4 ], default: 1, hint: "Number of times this class will be taught."
+    = f.input :culture, collection: Instructable::CULTURES, hint: "If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus."
+    = f.input :topic, collection: Instructable::TOPICS.keys, hint: "Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies."
+    #subtopic
+      = f.input :subtopic, collection: Instructable::TOPICS[@instructable.topic] || []
+
+  %fieldset
+    %legend Private Camp or Merchant Booth
+    = f.input :location_camp, label: "Non-University location?", inline_label: "Teaching in a private camp or merchant booth?"
+    #location-camp
+      = f.input :camp_name, required: true, label: "Camp or Merchant Booth Name", hint: "If this class is being taught in a camp or merchant booth, enter the camp or merchant name."
+      = f.input :camp_address, label: "Camp or Booth Location", hint: "If using a camp or merchant booth, enter it's location here (e.g, N06)"
+      = f.input :camp_reason, required: true, label: "Reason for teaching in a private camp or booth"
+
+  %fieldset
+    %legend Age Ranges or Restrictions
+    %p.alert.alert-block.alert-info
+      There should be "adults only" restrictions on a class involving
+      alcohol or anything else that might pose a danger for young students.
+      The comprehension level or appropriateness of the class should also
+      be considered.
+      %br
+      %br
+      Classes designed exclusively for students under the age of 18 must
+      be scheduled with Youth Point
+      = link_to '(pennsic.youth@gmail.com)', 'mailto:pennsic.yough@gmail.com'
+      %br
+      %br
+      Pennsic University classes targeted at students under 18 years of
+      age MAY NOT be scheduled in Private Camps or Merchant Booths.
+
+    = f.input :adult_only
+    #adult-only
+      = f.input :adult_reason, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: "Describe why this class is limited to adults."
+
+  %fieldset
+    %legend Handouts and Materials
+    = f.input :handout_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: "In dollars"
+    = f.input :handout_limit, as: :string, input_html: { pattern: '\d*' }
+    = f.input :material_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: "In dollars"
+    = f.input :material_limit, as: :string, input_html: { pattern: '\d*' }
+    = f.input :fee_itemization, input_html: { rows: 3 }
+
+  %fieldset
+    %legend Scheduling Requests
+    %p.alert.alert-info
+      Requested days and times are best effort.  Leave them all blank, and we will use the days you will be attending Pennsic from your profile.
+    = f.input :requested_days, as: :check_boxes, checked: @instructable.requested_days, collection: Instructable::CLASS_DATES, label_method: lambda { |x| x.strftime("%A, %B %e, %Y") }, hint: "Select the days you prefer to teach this class, or leave blank and your profile's days will be used."
+    = f.input :requested_times, as: :check_boxes, checked: @instructable.requested_times, collection:Instructable::CLASS_TIMES, hint: "Select the times you prefer to teach this class, or leave blank to indicate anytime is OK."
+    = f.input :scheduling_additional, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Please describe any additional scheduling requests, such as "Avoid conflicting with battles", etc.'
+
+  %fieldset
+    %legend Special Needs
+    = f.input :special_needs, as: :check_boxes, checked: @instructable.special_needs, collection: [ "Electricity", "Whiteboard and Markers", "LOUD class", "Running water", "Messy class area" ]
+    = f.input :special_needs_description, placeholder: "Sanitary disposal, excess or hazardous waste removal, etc", input_html: { rows: 3, class: 'input-xxlarge' }
+    = f.input :heat_source, inline_label: "Are you using a source of heat of any type?"
+    #heat-source
+      = f.input :heat_source_description, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: "Describe the heat source you will be using."
+
+  = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary"
+  = link_to "Cancel", user_instructables_path(@target_user), :class => "btn"
+
+/ This is gross, but it works...
+:javascript
+  window.thing_topics = #{Instructable::TOPICS.to_json}
+  window.thing_selected_subtopic = #{@instructable.subtopic.to_json}
