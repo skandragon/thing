@@ -75,7 +75,6 @@ describe InstructorProfilesController do
       end
 
       it "shows if no_contact is false" do
-        pending "broken js"
         create(:instructor_profile, user_id: current_user.id, no_contact: false)
         visit edit_user_instructor_profile_path(current_user)
 
@@ -83,7 +82,6 @@ describe InstructorProfilesController do
       end
 
       it "hides if no_contact is true" do
-        pending "broken js"
         create(:instructor_profile, user_id: current_user.id, no_contact: true)
         visit edit_user_instructor_profile_path(current_user)
 
@@ -98,7 +96,6 @@ describe InstructorProfilesController do
       end
 
       it "shows if initially hiden" do
-        pending "broken js"
         create(:instructor_profile, user_id: current_user.id, no_contact: true)
         visit edit_user_instructor_profile_path(current_user)
         page.should_not have_content 'Alternate Email'
@@ -107,7 +104,6 @@ describe InstructorProfilesController do
       end
 
       it "hides if initiailly shown" do
-        pending 'broken, but screenshots verify it works...'
         create(:instructor_profile, user_id: current_user.id, no_contact: false)
         visit edit_user_instructor_profile_path(current_user)
         page.should have_content 'Alternate Email'
