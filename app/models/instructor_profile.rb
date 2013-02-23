@@ -27,6 +27,9 @@ class InstructorProfile < ActiveRecord::Base
   accepts_nested_attributes_for :instructor_profile_contacts
   attr_accessible :instructor_profile_contacts_attributes
 
+  # SCA titles, lowercase.
+  # These are currently focused on the British words,
+  # although UTF-8 strings for other languages would work.
   TITLES = %w(
     prince princess
     duke duchess
@@ -36,8 +39,11 @@ class InstructorProfile < ActiveRecord::Base
     lord lady
     sir
     king queen).sort
+  
+  # The #titleized format for these titles.
   TITLES_TITLEIZED = TITLES.map { |x| x.titleize }
 
+  # SCA kingdoms, lowercase.
   KINGDOMS = [
     "æthelmearc", "ansteorra", "an tir", "artemisia", "atenveldt", "atlantia",
     "caid", "calontir",
@@ -50,6 +56,8 @@ class InstructorProfile < ActiveRecord::Base
     "trimaris",
     "west",
   ]
+  
+  # SCA kingdoms, #titleized.
   KINGDOMS_TITLEIZED = KINGDOMS.map { |x| x.titleize }
 
   attr_accessible :mundane_name, :phone_number, :sca_name
@@ -67,6 +75,9 @@ class InstructorProfile < ActiveRecord::Base
   validates_inclusion_of :sca_title, in: TITLES, allow_blank: true
   validates_inclusion_of :kingdom, in: KINGDOMS, allow_blank: true
 
+  # If any contact protocols are missing from this profile, add them with
+  # default values.  This is called on profile load, prior to presenting
+  # a form to edit the profile.
   def add_missing_contacts
     existing_protocols = instructor_profile_contacts.pluck(:protocol) || []
     missing = InstructorProfileContact::PROTOCOLS - existing_protocols

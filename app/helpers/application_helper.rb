@@ -18,14 +18,4 @@ module ApplicationHelper
     end
     ret
   end
-
-  def as_for_protocol(protocol)
-    InstructorProfileContact::PROTOCOL_TYPES[protocol]
-  end
-
-  def placeholder_for_protocol(protocol)
-    type = InstructorProfileContact::PROTOCOL_TYPES[protocol]
-    return "http://www.example.com/" if type == :url
-    return "user@example.com" if type == :email
-  end
 end
