@@ -16,13 +16,13 @@ allows all actions a lesser ranked member may perform.
 
 ### Basic Functionality
 
-* (done)  signup
-* (done) request to be a teacher form
-* (done) "request to teach a class" form (that is, class submission)
+* <del>signup</del>
+* <del>request to be a teacher form</del>
+* <del>"request to teach a class" form (that is, class submission)</del>
 
 ### Administration
 
-* (low) Send a password reset token to a user
+* {: .low} (low) Send a password reset token to a user
 * (high) Allow editing of all aspects, other than password, for a user
 * (high) generate a list of email addresses for users who are instructors
 * (high) generate a list of email addresses for users who are tract leads
