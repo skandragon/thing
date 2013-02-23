@@ -1,25 +1,64 @@
+# Pennsic University Thing TODO
+
+## Authorization
+
 Authorization rankings allow specific permissions.  Each level generally
 allows all actions a lesser ranked member may perform.
 
-(1) Guest -- Can only see public information -- accepted classes, etc.
-(2) User -- Can (eventually) manage their own subscriptions / watches,
-    generate calendars, etc.
-(3) Instructor or Pending Instructor -- can manage their instructor profile,
-    and request classes to be taught.
-(4) Coordinator -- Can approve classes and instructors
-(5) XXX (need a name here) -- Can create coordinators
-(6) Admin -- can do anything
+* Guest -- Can only see public information -- accepted classes, etc.
+* User -- Can (eventually) manage their own subscriptions / watches, generate calendars, etc.
+* Instructor -- can manage their instructor profile, and request classes to be taught.
+* Coordinator -- Can approve classes and instructors
+* PU Coordinator -- Can create coordinators
+* Admin -- can do anything
 
-done (1) signup
-done (2) "request to be a teacher" form
-(3) "request to teach a class" form (that is, class submission)
-(4)  Manually setting users as "can authorize teachers and classes" -- not as advanced as it should or will be, but it'll work.
-(5) Email notifications for both
+## Tasks
 
-listing instructors or pending instructors:
-  (6a) listing all instructors (public)
-  (6b) listing all pending instructors (coordinators)
+### Basic Functionality
 
-listing all classes:
-  (7a) listing all classes which were accepted (public)
-  (7b) listing all classes by instructor, which are pending (coordinators)
+* (done)  signup
+* (done) request to be a teacher form
+* (done) "request to teach a class" form (that is, class submission)
+
+### Administration
+
+* (low) Send a password reset token to a user
+* (high) Allow editing of all aspects, other than password, for a user
+* (high) generate a list of email addresses for users who are instructors
+* (high) generate a list of email addresses for users who are tract leads
+
+### PU Coordinator
+
+* (high) Assign a user to a tract lead position
+
+
+### Email Notifications
+
+* (medium) Send email to instructors when their class status changes
+* (medium) Send email to tract leads when a class is assigned to their area
+* (medium) Send email to PU admin when a new class is added
+* (low) Periodic email reminders
+   * Tract leads
+      * Statistics about classes in their area
+      * Listing of pending-accept classes
+      * Listing of pending-schedule classes
+      * Listing of all classes
+      * Any scheduling conflicts
+   * Administrators
+      * New classes which were added and need a tract assigned
+      * New instructors which were added
+      * Statistics about the system
+      * Any scheduling conflicts
+
+### Coordinators
+
+* (high) Enable coordinators' editing of classes assigned to their tract
+   * (high) A simple assign-to-location-and-time page
+* (high) listing of classes which need to be accepted
+* (high) listing of classes which need to be scheduled
+* (high) listing of all classes in a tract, by day, location, topic
+* (high) some sort of display showing location allocations
+
+### Public View
+
+* (low) List all classes which are accepted
