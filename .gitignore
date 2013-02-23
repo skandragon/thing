@@ -21,3 +21,5 @@ webrat.log
 # Ignore secrets
 config/secrets.yml
 doc/app
+brakeman.html
+TODO.html
