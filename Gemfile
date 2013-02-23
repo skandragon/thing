@@ -39,7 +39,7 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem "annotate"
-  gem "simplecov", :platform => :ruby, :require => false, :group => :test
+  gem "simplecov", platform: :ruby, require: false, group: :test
   gem "railroady"
   gem "rspec-rails", '>= 2.12'
   gem "autotest"
@@ -59,7 +59,7 @@ group :development do
 end
 
 group :production do
-  gem "unicorn", :platform => :ruby
+  gem "unicorn", platform: :ruby
 end
 
 gem "strong_parameters"
@@ -71,5 +71,5 @@ gem "devise"
 gem "dalli"
 gem "lorem"
 gem "redis"
-gem "resque", :require => "resque/server"
+gem "resque", require: "resque/server"
 gem 'multa_arcana'
