@@ -13,8 +13,6 @@
 class InstructorProfileContact < ActiveRecord::Base
   belongs_to :instructor_profile
 
-  attr_accessible :address, :protocol
-
   PROTOCOL_TYPES = {
     "profile email" => :email,
     "alternate email" => :email,

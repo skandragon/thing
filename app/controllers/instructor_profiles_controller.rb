@@ -10,7 +10,7 @@ class InstructorProfilesController < ApplicationController
   end
 
   def create
-    @profile = current_user.build_instructor_profile(params[:instructor_profile])
+    @profile = current_user.build_instructor_profile(permitted_params)
     if @profile.save
       redirect_to root_path, notice: "Instructor profile created."
     else
@@ -29,10 +29,20 @@ class InstructorProfilesController < ApplicationController
 
   def update
     @profile = current_user.instructor_profile
-    if @profile.update_attributes(params[:instructor_profile])
+    if @profile.update_attributes(permitted_params)
       redirect_to root_path, notice: "Instructor profile updated."
     else
       render action: :edit
     end
+  end
+
+  private
+
+  def permitted_params
+    params.require(:instructor_profile).permit(
+      :mundane_name, :phone_number, :sca_name, :sca_title, :phone_number_onsite,
+      :kingdom, :no_contact, :available_days,
+      { :instructor_profile_contacts => [ :address, :protocol ] }
+    )
   end
 end

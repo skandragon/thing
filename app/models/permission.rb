@@ -8,6 +8,7 @@ class Permission
     allow 'devise/passwords', :all
     allow 'devise/registrations', :all
     allow :about, :all
+
     allow_param :user, [:name, :email, :password, :password_confirmation, :current_password]
 
     if user
@@ -23,13 +24,17 @@ class Permission
       allow :instructables, :all do |record|
         record.user_id == user.id
       end
+    end
+    
+    if user && user.admin?
+      allow_all
+    end
 
-      if user.admin?
-        allow_all
+    if user && user.coordinator?
+      allow :instructables, [:edit, :update] do |record|
+        record.tract == user.coordinator_tract
       end
-
-      if user.coordinator?
-      end
+      allow_param :instructable, [:foo]
     end
   end
 
@@ -67,6 +72,10 @@ class Permission
       return @allowed_params[resource.to_s].include?(attribute.to_s)
     end
     false
+  end
+
+  def allowed_params(resource)
+    return @allowed_params[resource.to_s]
   end
 
   def permit_params!(params)

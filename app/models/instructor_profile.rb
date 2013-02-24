@@ -25,7 +25,6 @@ class InstructorProfile < ActiveRecord::Base
   has_many :instructor_profile_contacts
 
   accepts_nested_attributes_for :instructor_profile_contacts
-  attr_accessible :instructor_profile_contacts_attributes
 
   # SCA titles, lowercase.
   # These are currently focused on the British words,
@@ -59,12 +58,6 @@ class InstructorProfile < ActiveRecord::Base
   
   # SCA kingdoms, #titleized.
   KINGDOMS_TITLEIZED = KINGDOMS.map { |x| x.titleize }
-
-  attr_accessible :mundane_name, :phone_number, :sca_name
-  attr_accessible :sca_title, :phone_number_onsite
-  attr_accessible :kingdom
-  attr_accessible :no_contact
-  attr_accessible :available_days
 
   before_validation :compress_available_days
 

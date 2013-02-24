@@ -23,10 +23,6 @@ describe Permission do
     it { should allow('devise/registrations', :anything) }
 
     it { should_not allow(:users, :show) }
-
-    for field in [:name, :email, :password, :password_confirmation, :current_password]
-      it { should allow_param(:user, field) }
-    end
   end
 
   describe "as user" do
@@ -66,7 +62,7 @@ describe Permission do
   end
 
   describe "as coordinator" do
-    let(:user) { FactoryGirl.build(:user, coordinator_tract: "flarg") }
+    let(:user) { FactoryGirl.build(:user, coordinator_tract: Instructable::TRACTS.keys.first) }
     subject { Permission.new(user) }
 
     it { should allow(:about, :anything) }
