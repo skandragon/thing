@@ -22,22 +22,22 @@ allows all actions a lesser ranked member may perform.
 
 ### Administration
 
-* {: .low} (low) Send a password reset token to a user
-* (high) Allow editing of all aspects, other than password, for a user
-* (high) generate a list of email addresses for users who are instructors
-* (high) generate a list of email addresses for users who are tract leads
+* <span class="low">(low) Send a password reset token to a user</span>
+* <span class="high">(high) Allow editing of all aspects, other than password, for a user</span>
+* <span class="high">(high) generate a list of email addresses for users who are instructors</span>
+* <span class="high">(high) generate a list of email addresses for users who are tract leads</span>
 
 ### PU Coordinator
 
-* (high) Assign a user to a tract lead position
+* <span class="high">(high) Assign a user to a tract lead position</span>
 
 
 ### Email Notifications
 
-* (medium) Send email to instructors when their class status changes
-* (medium) Send email to tract leads when a class is assigned to their area
-* (medium) Send email to PU admin when a new class is added
-* (low) Periodic email reminders
+* <span class="medium">(medium) Send email to instructors when their class status changes</span>
+* <span class="medium">(medium) Send email to tract leads when a class is assigned to their area</span>
+* <span class="medium">(medium) Send email to PU admin when a new class is added</span>
+* <span class="low">(low) Periodic email reminders</span>
    * Tract leads
       * Statistics about classes in their area
       * Listing of pending-accept classes
@@ -52,13 +52,13 @@ allows all actions a lesser ranked member may perform.
 
 ### Coordinators
 
-* (high) Enable coordinators' editing of classes assigned to their tract
-   * (high) A simple assign-to-location-and-time page
-* (high) listing of classes which need to be accepted
-* (high) listing of classes which need to be scheduled
-* (high) listing of all classes in a tract, by day, location, topic
-* (high) some sort of display showing location allocations
+* <span class="high">(high) Enable coordinators' editing of classes assigned to their tract</span>
+   * <span class="high">(high) A simple assign-to-location-and-time page</span>
+* <span class="high">(high) listing of classes which need to be accepted</span>
+* <span class="high">(high) listing of classes which need to be scheduled</span>
+* <span class="high">(high) listing of all classes in a tract, by day, location, topic</span>
+* <span class="high">(high) some sort of display showing location allocations</span>
 
 ### Public View
 
-* (low) List all classes which are accepted
+* <span class="low">(low) List all classes which are accepted</span>
