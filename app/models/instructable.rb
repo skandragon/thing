@@ -45,7 +45,7 @@ class Instructable < ActiveRecord::Base
 
   PENNSIC_DATES = (Date.parse('2013-07-19')..Date.parse('2013-08-03')).to_a
   CLASS_DATES = (Date.parse('2013-07-23') .. Date.parse('2013-08-01')).to_a
-  CLASS_TIMES = [ "9am to Noon", "Noon to 3pm", "3pm to 6pm", "After 6pm" ]
+  CLASS_TIMES = [ '9am to Noon', 'Noon to 3pm', '3pm to 6pm', 'After 6pm' ]
 
   CULTURES = [
     'Multiple Cultures',
@@ -56,26 +56,34 @@ class Instructable < ActiveRecord::Base
   ]
 
   TOPICS = {
-    "Clothing" => %W(Accessories Beginner),
-    "Crafts" => %W(Beads Metal Books Glass Leather Paper Wood),
-    "Dance" => [],
-    "Fiber Arts" => %W(Dyeing Lace Needlework Sewing Spinning Weaving),
-    "Food Arts" => [ "Brewing and Vintning", "Cookery", "Herbs", "Research" ],
-    "Health and Safety" => [],
-    "Heraldry" => [],
-    "History" => %W(Research),
-    "Language" => %W(Research),
-    "Leisure" => %W(Gaming Exercise),
-    "Maritime" => [],
-    "Martial" => [ "Archery", "Historic Combat", "SCA Combat", "Thrown Weapons" ],
-    "Meetings" => [],
-    "Music" => [],
-    "Parent/Child" => [],
-    "Performing Arts" => %W(Bardic Juggling Theater Instrumental Storytelling),
-    "SCA Life" => %W(Court Heraldry Meetings Newcomers Persona),
-    "Sciences" => [ "Astronomy", "Animals", "Black Powder", "Equestrian", "Gardens", "Research" ],
-    "Scribal Arts" => [ "Calligraphy", "Illumination" ],
-    "Other" => [],
+    'Clothing' => %W(Accessories Beginner),
+    'Crafts' => %W(Beads Metal Books Glass Leather Paper Wood),
+    'Dance' => [],
+    'Fiber Arts' => %W(Dyeing Lace Needlework Sewing Spinning Weaving),
+    'Food Arts' => [ 'Brewing and Vintning', 'Cookery', 'Herbs', 'Research' ],
+    'Health and Safety' => [],
+    'Heraldry' => [],
+    'History' => %W(Research),
+    'Language' => %W(Research),
+    'Leisure' => %W(Gaming Exercise),
+    'Maritime' => [],
+    'Martial' => [ 'Archery', 'Historic Combat', 'SCA Combat', 'Thrown Weapons' ],
+    'Meetings' => [],
+    'Music' => [],
+    'Parent/Child' => [],
+    'Performing Arts' => %W(Bardic Juggling Theater Instrumental Storytelling),
+    'SCA Life' => %W(Court Heraldry Meetings Newcomers Persona),
+    'Sciences' => [ 'Astronomy', 'Animals', 'Black Powder', 'Equestrian', 'Gardens', 'Research' ],
+    'Scribal Arts' => [ 'Calligraphy', 'Illumination' ],
+    'Other' => [],
+  }
+
+  TRACTS = {
+    'Pennsic University' => %W(A01 A02 A03 A04),
+    'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
+    'European Dance' => [ 'Dance Tent' ],
+    'Games' => [ 'Games Tent' ],
+    'Performing Arts' => [ 'Performing Arts Tent', 'New PA Tent', 'Amphetheater' ],
   }
 
   # permitted for coordinators
@@ -153,14 +161,14 @@ class Instructable < ActiveRecord::Base
   end
 
   def status_message
-    return "Pending Approval" unless approved?
-    return "Pending Scheduling" unless start_time.present?
-    return "Approved and Scheduled"
+    return 'Pending Approval' unless approved?
+    return 'Pending Scheduling' unless start_time.present?
+    return 'Approved and Scheduled'
   end
 
   def additional_instructors_expanded
     self.additional_instructors ||= []
-    additional_instructors.join(", ")
+    additional_instructors.join(', ')
   end
 
   def additional_instructors_expanded=(value)
@@ -179,7 +187,7 @@ class Instructable < ActiveRecord::Base
     if topic.present? and subtopic.present?
       choices = TOPICS[topic]
       if choices.present? and !choices.include?(subtopic)
-        errors.add(:subtopic, "is not a valid subtopic")
+        errors.add(:subtopic, 'is not a valid subtopic')
       end
     end
   end
