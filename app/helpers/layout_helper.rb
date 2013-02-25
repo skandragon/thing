@@ -70,7 +70,7 @@ module LayoutHelper
                   :outer_window => 0,
                   :previous_label => '&larr;'.html_safe,
                   :next_label => '&rarr;'.html_safe,
-#                  :renderer => BootstrapLinkRenderer,
+                  :renderer => BootstrapLinkRenderer,
     )
   end
 
