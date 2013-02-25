@@ -21,13 +21,6 @@ class ApplicationController < ActionController::Base
     current_user && current_user.admin?
   end
 
-  def require_admin
-    unless current_user && current_user.admin?
-      redirect_to root_path and return false
-    end
-    true
-  end
-
   def current_permission
     @current_permission ||= Permission.new(current_user)
   end
@@ -43,7 +36,7 @@ class ApplicationController < ActionController::Base
       current_permission.permit_params! params
     else
       message = 'Not authorized.'
-      if Rails.env == 'development'
+      if ['development', 'test'].include?Rails.env
         message += " (controller: #{controller}, action: #{action}"
         if current_resource
           message += ", resource: #{current_resource.class} #{current_resource.id}"
