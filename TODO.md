@@ -24,13 +24,10 @@ allows all actions a lesser ranked member may perform.
 ### Administration
 
 * <span class="low">(low) Send a password reset token to a user</span>
-* <span class="high">(high) Allow editing of all aspects, other than password, for a user</span>
+* <del>(high) Allow editing of all aspects, other than password, for a user</del>
 * <span class="high">(high) generate a list of email addresses for users who are instructors</span>
 * <span class="high">(high) generate a list of email addresses for users who are tract leads</span>
-
-### PU Coordinator
-
-* <span class="high">(high) Assign a user to a tract lead position</span>
+* <del>(high) Assign a user to a tract lead position</del>
 
 ### Email Notifications
 
