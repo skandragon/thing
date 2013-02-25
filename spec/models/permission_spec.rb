@@ -33,6 +33,7 @@ describe Permission do
     it { should allow('devise/passwords', :anything) }
     it { should allow('devise/registrations', :anything) }
 
+    it { should_not allow('admin/users', :show) }
     it { should_not allow(:users, :show) }
   end
 
