@@ -1,4 +1,5 @@
 # Based on https://gist.github.com/1205828
+
 module BootstrapLinkRenderer
   class LinkRenderer < ::WillPaginate::ActionView::LinkRenderer
     protected
@@ -17,6 +18,9 @@ module BootstrapLinkRenderer
 
     def previous_or_next_page(page, text, classname)
       tag :li, link(text, page || '#'), :class => [classname[0..3], classname, ('disabled' unless page)].join(' ')
+    end
+
+    def prepare
     end
   end
 end

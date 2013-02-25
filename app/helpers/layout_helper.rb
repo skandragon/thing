@@ -64,7 +64,14 @@ module LayoutHelper
   end
 
   def page_navigation_links(pages)
-    will_paginate(pages, :class => 'pagination', :inner_window => 2, :outer_window => 0, :renderer => BootstrapLinkRenderer, :previous_label => '&larr;'.html_safe, :next_label => '&rarr;'.html_safe)
+    will_paginate(pages,
+                  :class => 'pagination',
+                  :inner_window => 2,
+                  :outer_window => 0,
+                  :previous_label => '&larr;'.html_safe,
+                  :next_label => '&rarr;'.html_safe,
+#                  :renderer => BootstrapLinkRenderer,
+    )
   end
 
   def icon(type, inverse = false)
