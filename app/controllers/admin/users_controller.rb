@@ -8,7 +8,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     if current_resource.update_attributes(user_params)
-      redirect_to admin_users_path, notice: "User updated"
+      redirect_to admin_users_path, notice: "User updated."
     else
       render action: :edit
     end
