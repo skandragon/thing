@@ -36,7 +36,7 @@ class InstructablesController < ApplicationController
     if @instructable
       @instructable.destroy
     end
-    redirect_to user_instructables_path(@target_user), info: "Class deleted."
+    redirect_to user_instructables_path(@target_user), notice: "Class deleted."
   end
 
   private

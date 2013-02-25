@@ -17,22 +17,22 @@ class Permission
         record.id == user.id
       end
 
-      allow :instructor_profiles, [:new, :edit, :create, :update] do |record|
+      allow :instructor_profiles, [ :new, :edit, :create, :update ] do |record|
         record.user_id == user.id
       end
 
-      allow :instructables, :all do |record|
+      allow :instructables, [ :show, :new, :create, :edit, :update, :destroy ] do |record|
         record.user_id == user.id
       end
     end
-    
+
     if user && user.admin?
       allow_all
     end
 
     if user && user.coordinator?
       allow :instructables, [:edit, :update] do |record|
-        record.tract == user.coordinator_tract
+        record.tract == user.coordinator_tract || record.user_id == user.id
       end
       allow_param :instructable, [:foo]
     end
@@ -60,6 +60,9 @@ class Permission
   end
 
   def allow_param(resources, attributes)
+    if attributes.respond_to? :column_names
+      attributes = attributes.column_names
+    end
     Array(resources).each do |resource|
       @allowed_params[resource.to_s] ||= []
       @allowed_params[resource.to_s] += Array(attributes).map(&:to_s)
@@ -84,7 +87,7 @@ class Permission
     else
       @allowed_params.each do |resource, attributes|
         if params[resource].respond_to? :permit
-          params[resource] = params[resource].permit(*attributes)
+          params[resource] = params.require(resource).permit(*attributes)
         end
       end
     end

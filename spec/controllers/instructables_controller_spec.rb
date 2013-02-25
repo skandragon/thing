@@ -19,7 +19,7 @@ describe InstructablesController do
     end
   end
 
-  describe 'class limists' do
+  describe 'class limits' do
     before :each do
       log_in
     end
@@ -78,6 +78,18 @@ describe InstructablesController do
         fill_in 'Class title', with: ''
         click_on 'Update class'
         page.should have_content("can't be blank")
+      end
+    end
+
+    describe "destroys", js: true do
+      it "as owner" do
+        instructable = create(:instructable, user_id: current_user.id)
+        visit user_instructables_path(current_user)
+        find('td.delete_clicky .btn').should have_content 'Delete'
+        find('td.delete_clicky .btn').click
+        page.should have_content "Are you sure you want to delete"
+        click_on "Yes, I'm positively certain."
+        page.should have_content("Class deleted.")
       end
     end
   end
