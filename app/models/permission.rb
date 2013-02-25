@@ -35,7 +35,10 @@ class Permission
       allow :instructables, [:edit, :update] do |record|
         record.tract == user.coordinator_tract || record.user_id == user.id
       end
-      allow_param :instructable, [:foo]
+      allow 'coordinator/instructables', :index
+      allow 'coordinator/instructables', [:show, :edit, :update] do
+        record.tract == user.coordinator_tract
+      end
     end
   end
 

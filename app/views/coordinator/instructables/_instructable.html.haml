@@ -1,0 +1,12 @@
+%tr
+  %td= link_to(instructable.name, edit_user_instructable_path(instructable.user, instructable))
+  %td= instructable.tract
+  %td= instructable.repeat_count
+  %td
+    = instructable.formatted_culture_and_topic
+  %td= instructable.status_message
+  %td
+    - if instructable.start_time.present?
+      = instructable.start_time
+    - else
+      Unscheduled

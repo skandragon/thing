@@ -8,7 +8,7 @@
       %a.brand{:href => root_path}= application_name
       .nav-collapse
         %ul.nav
-          - if current_user and instructor?
+          - if instructor?
             %li.dropdown
               %a.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}
                 Instructor
@@ -16,6 +16,8 @@
               %ul.dropdown-menu
                 %li= link_to 'Your classes', user_instructables_path(current_user)
                 %li= link_to 'Update instructor profile', edit_user_instructor_profile_path(current_user)
+          - if coordinator?
+            = render :partial => 'coordinator/menu_additions'
           - if user_signed_in?
             %li.dropdown
               %a.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}

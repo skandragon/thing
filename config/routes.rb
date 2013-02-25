@@ -2,6 +2,10 @@ Thing::Application.routes.draw do
   namespace :admin do
     resources :users
   end
+  
+  namespace :coordinator do
+    resources :instructables
+  end
 
   match 'sitemap(.:format)' => 'sitemap#index'
 

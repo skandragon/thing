@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :admin?
   helper_method :instructor?
+  helper_method :coordinator?
 
   private
 
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::Base
   end
 
   def admin?
+    current_user && current_user.admin?
+  end
+
+  def coordinator?
     current_user && current_user.admin?
   end
 
