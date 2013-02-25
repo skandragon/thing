@@ -60,5 +60,21 @@ describe Admin::UsersController do
       visit edit_admin_user_path(@other_user)
       page.should have_content "Editing #{@other_user.display_name}"
     end
+
+    it "updates" do
+      visit edit_admin_user_path(@other_user)
+      page.should have_content @other_user.email
+      fill_in 'Email address', with: 'example@example.com'
+      click_on 'Update user'
+      page.should have_content 'User updated.'
+    end
+
+    it "re-renders form on error" do
+      visit edit_admin_user_path(@other_user)
+      page.should have_content @other_user.email
+      fill_in 'Email address', with: ''
+      click_on 'Update user'
+      page.should_not have_content 'User updated.'
+    end
   end
 end
