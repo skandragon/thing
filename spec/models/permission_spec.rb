@@ -30,8 +30,8 @@ describe Permission do
     it { should allow(:about, :anything) }
 
     it { should allow('devise/sessions', :anything) }
-    it { should allow('devise/passwords', :anything) }
-    it { should allow('devise/registrations', :anything) }
+    it { should allow('users/passwords', :anything) }
+    it { should allow('users/registrations', :anything) }
 
     it { should_not allow('admin/users', :show) }
     it { should_not allow(:users, :show) }
@@ -54,8 +54,8 @@ describe Permission do
 
     it {
       should allow('devise/sessions', :anything)
-      should allow('devise/passwords', :anything)
-      should allow('devise/registrations', :anything)
+      should allow('users/passwords', :anything)
+      should allow('users/registrations', :anything)
     }
 
     it {
