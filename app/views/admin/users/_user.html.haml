@@ -1,5 +1,5 @@
 %tr
-  %td.admin= user.admin? ? "Yes" : "-"
+  %td.display_name= user.display_name
   %td.coordinator_tract= user.coordinator? ? user.coordinator_tract : "-"
   %td.instructor
     - if user.instructor?
@@ -8,5 +8,5 @@
       = user.instructables_session_count
     - else
       = "-"
-  %td.display_name= user.display_name
+  %td.admin= user.admin? ? "Yes" : "-"
   %td.last_login= pretty_date_from_now(user.current_sign_in_at)
