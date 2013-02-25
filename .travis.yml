@@ -4,8 +4,7 @@ rvm:
   - 2.0.0
 
 before_install:
-  - gem install -v 1.8.25 rubygems-update && ruby `gem env gemdir`/gems/rubygems-update-1.8.25/setup.rb
-
+  - rvm rubygems 1.8.25
   - gem --version
   - gem install brakeman
 
