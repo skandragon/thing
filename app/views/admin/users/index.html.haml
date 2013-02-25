@@ -14,6 +14,8 @@
   %tbody
     = render :partial => @users
 
+= page_navigation_links @users
+
 %p.alert.alert-info
   The two numbers under "classes" are the number of classes, and the total
   repeat count.  If a user has 2 classes which repeat twice each, it will

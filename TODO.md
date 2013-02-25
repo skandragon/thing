@@ -8,7 +8,8 @@ allows all actions a lesser ranked member may perform.
 * Guest -- Can only see public information -- accepted classes, etc.
 * User -- Can (eventually) manage their own subscriptions / watches, generate calendars, etc.
 * Instructor -- can manage their instructor profile, and request classes to be taught.
-* Coordinator -- Can approve classes and instructors
+* Coordinator -- Can approve and schedule classes
+* PU Staff -- Can look at any class
 * PU Coordinator -- Can create coordinators
 * Admin -- can do anything
 
@@ -30,7 +31,6 @@ allows all actions a lesser ranked member may perform.
 ### PU Coordinator
 
 * <span class="high">(high) Assign a user to a tract lead position</span>
-
 
 ### Email Notifications
 

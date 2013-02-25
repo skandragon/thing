@@ -1,9 +1,10 @@
 %tr
-  %td.display_name= user.display_name
+  %td.display_name{id: "edit_user_#{user.id}"}
+    = link_to user.display_name, edit_admin_user_path(user)
   %td.coordinator_tract= user.coordinator? ? user.coordinator_tract : '-'
   %td.instructor
     - if user.instructor?
-      = link_to(user.instructables.count, user_instructables_path(user))
+      = link_to user.instructables.count, user_instructables_path(user)
       = " / "
       = user.instructables_session_count
     - else

@@ -39,10 +39,6 @@ class User < ActiveRecord::Base
   validates_presence_of :access_token
   validates_uniqueness_of :access_token
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :name
-
   def generate_access_token
     return unless access_token.blank?
 

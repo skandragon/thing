@@ -1,0 +1,14 @@
+- create_or_update = @user.new_record? ? 'Create' : 'Update'
+- title "#{create_or_update} University Class"
+
+= simple_form_for @user, url: admin_user_path(@user), html: { :class => "form-horizontal" } do |f|
+  %fieldset
+    %legend Editing #{@user.display_name}
+    = f.input :name, label: "Class title", hint: "Used in the administrator interface, not Pennsic data"
+    = f.input :email, label: "Email address"
+    = f.input :coordinator_tract, collection: Instructable::TRACTS.keys.sort, hint: "Tract coordinator?"
+    = f.input :admin
+    = f.input :pu_staff, label: "Pennsic U Staff?"
+
+  = f.button :submit, "#{create_or_update} user", :class => "btn btn-primary"
+  = link_to "Cancel", admin_users_path, :class => "btn"

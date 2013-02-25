@@ -5,8 +5,9 @@ class Permission
     @allowed_params = {}
 
     allow 'devise/sessions', :all
-    allow 'devise/passwords', :all
-    allow 'devise/registrations', :all
+    allow 'sessions', :all
+    allow 'users/passwords', :all
+    allow 'users/registrations', :all
     allow :about, :all
 
     allow_param :user, [:name, :email, :password, :password_confirmation, :current_password]

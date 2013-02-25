@@ -1,10 +1,17 @@
 - title 'Your Instructor Status'
 
 %h2 Instructor Status
-- if @user.instructor?
-  You are registered as an instructor.
-- else
-  You are not registered as an instructor.
+%ul
+  - if @user.instructor?
+    %li You are registered as an instructor.
+  - else
+    %li You are not registered as an instructor.
 
-- if @user.instructor?
-  You may teach up to #{@user.instructor_profile.class_limit} classes.
+  - if @user.instructor?
+    %li You may teach up to #{@user.instructor_profile.class_limit} classes.
+
+  - if @user.coordinator?
+    %li You are a tract coordinator for "#{@user.tract_coordinator}."
+
+  - if @user.admin?
+    %li You are an administrator.

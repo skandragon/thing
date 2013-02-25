@@ -15,9 +15,40 @@ describe Admin::UsersController do
     find('.coordinator_tract').should have_content current_user.coordinator_tract
   end
 
-  it "renders 'no tract' if the user has no tract" do
+  it "renders '-' if the user has no tract" do
     log_in admin: true, name: 'Fred'
     visit admin_users_path
     find('.coordinator_tract').should have_content '-'
+  end
+
+  describe "edit user" do
+    before :each do
+      log_in admin: true
+      @other_user = create(:user)
+      @link_id = "\#edit_user_#{@other_user.id}"
+    end
+
+    it "shows link" do
+      visit admin_users_path
+      find(@link_id).should have_content @other_user.email
+    end
+
+    it "link works" do
+      visit admin_users_path
+      click_on @other_user.display_name
+      page.should have_content "Editing #{@other_user.display_name}"
+    end
+  end
+
+  describe "edit" do
+    before :each do
+      log_in admin: true
+      @other_user = create(:user)
+    end
+
+    it "renders" do
+      visit edit_admin_user_path(@other_user)
+      page.should have_content "Editing #{@other_user.display_name}"
+    end
   end
 end
