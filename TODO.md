@@ -51,9 +51,12 @@ allows all actions a lesser ranked member may perform.
 
 * <span class="high">(high) Enable coordinators' editing of classes assigned to their tract</span>
    * <span class="high">(high) A simple assign-to-location-and-time page</span>
-* <span class="high">(high) listing of classes which need to be accepted</span>
-* <span class="high">(high) listing of classes which need to be scheduled</span>
-* <span class="high">(high) listing of all classes in a tract, by day, location, topic</span>
+* <del>(high) listing of classes which need to be accepted</del>
+* <del>(high) listing of classes which need to be scheduled</del>
+* <del>(high) listing of all classes in a tract</del>
+* <span class="high">(high) listing of all classes by day</span>
+* <span class="high">(high) listing of all classes by location</span>
+* <del>(high) listing of all classes by topic</del>
 * <span class="high">(high) some sort of display showing location allocations</span>
 
 ### Public View
