@@ -4,6 +4,7 @@ class InstructablesController < ApplicationController
 
   def index
     @instructables = @target_user.instructables.order(:name).paginate(:page => params[:page], per_page: 10)
+    session[:instructable_back] = request.fullpath
   end
 
   def new
@@ -26,7 +27,7 @@ class InstructablesController < ApplicationController
 
   def update
     if @instructable.update_attributes(permitted_params)
-      redirect_to user_instructables_path(@target_user), notice: "Class updated."
+      redirect_to session[:coordinator_instructable_back] || user_instructables_path(@target_user), notice: "Class updated."
     else
       render action: :edit
     end
@@ -46,7 +47,7 @@ class InstructablesController < ApplicationController
   end
 
   def permitted_params
-    params.require(:instructable).permit(
+    allowed = [
       :description_web, :description_book, :name, :duration, :handout_limit,
       :handout_fee, :material_limit, :material_fee, :fee_itemization,
       :location_camp, :camp_name, :camp_address, :camp_reason, :adult_only,
@@ -54,6 +55,10 @@ class InstructablesController < ApplicationController
       :scheduling_additional, :special_needs, :special_needs_description,
       :heat_source, :heat_source_description, :additional_instructors_expanded,
       :culture, :topic, :subtopic,
-    )
+    ]
+    if admin? or coordinator?
+      allowed += [:approved]
+    end
+    params.require(:instructable).permit(*allowed)
   end
 end

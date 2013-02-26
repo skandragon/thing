@@ -8,7 +8,7 @@ class Coordinator::InstructablesController < ApplicationController
     @scheduled = params[:scheduled]
     @topic = params[:topic]
     @search = params[:search]
-    
+
     if params[:commit] == "Clear"
       @search = nil
       @tract = nil
@@ -18,7 +18,7 @@ class Coordinator::InstructablesController < ApplicationController
     end
 
     @instructables = Instructable.order(:name)
-    
+
     if @search.present?
       @instructables = @instructables.where('name ILIKE ?', "%#{@search.strip}%")
     end
@@ -45,5 +45,7 @@ class Coordinator::InstructablesController < ApplicationController
     end
 
     @instructables = @instructables.paginate(page: params[:page], per_page: 20)
+
+    session[:instructable_back] = request.fullpath
   end
 end
