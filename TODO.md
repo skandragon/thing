@@ -49,7 +49,7 @@ allows all actions a lesser ranked member may perform.
 
 ### Coordinators
 
-* <span class="high">(high) Enable coordinators' editing of classes assigned to their tract</span>
+* <del>(high) Enable coordinators' editing of classes assigned to their tract</del>
    * <span class="high">(high) A simple assign-to-location-and-time page</span>
 * <del>(high) listing of classes which need to be accepted</del>
 * <del>(high) listing of classes which need to be scheduled</del>
