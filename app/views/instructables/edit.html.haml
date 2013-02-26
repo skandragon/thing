@@ -5,7 +5,9 @@
   - if coordinator? or admin?
     %fieldset
       %legend Scheduling
-      = f.input :approved, as: :select, collection: { 'Yes' => 1, 'No' => 0 }
+      - if admin?
+        = f.input :tract, collection: Instructable::TRACTS.keys.sort
+      = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: "input-mini" }
   %fieldset
     %legend Class Information
     = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }
@@ -73,7 +75,7 @@
       = f.input :heat_source_description, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: "Describe the heat source you will be using."
 
   = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary"
-  = link_to "Cancel", user_instructables_path(@target_user), :class => "btn"
+  = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
 
 / This is gross, but it works...
 :javascript

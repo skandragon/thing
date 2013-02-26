@@ -57,7 +57,10 @@ class InstructablesController < ApplicationController
       :culture, :topic, :subtopic,
     ]
     if admin? or coordinator?
-      allowed += [:approved]
+      allowed += [ :approved, :start_time ]
+    end
+    if admin?
+      allowed += [ :tract ]
     end
     params.require(:instructable).permit(*allowed)
   end

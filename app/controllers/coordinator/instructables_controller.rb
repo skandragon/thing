@@ -1,9 +1,10 @@
 class Coordinator::InstructablesController < ApplicationController
   def index
-    if current_user.admin?
-      @tract = params[:tract]
+    if admin?
+      @tract = params[:tract] || current_user.coordinator_tract
+    else
+      @tract = current_user.coordinator_tract
     end
-    @tract ||= current_user.coordinator_tract
     @approved = params[:approved]
     @scheduled = params[:scheduled]
     @topic = params[:topic]
@@ -24,7 +25,11 @@ class Coordinator::InstructablesController < ApplicationController
     end
 
     if @tract.present?
-      @instructables = @instructables.where(tract: @tract)
+      if @tract == "No Tract"
+        @instructables = @instructables.where("tract IS NULL OR tract=''")
+      else
+        @instructables = @instructables.where(tract: @tract)
+      end
     end
 
     if @approved.present?
@@ -36,7 +41,7 @@ class Coordinator::InstructablesController < ApplicationController
       if @scheduled == 1
         @instructables = @instructables.where('start_time IS NOT NULL')
       elsif @scheduled == 0
-        @instructables = @instructables.where('start_time IS NULL')
+        @instructables = @instructables.where("start_time IS NULL OR start_time=''")
       end
     end
 
