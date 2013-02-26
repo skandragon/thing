@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   helper_method :admin?
   helper_method :instructor?
   helper_method :coordinator?
+  helper_method :coordinator_for?
 
   private
 
@@ -23,7 +24,11 @@ class ApplicationController < ActionController::Base
   end
 
   def coordinator?
-    current_user && current_user.admin?
+    admin? or (current_user && current_user.coordinator_tract.present?)
+  end
+
+  def coordinator_for?(tract)
+    admin? or (coordinator? and current_user.coordinator_tract == tract)
   end
 
   def current_permission

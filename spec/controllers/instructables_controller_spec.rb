@@ -93,4 +93,31 @@ describe InstructablesController do
       end
     end
   end
+
+  describe "as coordinator" do
+    before :each do
+      log_in coordinator_tract: "Middle Eastern"
+      @other_user = create(:user)
+      @other_instructable = create(:instructable, user_id: @other_user.id, tract: "Middle Eastern")
+    end
+
+    it "shows additional fields" do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      page.should have_selector '#instructable_approved'
+    end
+  end
+
+  describe "as admin" do
+    before :each do
+      log_in admin: true
+      @other_user = create(:user)
+      @other_instructable = create(:instructable, user_id: @other_user.id, tract: "Middle Eastern")
+    end
+
+    it "shows additional fields" do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      page.should have_selector '#instructable_tract'
+      page.should have_selector '#instructable_approved'
+    end
+  end
 end

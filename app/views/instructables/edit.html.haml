@@ -2,7 +2,7 @@
 - title "#{create_or_update} University Class"
 
 = simple_form_for [@target_user, @instructable], html: { :class => "form-horizontal" } do |f|
-  - if coordinator? or admin?
+  - if coordinator_for?(@instructable.tract)
     %fieldset
       %legend Scheduling
       - if admin?

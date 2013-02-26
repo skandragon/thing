@@ -43,7 +43,10 @@ class InstructablesController < ApplicationController
   private
 
   def current_resource
-    @instructable ||= Instructable.find(params[:id])
+    if params[:id].present?
+      @instructable ||= Instructable.find(params[:id])
+    end
+    @instructable
   end
 
   def permitted_params
@@ -56,11 +59,13 @@ class InstructablesController < ApplicationController
       :heat_source, :heat_source_description, :additional_instructors_expanded,
       :culture, :topic, :subtopic,
     ]
-    if admin? or coordinator?
-      allowed += [ :approved, :start_time ]
-    end
-    if admin?
-      allowed += [ :tract ]
+    if params[:action] == "update"
+      if coordinator_for?(current_resource.tract)
+        allowed += [ :approved, :start_time ]
+      end
+      if admin?
+        allowed += [ :tract ]
+      end
     end
     params.require(:instructable).permit(*allowed)
   end
