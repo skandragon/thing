@@ -41,7 +41,7 @@ class Coordinator::InstructablesController < ApplicationController
       if @scheduled == 1
         @instructables = @instructables.where('start_time IS NOT NULL')
       elsif @scheduled == 0
-        @instructables = @instructables.where("start_time IS NULL OR start_time=''")
+        @instructables = @instructables.where("start_time IS NULL")
       end
     end
 
