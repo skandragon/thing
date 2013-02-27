@@ -51,7 +51,7 @@ describe InstructablesController do
         fill_in 'Duration', with: '1'
         select 'History', from: 'Topic'
         click_on 'Create class'
-        page.should have_content('Foo Class Name')
+        page.should have_content('Class created.')
       end
 
       it "does not with bad data" do
@@ -69,7 +69,7 @@ describe InstructablesController do
         fill_in 'Description (book)', with: "Foo Description"
         fill_in 'Duration', with: '1'
         click_on 'Update class'
-        page.should have_content('Foo Class Name')
+        page.should have_content('Class updated.')
       end
 
       it "does not with bad data" do
@@ -98,12 +98,20 @@ describe InstructablesController do
     before :each do
       log_in coordinator_tract: "Middle Eastern"
       @other_user = create(:user)
+      create(:instructor_profile, user_id: @other_user.id)
       @other_instructable = create(:instructable, user_id: @other_user.id, tract: "Middle Eastern")
     end
 
     it "shows additional fields" do
       visit edit_user_instructable_path(@other_user, @other_instructable)
       page.should have_selector '#instructable_approved'
+    end
+
+    it "allows :approved" do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      find('#instructable_approved').select 'Yes'
+      click_on 'Update class'
+      page.should have_content 'Class updated.'
     end
   end
 
@@ -111,6 +119,7 @@ describe InstructablesController do
     before :each do
       log_in admin: true
       @other_user = create(:user)
+      create(:instructor_profile, user_id: @other_user.id)
       @other_instructable = create(:instructable, user_id: @other_user.id, tract: "Middle Eastern")
     end
 
@@ -118,6 +127,13 @@ describe InstructablesController do
       visit edit_user_instructable_path(@other_user, @other_instructable)
       page.should have_selector '#instructable_tract'
       page.should have_selector '#instructable_approved'
+    end
+
+    it "allows :tract" do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      find('#instructable_tract').select 'Performing Arts'
+      click_on 'Update class'
+      page.should have_content 'Class updated.'
     end
   end
 end

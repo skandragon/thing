@@ -15,7 +15,7 @@ class InstructablesController < ApplicationController
   def create
     @instructable = @target_user.instructables.build(permitted_params)
     if @instructable.save
-      redirect_to user_instructables_path(@target_user), info: "Class created."
+      redirect_to user_instructables_path(@target_user), notice: "Class created."
       return
     else
       render action: :edit
