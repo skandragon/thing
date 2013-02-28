@@ -1,5 +1,5 @@
 class Admin::InstructorEmailListController < ApplicationController
   def index
-    @emailAddresses = User.joins(:instructor_profile).pluck(:email)
+    @email_addresses = User.joins(:instructor_profile).pluck(:email)
   end
 end

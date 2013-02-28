@@ -11,7 +11,7 @@ describe Admin::InstructorEmailListController do
       some_user = create(:user)
       some_instructor = create(:user)
       profile =create(:instructor_profile, user_id: some_instructor.id)
-      log_in admin: true, name: 'Fred'
+      log_in admin: true
       visit admin_instructor_email_list_index_path
       find('h2').should have_content 'email address count: 1'
       find('.email_address').should have_content some_instructor.email
