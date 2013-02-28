@@ -1,8 +1,9 @@
 Thing::Application.routes.draw do
   namespace :admin do
     resources :users
+    resources :instructor_email_list
   end
-  
+
   namespace :coordinator do
     resources :instructables
   end

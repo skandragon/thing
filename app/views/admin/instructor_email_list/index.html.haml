@@ -1,0 +1,6 @@
+- title 'Admin : Instructor Email Addresses'
+
+%h2 email address count: #{@emailAddresses.count}
+
+%ul.unstyled
+  = render :partial => "email_address", :collection => @emailAddresses
