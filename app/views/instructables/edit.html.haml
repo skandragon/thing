@@ -8,6 +8,9 @@
       - if admin?
         = f.input :tract, collection: Instructable::TRACTS.keys.sort
       = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: "input-mini" }
+      = f.simple_fields_for :instances do |i|
+        = i.input :start_time
+        = i.input :location
   %fieldset
     %legend Class Information
     = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }

@@ -23,6 +23,12 @@ class InstructablesController < ApplicationController
   end
 
   def edit
+    need = @instructable.repeat_count - @instructable.instances.count
+    if need > 0
+      need.times do
+        @instructable.instances.build
+      end
+    end
   end
 
   def update
@@ -54,11 +60,12 @@ class InstructablesController < ApplicationController
       :description_web, :description_book, :name, :duration, :handout_limit,
       :handout_fee, :material_limit, :material_fee, :fee_itemization,
       :location_camp, :camp_name, :camp_address, :camp_reason, :adult_only,
-      :adult_reason, :requested_days, :requested_times, :repeat_count,
-      :scheduling_additional, :special_needs, :special_needs_description,
+      :adult_reason, :repeat_count,
+      :scheduling_additional, :special_needs_description,
       :heat_source, :heat_source_description, :additional_instructors_expanded,
       :culture, :topic, :subtopic,
     ]
+    allowed += [{:requested_days => [], :requested_times => [], :special_needs => []}]
     if params[:action] == "update"
       if coordinator_for?(current_resource.tract)
         allowed += [ :approved ] # XXXMLG need fields for instances
