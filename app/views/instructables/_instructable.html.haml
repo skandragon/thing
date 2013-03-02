@@ -7,7 +7,7 @@
     = instructable.formatted_culture_and_topic
   %td= instructable.status_message
   %td
-    - if instructable.start_time.present?
-      = instructable.start_time
+    - if instructable.scheduled?
+      = instructable.instances.pluck(:start_time).join(", ")
     - else
       Unscheduled

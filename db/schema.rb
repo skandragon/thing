@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130225010303) do
+ActiveRecord::Schema.define(:version => 20130302205953) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -25,12 +25,18 @@ ActiveRecord::Schema.define(:version => 20130225010303) do
 
   add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
 
-  create_table "instructables", :force => true do |t|
-    t.integer  "user_id"
-    t.boolean  "approved",                  :default => false
+  create_table "instances", :force => true do |t|
+    t.integer  "instructable_id"
     t.datetime "start_time"
     t.datetime "end_time"
     t.string   "location"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "instructables", :force => true do |t|
+    t.integer  "user_id"
+    t.boolean  "approved",                  :default => false
     t.string   "name"
     t.integer  "material_limit"
     t.integer  "handout_limit"
@@ -61,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20130225010303) do
     t.string   "special_needs",                                                :array => true
     t.string   "requested_times",                                              :array => true
     t.string   "tract"
+    t.boolean  "scheduled",                 :default => false
   end
 
   create_table "instructor_profile_contacts", :force => true do |t|

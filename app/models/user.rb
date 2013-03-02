@@ -28,8 +28,8 @@ class User < ActiveRecord::Base
 
   before_validation :generate_access_token
 
-  has_one :instructor_profile
-  has_many :instructables
+  has_one :instructor_profile, dependent: :destroy
+  has_many :instructables, dependent: :destroy
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable

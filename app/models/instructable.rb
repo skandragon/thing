@@ -5,9 +5,6 @@
 #  id                        :integer          not null, primary key
 #  user_id                   :integer
 #  approved                  :boolean          default(FALSE)
-#  start_time                :datetime
-#  end_time                  :datetime
-#  location                  :string(255)
 #  name                      :string(255)
 #  material_limit            :integer
 #  handout_limit             :integer
@@ -38,10 +35,12 @@
 #  special_needs             :string(255)
 #  requested_times           :string(255)
 #  tract                     :string(255)
+#  scheduled                 :boolean          default(FALSE)
 #
 
 class Instructable < ActiveRecord::Base
   belongs_to :user
+  has_many :instances, dependent: :delete_all
 
   PENNSIC_DATES = (Date.parse('2013-07-19')..Date.parse('2013-08-03')).to_a
   CLASS_DATES = (Date.parse('2013-07-23') .. Date.parse('2013-08-01')).to_a
@@ -86,13 +85,6 @@ class Instructable < ActiveRecord::Base
     'Performing Arts' => [ 'Performing Arts Tent', 'New PA Tent', 'Amphetheater' ],
   }
 
-  # permitted for coordinators
-  # attr_accessible :approved, :start_time, :location
-  
-  # permitted for PU coordinators
-  # attr_accessible :tract
-  # validates_inclusion_of :tract, in: TRACTS.keys, allow_blank: true
-
   validates_presence_of :name
   validates_length_of :name, :within => 3..50
 
@@ -130,6 +122,7 @@ class Instructable < ActiveRecord::Base
   validate :validate_subtopic
 
   before_validation :compress_arrays
+  before_save :update_scheduled_flag
 
   def fee_itemization_required?
     handout_fee.present? or material_fee.present?
@@ -137,7 +130,7 @@ class Instructable < ActiveRecord::Base
 
   def status_message
     return 'Pending Approval' unless approved?
-    return 'Pending Scheduling' unless start_time.present?
+    return 'Pending Scheduling' unless scheduled?
     return 'Approved and Scheduled'
   end
 
@@ -156,6 +149,10 @@ class Instructable < ActiveRecord::Base
     [ culture, topic, subtopic ].select(&:present?).join(' : ')
   end
 
+  def update_scheduled_flag_from_instance
+    update_column(:scheduled, fully_scheduled?)
+  end
+
   private
 
   def validate_subtopic
@@ -165,6 +162,15 @@ class Instructable < ActiveRecord::Base
         errors.add(:subtopic, 'is not a valid subtopic')
       end
     end
+  end
+
+  def fully_scheduled?
+    instances.count >= repeat_count
+  end
+
+  def update_scheduled_flag
+    write_attribute(:scheduled, fully_scheduled?)
+    true
   end
 
   def compress_arrays
@@ -177,5 +183,4 @@ class Instructable < ActiveRecord::Base
     self.special_needs ||= []
     self.special_needs = special_needs.select { |x| x.present? }
   end
-
 end

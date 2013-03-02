@@ -5,9 +5,6 @@
 #  id                        :integer          not null, primary key
 #  user_id                   :integer
 #  approved                  :boolean          default(FALSE)
-#  start_time                :datetime
-#  end_time                  :datetime
-#  location                  :string(255)
 #  name                      :string(255)
 #  material_limit            :integer
 #  handout_limit             :integer
@@ -38,6 +35,7 @@
 #  special_needs             :string(255)
 #  requested_times           :string(255)
 #  tract                     :string(255)
+#  scheduled                 :boolean          default(FALSE)
 #
 
 require 'spec_helper'
@@ -77,14 +75,27 @@ describe Instructable do
       @instructable.status_message.should == 'Pending Approval'
     end
 
-    it 'approved but not schedule' do
+    it 'approved but not scheduled' do
       @instructable.approved = true
+      @instructable.status_message.should == 'Pending Scheduling'
+    end
+
+    it 'approved but not fully scheduled' do
+      @instructable.approved = true
+      @instructable.repeat_count = 2
+      @instructable.save!
+      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes)
+      @instructable.reload
       @instructable.status_message.should == 'Pending Scheduling'
     end
 
     it 'approved and scheduled' do
       @instructable.approved = true
-      @instructable.start_time = Time.now
+      @instructable.repeat_count = 2
+      @instructable.save!
+      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes)
+      @instructable.instances.create(start_time: Time.now + 30.minutes, end_time: Time.now + 60.minutes)
+      @instructable.reload
       @instructable.status_message.should == 'Approved and Scheduled'
     end
   end

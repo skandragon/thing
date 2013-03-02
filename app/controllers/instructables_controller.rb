@@ -61,7 +61,7 @@ class InstructablesController < ApplicationController
     ]
     if params[:action] == "update"
       if coordinator_for?(current_resource.tract)
-        allowed += [ :approved, :start_time ]
+        allowed += [ :approved ] # XXXMLG need fields for instances
       end
       if admin?
         allowed += [ :tract ]

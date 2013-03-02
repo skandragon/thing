@@ -37,12 +37,7 @@ class Coordinator::InstructablesController < ApplicationController
     end
 
     if @scheduled.present?
-      @scheduled = @scheduled.to_i
-      if @scheduled == 1
-        @instructables = @instructables.where('start_time IS NOT NULL')
-      elsif @scheduled == 0
-        @instructables = @instructables.where("start_time IS NULL")
-      end
+      @instructables = @instructables.where(scheduled: @scheduled)
     end
 
     if @topic.present?
