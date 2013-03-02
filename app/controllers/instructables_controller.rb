@@ -27,7 +27,7 @@ class InstructablesController < ApplicationController
 
   def update
     if @instructable.update_attributes(permitted_params)
-      redirect_to session[:coordinator_instructable_back] || user_instructables_path(@target_user), notice: "Class updated."
+      redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: "Class updated."
     else
       render action: :edit
     end
