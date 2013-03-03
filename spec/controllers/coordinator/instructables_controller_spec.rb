@@ -15,9 +15,8 @@ def setup_data
              topic: 'History', name: 'PEHistoryScheduledApproved',
              approved: true)
   i.instances.create(start_time: '11:00:00', end_time: '11:30:00', location: "Foo")
-  create(:instructable, user_id: user.id,
+  create(:instructable, user_id: user.id, track: '',
          topic: 'Music', name: 'TracklessMusic')
-
 end
 
 describe Coordinator::InstructablesController do

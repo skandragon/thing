@@ -133,6 +133,7 @@ class Instructable < ActiveRecord::Base
   validate :validate_subtopic
 
   before_validation :compress_arrays
+  before_validation :set_default_track, on: :create
   before_save :update_scheduled_flag
 
   def fee_itemization_required?
@@ -194,6 +195,10 @@ class Instructable < ActiveRecord::Base
   def update_scheduled_flag
     write_attribute(:scheduled, fully_scheduled?)
     true
+  end
+
+  def set_default_track
+    self.track ||= 'Pennsic University'
   end
 
   def compress_arrays
