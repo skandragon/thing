@@ -11,7 +11,7 @@
     %li You may teach up to #{@user.instructor_profile.class_limit} classes.
 
   - if @user.coordinator?
-    %li You are a tract coordinator for "#{@user.tract_coordinator}."
+    %li You are a track coordinator for "#{@user.track_coordinator}."
 
   - if @user.admin?
     %li You are an administrator.

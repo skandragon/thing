@@ -1,4 +1,4 @@
-class Admin::TractLeadEmailListController < ApplicationController
+class Admin::TrackLeadEmailListController < ApplicationController
   def index
     @email_addresses = []
     User.find_each do |user|

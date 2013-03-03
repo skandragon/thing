@@ -34,7 +34,7 @@
 #  requested_days            :date
 #  special_needs             :string(255)
 #  requested_times           :string(255)
-#  tract                     :string(255)
+#  track                     :string(255)
 #  scheduled                 :boolean          default(FALSE)
 #
 
@@ -78,7 +78,7 @@ class Instructable < ActiveRecord::Base
     'Other' => [],
   }
 
-  TRACTS = {
+  TRACKS = {
     'Pennsic University' => %W(A01 A02 A03 A04),
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],

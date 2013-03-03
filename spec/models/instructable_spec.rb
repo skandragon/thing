@@ -34,7 +34,7 @@
 #  requested_days            :date
 #  special_needs             :string(255)
 #  requested_times           :string(255)
-#  tract                     :string(255)
+#  track                     :string(255)
 #  scheduled                 :boolean          default(FALSE)
 #
 

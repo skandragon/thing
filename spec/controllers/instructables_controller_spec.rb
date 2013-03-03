@@ -96,10 +96,10 @@ describe InstructablesController do
 
   describe "as coordinator" do
     before :each do
-      log_in coordinator_tract: "Middle Eastern"
+      log_in coordinator_track: "Middle Eastern"
       @other_user = create(:user)
       create(:instructor_profile, user_id: @other_user.id)
-      @other_instructable = create(:instructable, user_id: @other_user.id, tract: "Middle Eastern")
+      @other_instructable = create(:instructable, user_id: @other_user.id, track: "Middle Eastern")
     end
 
     it "shows additional fields" do
@@ -120,18 +120,18 @@ describe InstructablesController do
       log_in admin: true
       @other_user = create(:user)
       create(:instructor_profile, user_id: @other_user.id)
-      @other_instructable = create(:instructable, user_id: @other_user.id, tract: "Middle Eastern")
+      @other_instructable = create(:instructable, user_id: @other_user.id, track: "Middle Eastern")
     end
 
     it "shows additional fields" do
       visit edit_user_instructable_path(@other_user, @other_instructable)
-      page.should have_selector '#instructable_tract'
+      page.should have_selector '#instructable_track'
       page.should have_selector '#instructable_approved'
     end
 
-    it "allows :tract" do
+    it "allows :track" do
       visit edit_user_instructable_path(@other_user, @other_instructable)
-      find('#instructable_tract').select 'Performing Arts'
+      find('#instructable_track').select 'Performing Arts'
       click_on 'Update class'
       page.should have_content 'Class updated.'
     end

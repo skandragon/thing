@@ -2,21 +2,21 @@ require 'spec_helper'
 
 def setup_data
   user = create(:user)
-  create(:instructable, user_id: user.id, tract: 'Middle Eastern',
+  create(:instructable, user_id: user.id, track: 'Middle Eastern',
          topic: 'Music', name: 'MEMusicUnscheduledUnapproved')
-  create(:instructable, user_id: user.id, tract: 'Middle Eastern',
+  create(:instructable, user_id: user.id, track: 'Middle Eastern',
          topic: 'Dance', name: 'MEDanceUnscheduledApproved',
          approved: true)
-  i = create(:instructable, user_id: user.id, tract: 'Middle Eastern',
+  i = create(:instructable, user_id: user.id, track: 'Middle Eastern',
              topic: 'History', name: 'MEHistoryScheduledApproved',
              approved: true)
   i.instances.create(start_time: '10:00:00', end_time: '10:30:00', location: "Foo")
-  i = create(:instructable, user_id: user.id, tract: 'Performing Arts',
+  i = create(:instructable, user_id: user.id, track: 'Performing Arts',
              topic: 'History', name: 'PEHistoryScheduledApproved',
              approved: true)
   i.instances.create(start_time: '11:00:00', end_time: '11:30:00', location: "Foo")
   create(:instructable, user_id: user.id,
-         topic: 'Music', name: 'TractlessMusic')
+         topic: 'Music', name: 'TracklessMusic')
 
 end
 
@@ -24,12 +24,12 @@ describe Coordinator::InstructablesController do
   describe 'search (admin)' do
     before :each do
       setup_data
-      log_in coordinator_tract: 'Middle Eastern', admin: true
+      log_in coordinator_track: 'Middle Eastern', admin: true
       visit coordinator_instructables_path
     end
 
     it 'renders as admin' do
-      select '', from: 'tract'
+      select '', from: 'track'
       click_on 'Filter'
       page.should have_content 'MEMusicUnscheduledUnapproved'
       page.should have_content 'MEDanceUnscheduledApproved'
@@ -37,8 +37,8 @@ describe Coordinator::InstructablesController do
       page.should have_content 'PEHistoryScheduledApproved'
     end
 
-    it 'renders as admin for other tracts' do
-      select 'Performing Arts', from: 'tract'
+    it 'renders as admin for other tracks' do
+      select 'Performing Arts', from: 'track'
       click_on 'Filter'
       page.should_not have_content 'MEMusicUnscheduledUnapproved'
       page.should_not have_content 'MEDanceUnscheduledApproved'
@@ -46,21 +46,21 @@ describe Coordinator::InstructablesController do
       page.should have_content 'PEHistoryScheduledApproved'
     end
 
-    it 'renders as admin for tractless classes' do
-      select 'No Tract', from: 'tract'
+    it 'renders as admin for trackless classes' do
+      select 'No Track', from: 'track'
       click_on 'Filter'
       page.should_not have_content 'MEMusicUnscheduledUnapproved'
       page.should_not have_content 'MEDanceUnscheduledApproved'
       page.should_not have_content 'MEHistoryScheduledApproved'
       page.should_not have_content 'PEHistoryScheduledApproved'
-      page.should have_content 'TractlessMusic'
+      page.should have_content 'TracklessMusic'
     end
   end
 
   describe 'search (non-admin)' do
     before :each do
       setup_data
-      log_in coordinator_tract: 'Middle Eastern'
+      log_in coordinator_track: 'Middle Eastern'
       visit coordinator_instructables_path
     end
 

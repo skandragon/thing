@@ -1,9 +1,9 @@
 class Coordinator::InstructablesController < ApplicationController
   def index
     if admin?
-      @tract = params[:tract] || current_user.coordinator_tract
+      @track = params[:track] || current_user.coordinator_track
     else
-      @tract = current_user.coordinator_tract
+      @track = current_user.coordinator_track
     end
     @approved = params[:approved]
     @scheduled = params[:scheduled]
@@ -12,7 +12,7 @@ class Coordinator::InstructablesController < ApplicationController
 
     if params[:commit] == "Clear"
       @search = nil
-      @tract = nil
+      @track = nil
       @approved = nil
       @scheduled = nil
       @topic = nil
@@ -24,11 +24,11 @@ class Coordinator::InstructablesController < ApplicationController
       @instructables = @instructables.where('name ILIKE ?', "%#{@search.strip}%")
     end
 
-    if @tract.present?
-      if @tract == "No Tract"
-        @instructables = @instructables.where("tract IS NULL OR tract=''")
+    if @track.present?
+      if @track == "No Track"
+        @instructables = @instructables.where("track IS NULL OR track=''")
       else
-        @instructables = @instructables.where(tract: @tract)
+        @instructables = @instructables.where(track: @track)
       end
     end
 

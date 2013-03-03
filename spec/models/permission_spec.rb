@@ -84,23 +84,23 @@ describe Permission do
   end
 
   describe "as coordinator" do
-    let(:tract) { Instructable::TRACTS.keys.first }
-    let(:other_tract) { Instructable::TRACTS.keys.last }
+    let(:track) { Instructable::TRACKS.keys.first }
+    let(:other_track) { Instructable::TRACKS.keys.last }
 
-    let(:user) { FactoryGirl.create(:user, coordinator_tract: tract) }
+    let(:user) { FactoryGirl.create(:user, coordinator_track: track) }
     let(:profile) { build(:instructor_profile, user_id: user.id) }
     let(:instructable) { build(:instructable, user_id: user.id) }
 
     let(:other_user) { FactoryGirl.create(:user) }
-    let(:other_tract_instructable) { build(:instructable, user_id: other_user.id, tract: tract) }
-    let(:other_nontract_instructable) { build(:instructable, user_id: other_user.id, tract: other_tract) }
+    let(:other_track_instructable) { build(:instructable, user_id: other_user.id, track: track) }
+    let(:other_nontrack_instructable) { build(:instructable, user_id: other_user.id, track: other_track) }
 
     subject { Permission.new(user) }
 
     it {
       should allow(:instructables, :edit, instructable)
-      should allow(:instructables, :edit, other_tract_instructable)
-      should_not allow(:instructables, :edit, other_nontract_instructable)
+      should allow(:instructables, :edit, other_track_instructable)
+      should_not allow(:instructables, :edit, other_nontrack_instructable)
     }
   end
 

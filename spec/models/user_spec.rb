@@ -18,7 +18,7 @@
 #  name                   :string(255)
 #  access_token           :string(255)
 #  admin                  :boolean          default(FALSE)
-#  coordinator_tract      :string(255)
+#  coordinator_track      :string(255)
 #  pu_staff               :boolean
 #
 

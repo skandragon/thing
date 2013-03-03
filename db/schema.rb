@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130302205953) do
+ActiveRecord::Schema.define(:version => 20130303100733) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(:version => 20130302205953) do
     t.date     "requested_days",                                               :array => true
     t.string   "special_needs",                                                :array => true
     t.string   "requested_times",                                              :array => true
-    t.string   "tract"
+    t.string   "track"
     t.boolean  "scheduled",                 :default => false
   end
 
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(:version => 20130302205953) do
     t.string   "name"
     t.string   "access_token"
     t.boolean  "admin",                  :default => false
-    t.string   "coordinator_tract"
+    t.string   "coordinator_track"
     t.boolean  "pu_staff"
   end
 

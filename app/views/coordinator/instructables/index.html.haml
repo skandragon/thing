@@ -3,7 +3,7 @@
 = form_for :filter, :method => 'get', :html => { :class => 'form-inline' } do
   = text_field_tag :search, @search, class: "input-medium search-query", placeholder: "Search"
   - if admin?
-    = select_tag :tract, options_for_select(['', "No Tract"] + Instructable::TRACTS.keys.sort, @tract), class: 'input-medium'
+    = select_tag :track, options_for_select(['', "No Track"] + Instructable::TRACKS.keys.sort, @track), class: 'input-medium'
   = select_tag :approved, options_for_select({'Any' => "", 'Approved' => "1", 'Not Approved' => 0}, @approved), class: 'input-medium'
   = select_tag :scheduled, options_for_select({'Any' => "", 'Scheduled' => "1", 'Not Scheduled' => 0}, @scheduled), class: 'input-medium'
   = select_tag :topic, options_for_select([''] + Instructable::TOPICS.keys.sort, @topic), class: 'input-medium'
@@ -14,7 +14,7 @@
   %thead
     %tr
       %th Title
-      %th Tract
+      %th Track
       %th Repeat
       %th Culture and Topic
       %th Approved?
