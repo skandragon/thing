@@ -15,6 +15,9 @@
             = i.input :start_time, as: :string, input_html: { value: i.object.start_time.present? ? i.object.start_time.to_s(:pennsic) : '' }
           .span3
             = i.input :location, required: !@instructable.location_camp
+    = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary submit-button"
+    = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
+
   %fieldset
     %legend Class Information
     = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }
@@ -81,7 +84,7 @@
     #heat-source
       = f.input :heat_source_description, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: "Describe the heat source you will be using."
 
-  = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary"
+  = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary submit-button"
   = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
 
 / This is gross, but it works...

@@ -59,6 +59,11 @@ describe InstructablesController do
         click_on 'Create class'
         page.should have_content("can't be blank")
       end
+
+      it "has one submit button" do
+        visit new_user_instructable_path(current_user)
+        all('.submit-button').count.should == 1
+      end
     end
 
     describe 'updates' do
@@ -78,6 +83,12 @@ describe InstructablesController do
         fill_in 'Class title', with: ''
         click_on 'Update class'
         page.should have_content("can't be blank")
+      end
+
+      it "has one submit button" do
+        instructable = create(:instructable, user_id: current_user.id)
+        visit edit_user_instructable_path(current_user, instructable)
+        all('.submit-button').count.should == 1
       end
     end
 
@@ -107,10 +118,15 @@ describe InstructablesController do
       page.should have_selector '#instructable_approved'
     end
 
+    it "has two submit buttons" do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      all('.submit-button').count.should == 2
+    end
+
     it "allows :approved" do
       visit edit_user_instructable_path(@other_user, @other_instructable)
       find('#instructable_approved').select 'Yes'
-      click_on 'Update class'
+      first('.submit-button').click
       page.should have_content 'Class updated.'
     end
   end
@@ -129,10 +145,15 @@ describe InstructablesController do
       page.should have_selector '#instructable_approved'
     end
 
+    it "has two submit buttons" do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      all('.submit-button').count.should == 2
+    end
+
     it "allows :track" do
       visit edit_user_instructable_path(@other_user, @other_instructable)
       find('#instructable_track').select 'Performing Arts'
-      click_on 'Update class'
+      first('.submit-button').click
       page.should have_content 'Class updated.'
     end
   end
