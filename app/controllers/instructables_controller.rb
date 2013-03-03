@@ -23,10 +23,11 @@ class InstructablesController < ApplicationController
   end
 
   def edit
+    @instances = @instructable.instances
     need = @instructable.repeat_count - @instructable.instances.count
     if need > 0
       need.times do
-        @instructable.instances.build
+        i = @instances.build
       end
     end
   end
@@ -68,7 +69,7 @@ class InstructablesController < ApplicationController
     allowed += [{:requested_days => [], :requested_times => [], :special_needs => []}]
     if params[:action] == "update"
       if coordinator_for?(current_resource.tract)
-        allowed += [ :approved ] # XXXMLG need fields for instances
+        allowed += [ :approved, :instances_attributes => [ :id, :start_time, :location ] ]
       end
       if admin?
         allowed += [ :tract ]

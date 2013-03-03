@@ -8,9 +8,13 @@
       - if admin?
         = f.input :tract, collection: Instructable::TRACTS.keys.sort
       = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: "input-mini" }
+      %p.info There are #{pluralize @instructable.repeat_count, 'session'} requested.
       = f.simple_fields_for :instances do |i|
-        = i.input :start_time
-        = i.input :location
+        .row
+          .span4
+            = i.input :start_time, as: :string, input_html: { value: i.object.start_time.present? ? i.object.start_time.to_s(:pennsic) : '' }
+          .span3
+            = i.input :location, required: !@instructable.location_camp
   %fieldset
     %legend Class Information
     = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }

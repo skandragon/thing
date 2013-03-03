@@ -40,10 +40,11 @@
 
 class Instructable < ActiveRecord::Base
   belongs_to :user
-  has_many :instances, dependent: :delete_all
+  has_many :instances, dependent: :delete_all, order: 'start_time, location'
+  accepts_nested_attributes_for :instances, allow_destroy: true
 
-  PENNSIC_DATES = (Date.parse('2013-07-19')..Date.parse('2013-08-03')).to_a
-  CLASS_DATES = (Date.parse('2013-07-23') .. Date.parse('2013-08-01')).to_a
+  PENNSIC_DATES = (Date.parse('2013-07-19 EST')..Date.parse('2013-08-03 EST')).to_a
+  CLASS_DATES = (Date.parse('2013-07-23 EST') .. Date.parse('2013-08-01 EST')).to_a
   CLASS_TIMES = [ '9am to Noon', 'Noon to 3pm', '3pm to 6pm', 'After 6pm' ]
 
   CULTURES = [
@@ -164,8 +165,20 @@ class Instructable < ActiveRecord::Base
     end
   end
 
+  def scheduled_instance_count
+    scheduled_instances = 0
+    for instance in instances
+      if location_camp?
+        scheduled_instances += 1 if instance.start_time.present?
+      else
+        scheduled_instances += 1 if instance.start_time.present? and instance.location.present?
+      end
+    end
+    scheduled_instances
+  end
+
   def fully_scheduled?
-    instances.count >= repeat_count
+    scheduled_instance_count >= repeat_count
   end
 
   def update_scheduled_flag

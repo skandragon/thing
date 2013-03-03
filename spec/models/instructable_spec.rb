@@ -84,13 +84,37 @@ describe Instructable do
       @instructable.approved = true
       @instructable.repeat_count = 2
       @instructable.save!
-      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes)
+      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes, location: "foo")
       @instructable.reload
       @instructable.status_message.should == 'Pending Scheduling'
     end
 
     it 'approved and scheduled' do
       @instructable.approved = true
+      @instructable.repeat_count = 2
+      @instructable.save!
+      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes, location: "foo")
+      @instructable.instances.create(start_time: Time.now + 30.minutes, end_time: Time.now + 60.minutes, location: "foo")
+      @instructable.reload
+      @instructable.status_message.should == 'Approved and Scheduled'
+    end
+
+    it 'approved but missing one or more items to be fully scheduled' do
+      @instructable.approved = true
+      @instructable.repeat_count = 2
+      @instructable.save!
+      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes)
+      @instructable.instances.create(start_time: Time.now + 30.minutes, end_time: Time.now + 60.minutes, location: "foo")
+      @instructable.reload
+      @instructable.status_message.should == 'Pending Scheduling'
+    end
+
+    it 'approved and in a camp' do
+      @instructable.approved = true
+      @instructable.location_camp = true
+      @instructable.camp_name = "Flarg"
+      @instructable.camp_address = "Flarg"
+      @instructable.camp_reason = "Flarg"
       @instructable.repeat_count = 2
       @instructable.save!
       @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes)

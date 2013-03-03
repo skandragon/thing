@@ -4,4 +4,7 @@
   %td= instructable.repeat_count
   %td= instructable.formatted_culture_and_topic
   %td= instructable.approved? ? "Yes" : "No"
-  %td= instructable.instances.pluck(:start_time).join(", ")
+  %td
+    - for instance in instructable.instances
+      = instance.formatted_location_and_time
+      %br
