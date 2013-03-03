@@ -84,6 +84,16 @@ class Instructable < ActiveRecord::Base
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
     'Performing Arts' => [ 'Performing Arts Tent', 'New PA Tent', 'Amphetheater' ],
+    'Cooking Lab' => [],
+    'Scribal' => [],
+    'Heraldry' => [],
+    'Glass' => [],
+    'Thrown Weapons' => [],
+    'Archery' => [],
+    'Parent/Child' => [],
+    'First Aid' => [],
+    'Bardic' => [],
+    'Music' => [],
   }
 
   validates_presence_of :name
