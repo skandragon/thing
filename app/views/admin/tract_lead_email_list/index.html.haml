@@ -1,0 +1,7 @@
+- title 'Admin : Tract Lead Email Addresses'
+
+%h2 email address count: #{@email_addresses.count}
+
+%ul.unstyled
+  - @email_addresses.each do |email_address|
+    %li.email_address #{email_address}
