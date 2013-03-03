@@ -1,7 +1,10 @@
 Thing::Application.routes.draw do
+  # get "tract_lead_email_list/index"
+
   namespace :admin do
     resources :users
     resources :instructor_email_list
+    resources :tract_lead_email_list
   end
 
   namespace :coordinator do
