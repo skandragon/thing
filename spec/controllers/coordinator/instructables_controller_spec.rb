@@ -55,7 +55,7 @@ describe Coordinator::InstructablesController do
       page.should have_content 'TracklessMusic'
     end
 
-    it 'allows admin to select any track', focus: true do
+    it 'allows admin to select any track' do
       page.should have_select('track')
       for tract in Instructable::TRACKS.keys
         select tract, from: 'track'
