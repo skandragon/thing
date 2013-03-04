@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(:version => 20130304045507) do
     t.text     "description_web"
     t.integer  "handout_fee"
     t.integer  "material_fee"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.float    "duration"
     t.string   "culture"
     t.string   "topic"
@@ -61,13 +61,13 @@ ActiveRecord::Schema.define(:version => 20130304045507) do
     t.text     "special_needs_description"
     t.boolean  "heat_source",               :default => false
     t.text     "heat_source_description"
-    t.string   "additional_instructors",                                       :array => true
-    t.date     "requested_days",                                               :array => true
-    t.string   "special_needs",                                                :array => true
-    t.string   "requested_times",                                              :array => true
+    t.string   "additional_instructors",                                         :array => true
+    t.date     "requested_days",                                                 :array => true
+    t.string   "special_needs",                                                  :array => true
+    t.string   "requested_times",                                                :array => true
     t.string   "track"
     t.boolean  "scheduled",                 :default => false
-    t.string   "location_type"
+    t.string   "location_type",             :default => "track"
   end
 
   create_table "instructor_profile_contacts", :force => true do |t|
