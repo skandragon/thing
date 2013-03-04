@@ -15,7 +15,7 @@
             = i.input :start_time, as: :string, input_html: { value: i.object.start_time.present? ? i.object.start_time.to_s(:pennsic) : '' }
           - unless @instructable.location_nontrack?
             .span3
-              = i.input :location
+              = i.input :location, as: :select, collection: Instructable::TRACKS[@instructable.track]
       - if @instructable.location_nontrack?
         %p.alert.alert-info Taught: #{@instructable.formatted_nontrack_location}
 
