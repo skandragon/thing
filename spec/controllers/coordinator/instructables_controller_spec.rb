@@ -70,7 +70,7 @@ describe Coordinator::InstructablesController do
       visit coordinator_instructables_path
     end
 
-    it 'allows selection of track', focus: true do
+    it 'allows selection of track' do
       page.should have_select('track')
       for tract in current_user.allowed_tracks
         select tract, from: 'track'
@@ -93,7 +93,7 @@ describe Coordinator::InstructablesController do
       page.should_not have_content 'PEHistoryScheduledApproved'
     end
 
-    it 'allows selection of track', focus: true do
+    it 'allows selection of track' do
       page.should_not have_select('track')
     end
 
