@@ -81,8 +81,8 @@ class Instructable < ActiveRecord::Base
 
   TRACKS = {
     'Pennsic University' => [
-      'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6', 
-      'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12', 
+      'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
+      'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
       'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'Battlefield'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
@@ -122,8 +122,9 @@ class Instructable < ActiveRecord::Base
 
   validates_presence_of :fee_itemization, :if => :fee_itemization_required?
 
-  validates_presence_of :camp_name, :if => :location_camp?
-  validates_presence_of :camp_reason, :if => :location_camp?
+  validates_inclusion_of :location_type, :in => [ 'track', 'private-camp', 'merchant-booth' ]
+  validates_presence_of :camp_name, :if => :location_nontrack?
+  validates_presence_of :camp_reason, :if => :location_nontrack?
 
   validates_presence_of :adult_reason, :if => :adult_only?
 
@@ -142,6 +143,10 @@ class Instructable < ActiveRecord::Base
   before_validation :compress_arrays
   before_validation :set_default_track, on: :create
   before_save :update_scheduled_flag
+
+  def location_nontrack?
+    location_type != 'track'
+  end
 
   def fee_itemization_required?
     handout_fee.present? or material_fee.present?
@@ -168,6 +173,19 @@ class Instructable < ActiveRecord::Base
     [ culture, topic, subtopic ].select(&:present?).join(' : ')
   end
 
+  def formatted_nontrack_location
+    raise Exception.new("location_type is 'tract' but no location known") unless location_nontrack?
+    if location_type == 'private-camp'
+      ret = ['Private Camp:', camp_name]
+      ret << "(#{camp_address})" if camp_address.present?
+    elsif location_type == 'merchant-booth'
+      ret = ['Merchant Booth:', camp_name]
+      ret << "(#{camp_address})" if camp_address.present?
+    end
+    ret.join(" ")
+  end
+
+
   def update_scheduled_flag_from_instance
     update_column(:scheduled, fully_scheduled?)
   end
@@ -186,7 +204,7 @@ class Instructable < ActiveRecord::Base
   def scheduled_instance_count
     scheduled_instances = 0
     for instance in instances
-      if location_camp?
+      if location_nontrack?
         scheduled_instances += 1 if instance.start_time.present?
       else
         scheduled_instances += 1 if instance.start_time.present? and instance.location.present?

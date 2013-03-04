@@ -111,7 +111,7 @@ describe Instructable do
 
     it 'approved and in a camp' do
       @instructable.approved = true
-      @instructable.location_camp = true
+      @instructable.location_type = 'private-camp'
       @instructable.camp_name = "Flarg"
       @instructable.camp_address = "Flarg"
       @instructable.camp_reason = "Flarg"

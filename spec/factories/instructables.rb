@@ -7,5 +7,6 @@ FactoryGirl.define do
     repeat_count 1
     duration 1
     topic Instructable::TOPICS.keys.first
+    location_type 'track'
   end
 end

@@ -60,7 +60,7 @@ class InstructablesController < ApplicationController
     allowed = [
       :description_web, :description_book, :name, :duration, :handout_limit,
       :handout_fee, :material_limit, :material_fee, :fee_itemization,
-      :location_camp, :camp_name, :camp_address, :camp_reason, :adult_only,
+      :location_type, :camp_name, :camp_address, :camp_reason, :adult_only,
       :adult_reason, :repeat_count,
       :scheduling_additional, :special_needs_description,
       :heat_source, :heat_source_description, :additional_instructors_expanded,

@@ -18,8 +18,17 @@ class Instance < ActiveRecord::Base
   after_save :update_instructable
   before_validation :update_end_time
 
+  def formatted_location
+    ret = []
+    if instructable.location_nontrack?
+      return instructable.formatted_nontrack_location
+    else
+      return location
+    end
+  end
+
   def formatted_location_and_time
-    [location, start_time.present? ? start_time.to_s(:long) : nil].compact.join(" on ")
+    [formatted_location, start_time.present? ? start_time.to_s(:long) : nil].compact.join(" on ")
   end
 
   private

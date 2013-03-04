@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130304033926) do
+ActiveRecord::Schema.define(:version => 20130304045507) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(:version => 20130304033926) do
     t.string   "topic"
     t.string   "subtopic"
     t.text     "description_book"
-    t.boolean  "location_camp",             :default => false
     t.string   "camp_name"
     t.string   "camp_address"
     t.string   "camp_reason"
@@ -68,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20130304033926) do
     t.string   "requested_times",                                              :array => true
     t.string   "track"
     t.boolean  "scheduled",                 :default => false
+    t.string   "location_type"
   end
 
   create_table "instructor_profile_contacts", :force => true do |t|

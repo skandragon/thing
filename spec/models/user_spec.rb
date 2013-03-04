@@ -65,9 +65,9 @@ describe User do
     it 'returns 4 for three non-PU-space classes with various repeat counts' do
       u = create(:user)
       2.times do
-        create(:instructable, user_id: u.id, location_camp: true, camp_reason: 'This is the reason', camp_name: "Foo")
+        create(:instructable, user_id: u.id, location_type: 'private-camp', camp_reason: 'This is the reason', camp_name: "Foo")
       end
-      create(:instructable, user_id: u.id, repeat_count: 2, location_camp: true, camp_reason: 'This is the reason', camp_name: 'Foo')
+      create(:instructable, user_id: u.id, repeat_count: 2, location_type: 'merchant-booth', camp_reason: 'This is the reason', camp_name: 'Foo')
       u.instructables_session_count.should == 0
     end
   end

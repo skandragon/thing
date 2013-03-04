@@ -8,13 +8,17 @@
       - if admin?
         = f.input :track, collection: Instructable::TRACKS.keys.sort
       = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: "input-mini" }
-      %p.info There are #{pluralize @instructable.repeat_count, 'session'} requested.
+      %p.alert.alert-info #{pluralize @instructable.repeat_count, 'session'} requested.
       = f.simple_fields_for :instances do |i|
         .row
           .span4
             = i.input :start_time, as: :string, input_html: { value: i.object.start_time.present? ? i.object.start_time.to_s(:pennsic) : '' }
-          .span3
-            = i.input :location, required: !@instructable.location_camp
+          - unless @instructable.location_nontrack?
+            .span3
+              = i.input :location
+      - if @instructable.location_nontrack?
+        %p.alert.alert-info Taught: #{@instructable.formatted_nontrack_location}
+
     = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary submit-button"
     = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
 
@@ -25,7 +29,7 @@
     = f.input :description_web, label: "Description (web)", input_html: { rows: 3, class: 'input-xxlarge' }, hint: "Web description is not limited, but please keep it concise.  If this is blank, the book description will be used."
     = f.input :duration, label: "Duration (hours)", input_html: { step: 0.25, class: 'input-mini', min: "0.25", max: 4 }
     = f.input :additional_instructors_expanded, label: "Additional instructors", hint: "Enter the SCA names of other instructors, separated by commas, of any additional instructors.  Leave it blank if none."
-    = f.input :repeat_count, as: :select, input_html: { class: "input-mini" }, collection: [ 1, 2, 3, 4 ], default: 1, hint: "Number of times this class will be taught."
+    = f.input :repeat_count, label: 'Sessions', as: :select, input_html: { class: "input-mini" }, collection: [ 1, 2, 3, 4 ], default: 1, hint: "Number of times this class will be taught."
     = f.input :culture, collection: Instructable::CULTURES, hint: "If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus."
     = f.input :topic, collection: Instructable::TOPICS.keys, hint: "Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies."
     #subtopic
@@ -33,7 +37,7 @@
 
   %fieldset
     %legend Private Camp or Merchant Booth
-    = f.input :location_camp, label: "Non-University location?", inline_label: "Teaching in a private camp or merchant booth?"
+    = f.input :location_type, label: "Private camp or merchant?", as: :select, collection: [['No', 'track'], ['Merchant Booth', 'merchant-booth'], ['Private Camp', 'private-camp']], include_blank: false
     #location-camp
       = f.input :camp_name, required: true, label: "Camp or Merchant Booth Name", hint: "If this class is being taught in a camp or merchant booth, enter the camp or merchant name."
       = f.input :camp_address, label: "Camp or Booth Location", hint: "If using a camp or merchant booth, enter it's location here (e.g, N06)"

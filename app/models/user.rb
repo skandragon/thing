@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
   end
 
   def instructables_session_count
-    total = instructables.where(location_camp: [false, nil]).pluck(:repeat_count).inject(:+)
+    total = instructables.where(location_type: 'track').pluck(:repeat_count).inject(:+)
     total ||= 0
   end
 

@@ -10,9 +10,24 @@ jQuery ->
     checkbox.on 'click', ->
       window.show_if_checked(checkbox, target)
 
-  setup_click('#instructable_location_camp', '#location-camp')
   setup_click('#instructable_adult_only', '#adult-only')
   setup_click('#instructable_heat_source', '#heat-source')
+
+jQuery ->
+  target = $('#instructable_location_type')
+
+  value = target.find('option:selected').val()
+  if value == 'track'
+    $('#location-camp').hide()
+  else
+    $('#location-camp').show()
+
+  target.on 'change', ->
+    value = target.find('option:selected').val()
+    if value == 'track'
+      $('#location-camp').hide()
+    else
+      $('#location-camp').show()
 
 jQuery ->
   if window.thing_topics
