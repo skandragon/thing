@@ -10,5 +10,9 @@
     = f.input :admin
     = f.input :pu_staff, label: "Pennsic U Staff?"
 
+  - if @user.instructor?
+    = f.simple_fields_for :instructor_profile do |p|
+      = p.input :class_limit
+
   = f.button :submit, "#{create_or_update} user", :class => "btn btn-primary"
   = link_to "Cancel", admin_users_path, :class => "btn"

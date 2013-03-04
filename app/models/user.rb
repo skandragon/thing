@@ -40,6 +40,8 @@ class User < ActiveRecord::Base
   validates_presence_of :access_token
   validates_uniqueness_of :access_token
 
+  accepts_nested_attributes_for :instructor_profile
+
   def generate_access_token
     return unless access_token.blank?
 
