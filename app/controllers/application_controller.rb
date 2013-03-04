@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :authorize
+  before_filter :miniprofiler
 
   delegate :allow?, to: :current_permission
   helper_method :allow?
@@ -14,6 +15,12 @@ class ApplicationController < ActionController::Base
   helper_method :coordinator_for?
 
   private
+
+  def miniprofiler
+    if current_user && admin? && current_user.email == 'explorer@flame.org'
+      Rack::MiniProfiler.authorize_request
+    end
+  end
 
   def instructor?
     current_user && current_user.instructor?

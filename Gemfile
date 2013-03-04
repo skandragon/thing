@@ -63,6 +63,7 @@ group :production do
   gem "unicorn", platform: :ruby
 end
 
+gem "rack-mini-profiler"
 gem "strong_parameters"
 gem "capistrano"
 gem "haml-rails"
