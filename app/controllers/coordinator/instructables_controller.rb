@@ -16,7 +16,7 @@ class Coordinator::InstructablesController < ApplicationController
       @topic = nil
     end
 
-    @instructables = Instructable.order(:name)
+    @instructables = Instructable.includes(:user, :instances).order(:name)
 
     if @search.present?
       @instructables = @instructables.where('name ILIKE ?', "%#{@search.strip}%")
@@ -30,7 +30,9 @@ class Coordinator::InstructablesController < ApplicationController
     # If @track.present? ensure it is one that is allowed.
     #
     if @track.blank? and coordinator?
-      @instructables = @instructables.where(track: @allowed_tracks)
+      unless admin?
+        @instructables = @instructables.where(track: @allowed_tracks)
+      end
     else
       if admin? && @track == "No Track"
         @instructables = @instructables.where("track IS NULL OR track=''")
