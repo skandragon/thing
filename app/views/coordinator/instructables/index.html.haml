@@ -2,7 +2,7 @@
 
 = form_for :filter, :method => 'get', :html => { :class => 'form-inline' } do
   = text_field_tag :search, @search, class: "input-medium search-query", placeholder: "Search"
-  - if @allowed_tracks.count > 0
+  - if @allowed_tracks.count > 1
     = select_tag :track, options_for_select([''] + @allowed_tracks, @track), class: 'input-medium'
   = select_tag :approved, options_for_select({'Any' => "", 'Approved' => "1", 'Not Approved' => 0}, @approved), class: 'input-medium'
   = select_tag :scheduled, options_for_select({'Any' => "", 'Scheduled' => "1", 'Not Scheduled' => 0}, @scheduled), class: 'input-medium'

@@ -55,12 +55,30 @@ describe Coordinator::InstructablesController do
       page.should have_content 'TracklessMusic'
     end
 
-#    it 'allows admin to select any track', focus: true do
-#      page.should have_select('track', :options => Instructable::TRACKS.keys)
-#    end
+    it 'allows admin to select any track', focus: true do
+      page.should have_select('track')
+      for tract in Instructable::TRACKS.keys
+        select tract, from: 'track'
+      end
+    end
   end
 
-  describe 'search (non-admin)' do
+  describe 'search (multi-track coordinator)' do
+    before :each do
+      setup_data
+      log_in tracks: ['Middle Eastern', 'Performing Arts']
+      visit coordinator_instructables_path
+    end
+
+    it 'allows selection of track', focus: true do
+      page.should have_select('track')
+      for tract in current_user.allowed_tracks
+        select tract, from: 'track'
+      end
+    end
+  end
+
+  describe 'search (single-track coordinator)' do
     before :each do
       setup_data
       log_in tracks: ['Middle Eastern']
@@ -73,6 +91,10 @@ describe Coordinator::InstructablesController do
       page.should have_content 'MEDanceUnscheduledApproved'
       page.should have_content 'MEHistoryScheduledApproved'
       page.should_not have_content 'PEHistoryScheduledApproved'
+    end
+
+    it 'allows selection of track', focus: true do
+      page.should_not have_select('track')
     end
 
     it 'filters based on approved = 1' do
