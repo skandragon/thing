@@ -1,6 +1,15 @@
 require 'spec_helper'
 
 describe InstructablesController do
+  describe 'requires login' do
+    it "redirects" do
+      user = create(:user)
+      instructable = create(:instructable, user_id: user.id)
+      visit user_instructables_path(user)
+      page.should have_content 'You must log in.'
+    end
+  end
+
   describe 'add button' do
     before :each do
       log_in
