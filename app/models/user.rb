@@ -19,15 +19,15 @@
 #  name                   :string(255)
 #  access_token           :string(255)
 #  admin                  :boolean          default(FALSE)
-#  coordinator_track      :string(255)
 #  pu_staff               :boolean
+#  tracks                 :string(255)      default([])
 #
-
 
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
   before_validation :generate_access_token
+  before_validation :compress_tracks
 
   has_one :instructor_profile, dependent: :destroy
   has_many :instructables, dependent: :destroy
@@ -60,7 +60,15 @@ class User < ActiveRecord::Base
   end
 
   def coordinator?
-    coordinator_track.present?
+    tracks.count > 0
+  end
+
+  def allowed_tracks
+    if admin?
+      ['No Track'] + Instructable::TRACKS.keys.sort
+    else
+      tracks
+    end
   end
 
   def instructables_session_count
@@ -78,5 +86,10 @@ class User < ActiveRecord::Base
       ret = name
     end
     ret
+  end
+
+  def compress_tracks
+    self.tracks ||= []
+    self.tracks = tracks.select { |x| x.present? }.sort
   end
 end

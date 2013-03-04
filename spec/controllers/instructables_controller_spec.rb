@@ -107,7 +107,7 @@ describe InstructablesController do
 
   describe "as coordinator" do
     before :each do
-      log_in coordinator_track: "Middle Eastern"
+      log_in tracks: ["Middle Eastern"]
       @other_user = create(:user)
       create(:instructor_profile, user_id: @other_user.id)
       @other_instructable = create(:instructable, user_id: @other_user.id, track: "Middle Eastern")

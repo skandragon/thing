@@ -18,8 +18,8 @@
 #  name                   :string(255)
 #  access_token           :string(255)
 #  admin                  :boolean          default(FALSE)
-#  coordinator_track      :string(255)
 #  pu_staff               :boolean
+#  tracks                 :string(255)      default([])
 #
 
 require 'spec_helper'

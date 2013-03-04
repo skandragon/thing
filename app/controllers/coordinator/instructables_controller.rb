@@ -1,10 +1,8 @@
 class Coordinator::InstructablesController < ApplicationController
   def index
-    if admin?
-      @track = params[:track] || current_user.coordinator_track
-    else
-      @track = current_user.coordinator_track
-    end
+    @allowed_tracks = current_user.allowed_tracks
+    @track = params[:track]
+
     @approved = params[:approved]
     @scheduled = params[:scheduled]
     @topic = params[:topic]
@@ -24,11 +22,22 @@ class Coordinator::InstructablesController < ApplicationController
       @instructables = @instructables.where('name ILIKE ?', "%#{@search.strip}%")
     end
 
-    if @track.present?
-      if @track == "No Track"
+    #
+    # if coordinator? filter only those they can see.  @track.blank? for
+    # admin applies no filter, which is more efficient than listing
+    # every possible track.
+    #
+    # If @track.present? ensure it is one that is allowed.
+    #
+    if @track.blank? and coordinator?
+      @instructables = @instructables.where(track: @allowed_tracks)
+    else
+      if admin? && @track == "No Track"
         @instructables = @instructables.where("track IS NULL OR track=''")
-      else
+      elsif coordinator_for?(@track)
         @instructables = @instructables.where(track: @track)
+      else
+        @instructables = @instructables.where(track: @allowed_tracks)
       end
     end
 

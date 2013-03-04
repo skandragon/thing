@@ -8,18 +8,20 @@ describe Admin::UsersController do
 
   describe "listing" do
     it "renders user's name, email, and track" do
-      log_in admin: true, name: 'Fred', coordinator_track: Instructable::TRACKS.keys.first
+      log_in admin: true, name: 'Fred', tracks: [Instructable::TRACKS.keys.first, Instructable::TRACKS.keys.last]
       visit admin_users_path
       find('.admin').should have_content('Yes')
       find('.display_name').should have_content('Fred')
       find('.display_name').should have_content current_user.email
-      find('.coordinator_track').should have_content current_user.coordinator_track
+      for track in current_user.tracks
+        find('.tracks').should have_content track
+      end
     end
 
     it "renders '-' if the user has no track" do
       log_in admin: true, name: 'Fred'
       visit admin_users_path
-      find('.coordinator_track').should have_content '-'
+      find('.tracks').should have_content '-'
     end
 
     it "renders with more than a page full of users" do

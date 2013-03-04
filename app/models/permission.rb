@@ -35,7 +35,7 @@ class Permission
 
     if user && user.coordinator?
       allow :instructables, [:edit, :update] do |record|
-        record.track == user.coordinator_track || record.user_id == user.id
+        user.tracks.include?(record.track) || record.user_id == user.id
       end
       allow 'coordinator/instructables', :index
     end

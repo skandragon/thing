@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303100733) do
+ActiveRecord::Schema.define(:version => 20130304033926) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -110,8 +110,8 @@ ActiveRecord::Schema.define(:version => 20130303100733) do
     t.string   "name"
     t.string   "access_token"
     t.boolean  "admin",                  :default => false
-    t.string   "coordinator_track"
     t.boolean  "pu_staff"
+    t.string   "tracks",                 :default => [],                    :array => true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -10,7 +10,7 @@ describe Admin::TrackLeadEmailListController do
     it 'renders only track lead email addresses' do
       some_track_lead = create(:user)
       create(:instructor_profile, user_id: some_track_lead.id)
-      some_track_lead.coordinator_track = 'Middle Eastern'
+      some_track_lead.tracks = ['Middle Eastern']
       some_track_lead.save
       2.times do
         create(:user)

@@ -23,7 +23,7 @@ describe Coordinator::InstructablesController do
   describe 'search (admin)' do
     before :each do
       setup_data
-      log_in coordinator_track: 'Middle Eastern', admin: true
+      log_in tracks: ['Middle Eastern'], admin: true
       visit coordinator_instructables_path
     end
 
@@ -54,12 +54,16 @@ describe Coordinator::InstructablesController do
       page.should_not have_content 'PEHistoryScheduledApproved'
       page.should have_content 'TracklessMusic'
     end
+
+#    it 'allows admin to select any track', focus: true do
+#      page.should have_select('track', :options => Instructable::TRACKS.keys)
+#    end
   end
 
   describe 'search (non-admin)' do
     before :each do
       setup_data
-      log_in coordinator_track: 'Middle Eastern'
+      log_in tracks: ['Middle Eastern']
       visit coordinator_instructables_path
     end
 

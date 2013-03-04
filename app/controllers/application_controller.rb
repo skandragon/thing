@@ -24,11 +24,11 @@ class ApplicationController < ActionController::Base
   end
 
   def coordinator?
-    admin? or (current_user && current_user.coordinator_track.present?)
+    admin? or (current_user && current_user.tracks.count > 0)
   end
 
   def coordinator_for?(track)
-    admin? or (coordinator? and current_user.coordinator_track == track)
+    admin? or (coordinator? and current_user.tracks.include?track)
   end
 
   def current_permission

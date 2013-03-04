@@ -87,7 +87,7 @@ describe Permission do
     let(:track) { Instructable::TRACKS.keys.first }
     let(:other_track) { Instructable::TRACKS.keys.last }
 
-    let(:user) { FactoryGirl.create(:user, coordinator_track: track) }
+    let(:user) { FactoryGirl.create(:user, tracks: [track]) }
     let(:profile) { build(:instructor_profile, user_id: user.id) }
     let(:instructable) { build(:instructable, user_id: user.id) }
 
