@@ -10,11 +10,15 @@ def setup_data
   i = create(:instructable, user_id: user.id, track: 'Middle Eastern',
              topic: 'History', name: 'MEHistoryScheduledApproved',
              approved: true)
-  i.instances.create(start_time: '10:00:00', end_time: '10:30:00', location: "Foo")
+  i.instances.create(start_time: '10:00:00', end_time: '10:30:00', location: 'Foo')
   i = create(:instructable, user_id: user.id, track: 'Performing Arts',
-             topic: 'History', name: 'PEHistoryScheduledApproved',
+             topic: 'History', name: 'PAHistoryScheduledApproved',
              approved: true)
-  i.instances.create(start_time: '11:00:00', end_time: '11:30:00', location: "Foo")
+  i.instances.create(start_time: '11:00:00', end_time: '11:30:00', location: 'Foo')
+  create(:instructable, user_id: user.id, track: 'Archery',
+         topic: 'Martial', name: 'ArcheryUnscheduledUnapproved')
+  create(:instructable, user_id: user.id, track: '',
+         topic: 'Martial', name: 'TracklessArchery')
   create(:instructable, user_id: user.id, track: '',
          topic: 'Music', name: 'TracklessMusic')
 end
@@ -33,7 +37,7 @@ describe Coordinator::InstructablesController do
       page.should have_content 'MEMusicUnscheduledUnapproved'
       page.should have_content 'MEDanceUnscheduledApproved'
       page.should have_content 'MEHistoryScheduledApproved'
-      page.should have_content 'PEHistoryScheduledApproved'
+      page.should have_content 'PAHistoryScheduledApproved'
     end
 
     it 'renders as admin for other tracks' do
@@ -42,7 +46,7 @@ describe Coordinator::InstructablesController do
       page.should_not have_content 'MEMusicUnscheduledUnapproved'
       page.should_not have_content 'MEDanceUnscheduledApproved'
       page.should_not have_content 'MEHistoryScheduledApproved'
-      page.should have_content 'PEHistoryScheduledApproved'
+      page.should have_content 'PAHistoryScheduledApproved'
     end
 
     it 'renders as admin for trackless classes' do
@@ -51,7 +55,7 @@ describe Coordinator::InstructablesController do
       page.should_not have_content 'MEMusicUnscheduledUnapproved'
       page.should_not have_content 'MEDanceUnscheduledApproved'
       page.should_not have_content 'MEHistoryScheduledApproved'
-      page.should_not have_content 'PEHistoryScheduledApproved'
+      page.should_not have_content 'PAHistoryScheduledApproved'
       page.should have_content 'TracklessMusic'
     end
 
@@ -76,6 +80,11 @@ describe Coordinator::InstructablesController do
         select tract, from: 'track'
       end
     end
+
+    it 'ignores disallowed track filter' do
+      visit coordinator_instructables_path(track: 'Archery')
+      page.should_not have_content 'Archery'
+    end
   end
 
   describe 'search (single-track coordinator)' do
@@ -90,7 +99,7 @@ describe Coordinator::InstructablesController do
       page.should have_content 'MEMusicUnscheduledUnapproved'
       page.should have_content 'MEDanceUnscheduledApproved'
       page.should have_content 'MEHistoryScheduledApproved'
-      page.should_not have_content 'PEHistoryScheduledApproved'
+      page.should_not have_content 'PAHistoryScheduledApproved'
     end
 
     it 'allows selection of track' do
