@@ -38,7 +38,7 @@ class InstructorProfile < ActiveRecord::Base
     lord lady
     sir
     king queen).sort
-  
+
   # The #titleized format for these titles.
   TITLES_TITLEIZED = TITLES.map { |x| x.titleize }
 
@@ -55,7 +55,7 @@ class InstructorProfile < ActiveRecord::Base
     "trimaris",
     "west",
   ]
-  
+
   # SCA kingdoms, #titleized.
   KINGDOMS_TITLEIZED = KINGDOMS.map { |x| x.titleize }
 
@@ -77,6 +77,10 @@ class InstructorProfile < ActiveRecord::Base
     missing.each do |protocol|
       instructor_profile_contacts.build({ protocol: protocol })
     end
+  end
+
+  def titled_sca_name
+    [sca_title, sca_name].compact.join(" ")
   end
 
   private

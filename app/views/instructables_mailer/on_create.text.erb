@@ -1,0 +1,19 @@
+A new class was added to the Pennsic University scheduling system.
+
+      Name:  <%= @instructable.name %>
+   Subject:  <%= @instructable.formatted_culture_and_topic %>
+<% if @instructable.user.instructor? -%>
+Instructor: <%= @instructable.user.instructor_profile.titled_sca_name %>
+<% end -%>
+
+Book Description:
+
+<%= @instructable.description_book %>
+
+<% if @instructable.description_web.present? -%>
+Web Description:
+
+<%= @instructable.description_web %>
+<% end -%>
+
+NOTE:  You are receiving this mail because you are <%= @reason %>.

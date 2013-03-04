@@ -15,6 +15,7 @@ class InstructablesController < ApplicationController
   def create
     @instructable = @target_user.instructables.build(permitted_params)
     if @instructable.save
+      send_email_on_create
       redirect_to user_instructables_path(@target_user), notice: "Class created."
       return
     else
@@ -76,5 +77,16 @@ class InstructablesController < ApplicationController
       end
     end
     params.require(:instructable).permit(*allowed)
+  end
+
+  def send_email_on_create
+    user_address = @instructable.user.email
+    admin_addresses = User.where(admin: true).pluck(:email)
+    admin_addresses -= [user_address]
+
+    InstructablesMailer.on_create(@instructable, user_address).deliver
+    for address in admin_addresses
+      InstructablesMailer.on_create(@instructable, address).deliver
+    end
   end
 end

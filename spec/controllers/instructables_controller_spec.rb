@@ -64,6 +64,31 @@ describe InstructablesController do
         visit new_user_instructable_path(current_user)
         all('.submit-button').count.should == 1
       end
+
+      it "sends email to the user" do
+        ActionMailer::Base.deliveries.clear
+        visit new_user_instructable_path(current_user)
+        fill_in 'Class title', with: 'Foo Class Name'
+        fill_in 'Description (book)', with: "Foo Description"
+        fill_in 'Duration', with: '1'
+        select 'History', from: 'Topic'
+        click_on 'Create class'
+        page.should have_content('Class created.')
+        ActionMailer::Base.deliveries.count.should == 1
+      end
+
+      it "sends email to the admin" do
+        ActionMailer::Base.deliveries.clear
+        admin_user = create(:user, admin: true)
+        visit new_user_instructable_path(current_user)
+        fill_in 'Class title', with: 'Foo Class Name'
+        fill_in 'Description (book)', with: "Foo Description"
+        fill_in 'Duration', with: '1'
+        select 'History', from: 'Topic'
+        click_on 'Create class'
+        page.should have_content('Class created.')
+        ActionMailer::Base.deliveries.count.should == 2
+      end
     end
 
     describe 'updates' do
