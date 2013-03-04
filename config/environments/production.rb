@@ -11,8 +11,8 @@ Thing::Application.configure do
     :address => 'white.flame.org',
     :port => 24,
     :domain => 'thing.pennsicuniversity.org',
-    :user_name => 'skan@flame.org',
-    :password => 'abc123',
+    :user_name => MultaArcana::secret_for(:smtp_username),
+    :password => MultaArcana::secret_for(:smtp_password),
     :authentication => 'plain',
     :enable_starttls_auto => true,
   }
@@ -43,7 +43,7 @@ Thing::Application.configure do
 
   # Specifies the header that your server uses for sending files
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
