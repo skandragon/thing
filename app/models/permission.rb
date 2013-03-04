@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Permission
   def initialize(user)
     @allow_all = false

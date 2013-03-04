@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 #
 # Table name: instructables
@@ -79,21 +80,27 @@ class Instructable < ActiveRecord::Base
   }
 
   TRACKS = {
-    'Pennsic University' => %W(A01 A02 A03 A04),
+    'Pennsic University' => [
+      'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6', 
+      'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12', 
+      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'Battlefield'
+    ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
-    'Performing Arts' => [ 'Performing Arts Tent', 'New PA Tent', 'Amphetheater' ],
-    'Cooking Lab' => [],
-    'Scribal' => [],
-    'Heraldry' => [],
-    'Glass' => [],
-    'Thrown Weapons' => [],
-    'Archery' => [],
-    'Parent/Child' => [],
-    'First Aid' => [],
-    'Bardic' => [],
-    'Music' => [],
+    'Performing Arts' => [
+      'Performing Arts Tent', 'New PA Tent', 'Amphetheater'
+    ],
+    'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
+    'Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3', 'A&S 2' ],
+    'Heraldry' => ['A&S 2'],
+    'Glass' => ['A&S 5'],
+    'Thrown Weapons' => ['Thrown Weapons'],
+    'Archery' => ['Archery'],
+    'Parent/Child' => ['A&S 8'],
+    'First Aid' => ['A&S 1'],
+    'Bardic' => ['A&S 9'],
+    'Music' => ['A&S 9'],
   }
 
   validates_presence_of :name
