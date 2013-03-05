@@ -141,6 +141,7 @@ class Instructable < ActiveRecord::Base
   validate :validate_subtopic
 
   before_validation :compress_arrays
+  before_validation :check_fees_for_zero
   before_validation :set_default_track, on: :create
   before_save :update_scheduled_flag
 
@@ -235,5 +236,14 @@ class Instructable < ActiveRecord::Base
 
     self.special_needs ||= []
     self.special_needs = special_needs.select { |x| x.present? }
+  end
+
+  def check_fees_for_zero
+    if handout_fee.present?
+      self.handout_fee = nil if handout_fee.to_f == 0.0
+    end
+    if material_fee.present?
+      self.material_fee = nil if handout_fee.to_f == 0.0
+    end
   end
 end
