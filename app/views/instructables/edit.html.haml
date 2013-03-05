@@ -12,7 +12,9 @@
         #{pluralize @instructable.repeat_count, 'session'} requested.
         - if @instructable.user and @instructable.user.instructor_profile
           %br
-          Instructor: #{@instructable.user.instructor_profile.titled_sca_name}
+          Instructor: #{@instructable.user.instructor_profile.titled_sca_name},
+          AKA #{@instructable.user.instructor_profile.mundane_name}
+          = mailto_link_for_instructable(@instructable)
       - location_was_overridden = false
       = f.simple_fields_for :instances do |i|
         - if i.object.override_location
@@ -38,7 +40,40 @@
         %p.alert.alert-info Taught: #{@instructable.formatted_nontrack_location}
 
     = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary submit-button"
+    = link_to "Show Instructor Dates", '#', :class => 'btn', data: { toggle: 'modal', target: '#arrival-modal'}
     = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
+
+    %div#arrival-modal.modal.fade.hide
+      .modal-header
+        %button{ type: 'button', class: 'close', data: { dismiss: "modal", 'aria-hidden' => 'true' }} &times;
+        %h3 Available Dates
+      .modal-body
+        %h5 Requested Days (this class)
+        - dates = @instructable.requested_days
+        - if dates.empty?
+          No specific days requested for this class.
+        - else
+          %ul
+            - for date in dates
+              %li= date.to_s(:pennsic)
+        %h5 Requested Times (this class)
+        - times = @instructable.requested_times
+        - if times.empty?
+          No specific times requested for this class.
+        - else
+          %ul
+            - for time in @instructable.requested_times
+              %li= time
+        %h5 Instructor Availability
+        - dates = @instructable.user.instructor_profile.available_days
+        - if dates.empty?
+          No days provided in profile.
+        -else
+          %ul
+            - for date in dates
+              %li= date.to_s(:pennsic)
+      .modal-footer
+        = link_to 'Close', '#', class: 'btn'
 
   %fieldset
     %legend Class Information

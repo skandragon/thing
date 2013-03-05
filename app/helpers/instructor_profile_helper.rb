@@ -13,4 +13,8 @@ module InstructorProfileHelper
     return "http://www.example.com/" if type == :url
     return "user@example.com" if type == :email
   end
+  
+  def mailto_link_for_instructable(instructable)
+    '&lt;'.html_safe + mail_to(instructable.user.email, nil, subject: "Pennsic University: #{instructable.name}") + '&gt;'.html_safe
+  end
 end
