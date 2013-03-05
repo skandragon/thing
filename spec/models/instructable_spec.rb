@@ -158,4 +158,16 @@ describe Instructable do
       @instructable.additional_instructors_expanded.should == 'Alpha, Beta, Zulu'
     end
   end
+
+  describe "fees of to_f == 0.0 convert into nil" do
+    it "converts handout_fee" do
+      @instructable.handout_fee = "0.0"
+      @instructable.should be_valid
+    end
+
+    it "converts material_fee" do
+      @instructable.material_fee = "0.0"
+      @instructable.should be_valid
+    end
+  end
 end
