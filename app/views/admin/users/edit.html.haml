@@ -4,7 +4,6 @@
 = simple_form_for @user, url: admin_user_path(@user), html: { :class => "form-horizontal" } do |f|
   %fieldset
     %legend Editing #{@user.display_name}
-    = f.input :name, label: "Class title", hint: "Used in the administrator interface, not Pennsic data"
     = f.input :email, label: "Email address"
     = f.input :tracks, as: :check_boxes, collection: Instructable::TRACKS.keys.sort
     = f.input :admin
