@@ -4,8 +4,8 @@
   %p.alert.alert-block.alert-info
     You have requested #{@target_user.instructables_session_count} of your
     allowed #{@target_user.instructor_profile.class_limit} classes.
-    Only classes being taught in Pennsic University provided spaces count
-    against your total.
+    Only classes being taught in track-coordinated locationsspaces count
+    against your total.  Merchant booths and private camps do not.
 
 %table.table
   %thead
@@ -22,9 +22,10 @@
 - if @target_user.instructor?
   - if @target_user.instructor_profile.class_limit <= @target_user.instructables_session_count
     %p.alert.alert-warning
-      You are over your class session limit.
+      You are at or over your class session limit.
       While additional classes may be added, you should contact
-      Pennsic University staff to discuss your desire to teach more sessions.
+      Pennsic University staff to discuss your desire to teach more sessions
+      or classes.
   .add-button= link_to 'Request a class', new_user_instructable_path(@target_user), :class => "btn btn-primary"
 
 = page_navigation_links @instructables

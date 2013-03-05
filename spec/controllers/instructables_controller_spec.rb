@@ -24,7 +24,7 @@ describe InstructablesController do
     it 'renders with a warning if at class limit' do
       create(:instructor_profile, user_id: current_user.id, class_limit: 0)
       visit user_instructables_path(current_user)
-      page.should have_content('You are over your class session limit.')
+      page.should have_content('You are at or over your class session limit.')
     end
   end
 
