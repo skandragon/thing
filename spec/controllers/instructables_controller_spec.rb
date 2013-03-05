@@ -127,6 +127,78 @@ describe InstructablesController do
         visit edit_user_instructable_path(current_user, instructable)
         all('.submit-button').count.should == 1
       end
+
+      # camp details select
+
+      it "shows camp data if changed to a camp", js: true do
+        instructable = create(:instructable, user_id: current_user.id)
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should_not have_content('Camp or Booth Location')
+        select 'Private Camp', from: 'Private camp or merchant?'
+        page.should have_content('Camp or Booth Location')
+      end
+
+      it "shows camp data if initially in a camp", js: true do
+        instructable = create(:instructable, user_id: current_user.id, location_type: 'private-camp', camp_name: 'foo', camp_reason: 'foo')
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should have_content('Camp or Booth Location')
+      end
+
+      it "hides camp data if changed to not in a camp", js: true do
+        instructable = create(:instructable, user_id: current_user.id, location_type: 'private-camp', camp_name: 'foo', camp_reason: 'foo')
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should have_content('Camp or Booth Location')
+        select 'No', from: 'Private camp or merchant?'
+        page.should_not have_content('Camp or Booth Location')
+      end
+
+      # adult clickly
+
+      it "shows adult only reason if checked", js: true do
+        instructable = create(:instructable, user_id: current_user.id)
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should_not have_content('Adult reason')
+        check 'Adult only'
+        page.should have_content('Adult reason')
+      end
+
+      it "shows adult only reason if initally checked", js: true do
+        instructable = create(:instructable, user_id: current_user.id, adult_only: true, adult_reason: 'foo')
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should have_content('Adult reason')
+      end
+
+      it "hides adult only reason if unchecked", js: true do
+        instructable = create(:instructable, user_id: current_user.id, adult_only: true, adult_reason: 'foo')
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should have_content('Adult reason')
+        uncheck 'Adult only'
+        page.should_not have_content('Adult reason')
+      end
+
+      # heat source clicky
+
+      it "shows heat source description if checked", js: true do
+        instructable = create(:instructable, user_id: current_user.id)
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should_not have_content('Heat source description')
+        check 'Heat source'
+        page.should have_content('Heat source description')
+      end
+
+      it "shows heat source description if initally checked", js: true do
+        instructable = create(:instructable, user_id: current_user.id, heat_source: true, heat_source_description: 'flarg')
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should have_content('Heat source description')
+      end
+
+      it "hides heat source description if unchecked", js: true do
+        instructable = create(:instructable, user_id: current_user.id, heat_source: true, heat_source_description: 'flarg')
+        visit edit_user_instructable_path(current_user, instructable)
+        page.should have_content('Heat source description')
+        uncheck 'Heat source'
+        page.should_not have_content('Heat source description')
+      end
     end
 
     describe "destroys", js: true do
