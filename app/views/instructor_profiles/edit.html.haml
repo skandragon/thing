@@ -5,7 +5,7 @@
   %fieldset
     %legend Name and Required Contact Information
     = f.input :mundane_name, label: "Legal name", placeholder: "Full name"
-    = f.input :sca_title, label: "SCA title", hint: "SCA title, if any", collection: InstructorProfile::TITLES, label_method: :titleize
+    = f.input :sca_title, label: "SCA title", hint: "SCA title, if any", collection: InstructorProfile::TITLES_FOR_SELECT
     = f.input :sca_name, label: "SCA name", hint: "SCA name, up to 30 characters, without title", input_html: { maxlength: 30 }
     = f.input :kingdom, label: "SCA kingdom", hint: "SCA kingdom, if any", collection: InstructorProfile::KINGDOMS, label_method: :titleize
     = f.input :phone_number, placeholder: "+1 405.555.1212", hint: "Pre-pennsic contact number."

@@ -37,10 +37,17 @@ class InstructorProfile < ActiveRecord::Base
     master mistress
     lord lady
     sir
-    king queen).sort
+    king queen
+    thl).sort
 
-  # The #titleized format for these titles.
-  TITLES_TITLEIZED = TITLES.map { |x| x.titleize }
+  TITLES_FOR_SELECT = proc {
+    ret = {}
+    TITLES.each do |title|
+      display = (title == 'thl') ? 'THL' : title.titleize
+      ret[display] = title
+    end
+    ret
+  }
 
   # SCA kingdoms, lowercase.
   KINGDOMS = [
