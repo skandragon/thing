@@ -31,6 +31,14 @@ describe Admin::UsersController do
       log_in admin: true
       visit admin_users_path
     end
+
+    it "renders the bootstrap_renderer gap" do
+      70.times do
+        create(:user)
+      end
+      log_in admin: true
+      visit admin_users_path
+    end
   end
 
   describe "edit user" do
