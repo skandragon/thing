@@ -147,7 +147,13 @@ describe InstructablesController do
       log_in tracks: ["Middle Eastern"]
       @other_user = create(:user)
       create(:instructor_profile, user_id: @other_user.id)
-      @other_instructable = create(:instructable, user_id: @other_user.id, track: "Middle Eastern")
+      @other_instructable = create(:instructable, user_id: @other_user.id,
+                                   track: "Middle Eastern", repeat_count: 3)
+      @camp_instructable = create(:instructable, user_id: @other_user.id,
+                                  track: "Middle Eastern", repeat_count: 3,
+                                  location_type: 'private-camp',
+                                  camp_name: 'flarg', camp_reason: 'flarg',
+                                  camp_address: 'N06')
     end
 
     it "shows additional fields" do
@@ -167,6 +173,35 @@ describe InstructablesController do
       page.should have_content 'Class updated.'
       @other_instructable.reload
       @other_instructable.approved.should be_true
+    end
+
+    it "shows repeat_count sessions" do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      page.should have_content "#{@other_instructable.repeat_count} sessions requested."
+      @other_instructable.repeat_count.times do |i|
+        all("#instructable_instances_attributes_#{i}_start_time").count.should == 1
+        all("#instructable_instances_attributes_#{i}_location").count.should == 1
+      end
+    end
+
+    it "shows only start_time fields for in-camp classes" do
+      visit edit_user_instructable_path(@other_user, @camp_instructable)
+      page.should have_content "#{@camp_instructable.repeat_count} sessions requested."
+      @camp_instructable.repeat_count.times do |i|
+        all("#instructable_instances_attributes_#{i}_start_time").count.should == 1
+        all("#instructable_instances_attributes_#{i}_location").count.should == 0
+      end
+    end
+
+    it "shows start_time if populated, ordered by start time" do
+      @camp_instructable.instances.create(start_time: '2013-01-01 10:00')
+      @camp_instructable.instances.create(start_time: '2013-01-01 08:00')
+      @camp_instructable.instances.create(start_time: '2013-01-01 12:00')
+      visit edit_user_instructable_path(@other_user, @camp_instructable)
+      page.should have_content "#{@camp_instructable.repeat_count} sessions requested."
+      find("#instructable_instances_attributes_0_start_time").value.should == "2013-01-01 08:00"
+      find("#instructable_instances_attributes_1_start_time").value.should == "2013-01-01 10:00"
+      find("#instructable_instances_attributes_2_start_time").value.should == "2013-01-01 12:00"
     end
   end
 
