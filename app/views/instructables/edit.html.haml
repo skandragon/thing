@@ -18,7 +18,7 @@
       - location_was_overridden = false
       = f.simple_fields_for :instances do |i|
         - if i.object.override_location
-          - disabled = true
+          - disabled = admin? ? false : true
           - locations = [i.object.location.to_s]
         - else
           - locations = Instructable::TRACKS[@instructable.track]
