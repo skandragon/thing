@@ -109,6 +109,9 @@ describe InstructablesController do
         fill_in 'Duration', with: '1'
         click_on 'Update class'
         page.should have_content('Class updated.')
+        instructable.reload
+        instructable.name.should == 'Foo Class Name'
+        instructable.description_book.should == 'Foo Description'
       end
 
       it "does not with bad data" do
@@ -162,6 +165,8 @@ describe InstructablesController do
       find('#instructable_approved').select 'Yes'
       first('.submit-button').click
       page.should have_content 'Class updated.'
+      @other_instructable.reload
+      @other_instructable.approved.should be_true
     end
   end
 
@@ -189,6 +194,8 @@ describe InstructablesController do
       find('#instructable_track').select 'Performing Arts'
       first('.submit-button').click
       page.should have_content 'Class updated.'
+      @other_instructable.reload
+      @other_instructable.track.should == 'Performing Arts'
     end
   end
 end
