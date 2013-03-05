@@ -13,7 +13,7 @@
 #
 
 class Instance < ActiveRecord::Base
-  belongs_to :instructable
+  belongs_to :instructable, touch: true
 
   after_save :update_instructable
   before_validation :update_end_time
