@@ -105,14 +105,14 @@ describe Users::RegistrationsController do
     it 'fails for empty email addresses' do
       visit new_user_password_path
       click_on 'Send me reset password instructions'
-      page.should have_content "Email can't be blank"
+      page.should have_content "can't be blank"
     end
 
     it 'fails for unknown email addresses' do
       visit new_user_password_path
       fill_in 'Email', with: 'nouser@example.com'
       click_on 'Send me reset password instructions'
-      page.should have_content 'Email not found'
+      page.should have_content 'not found'
     end
 
     it 'works for a real user' do

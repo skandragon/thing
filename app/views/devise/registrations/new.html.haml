@@ -2,8 +2,6 @@
 %h2 Sign up
 
 = simple_form_for @user, :url => user_registration_path, :html => { :class => "form-horizontal" } do |f|
-  = devise_error_messages!
-
   = f.input :email, :required => true, :hint => "A valid email address is required to use this service."
   = f.input :name
 
