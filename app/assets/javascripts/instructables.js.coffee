@@ -56,14 +56,21 @@ jQuery ->
 jQuery ->
   if window.thing_tracks
     repopulate_targets = (options) ->
+      pu_locations = window.thing_tracks['Pennsic University']
       for n in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         target = $('#instructable_instances_attributes_' + n + '_location')
         if $(target).size() > 0
+          override = $('#instructable_instances_attributes_' + n + '_override_location')
+          overridden = override.prop('checked')
           target.empty()
           target.append($('<option></option>'))
-          for option in options
-            item = $('<option></option>').attr('value', option).text(option)
-            if option == window.thing_selected_locations[n]
+          if overridden
+            locations = pu_locations
+          else
+            locations = options
+          for location in locations
+            item = $('<option></option>').attr('value', location).text(location)
+            if location == window.thing_selected_locations[n]
               item.attr('selected', 'selected')
             target.append(item)
           target.enabled = true
@@ -85,4 +92,8 @@ jQuery ->
 
     $('#instructable_track').on 'change', ->
       update_select()
+    for n in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      override = $('#instructable_instances_attributes_' + n + '_override_location')
+      override.on 'change', ->
+        update_select()
     update_select()

@@ -275,6 +275,14 @@ describe InstructablesController do
       find("#instructable_instances_attributes_1_start_time").value.should == "2013-01-01 10:00"
       find("#instructable_instances_attributes_2_start_time").value.should == "2013-01-01 12:00"
     end
+
+    it "warns, and marks start time and location as disabled if overridden" do
+      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6', override_location: true)
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      page.should have_content 'overridden by an administrator, and cannot be changed.'
+      find("#instructable_instances_attributes_0_start_time")['disabled'].should == 'disabled'
+      find("#instructable_instances_attributes_0_location")['disabled'].should == 'disabled'
+    end
   end
 
   describe "as admin" do
@@ -303,6 +311,42 @@ describe InstructablesController do
       page.should have_content 'Class updated.'
       @other_instructable.reload
       @other_instructable.track.should == 'Performing Arts'
+    end
+
+    it "has no options in location select if track is empty", js: true do
+      pending "not sure how to write this test yet..."
+    end
+
+    it "populates location based on track on load", js: true do
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      find('#instructable_instances_attributes_0_location').select Instructable::TRACKS['Middle Eastern'].first
+    end
+
+    it "populates location when track changes", js: true do
+      @other_instructable.instances.create(start_time: '2013-01-01 10:00')
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      find('#instructable_track').select 'Performing Arts'
+      find('#instructable_instances_attributes_0_location').select Instructable::TRACKS['Performing Arts'].first
+    end
+
+    it "populates location for PU space when overridden on load", js: true do
+      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6', override_location: true)
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      find('#instructable_instances_attributes_0_location').select 'Battlefield'
+    end
+
+    it "populates location for PU space when overridden checked", js: true do
+      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6')
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      find('#instructable_instances_attributes_0_override_location').set(true)
+      find('#instructable_instances_attributes_0_location').select 'Battlefield'
+    end
+
+    it "restores track location overridden unchecked", js: true do
+      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6', override_location: true)
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      find('#instructable_instances_attributes_0_override_location').set(false)
+      find('#instructable_instances_attributes_0_location').select Instructable::TRACKS['Middle Eastern'].first
     end
   end
 end

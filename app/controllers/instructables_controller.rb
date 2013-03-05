@@ -70,7 +70,11 @@ class InstructablesController < ApplicationController
     allowed += [{:requested_days => [], :requested_times => [], :special_needs => []}]
     if params[:action] == "update"
       if coordinator_for?(current_resource.track)
-        allowed += [ :approved, :instances_attributes => [ :id, :start_time, :location ] ]
+        if admin?
+          allowed += [ :approved, :instances_attributes => [ :id, :start_time, :location, :override_location ] ]
+        else
+          allowed += [ :approved, :instances_attributes => [ :id, :start_time, :location ] ]
+        end
       end
       if admin?
         allowed += [ :track ]

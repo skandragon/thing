@@ -13,15 +13,27 @@
         - if @instructable.user and @instructable.user.instructor_profile
           %br
           Instructor: #{@instructable.user.instructor_profile.titled_sca_name}
+      - location_was_overridden = false
       = f.simple_fields_for :instances do |i|
+        - if i.object.override_location
+          - disabled = true
+          - locations = [i.object.location.to_s]
+        - else
+          - locations = Instructable::TRACKS[@instructable.track]
+          - locations = [''] if locations.blank? or locations.empty?
+          - disabled = false
         .row
           .span4
-            = i.input :start_time, as: :string, input_html: { value: i.object.start_time.present? ? i.object.start_time.to_s(:pennsic) : '' }
+            = i.input :start_time, as: :string, input_html: { class: 'input-medium', value: i.object.start_time.present? ? i.object.start_time.to_s(:pennsic) : '' }, disabled: disabled
           - unless @instructable.location_nontrack?
-            .span3
-              - locations = Instructable::TRACKS[@instructable.track]
-              - locations = [''] if locations.blank? or locations.empty?
-              = i.input :location, as: :select, collection: locations
+            .span4
+              = i.input :location, label: disabled ? 'Location' : 'Location', as: :select, collection: locations, input_html: { class: 'input-medium' }, disabled: disabled
+            - location_was_overridden ||= disabled
+            - if admin?
+              .span4
+                = i.input :override_location
+      - if location_was_overridden and !admin?
+        %p.alert.alert-warning At least one time and location is overridden by an administrator, and cannot be changed.
       - if @instructable.location_nontrack?
         %p.alert.alert-info Taught: #{@instructable.formatted_nontrack_location}
 
