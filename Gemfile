@@ -50,7 +50,6 @@ group :development, :test do
   gem "capybara"
   gem "poltergeist", git: 'git://github.com/jonleighton/poltergeist.git', branch: 'master'
   gem "database_cleaner"
-#  gem "cucumber-rails"
   gem "launchy"
 end
 

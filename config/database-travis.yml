@@ -4,6 +4,3 @@ test: &test
   database: thing_test
   pool: 5
   username: postgres
-
-cucumber:
-  <<: *test
