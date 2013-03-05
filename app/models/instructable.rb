@@ -189,6 +189,10 @@ class Instructable < ActiveRecord::Base
 
   def update_scheduled_flag_from_instance
     update_column(:scheduled, fully_scheduled?)
+
+    if fully_scheduled? or partially_scheduled?
+      update_column(:approved, true)
+    end
   end
 
   private
@@ -216,6 +220,10 @@ class Instructable < ActiveRecord::Base
 
   def fully_scheduled?
     scheduled_instance_count >= repeat_count
+  end
+
+  def partially_scheduled?
+    scheduled_instance_count > 0
   end
 
   def update_scheduled_flag
