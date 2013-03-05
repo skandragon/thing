@@ -48,6 +48,41 @@ jQuery ->
         $('#subtopic').show()
       else
         $('#subtopic').hide()
+
     $('#instructable_topic').on 'change', ->
+      update_select()
+    update_select()
+
+jQuery ->
+  if window.thing_tracks
+    repopulate_targets = (options) ->
+      for n in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        target = $('#instructable_instances_attributes_' + n + '_location')
+        if $(target).size() > 0
+          target.empty()
+          target.append($('<option></option>'))
+          for option in options
+            item = $('<option></option>').attr('value', option).text(option)
+            if option == window.thing_selected_locations[n]
+              item.attr('selected', 'selected')
+            target.append(item)
+          target.enabled = true
+
+    hide_targets = ->
+      for n in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        target = $('#instructable_instances_attributes_' + n + '_location')
+        if $(target).size() > 0
+          target.empty()
+          target.enabled = false
+
+    update_select = ->
+      track = $('#instructable_track')[0].value
+      options = window.thing_tracks[track]
+      if track and options.length > 0
+        repopulate_targets(options)
+      else
+        hide_targets()
+
+    $('#instructable_track').on 'change', ->
       update_select()
     update_select()
