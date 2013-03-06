@@ -32,7 +32,7 @@ class InstructorProfile < ActiveRecord::Base
   TITLES = %w(
     prince princess
     duke duchess
-    count countess
+    count countess viscount viscountess
     baron baroness
     master mistress
     lord lady
