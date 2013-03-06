@@ -84,7 +84,7 @@ describe Instructable do
       @instructable.approved = true
       @instructable.repeat_count = 2
       @instructable.save!
-      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes, location: "foo")
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0], location: "foo")
       @instructable.reload
       @instructable.status_message.should == 'Pending Scheduling'
     end
@@ -93,8 +93,8 @@ describe Instructable do
       @instructable.approved = true
       @instructable.repeat_count = 2
       @instructable.save!
-      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes, location: "foo")
-      @instructable.instances.create(start_time: Time.now + 30.minutes, end_time: Time.now + 60.minutes, location: "foo")
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0], location: "foo")
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[1], location: "foo")
       @instructable.reload
       @instructable.status_message.should == 'Approved and Scheduled'
     end
@@ -103,8 +103,8 @@ describe Instructable do
       @instructable.approved = true
       @instructable.repeat_count = 2
       @instructable.save!
-      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes)
-      @instructable.instances.create(start_time: Time.now + 30.minutes, end_time: Time.now + 60.minutes, location: "foo")
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0])
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[1], location: "foo")
       @instructable.reload
       @instructable.status_message.should == 'Pending Scheduling'
     end
@@ -117,8 +117,8 @@ describe Instructable do
       @instructable.camp_reason = "Flarg"
       @instructable.repeat_count = 2
       @instructable.save!
-      @instructable.instances.create(start_time: Time.now, end_time: Time.now + 30.minutes)
-      @instructable.instances.create(start_time: Time.now + 30.minutes, end_time: Time.now + 60.minutes)
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0])
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[1])
       @instructable.reload
       @instructable.status_message.should == 'Approved and Scheduled'
     end

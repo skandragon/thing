@@ -18,6 +18,15 @@ class Instance < ActiveRecord::Base
   after_save :update_instructable
   before_validation :update_end_time
 
+  validate :validate_start_time
+
+  def validate_start_time
+    return true if start_time.blank?
+    unless Instructable::CLASS_DATES.include?(start_time.to_date)
+      errors.add(:start_time, "is not a class day")
+    end
+  end
+
   def formatted_location
     ret = []
     if instructable.location_nontrack?
@@ -36,7 +45,9 @@ class Instance < ActiveRecord::Base
   def update_end_time
     if start_time.present?
       self.start_time -= start_time.sec  # remove any seconds
-      self.end_time = start_time + (instructable.duration * 3600) # duration is hours
+      if instructable.present?
+        self.end_time = start_time + instructable.duration.hours
+      end
     end
   end
 

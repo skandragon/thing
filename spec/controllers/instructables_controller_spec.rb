@@ -266,18 +266,18 @@ describe InstructablesController do
     end
 
     it "shows start_time if populated, ordered by start time" do
-      @camp_instructable.instances.create(start_time: '2013-01-01 10:00')
-      @camp_instructable.instances.create(start_time: '2013-01-01 08:00')
-      @camp_instructable.instances.create(start_time: '2013-01-01 12:00')
+      @camp_instructable.instances.create(start_time: get_date(1))
+      @camp_instructable.instances.create(start_time: get_date(0))
+      @camp_instructable.instances.create(start_time: get_date(2))
       visit edit_user_instructable_path(@other_user, @camp_instructable)
       page.should have_content "#{@camp_instructable.repeat_count} sessions requested."
-      find("#instructable_instances_attributes_0_start_time").value.should == "2013-01-01 08:00"
-      find("#instructable_instances_attributes_1_start_time").value.should == "2013-01-01 10:00"
-      find("#instructable_instances_attributes_2_start_time").value.should == "2013-01-01 12:00"
+      find("#instructable_instances_attributes_0_start_time").value.should == get_date(0).to_s(:pennsic)
+      find("#instructable_instances_attributes_1_start_time").value.should == get_date(1).to_s(:pennsic)
+      find("#instructable_instances_attributes_2_start_time").value.should == get_date(1).to_s(:pennsic)
     end
 
     it "warns, and marks start time and location as disabled if overridden" do
-      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6', override_location: true)
+      @other_instructable.instances.create(start_time: get_date(0), location: 'A&S 6', override_location: true)
       visit edit_user_instructable_path(@other_user, @other_instructable)
       page.should have_content 'overridden by an administrator, and cannot be changed.'
       find("#instructable_instances_attributes_0_start_time")['disabled'].should == 'disabled'
@@ -323,27 +323,27 @@ describe InstructablesController do
     end
 
     it "populates location when track changes", js: true do
-      @other_instructable.instances.create(start_time: '2013-01-01 10:00')
+      @other_instructable.instances.create(start_time: get_date(0))
       visit edit_user_instructable_path(@other_user, @other_instructable)
       find('#instructable_track').select 'Performing Arts'
       find('#instructable_instances_attributes_0_location').select Instructable::TRACKS['Performing Arts'].first
     end
 
     it "populates location for PU space when overridden on load", js: true do
-      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6', override_location: true)
+      @other_instructable.instances.create(start_time: get_date(0), location: 'A&S 6', override_location: true)
       visit edit_user_instructable_path(@other_user, @other_instructable)
       find('#instructable_instances_attributes_0_location').select 'Battlefield'
     end
 
     it "populates location for PU space when overridden checked", js: true do
-      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6')
+      @other_instructable.instances.create(start_time: get_date(0), location: 'A&S 6')
       visit edit_user_instructable_path(@other_user, @other_instructable)
       find('#instructable_instances_attributes_0_override_location').set(true)
       find('#instructable_instances_attributes_0_location').select 'Battlefield'
     end
 
     it "restores track location overridden unchecked", js: true do
-      @other_instructable.instances.create(start_time: '2013-01-01 10:00', location: 'A&S 6', override_location: true)
+      @other_instructable.instances.create(start_time: get_date(0), location: 'A&S 6', override_location: true)
       visit edit_user_instructable_path(@other_user, @other_instructable)
       find('#instructable_instances_attributes_0_override_location').set(false)
       find('#instructable_instances_attributes_0_location').select Instructable::TRACKS['Middle Eastern'].first

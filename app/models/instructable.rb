@@ -44,8 +44,8 @@ class Instructable < ActiveRecord::Base
   has_many :instances, dependent: :delete_all, order: 'start_time, location'
   accepts_nested_attributes_for :instances, allow_destroy: true
 
-  PENNSIC_DATES = (Date.parse('2013-07-19 EST')..Date.parse('2013-08-03 EST')).to_a
-  CLASS_DATES = (Date.parse('2013-07-23 EST') .. Date.parse('2013-08-01 EST')).to_a
+  PENNSIC_DATES = (Date.parse('2013-07-19')..Date.parse('2013-08-03')).to_a
+  CLASS_DATES = (Date.parse('2013-07-23') .. Date.parse('2013-08-01')).to_a
   CLASS_TIMES = [ '9am to Noon', 'Noon to 3pm', '3pm to 6pm', 'After 6pm' ]
 
   CULTURES = [

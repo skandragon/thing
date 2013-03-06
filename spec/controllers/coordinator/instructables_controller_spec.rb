@@ -10,11 +10,11 @@ def setup_data
   i = create(:instructable, user_id: user.id, track: 'Middle Eastern',
              topic: 'History', name: 'MEHistoryScheduledApproved',
              approved: true)
-  i.instances.create(start_time: '10:00:00', end_time: '10:30:00', location: 'Foo')
+  i.instances.create(start_time: get_date(0), location: 'Foo')
   i = create(:instructable, user_id: user.id, track: 'Performing Arts',
              topic: 'History', name: 'PAHistoryScheduledApproved',
              approved: true)
-  i.instances.create(start_time: '11:00:00', end_time: '11:30:00', location: 'Foo')
+  i.instances.create(start_time: get_date(1), location: 'Foo')
   create(:instructable, user_id: user.id, track: 'Archery',
          topic: 'Martial', name: 'ArcheryUnscheduledUnapproved')
   create(:instructable, user_id: user.id, track: '',

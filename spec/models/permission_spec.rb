@@ -38,11 +38,11 @@ describe Permission do
   end
 
   describe "as user" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { create(:user) }
     let(:profile) { create(:instructor_profile, user_id: user.id) }
     let(:instructable) { create(:instructable, user_id: user.id) }
 
-    let(:other_user) { FactoryGirl.create(:user) }
+    let(:other_user) { create(:user) }
     let(:other_profile) { create(:instructor_profile, user_id: other_user.id) }
     let(:other_instructable) { create(:instructable, user_id: other_user.id) }
 
@@ -87,11 +87,11 @@ describe Permission do
     let(:track) { Instructable::TRACKS.keys.first }
     let(:other_track) { Instructable::TRACKS.keys.last }
 
-    let(:user) { FactoryGirl.create(:user, tracks: [track]) }
+    let(:user) { create(:user, tracks: [track]) }
     let(:profile) { build(:instructor_profile, user_id: user.id) }
     let(:instructable) { build(:instructable, user_id: user.id) }
 
-    let(:other_user) { FactoryGirl.create(:user) }
+    let(:other_user) { create(:user) }
     let(:other_track_instructable) { build(:instructable, user_id: other_user.id, track: track) }
     let(:other_nontrack_instructable) { build(:instructable, user_id: other_user.id, track: other_track) }
 
@@ -105,8 +105,8 @@ describe Permission do
   end
 
   describe "as admin" do
-    let(:user) { FactoryGirl.build(:user, admin: true) }
-    let(:other_user) { FactoryGirl.create(:user) }
+    let(:user) { build(:user, admin: true) }
+    let(:other_user) { create(:user) }
     subject { Permission.new(user) }
 
     it { should allow(:anything, :here) }

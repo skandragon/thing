@@ -17,15 +17,21 @@ describe Instance do
   describe "updates end time" do
     before :each do
       @instructable = create(:instructable, duration: 6)
-      @instance = @instructable.instances.create(start_time: '2013-01-01 00:00:00', location: "There")
+      @instance = @instructable.instances.create!(start_time: get_date(1), location: "There")
     end
 
     it "updates end time on save" do
-      @instance.end_time.to_s(:number).should == Time.parse('2013-01-01 06:00:00').to_s(:number)
-      @instance.start_time = '2013-01-01 01:00:00'
+      @instance.end_time.to_s.should == get_date(1, 6.hours).to_s
+      @instance.start_time = get_date(1, 1.hour)
       @instance.save!
-      @instance.end_time.to_s(:number).should == Time.parse('2013-01-01 07:00:00').to_s(:number)
+      @instance.end_time.to_s.should == get_date(1, 7.hours).to_s
     end
+  end
+
+  it "rejects out of range dates" do
+    instance = build(:instance, start_time: '2000-01-01')
+    instance.should_not be_valid
+    instance.errors[:start_time].should_not be_empty
   end
 
   describe '#formatted_location' do
@@ -43,7 +49,7 @@ describe Instance do
 
     it "renders pennsic location correctly" do
       instructable = create(:instructable, location_type: 'track')
-      instance = instructable.instances.create(location: "Flarg")
+      instance = instructable.instances.create!(location: "Flarg")
       instance.formatted_location.should == "Flarg"
     end
 
