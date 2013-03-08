@@ -15,7 +15,7 @@
       teach classes.  These will be used by default for classes you
       request, although you can override them on a per-class basis.
       Actual class days are more limited than the selection below.
-    = f.input :available_days, as: :check_boxes, checked: @profile.available_days, collection: Instructable::PENNSIC_DATES, label_method: lambda { |x| x.strftime("%A, %B %e, %Y") }
+    = f.input :available_days, as: :check_boxes, checked: @profile.available_days, collection: Instructable::PENNSIC_DATES, label_method: :to_s
 
   %fieldset
     %legend After Pennsic Contact
