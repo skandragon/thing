@@ -19,7 +19,6 @@
 #  topic                     :string(255)
 #  subtopic                  :string(255)
 #  description_book          :text
-#  location_camp             :boolean          default(FALSE)
 #  camp_name                 :string(255)
 #  camp_address              :string(255)
 #  camp_reason               :string(255)
@@ -37,6 +36,7 @@
 #  requested_times           :string(255)
 #  track                     :string(255)
 #  scheduled                 :boolean          default(FALSE)
+#  location_type             :string(255)      default("track")
 #
 
 class Instructable < ActiveRecord::Base
