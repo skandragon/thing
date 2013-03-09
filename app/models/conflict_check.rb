@@ -1,0 +1,2 @@
+class ConflictCheck
+end
