@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ConflictCheck::Instance, focus: true do
+describe ConflictCheck::Instance do
   def i1
     @i1 ||= create(:instructable, duration: 3)
   end
