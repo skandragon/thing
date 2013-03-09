@@ -41,8 +41,9 @@ class InstructorProfilesController < ApplicationController
   def permitted_params
     params.require(:instructor_profile).permit(
       :mundane_name, :phone_number, :sca_name, :sca_title, :phone_number_onsite,
-      :kingdom, :no_contact, :available_days,
-      { :instructor_profile_contacts => [ :address, :protocol ] }
-    )
+      :kingdom, :no_contact,
+      { :instructor_profile_contacts_attributes => [ :address, :protocol, :id ] },
+      :available_days => []
+     )
   end
 end
