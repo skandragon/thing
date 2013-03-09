@@ -68,10 +68,14 @@
         - dates = @instructable.user.instructor_profile.available_days
         - if dates.empty?
           No days provided in profile.
-        -else
+        - else
           %ul
             - for date in dates
-              %li= date.to_s(:pennsic)
+              %li= date.to_s
+        %h5 Special Needs (this class)
+        - if @instructable.special_needs.count > 0
+          = @instructable.special_needs.join(", ")
+        = @instructable.special_needs_description
       .modal-footer
         = link_to 'Close', '#', class: 'btn'
 
