@@ -76,6 +76,7 @@ class Instructable < ActiveRecord::Base
     'SCA Life' => %W(Court Heraldry Meetings Newcomers Persona),
     'Sciences' => [ 'Astronomy', 'Animals', 'Black Powder', 'Equestrian', 'Gardens', 'Research' ],
     'Scribal Arts' => [ 'Calligraphy', 'Illumination' ],
+    'Youth Combat' => [],
     'Other' => [],
   }
 
@@ -101,6 +102,7 @@ class Instructable < ActiveRecord::Base
     'First Aid' => ['A&S 1'],
     'Bardic' => ['A&S 9'],
     'Music' => ['A&S 9'],
+    'Youth Combat' => [ 'Youth Combat' ],
   }
 
   validates_presence_of :name
