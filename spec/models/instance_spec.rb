@@ -18,7 +18,6 @@ describe Instance do
   describe "updates end time" do
     before :each do
       @instructable = create(:instructable, duration: 6)
-      puts get_date(1)
       @instance = @instructable.instances.create!(start_time: get_date(1), location: "There")
     end
 
