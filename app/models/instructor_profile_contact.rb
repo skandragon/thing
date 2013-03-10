@@ -12,7 +12,7 @@
 #
 
 class InstructorProfileContact < ActiveRecord::Base
-  belongs_to :instructor_profile
+  belongs_to :user
 
   PROTOCOL_TYPES = {
     "profile email" => :email,
