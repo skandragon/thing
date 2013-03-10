@@ -126,4 +126,18 @@ describe ConflictCheck::Instance do
       end
     end
   end
+
+  describe "instructor_overlap" do
+    it "conflicts if user_id equal" do
+      @ia = create(:instructable, user_id: 1)
+      @ib = create(:instructable, user_id: 1)
+      ConflictCheck::Instance.instructor_overlap?(@ia, @ib).should be_true
+    end
+
+    it "does not conflict if user_id unequal" do
+      @ia = create(:instructable, user_id: 1)
+      @ib = create(:instructable, user_id: 2)
+      ConflictCheck::Instance.instructor_overlap?(@ia, @ib).should be_false
+    end
+  end
 end

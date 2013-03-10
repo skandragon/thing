@@ -18,4 +18,9 @@ class ConflictCheck::Instance
     end
     false
   end
+
+  # return true only if user_id fields are equal
+  def self.instructor_overlap?(a, b)
+    a.user_id == b.user_id
+  end
 end
