@@ -21,6 +21,17 @@ class ConflictCheck::Instance
 
   # return true only if user_id fields are equal
   def self.instructor_overlap?(a, b)
-    a.user_id == b.user_id
+    a.instructable.user_id == b.instructable.user_id
+  end
+
+  #
+  # Put all of the sub-overlap checks together.
+  #
+  def self.overlap?(a, b)
+    return [] unless time_overlap?(a, b)
+    ret = []
+    ret << :location if location_overlap?(a, b)
+    ret << :instructor if instructor_overlap?(a, b)
+    ret
   end
 end
