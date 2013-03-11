@@ -20,13 +20,13 @@ instances = Instance.where("start_time IS NOT NULL").order(:start_time)
 
 if instances.size == 0
   puts "No instances of any classes."
-  exit 0
+  exit
 elsif instances.size == 1
   puts "Only one instance, so no conflicts."
-  exit 0
+  exit
 end
 
-@conflicts = 0
+@conflicts = []
 
 while instances.size > 0
   instance = instances.pop
@@ -34,21 +34,25 @@ while instances.size > 0
   for other in instances
     conflicts = ConflictCheck::Instance.overlap?(instance, other)
     if conflicts.size > 0
-      puts "  Conflict: #{conflicts.join(', ')}"
-      puts "     Class: #{instance.instructable.name}"
-      puts "Instructor: #{instance.instructable.user.instructor_profile.titled_sca_name}"
-      puts "  Instance: #{instance.formatted_location_and_time}"
-      puts " -- with --"
-      puts "     Class: #{other.instructable.name}"
-      puts "Instructor: #{other.instructable.user.instructor_profile.titled_sca_name}"
-      puts "  Instance: #{other.formatted_location_and_time}"
-      puts
-      @conflicts += 1
+      @conflicts << [conflicts, [instance, other]]
     end
   end
 end
 
-puts "Summary: #{help.pluralize @conflicts, 'conflict'}."
-exit 1 if @conflicts > 0
+def show_instance(instance)
+  puts "     Class: #{instance.instructable.name}"
+  puts "Instructor: #{instance.instructable.user.instructor_profile.titled_sca_name}"
+  puts "  Instance: #{instance.formatted_location_and_time}"
+  puts "     Track: #{instance.instructable.track}"
+end
 
-exit 0
+for conflict in @conflicts
+  type, instances = conflict
+  puts "  Conflict: #{type.join(', ')}"
+  show_instance(instances[0])
+  puts " -- with --"
+  show_instance(instances[1])
+  puts
+end
+  
+puts "Summary: #{help.pluralize @conflicts.size, 'conflict'}."
