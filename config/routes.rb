@@ -1,6 +1,7 @@
 Thing::Application.routes.draw do
   namespace :admin do
     resources :users
+    resources :tracks
     resources :instructor_email_list
     resources :track_lead_email_list
   end

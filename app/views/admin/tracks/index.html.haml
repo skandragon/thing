@@ -1,0 +1,24 @@
+- title "Track Statistics"
+
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th Track
+      %th Total
+      %th Scheduled
+      %th Unscheduled
+      %th % scheduled
+  %tbody
+    - for track in Instructable::TRACKS.keys.sort
+      %tr
+        %td= track
+        %td= @totals[track]
+        %td= @scheduled[track]
+        %td= @unscheduled[track]
+        %td
+          - if @percent_completed[track].blank?
+            %span.badge No classes
+          - elsif @percent_completed[track] < 100
+            %span.badge.badge-warning= "%0.2f%%" % @percent_completed[track]
+          - else
+            %span.badge.badge-success= "%0.2f%%" % @percent_completed[track]
