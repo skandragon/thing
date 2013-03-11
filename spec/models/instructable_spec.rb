@@ -170,4 +170,55 @@ describe Instructable do
       @instructable.should be_valid
     end
   end
+
+  describe '#cleanup_needed_instances' do
+    before :each do
+      @instructable = create(:instructable, repeat_count: 3)
+    end
+
+    it "does nothing if instance count == needed" do
+      @instructable.repeat_count.times do
+        @instructable.instances.create!
+      end
+      @instructable.cleanup_unneeded_instances
+      @instructable.reload
+      @instructable.instances.count.should == @instructable.repeat_count
+    end
+
+    it "does nothing if instance count < needed" do
+      @instructable.instances.create!
+      @instructable.cleanup_unneeded_instances
+      @instructable.reload
+      @instructable.instances.count.should == 1
+    end
+
+    it "removes extra instances if blank ones are present" do
+      5.times do
+        @instructable.instances.create!
+      end
+      @instructable.cleanup_unneeded_instances
+      @instructable.reload
+      @instructable.instances.count.should == @instructable.repeat_count
+    end
+
+    it "removes extra instances if blank start_times are present" do
+      5.times do
+        @instructable.instances.create!(location: 'A&S 1')
+      end
+      @instructable.cleanup_unneeded_instances
+      @instructable.reload
+      @instructable.instances.count.should == @instructable.repeat_count
+    end
+
+    it "removes the oldest entries if start_time is set" do
+      5.times do |n|
+        @instructable.instances.create!(start_time: get_date(n + 1), location: 'A&S 1')
+      end
+      @instructable.cleanup_unneeded_instances
+      @instructable.reload
+      @instructable.instances.count.should == @instructable.repeat_count
+      found = @instructable.instances.pluck(:start_time).sort
+      found.should == [get_date(1), get_date(2), get_date(3)]
+    end
+  end
 end

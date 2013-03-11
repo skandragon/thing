@@ -26,15 +26,14 @@ class InstructablesController < ApplicationController
   def edit
     @instances = @instructable.instances
     need = @instructable.repeat_count - @instructable.instances.count
-    if need > 0
-      need.times do
-        i = @instances.build
-      end
+    need.times do
+      i = @instances.build
     end
   end
 
   def update
     if @instructable.update_attributes(permitted_params)
+      @instructable.cleanup_unneeded_instances
       redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: "Class updated."
     else
       render action: :edit

@@ -197,6 +197,29 @@ class Instructable < ActiveRecord::Base
     end
   end
 
+  def cleanup_unneeded_instances
+    overage = instances.count - repeat_count
+    return if overage <= 0
+
+    # First, find one or more instances where the start_time is nil
+    unused_entries = instances.where("start_time IS NULL AND (location IS NULL OR location='')").limit(overage)
+    overage -= unused_entries.size
+    unused_entries.destroy_all
+    return if overage <= 0
+
+    # Second, drop the ones with an empty start_time alone
+    unused_entries = instances.where("start_time IS NULL").limit(overage)
+    overage -= unused_entries.size
+    unused_entries.destroy_all
+    return if overage <= 0
+
+    # lastly, drop the extras, oldest first
+    unused_entries = instances.reorder('start_time DESC').limit(overage)
+    unused_entries.each { |x| puts x.inspect }
+    overage -= unused_entries.size
+    unused_entries.destroy_all
+  end
+
   private
 
   def validate_subtopic
