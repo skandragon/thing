@@ -34,11 +34,14 @@ while instances.size > 0
   for other in instances
     conflicts = ConflictCheck::Instance.overlap?(instance, other)
     if conflicts.size > 0
-      puts "Conflict: #{conflicts.join(', ')}"
-      puts "   Class: #{instance.instructable.name}"
-      puts "Instance: #{instance.formatted_location_and_time}"
-      puts "   Class: #{other.instructable.name}"
-      puts "Instance: #{other.formatted_location_and_time}"
+      puts "  Conflict: #{conflicts.join(', ')}"
+      puts "     Class: #{instance.instructable.name}"
+      puts "Instructor: #{instance.instructable.user.instructor_profile.titled_sca_name}"
+      puts "  Instance: #{instance.formatted_location_and_time}"
+      puts " -- with --"
+      puts "     Class: #{other.instructable.name}"
+      puts "Instructor: #{other.instructable.user.instructor_profile.titled_sca_name}"
+      puts "  Instance: #{other.formatted_location_and_time}"
       puts
       @conflicts += 1
     end

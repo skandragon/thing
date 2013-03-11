@@ -87,7 +87,7 @@ class InstructorProfile < ActiveRecord::Base
   end
 
   def titled_sca_name
-    [sca_title, sca_name].compact.join(" ")
+    [sca_title.present? ? sca_title : nil, sca_name].compact.join(" ")
   end
 
   private
