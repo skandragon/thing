@@ -273,7 +273,7 @@ describe InstructablesController do
       page.should have_content "#{@camp_instructable.repeat_count} sessions requested."
       find("#instructable_instances_attributes_0_start_time").value.should == get_date(0).to_s(:pennsic)
       find("#instructable_instances_attributes_1_start_time").value.should == get_date(1).to_s(:pennsic)
-      find("#instructable_instances_attributes_2_start_time").value.should == get_date(1).to_s(:pennsic)
+      find("#instructable_instances_attributes_2_start_time").value.should == get_date(2).to_s(:pennsic)
     end
 
     it "warns, and marks start time and location as disabled if overridden" do
