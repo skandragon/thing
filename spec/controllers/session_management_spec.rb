@@ -84,20 +84,44 @@ describe Users::RegistrationsController do
   end
 
   describe 'change password' do
+    before :each do
+      log_in password: 'abc123'
+      visit edit_user_registration_path
+    end
+
     it "changes when current password matches" do
-      pending
+      fill_in 'Current password', with: 'abc123'
+      first('#user_password').set 'flarg123'
+      fill_in 'Password confirmation', with: 'flarg123'
+      within '#submit' do
+        click_button 'Update Profile'
+      end
+      page.should have_content "You updated your account successfully."
     end
 
     it "will not change when the current password is not provided" do
-      pending
+      within '#submit' do
+        click_button 'Update Profile'
+      end
+      page.should have_content "can't be blank"
     end
 
     it "will not change when the current password is incorrect" do
-      pending
+      fill_in 'Current password', with: 'flarg'
+      within '#submit' do
+        click_button 'Update Profile'
+      end
+      page.should have_content "is invalid"
     end
 
     it "will not change when the confirmation is wrong" do
-      pending
+      fill_in 'Current password', with: 'abc123'
+      first('#user_password').set 'flarg123'
+      fill_in 'Password confirmation', with: 'flarg321'
+      within '#submit' do
+        click_button 'Update Profile'
+      end
+      page.should have_content "doesn't match confirmation"
     end
   end
 
