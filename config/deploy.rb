@@ -40,6 +40,11 @@ namespace :deploy do
   end
   after "deploy:finalize_update", "deploy:copy_secrets"
 
+  task :backup_symlinks, roles: :app, except: { no_release: true } do
+    run "ln -s #{shared_path}/system/backup #{release_path}/tmp/backup"
+  end
+  after "deploy:finalize_update", "deploy:backup_symlinks"
+
   namespace :resque do
     desc "start or restart resque workers"
     task :start_or_restart, roles: :app, except: {no_release: true} do
