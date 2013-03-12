@@ -58,7 +58,7 @@ describe ConflictCheck do
     end
   end
 
-  describe "location_overlap?" do
+  describe "instance_location_overlap?" do
     describe "Not in a camp" do
       before :each do
         @ia = create(:instructable)
@@ -127,7 +127,7 @@ describe ConflictCheck do
     end
   end
 
-  describe "instructor_overlap?" do
+  describe "instance_instructor_overlap?" do
     it "conflicts if user_id equal" do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!
@@ -145,7 +145,7 @@ describe ConflictCheck do
     end
   end
 
-  describe "overlap?" do
+  describe "instance_overlap?" do
     it "returns [] if time does not overlap at all" do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1))
@@ -182,6 +182,48 @@ describe ConflictCheck do
       ret = ConflictCheck.instance_overlap?(@a, @b)
       ret.should include(:location)
       ret.should include(:instructor)
+    end
+  end
+
+  describe "conflicts" do
+    it "returns a string if no instances exist" do
+      conflicts = ConflictCheck.conflicts
+      conflicts.should be_a(Array)
+      conflicts.should == []
+    end
+
+    it "returns a string if only one instance exists" do
+      @ia = create(:instructable, user_id: 1)
+      @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
+
+      conflicts = ConflictCheck.conflicts
+      conflicts.should be_a(Array)
+      conflicts.should == []
+    end
+
+    it "returns [] if time does not overlap at all" do
+      @ia = create(:instructable, user_id: 1)
+      @a = @ia.instances.create!(start_time: get_date(1))
+      @ib = create(:instructable, user_id: 2)
+      @b = @ib.instances.create!(start_time: get_date(2))
+
+      conflicts = ConflictCheck.conflicts
+      conflicts.should be_a(Array)
+      conflicts.should == []
+    end
+
+    it "returns location and instances if it conflicts" do
+      @ia = create(:instructable, user_id: 1)
+      @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
+      @ib = create(:instructable, user_id: 2)
+      @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
+
+      conflicts = ConflictCheck.conflicts
+      conflicts.should be_a(Array)
+      conflicts.size.should == 1
+      conflicts[0][0].should == [:location]
+      conflicts[0][1].should include(@b)
+      conflicts[0][1].should include(@b)
     end
   end
 end

@@ -1,7 +1,7 @@
 - title "Scheduling Conflicts"
 
-- if @conflicts.is_a?String
-  %h2= @conflicts
+- if @conflicts.size == 0
+  %h2 No conflicts found.
 - else
   %table.table.table-zebra4
     %thead

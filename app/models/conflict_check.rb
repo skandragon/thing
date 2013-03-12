@@ -1,11 +1,7 @@
 class ConflictCheck
   def self.conflicts
     instances = Instance.where("start_time IS NOT NULL").order(:start_time).includes(:instructable)
-    if instances.size == 0
-      return 'No instances found'
-    elsif instances.size == 1
-      return 'Only one instance found'
-    end
+    return [] if instances.size < 2
 
     @conflicts = []
 
@@ -22,7 +18,7 @@ class ConflictCheck
 
     @conflicts
   end
-  
+
   # If the provided class's start time or end time falls between the
   # current instance's time duration, return an indication.
   def self.instance_time_overlap?(a, b)
@@ -58,5 +54,5 @@ class ConflictCheck
     ret << :instructor if instance_instructor_overlap?(a, b)
     ret
   end
-  
+
 end
