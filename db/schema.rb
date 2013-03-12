@@ -51,20 +51,20 @@ ActiveRecord::Schema.define(:version => 20130305092032) do
     t.string   "topic"
     t.string   "subtopic"
     t.text     "description_book"
+    t.string   "additional_instructors",                                         :array => true
     t.string   "camp_name"
     t.string   "camp_address"
     t.string   "camp_reason"
     t.boolean  "adult_only",                :default => false
     t.string   "adult_reason"
     t.text     "fee_itemization"
+    t.date     "requested_days",                                                 :array => true
     t.integer  "repeat_count",              :default => 0
     t.text     "scheduling_additional"
+    t.string   "special_needs",                                                  :array => true
     t.text     "special_needs_description"
     t.boolean  "heat_source",               :default => false
     t.text     "heat_source_description"
-    t.string   "additional_instructors",                                         :array => true
-    t.date     "requested_days",                                                 :array => true
-    t.string   "special_needs",                                                  :array => true
     t.string   "requested_times",                                                :array => true
     t.string   "track"
     t.boolean  "scheduled",                 :default => false
