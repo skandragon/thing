@@ -1,18 +1,36 @@
 require 'zip/zip'
 
 class Backup
-  def self.make_backup
-    tables = [
+  def zip_filename
+    @zip_filename ||= "#{base}.zip"
+  end
+
+  def now_filename
+    @now_filename ||= Time.now.strftime("thing-%Y%m%d-%H%M%S")
+  end
+
+  def backup_path
+    @backup_path ||= Rails.root.join("tmp", "backup")
+  end
+
+  def make_dirs
+    Dir.mkdir(backup_path) unless Dir.exists?(backup_path)
+    Dir.mkdir(base)
+  end
+
+  def tables
+    [
       User, InstructorProfile, InstructorProfileContact,
       Instructable, Instance
     ]
+  end
 
-    now = Time.now.strftime("thing-%Y%m%d-%H%M%S")
-    base = Rails.root.join("tmp", "backup", now)
+  def base
+    Rails.root.join(backup_path, now_filename)
+  end
 
-    backup_path = Rails.root.join("tmp", "backup")
-    Dir.mkdir(backup_path) unless Dir.exists?(backup_path)
-    Dir.mkdir(base)
+  def backup
+    make_dirs
 
     @filenames = []
     ActiveRecord::Base.transaction do
@@ -25,9 +43,9 @@ class Backup
       end
     end
 
-    Zip::ZipFile.open("#{base}.zip", Zip::ZipFile::CREATE) do |zip|
+    Zip::ZipFile.open(zip_filename, Zip::ZipFile::CREATE) do |zip|
       for filename in @filenames
-        zip.add("#{now}/#{filename}", "#{base}/#{filename}")
+        zip.add("#{now_filename}/#{filename}", "#{base}/#{filename}")
       end
     end
 
@@ -37,11 +55,10 @@ class Backup
 
     Dir.unlink(base)
 
-    "#{base}.zip"
+    zip_filename
   end
 
-  def self.list_backups
-    base = Rails.root.join("tmp", "backup")
-    Dir.entries(base).select { |x| File.file?("#{base}/#{x}") }.sort.reverse
+  def list_backup_files
+    Dir.entries(backup_path).select { |x| File.file?("#{backup_path}/#{x}") }.sort.reverse
   end
 end
