@@ -16,27 +16,10 @@ end
 # for real-time in-UI use.
 #
 
-instances = Instance.where("start_time IS NOT NULL").order(:start_time)
-
-if instances.size == 0
-  puts "No instances of any classes."
+@conflicts = ConflictCheck.conflicts
+if @conflicts.is_a?String
+  puts @conflicts
   exit
-elsif instances.size == 1
-  puts "Only one instance, so no conflicts."
-  exit
-end
-
-@conflicts = []
-
-while instances.size > 0
-  instance = instances.pop
-  next if instances.size == 0
-  for other in instances
-    conflicts = ConflictCheck::Instance.overlap?(instance, other)
-    if conflicts.size > 0
-      @conflicts << [conflicts, [instance, other]]
-    end
-  end
 end
 
 def show_instance(instance)
