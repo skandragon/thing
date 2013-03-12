@@ -1,0 +1,17 @@
+- title "Backups"
+
+- if @backups.empty?
+  %h3 No backups found.
+- else
+  %p.alert.alert-info
+    Click on a filename to download it.  You need only download the most recent.
+  %table.table.striped
+    %thead
+      %tr
+        %th Backup Filename
+    %tbody
+      - for backup in @backups
+        %tr
+          %td= link_to backup, admin_backup_path(backup)
+
+= link_to 'Make a new backup', new_admin_backup_path, class: 'btn'

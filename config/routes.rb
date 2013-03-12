@@ -4,6 +4,7 @@ Thing::Application.routes.draw do
     resources :tracks
     resources :instructor_email_list
     resources :track_lead_email_list
+    resources :backups
   end
 
   namespace :coordinator do
