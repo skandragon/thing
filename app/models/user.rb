@@ -26,6 +26,46 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
+  # SCA titles, lowercase.
+  # These are currently focused on the British words,
+  # although UTF-8 strings for other languages would work.
+  TITLES = %w(
+    prince princess
+    duke duchess
+    count countess viscount viscountess
+    baron baroness
+    master mistress
+    lord lady
+    sir
+    king queen
+    thl).sort
+
+  TITLES_FOR_SELECT = proc {
+    ret = {}
+    TITLES.each do |title|
+      display = (title == 'thl') ? 'THL' : title.titleize
+      ret[display] = title
+    end
+    ret
+  }
+
+  # SCA kingdoms, lowercase.
+  KINGDOMS = [
+    "æthelmearc", "ansteorra", "an tir", "artemisia", "atenveldt", "atlantia",
+    "caid", "calontir",
+    "drachenwald", "ealdormere", "east",
+    "gleann abhann",
+    "lochac",
+    "meridies", "middle",
+    "northshield",
+    "outlands",
+    "trimaris",
+    "west",
+  ]
+
+  # SCA kingdoms, #titleized.
+  KINGDOMS_TITLEIZED = KINGDOMS.map { |x| x.titleize }
+
   before_validation :generate_access_token
   before_validation :compress_tracks
   before_validation :compress_available_days
