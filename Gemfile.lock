@@ -294,6 +294,7 @@ DEPENDENCIES
   redis
   resque
   rspec-rails (>= 2.12)
+  rubyzip
   sass-rails (~> 3.2.3)
   simple_form
   simplecov

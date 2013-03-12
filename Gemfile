@@ -74,3 +74,4 @@ gem "lorem"
 gem "redis"
 gem "resque", require: "resque/server"
 gem 'multa_arcana'
+gem 'rubyzip'
