@@ -22,7 +22,10 @@ class MoveDetailsFromInstructorProfileToUser < ActiveRecord::Migration
     InstructorProfile.find_each do |profile|
       user = profile.user
       columns = InstructorProfile.column_names - ['id', 'user_id', 'created_at', 'updated_at']
-      columns.each { |attr| user.attr = profile.attr unless profile.attr.blank? }
+      columns.each { |attr|
+        new_value = profile.send(attr)
+        user.send("#{attr}=", new_value) unless new_value.blank?
+      }
       user.instructor = true
       user.save!
     end
@@ -31,11 +34,17 @@ class MoveDetailsFromInstructorProfileToUser < ActiveRecord::Migration
     add_column :instructor_profile_contacts, :user_id, :integer
 
     InstructorProfileContact.find_each do |contact|
-      contact.user_id = InstructorProfile.find(contact.instructor_profile_id).user_id
+      profile = contact.instructor_profile
+      if profile.present?
+        contact.user_id = profile.user_id
+        contact.save!
+      else
+        contact.destroy
+      end
     end
 
     remove_column :instructor_profile_contacts, :instructor_profile_id
 
-    drop_table instructor_profiles
+    drop_table :instructor_profiles
   end
 end

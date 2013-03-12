@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305092032) do
+ActiveRecord::Schema.define(:version => 20130309232231) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -51,20 +51,20 @@ ActiveRecord::Schema.define(:version => 20130305092032) do
     t.string   "topic"
     t.string   "subtopic"
     t.text     "description_book"
+    t.string   "additional_instructors",                                         :array => true
     t.string   "camp_name"
     t.string   "camp_address"
     t.string   "camp_reason"
     t.boolean  "adult_only",                :default => false
     t.string   "adult_reason"
     t.text     "fee_itemization"
+    t.date     "requested_days",                                                 :array => true
     t.integer  "repeat_count",              :default => 0
     t.text     "scheduling_additional"
+    t.string   "special_needs",                                                  :array => true
     t.text     "special_needs_description"
     t.boolean  "heat_source",               :default => false
     t.text     "heat_source_description"
-    t.string   "additional_instructors",                                         :array => true
-    t.date     "requested_days",                                                 :array => true
-    t.string   "special_needs",                                                  :array => true
     t.string   "requested_times",                                                :array => true
     t.string   "track"
     t.boolean  "scheduled",                 :default => false
@@ -72,27 +72,11 @@ ActiveRecord::Schema.define(:version => 20130305092032) do
   end
 
   create_table "instructor_profile_contacts", :force => true do |t|
-    t.integer  "instructor_profile_id"
     t.string   "protocol"
     t.string   "address"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
-  end
-
-  create_table "instructor_profiles", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "user_id"
-    t.string   "sca_name"
-    t.string   "sca_title"
-    t.string   "phone_number"
-    t.string   "mundane_name"
-    t.integer  "class_limit"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "kingdom"
-    t.string   "phone_number_onsite"
-    t.text     "contact_via"
-    t.boolean  "no_contact",          :default => false
-    t.date     "available_days",                                         :array => true
   end
 
   create_table "users", :force => true do |t|
@@ -108,11 +92,21 @@ ActiveRecord::Schema.define(:version => 20130305092032) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
-    t.string   "name"
+    t.string   "mundane_name"
     t.string   "access_token"
     t.boolean  "admin",                  :default => false
     t.boolean  "pu_staff"
     t.string   "tracks",                 :default => [],                    :array => true
+    t.string   "sca_name"
+    t.string   "sca_title"
+    t.string   "phone_number"
+    t.integer  "class_limit"
+    t.string   "kingdom"
+    t.string   "phone_number_onsite"
+    t.text     "contact_via"
+    t.boolean  "no_contact",             :default => false
+    t.date     "available_days",                                            :array => true
+    t.boolean  "instructor",             :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
