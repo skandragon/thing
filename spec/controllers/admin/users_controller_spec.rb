@@ -8,7 +8,7 @@ describe Admin::UsersController do
 
   describe "listing" do
     it "renders user's name, email, and track" do
-      log_in admin: true, name: 'Fred', tracks: [Instructable::TRACKS.keys.first, Instructable::TRACKS.keys.last]
+      log_in admin: true, mundane_name: 'Fred', tracks: [Instructable::TRACKS.keys.first, Instructable::TRACKS.keys.last]
       visit admin_users_path
       find('.admin').should have_content('Yes')
       find('.display_name').should have_content('Fred')
@@ -19,7 +19,7 @@ describe Admin::UsersController do
     end
 
     it "renders '-' if the user has no track" do
-      log_in admin: true, name: 'Fred'
+      log_in admin: true, mundane_name: 'Fred'
       visit admin_users_path
       find('.tracks').should have_content '-'
     end

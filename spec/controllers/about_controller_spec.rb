@@ -22,8 +22,7 @@ describe AboutController do
       end
 
       it "should show an update profile link for instructors" do
-        log_in
-        create(:instructor_profile, user_id: current_user.id)
+        log_in instructor: true
         visit '/'
         find('.hero-unit').should have_link 'Update instructor profile'
       end

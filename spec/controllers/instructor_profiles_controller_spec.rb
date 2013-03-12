@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe InstructorProfilesController do
   it 'updates' do
+    pending "XXXMLG"
     log_in
     profile = create(:instructor_profile, user_id: current_user.id)
     visit edit_user_instructor_profile_path(current_user)
@@ -14,6 +15,7 @@ describe InstructorProfilesController do
   end
 
   it 'does not update with errors' do
+    pending "XXXMLG"
     log_in
     profile = create(:instructor_profile, user_id: current_user.id)
     visit edit_user_instructor_profile_path(current_user)
@@ -27,6 +29,7 @@ describe InstructorProfilesController do
   end
 
   it 'creates' do
+    pending "XXXMLG"
     log_in
     visit new_user_instructor_profile_path(current_user)
     fill_in 'SCA name', with: 'Fred the Butcher'
@@ -42,6 +45,7 @@ describe InstructorProfilesController do
   end
 
   it 'does not create on error' do
+    pending "XXXMLG"
     log_in
     visit new_user_instructor_profile_path(current_user)
     fill_in 'SCA name', with: ''
@@ -55,6 +59,7 @@ describe InstructorProfilesController do
 
   describe "redirects on strangeness" do
     it "rediects from new to edit if profile exists" do
+      pending "XXXMLG"
       log_in
       create(:instructor_profile, user_id: current_user.id)
       visit new_user_instructor_profile_path(current_user)
@@ -62,6 +67,7 @@ describe InstructorProfilesController do
     end
 
     it "rediects from edit to new if no profile exists" do
+      pending "XXXMLG"
       log_in
       visit edit_user_instructor_profile_path(current_user)
       page.current_path.should == new_user_instructor_profile_path(current_user)
@@ -70,11 +76,14 @@ describe InstructorProfilesController do
 
   describe "hides contact methods", js: true do
     describe "on page load" do
+      pending "XXXMLG"
+
       before :each do
         log_in
       end
 
       it "shows if no_contact is false" do
+        pending "XXXMLG"
         create(:instructor_profile, user_id: current_user.id, no_contact: false)
         visit edit_user_instructor_profile_path(current_user)
 
@@ -82,6 +91,7 @@ describe InstructorProfilesController do
       end
 
       it "hides if no_contact is true" do
+        pending "XXXMLG"
         create(:instructor_profile, user_id: current_user.id, no_contact: true)
         visit edit_user_instructor_profile_path(current_user)
 
@@ -90,12 +100,14 @@ describe InstructorProfilesController do
     end
 
     describe "on click" do
+      pending "XXXMLG"
 
       before :each do
         log_in
       end
 
       it "shows if initially hiden" do
+        pending "XXXMLG"
         create(:instructor_profile, user_id: current_user.id, no_contact: true)
         visit edit_user_instructor_profile_path(current_user)
         page.should_not have_content 'Alternate Email'
@@ -104,6 +116,7 @@ describe InstructorProfilesController do
       end
 
       it "hides if initiailly shown" do
+        pending "XXXMLG"
         create(:instructor_profile, user_id: current_user.id, no_contact: false)
         visit edit_user_instructor_profile_path(current_user)
         page.should have_content 'Alternate Email'
@@ -116,6 +129,7 @@ describe InstructorProfilesController do
   end
 
   it 'requires all profile fields' do
+    pending "XXXMLG"
     log_in
     visit new_user_instructor_profile_path(current_user)
     click_button 'Create profile'
@@ -123,11 +137,13 @@ describe InstructorProfilesController do
   end
 
   it 'displays the option to become an instructor if not an instructor' do
+    pending "XXXMLG"
     log_in
     page.should have_content 'Request to be an instructor'
   end
 
   it 'displays the option to update profile if an instructor' do
+    pending "XXXMLG"
     log_in
     create(:instructor_profile, user_id: current_user.id)
     visit '/'

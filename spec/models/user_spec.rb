@@ -32,17 +32,17 @@ describe User do
 
   describe '#display_name' do
     it "returns the email address if email is set but name is blank" do
-      u = FactoryGirl.build(:user, name: nil, email: "foo")
+      u = FactoryGirl.build(:user, mundane_name: nil, email: "foo")
       u.display_name.should == "foo"
     end
 
     it "returns the name and email if both are set" do
-      u = FactoryGirl.build(:user, name: "foo", email: "bar")
+      u = FactoryGirl.build(:user, mundane_name: "foo", email: "bar")
       u.display_name.should == "foo (bar)"
     end
 
     it "returns the name if set, but email is blank" do
-      u = FactoryGirl.build(:user, name: "foo", email: nil)
+      u = FactoryGirl.build(:user, mundane_name: "foo", email: nil)
       u.display_name.should == "foo"
     end
   end

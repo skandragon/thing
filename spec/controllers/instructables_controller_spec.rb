@@ -3,7 +3,7 @@ require 'spec_helper'
 describe InstructablesController do
   describe 'requires login' do
     it "redirects" do
-      user = create(:user)
+      user = create(:instructor)
       instructable = create(:instructable, user_id: user.id)
       visit user_instructables_path(user)
       page.should have_content 'You must log in.'
@@ -11,36 +11,28 @@ describe InstructablesController do
   end
 
   describe 'add button' do
-    before :each do
-      log_in
-    end
-
     it 'renders' do
-      create(:instructor_profile, user_id: current_user.id, class_limit: 5)
+      log_in instructor: true
       visit user_instructables_path(current_user)
       find('.add-button').should have_content('Request a class')
     end
 
     it 'renders with a warning if at class limit' do
-      create(:instructor_profile, user_id: current_user.id, class_limit: 0)
+      log_in instructor: true, class_limit: 0
       visit user_instructables_path(current_user)
       page.should have_content('You are at or over your class session limit.')
     end
   end
 
   describe 'class limits' do
-    before :each do
-      log_in
-    end
-
     it 'is at limit' do
-      create(:instructor_profile, user_id: current_user.id, class_limit: 0)
+      log_in instructor: true, class_limit: 0
       visit user_instructables_path(current_user)
       page.should have_content('You have requested 0 of your allowed 0 classes.')
     end
 
     it 'is not at limit' do
-      create(:instructor_profile, user_id: current_user.id, class_limit: 5)
+      log_in instructor: true, class_limit: 5
       visit user_instructables_path(current_user)
       page.should have_content('You have requested 0 of your allowed 5 classes.')
     end
@@ -48,8 +40,7 @@ describe InstructablesController do
 
   describe 'manages' do
     before :each do
-      log_in
-      create(:instructor_profile, user_id: current_user.id, class_limit: 2)
+      log_in instructor: true, class_limit: 2
     end
 
     describe 'creates' do
@@ -217,8 +208,7 @@ describe InstructablesController do
   describe "as coordinator" do
     before :each do
       log_in tracks: ["Middle Eastern"]
-      @other_user = create(:user)
-      create(:instructor_profile, user_id: @other_user.id)
+      @other_user = create(:instructor)
       @other_instructable = create(:instructable, user_id: @other_user.id,
                                    track: "Middle Eastern", repeat_count: 3)
       @camp_instructable = create(:instructable, user_id: @other_user.id,
@@ -288,8 +278,7 @@ describe InstructablesController do
   describe "as admin" do
     before :each do
       log_in admin: true
-      @other_user = create(:user)
-      create(:instructor_profile, user_id: @other_user.id)
+      @other_user = create(:instructor)
       @other_instructable = create(:instructable, user_id: @other_user.id, track: "Middle Eastern")
     end
 

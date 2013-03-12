@@ -9,8 +9,7 @@ describe Admin::InstructorEmailListController do
   describe "listing" do
     it "renders only instructor email addresses" do
       some_user = create(:user)
-      some_instructor = create(:user)
-      profile =create(:instructor_profile, user_id: some_instructor.id)
+      some_instructor = create(:instructor)
       log_in admin: true
       visit admin_instructor_email_list_index_path
       find('h2').should have_content 'email address count: 1'

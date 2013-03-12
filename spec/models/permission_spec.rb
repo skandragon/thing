@@ -38,12 +38,10 @@ describe Permission do
   end
 
   describe "as user" do
-    let(:user) { create(:user) }
-    let(:profile) { create(:instructor_profile, user_id: user.id) }
+    let(:user) { create(:instructor) }
     let(:instructable) { create(:instructable, user_id: user.id) }
 
-    let(:other_user) { create(:user) }
-    let(:other_profile) { create(:instructor_profile, user_id: other_user.id) }
+    let(:other_user) { create(:instructor) }
     let(:other_instructable) { create(:instructable, user_id: other_user.id) }
 
     subject { Permission.new(user) }
@@ -66,13 +64,6 @@ describe Permission do
     }
 
     it {
-      should allow(:instructor_profiles, :new)
-      should allow(:instructor_profiles, :edit)
-      should_not allow(:instructor_profiles, :new, other_profile)
-      should_not allow(:instructor_profiles, :edit, other_profile)
-    }
-
-    it {
       should allow(:instructables, :new, instructable)
       should allow(:instructables, :edit, instructable)
       should_not allow(:instructables, :new, other_instructable)
@@ -87,11 +78,10 @@ describe Permission do
     let(:track) { Instructable::TRACKS.keys.first }
     let(:other_track) { Instructable::TRACKS.keys.last }
 
-    let(:user) { create(:user, tracks: [track]) }
-    let(:profile) { build(:instructor_profile, user_id: user.id) }
+    let(:user) { create(:instructor, tracks: [track]) }
     let(:instructable) { build(:instructable, user_id: user.id) }
 
-    let(:other_user) { create(:user) }
+    let(:other_user) { create(:instructor) }
     let(:other_track_instructable) { build(:instructable, user_id: other_user.id, track: track) }
     let(:other_nontrack_instructable) { build(:instructable, user_id: other_user.id, track: other_track) }
 
