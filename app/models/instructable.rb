@@ -215,7 +215,6 @@ class Instructable < ActiveRecord::Base
 
     # lastly, drop the extras, oldest first
     unused_entries = instances.reorder('start_time DESC').limit(overage)
-    unused_entries.each { |x| puts x.inspect }
     overage -= unused_entries.size
     unused_entries.destroy_all
   end
