@@ -1,0 +1,27 @@
+- title "Scheduling Conflicts"
+
+- if @conflicts.is_a?String
+  %h2= @conflicts
+- else
+  %table.table.table-zebra4
+    %thead
+      %tr
+        %th Type
+        %th Class Name
+        %th Instance Time and Location
+        %th Instructor
+        %th Track
+    %tbody
+      - for conflict in @conflicts
+        - type, instances = conflict
+        %tr
+          %td{rowspan: 2}= type.join(", ")
+          %td= instances[0].instructable.name
+          %td= instances[0].formatted_location_and_time
+          %td= instances[0].instructable.user.instructor_profile.titled_sca_name
+          %td= instances[0].instructable.track
+        %tr
+          %td= instances[1].instructable.name
+          %td= instances[1].formatted_location_and_time
+          %td= instances[1].instructable.user.instructor_profile.titled_sca_name
+          %td= instances[1].instructable.track

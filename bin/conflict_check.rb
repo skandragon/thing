@@ -37,5 +37,5 @@ for conflict in @conflicts
   show_instance(instances[1])
   puts
 end
-  
+
 puts "Summary: #{help.pluralize @conflicts.size, 'conflict'}."

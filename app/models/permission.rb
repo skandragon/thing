@@ -38,6 +38,7 @@ class Permission
         user.tracks.include?(record.track) || record.user_id == user.id
       end
       allow 'coordinator/instructables', :index
+      allow 'coordinator/conflicts', :index
     end
   end
 

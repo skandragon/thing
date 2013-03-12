@@ -8,6 +8,7 @@ Thing::Application.routes.draw do
 
   namespace :coordinator do
     resources :instructables
+    resources :conflicts
   end
 
   match 'sitemap(.:format)' => 'sitemap#index'
