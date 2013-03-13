@@ -1,6 +1,8 @@
 %tr
   %td.display_name{id: "edit_user_#{user.id}"}
     = link_to user.display_name, edit_admin_user_path(user)
+    %br
+    = user.titled_sca_name
   %td.tracks= user.coordinator? ? user.tracks.join(", ") : '-'
   %td.instructor
     - if user.instructor?
