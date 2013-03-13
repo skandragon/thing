@@ -77,6 +77,35 @@ describe InstructablesController do
         ActionMailer::Base.deliveries.count.should == 1
       end
 
+      it "displays a flash for failed email" do
+        ActionMailer::Base.deliveries.clear
+        InstructablesMailer.any_instance.should_receive(:on_create).and_throw(Net::SMTPFatalError)
+        visit new_user_instructable_path(current_user)
+        fill_in 'Class title', with: 'Foo Class Name'
+        fill_in 'Description (book)', with: "Foo Description"
+        fill_in 'Duration', with: '1'
+        select 'History', from: 'Topic'
+        click_on 'Create class'
+        page.should have_content('Class created.')
+        page.should have_content 'Email could not be delivered to your account'
+        ActionMailer::Base.deliveries.count.should == 0
+      end
+
+      it "displays a flash for failed admin email" do
+        ActionMailer::Base.deliveries.clear
+        InstructablesMailer.any_instance.should_receive(:on_create).and_throw(Net::SMTPFatalError)
+        admin_user = create(:user, admin: true)
+        visit new_user_instructable_path(current_user)
+        fill_in 'Class title', with: 'Foo Class Name'
+        fill_in 'Description (book)', with: "Foo Description"
+        fill_in 'Duration', with: '1'
+        select 'History', from: 'Topic'
+        click_on 'Create class'
+        page.should have_content('Class created.')
+        page.should have_content 'Email could not be sent to one or more track coordinators.'
+        ActionMailer::Base.deliveries.count.should == 0
+      end
+
       it "sends email to the admin" do
         ActionMailer::Base.deliveries.clear
         admin_user = create(:user, admin: true)
