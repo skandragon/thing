@@ -85,8 +85,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  validates_presence_of :access_token
-  validates_uniqueness_of :access_token
+  validates_presence_of :access_token, on: :create
+  validates_uniqueness_of :access_token, on: :create
 
   accepts_nested_attributes_for :instructor_profile
 
@@ -96,19 +96,6 @@ class User < ActiveRecord::Base
   validates_length_of :sca_name, :within => 1..30, :if => :instructor?
   validates_inclusion_of :sca_title, in: TITLES, allow_blank: true
   validates_inclusion_of :kingdom, in: KINGDOMS, allow_blank: true
-
-  def generate_access_token
-    return unless access_token.blank?
-
-    possible_token = nil
-    conflict = true
-    while possible_token.blank?
-      possible_token = SecureRandom.base64(24)
-      u = User.find_by_access_token(possible_token)
-      possible_token = nil unless u.nil?
-    end
-    write_attribute(:access_token, possible_token)
-  end
 
   def coordinator?
     tracks.count > 0
@@ -155,6 +142,19 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def generate_access_token
+    return unless access_token.blank?
+
+    possible_token = nil
+    conflict = true
+    while possible_token.blank?
+      possible_token = SecureRandom.base64(24)
+      u = User.find_by_access_token(possible_token)
+      possible_token = nil unless u.nil?
+    end
+    write_attribute(:access_token, possible_token)
+  end
 
   def default_values
     self.class_limit ||= 4
