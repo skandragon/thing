@@ -59,16 +59,12 @@ class User < ActiveRecord::Base
   # SCA kingdoms, #titleized.
   KINGDOMS_TITLEIZED = KINGDOMS.map(&:titleize)
 
-  attr_accessor :instructor_requested
-
   before_save :default_values
   before_validation :generate_access_token, on: :create
   before_validation :compress_tracks
   before_validation :compress_available_days
 
-  has_one :instructor_profile, dependent: :destroy
   has_many :instructables, dependent: :destroy
-
   has_many :instructor_profile_contacts
 
   accepts_nested_attributes_for :instructor_profile_contacts
@@ -80,8 +76,6 @@ class User < ActiveRecord::Base
 
   validates_presence_of :access_token, on: :create
   validates_uniqueness_of :access_token, on: :create
-
-  accepts_nested_attributes_for :instructor_profile
 
   validates_presence_of :mundane_name, :if => :instructor?
   validates_presence_of :phone_number, :if => :instructor?
