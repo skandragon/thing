@@ -11,7 +11,7 @@ before_install:
 before_script:
   - cp config/database-travis.yml config/database.yml
   - cp config/secrets-travis.yml config/secrets.yml
-  - mkdir tmp/backup
+  - mkdir -p tmp/backup
   - rake db:setup
 
 after_script:
