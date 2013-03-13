@@ -93,7 +93,7 @@ class Instructable < ActiveRecord::Base
       'Performing Arts Tent', 'New PA Tent', 'Amphetheater'
     ],
     'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
-    'Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3', 'A&S 2' ],
+    'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 5'],
     'Thrown Weapons' => ['Thrown Weapons'],
