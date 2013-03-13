@@ -1,6 +1,9 @@
 - title 'Admin : Users'
 
-%h2 User count: #{@users.count}
+= form_for :filter, :method => 'get', :html => { :class => 'form-inline' } do
+  = text_field_tag :search, @search, class: "input-medium search-query", placeholder: "Search"
+  = submit_tag "Filter", :class => "btn"
+  = submit_tag "Clear", :class => "btn"
 
 %table.table
   %thead

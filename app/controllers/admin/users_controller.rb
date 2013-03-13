@@ -1,6 +1,19 @@
 class Admin::UsersController < ApplicationController
   def index
-    @users = User.order(:mundane_name, :email).paginate(page: params[:page], per_page: 10)
+    @search = params[:search]
+
+    if params[:commit] == "Clear"
+      @search = nil
+    end
+
+    @users = User.order(:mundane_name, :email)
+
+    if @search.present?
+      @users = @users.where('mundane_name ILIKE ? OR sca_name ILIKE ?',
+                            "%#{@search.strip}%", "%#{@search.strip}%")
+    end
+
+    @users = @users.paginate(page: params[:page], per_page: 10)
   end
 
   def edit
