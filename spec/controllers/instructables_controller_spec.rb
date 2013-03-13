@@ -18,7 +18,7 @@ describe InstructablesController do
     end
 
     it 'renders with a warning if at class limit' do
-      log_in instructor: true, class_limit: 0
+      log_in(instructor: true, class_limit: 0)
       visit user_instructables_path(current_user)
       page.should have_content('You are at or over your class session limit.')
     end
@@ -26,13 +26,13 @@ describe InstructablesController do
 
   describe 'class limits' do
     it 'is at limit' do
-      log_in instructor: true, class_limit: 0
+      log_in(instructor: true, class_limit: 0)
       visit user_instructables_path(current_user)
       page.should have_content('You have requested 0 of your allowed 0 classes.')
     end
 
     it 'is not at limit' do
-      log_in instructor: true, class_limit: 5
+      log_in(instructor: true, class_limit: 5)
       visit user_instructables_path(current_user)
       page.should have_content('You have requested 0 of your allowed 5 classes.')
     end
@@ -40,7 +40,7 @@ describe InstructablesController do
 
   describe 'manages' do
     before :each do
-      log_in instructor: true, class_limit: 2
+      log_in(instructor: true, class_limit: 2)
     end
 
     describe 'creates' do

@@ -13,17 +13,6 @@ RSpec::Matchers.define :allow_param do |*args|
 end
 
 describe Permission do
-  describe "setup" do
-    let(:permission) { Permission.new(nil) }
-
-    it "should use model columns if model name is provided to allow params" do
-      permission.allow_param?(:instructor_profile_contact, :protocol).should_not be_true
-      permission.allow_param(:instructor_profile_contact, InstructorProfileContact)
-      permission.allow_param?(:instructor_profile_contact, :protocol).should be_true
-      permission.allowed_params(:instructor_profile_contact).should == InstructorProfileContact.column_names
-    end
-  end
-
   describe "as guest" do
     subject { Permission.new(nil) }
 
@@ -69,9 +58,6 @@ describe Permission do
       should_not allow(:instructables, :new, other_instructable)
       should_not allow(:instructables, :edit, other_instructable)
     }
-
-    it { should allow_param(:user, :name) }
-    it { should_not allow_param(:user, :admin) }
   end
 
   describe "as coordinator" do

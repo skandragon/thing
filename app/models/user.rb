@@ -66,7 +66,10 @@ class User < ActiveRecord::Base
   # SCA kingdoms, #titleized.
   KINGDOMS_TITLEIZED = KINGDOMS.map { |x| x.titleize }
 
-  before_validation :generate_access_token
+  attr_accessor :instructor_requested
+
+  before_save :default_values
+  before_validation :generate_access_token, on: :create
   before_validation :compress_tracks
   before_validation :compress_available_days
 

@@ -5,8 +5,6 @@ FactoryGirl.define do
 
   factory :user do
     sequence(:sca_name) { |n| "rothgar#{n}" }
-    sca_title 'lord'
-    kingdom 'ansteorra'
     phone_number '+1 405.555.1212'
     mundane_name 'Bob Smith'
     email { generate :email }

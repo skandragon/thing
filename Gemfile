@@ -48,7 +48,7 @@ group :development, :test do
   gem "thin"
   gem "factory_girl_rails"
   gem "capybara"
-  gem "poltergeist", git: 'git://github.com/jonleighton/poltergeist.git', branch: 'master'
+  gem "poltergeist"
   gem "database_cleaner"
   gem "launchy"
 end
