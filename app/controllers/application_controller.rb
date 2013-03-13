@@ -6,9 +6,6 @@ class ApplicationController < ActionController::Base
   delegate :allow?, to: :current_permission
   helper_method :allow?
 
-  delegate :allow_param?, to: :current_permission
-  helper_method :allow_param?
-
   helper_method :admin?
   helper_method :instructor?
   helper_method :coordinator?
@@ -49,9 +46,7 @@ class ApplicationController < ActionController::Base
   def authorize
     controller = params[:controller]
     action = params[:action]
-    if current_permission.allow?(controller, action, current_resource)
-      current_permission.permit_params! params
-    else
+    unless current_permission.allow?(controller, action, current_resource)
       message = 'Not authorized.'
       if ['development', 'test'].include?Rails.env
         message += " (controller: #{controller}, action: #{action}"

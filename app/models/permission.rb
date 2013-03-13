@@ -4,7 +4,6 @@ class Permission
   def initialize(user)
     @allow_all = false
     @allowed_actions = {}
-    @allowed_params = {}
 
     allow 'devise/sessions', :all
     allow 'sessions', :all
@@ -57,40 +56,6 @@ class Permission
     Array(controllers).each do |controller|
       Array(actions).each do |action|
         @allowed_actions[[controller.to_s, action.to_s]] = block || true
-      end
-    end
-  end
-
-  def allow_param(resources, attributes)
-    if attributes.respond_to? :column_names
-      attributes = attributes.column_names
-    end
-    Array(resources).each do |resource|
-      @allowed_params[resource.to_s] ||= []
-      @allowed_params[resource.to_s] += Array(attributes).map(&:to_s)
-    end
-  end
-
-  def allow_param?(resource, attribute)
-    return true if @allow_all
-    if @allowed_params[resource.to_s]
-      return @allowed_params[resource.to_s].include?(attribute.to_s)
-    end
-    false
-  end
-
-  def allowed_params(resource)
-    return @allowed_params[resource.to_s]
-  end
-
-  def permit_params!(params)
-    if @allow_all
-      params.permit!
-    else
-      @allowed_params.each do |resource, attributes|
-        if params[resource].respond_to? :permit
-          params[resource] = params.require(resource).permit(*attributes)
-        end
       end
     end
   end

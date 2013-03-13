@@ -6,12 +6,6 @@ RSpec::Matchers.define :allow do |*args|
   end
 end
 
-RSpec::Matchers.define :allow_param do |*args|
-  match do |permission|
-    permission.allow_param?(*args).should be_true
-  end
-end
-
 describe Permission do
   describe "as guest" do
     subject { Permission.new(nil) }
@@ -86,6 +80,5 @@ describe Permission do
     subject { Permission.new(user) }
 
     it { should allow(:anything, :here) }
-    it { should allow_param(:anything, :here) }
   end
 end
