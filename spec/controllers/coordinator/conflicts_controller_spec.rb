@@ -3,8 +3,7 @@ require 'spec_helper'
 describe Coordinator::ConflictsController do
   before :each do
     log_in tracks: ['Middle Eastern']
-    @user = create(:user)
-    create(:instructor_profile, user_id: @user.id)
+    @user = create(:instructor)
   end
 
   it 'shows a message for no instances' do

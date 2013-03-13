@@ -8,7 +8,7 @@
     %li You are not registered as an instructor.
 
   - if @user.instructor?
-    %li You may teach up to #{@user.instructor_profile.class_limit} classes.
+    %li You may teach up to #{@user.class_limit} classes.
 
   - if @user.coordinator?
     %li You are a track coordinator for "#{@user.track_coordinator}."

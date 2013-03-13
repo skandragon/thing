@@ -1,7 +1,14 @@
 module AuthMacros
   def log_in(attributes = {})
-    @_current_user = create(:user, attributes)
+    if attributes[:instructor]
+      @_current_user = create(:instructor, attributes)
+    else
+      @_current_user = create(:user, attributes)
+    end
+
     visit new_user_session_path
+    page.should have_content 'Remember me'
+
     fill_in "Email", with: @_current_user.email
     fill_in "Password", with: @_current_user.password
     click_button "Sign in"

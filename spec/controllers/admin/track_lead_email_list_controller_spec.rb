@@ -8,13 +8,9 @@ describe Admin::TrackLeadEmailListController do
 
   describe 'listing' do
     it 'renders only track lead email addresses' do
-      some_track_lead = create(:user)
-      create(:instructor_profile, user_id: some_track_lead.id)
-      some_track_lead.tracks = ['Middle Eastern']
-      some_track_lead.save
+      some_track_lead = create(:instructor, tracks: ['Middle Eastern'])
       2.times do
-        create(:user)
-        create(:instructor_profile, user_id: create(:user).id)
+        create(:instructor)
       end
       log_in admin: true
       visit admin_track_lead_email_list_index_path

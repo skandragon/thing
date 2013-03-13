@@ -26,11 +26,59 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
-  before_validation :generate_access_token
+  # SCA titles, lowercase.
+  # These are currently focused on the British words,
+  # although UTF-8 strings for other languages would work.
+  TITLES = %w(
+    prince princess
+    duke duchess
+    count countess viscount viscountess
+    baron baroness
+    master mistress
+    lord lady
+    sir
+    king queen
+    thl).sort
+
+  TITLES_FOR_SELECT = proc {
+    ret = {}
+    TITLES.each do |title|
+      display = (title == 'thl') ? 'THL' : title.titleize
+      ret[display] = title
+    end
+    ret
+  }
+
+  # SCA kingdoms, lowercase.
+  KINGDOMS = [
+    "æthelmearc", "ansteorra", "an tir", "artemisia", "atenveldt", "atlantia",
+    "caid", "calontir",
+    "drachenwald", "ealdormere", "east",
+    "gleann abhann",
+    "lochac",
+    "meridies", "middle",
+    "northshield",
+    "outlands",
+    "trimaris",
+    "west",
+  ]
+
+  # SCA kingdoms, #titleized.
+  KINGDOMS_TITLEIZED = KINGDOMS.map { |x| x.titleize }
+
+  attr_accessor :instructor_requested
+
+  before_save :default_values
+  before_validation :generate_access_token, on: :create
   before_validation :compress_tracks
+  before_validation :compress_available_days
 
   has_one :instructor_profile, dependent: :destroy
   has_many :instructables, dependent: :destroy
+
+  has_many :instructor_profile_contacts
+
+  accepts_nested_attributes_for :instructor_profile_contacts
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -41,6 +89,13 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :access_token
 
   accepts_nested_attributes_for :instructor_profile
+
+  validates_presence_of :mundane_name, :if => :instructor?
+  validates_presence_of :phone_number, :if => :instructor?
+  validates_presence_of :sca_name, :if => :instructor?
+  validates_length_of :sca_name, :within => 1..30, :if => :instructor?
+  validates_inclusion_of :sca_title, in: TITLES, allow_blank: true
+  validates_inclusion_of :kingdom, in: KINGDOMS, allow_blank: true
 
   def generate_access_token
     return unless access_token.blank?
@@ -53,10 +108,6 @@ class User < ActiveRecord::Base
       possible_token = nil unless u.nil?
     end
     write_attribute(:access_token, possible_token)
-  end
-
-  def instructor?
-    instructor_profile.present?
   end
 
   def coordinator?
@@ -78,18 +129,44 @@ class User < ActiveRecord::Base
 
   def display_name
     ret = ''
-    if email.present? && name.blank?
+    if email.present? && mundane_name.blank?
       ret = email
-    elsif email.present? && name.present?
-      ret = "#{name} (#{email})"
-    elsif name.present?
-      ret = name
+    elsif email.present? && mundane_name.present?
+      ret = "#{mundane_name} (#{email})"
+    elsif mundane_name.present?
+      ret = mundane_name
     end
     ret
+  end
+
+  def titled_sca_name
+    [sca_title, sca_name].compact.join(" ")
+  end
+
+  # If any contact protocols are missing from this profile, add them with
+  # default values.  This is called on profile load, prior to presenting
+  # a form to edit the profile.
+  def add_missing_contacts
+    existing_protocols = instructor_profile_contacts.pluck(:protocol) || []
+    missing = InstructorProfileContact::PROTOCOLS - existing_protocols
+    missing.each do |protocol|
+      instructor_profile_contacts.build({ protocol: protocol })
+    end
+  end
+
+  private
+
+  def default_values
+    self.class_limit ||= 4
   end
 
   def compress_tracks
     self.tracks ||= []
     self.tracks = tracks.select { |x| x.present? }.sort
+  end
+
+  def compress_available_days
+    self.available_days ||= []
+    self.available_days = available_days.select { |x| x.present? }
   end
 end

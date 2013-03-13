@@ -12,8 +12,6 @@ class Permission
     allow 'users/registrations', :all
     allow :about, :all
 
-    allow_param :user, [:name, :email, :password, :password_confirmation, :current_password]
-
     if user
       # All users can edit their own data
       allow :users, [:edit, :update, :show] do |record|
@@ -21,7 +19,7 @@ class Permission
       end
 
       allow :instructor_profiles, [ :new, :edit, :create, :update ] do |record|
-        record.user_id == user.id
+        record.id == user.id
       end
 
       allow :instructables, [ :show, :new, :create, :edit, :update, :destroy ] do |record|

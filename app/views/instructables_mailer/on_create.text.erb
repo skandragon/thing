@@ -3,7 +3,7 @@ A new class was added to the Pennsic University scheduling system.
       Name:  <%= @instructable.name %>
    Subject:  <%= @instructable.formatted_culture_and_topic %>
 <% if @instructable.user.instructor? -%>
-Instructor: <%= @instructable.user.instructor_profile.titled_sca_name %>
+Instructor: <%= @instructable.user.titled_sca_name %>
 <% end -%>
 
 Book Description:

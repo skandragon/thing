@@ -12,6 +12,7 @@
 #
 
 class InstructorProfileContact < ActiveRecord::Base
+  belongs_to :user
   belongs_to :instructor_profile
 
   PROTOCOL_TYPES = {

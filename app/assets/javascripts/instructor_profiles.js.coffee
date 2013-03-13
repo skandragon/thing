@@ -10,4 +10,4 @@ jQuery ->
     checkbox.on 'click', ->
       window.hide_if_checked(checkbox, target)
 
-  setup_click('#instructor_profile_no_contact', '#contact-fields')
+  setup_click('#user_no_contact', '#contact-fields')

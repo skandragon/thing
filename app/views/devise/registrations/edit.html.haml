@@ -5,7 +5,7 @@
     %legend Modify Profile
     = f.input :current_password, :hint => "Needed to confirm your changes."
     = f.input :email
-    = f.input :name
+    = f.input :mundane_name, :required => true
     #submit= f.button :submit, "Update Profile", :class => "btn btn-primary btn-large"
 
   %fieldset

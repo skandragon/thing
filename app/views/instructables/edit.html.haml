@@ -10,10 +10,10 @@
       = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: "input-mini" }
       %p.alert.alert-info
         #{pluralize @instructable.repeat_count, 'session'} requested.
-        - if @instructable.user and @instructable.user.instructor_profile
+        - if @instructable.user
           %br
-          Instructor: #{@instructable.user.instructor_profile.titled_sca_name},
-          AKA #{@instructable.user.instructor_profile.mundane_name}
+          Instructor: #{@instructable.user.titled_sca_name},
+          AKA #{@instructable.user.mundane_name}
           = mailto_link_for_instructable(@instructable)
       - location_was_overridden = false
       = f.simple_fields_for :instances do |i|
@@ -65,7 +65,7 @@
             - for time in @instructable.requested_times
               %li= time
         %h5 Instructor Availability
-        - dates = @instructable.user.instructor_profile.available_days
+        - dates = @instructable.user.available_days
         - if dates.empty?
           No days provided in profile.
         - else

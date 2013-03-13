@@ -1,7 +1,7 @@
-- create_or_update = @profile.new_record? ? 'Create' : 'Update'
+- create_or_update = current_user.instructor? ? 'Update' : 'Create'
 - title "#{create_or_update} Instructor Profile"
 
-= simple_form_for @profile, url: user_instructor_profile_path(current_user), html: { :class => "form-horizontal" } do |f|
+= simple_form_for current_user, url: user_instructor_profile_path(current_user), html: { :class => "form-horizontal" } do |f|
   %fieldset
     %legend Name and Required Contact Information
     = f.input :mundane_name, label: "Legal name", placeholder: "Full name"
@@ -15,7 +15,7 @@
       teach classes.  These will be used by default for classes you
       request, although you can override them on a per-class basis.
       Actual class days are more limited than the selection below.
-    = f.input :available_days, as: :check_boxes, checked: @profile.available_days, collection: Instructable::PENNSIC_DATES, label_method: :to_s
+    = f.input :available_days, as: :check_boxes, checked: current_user.available_days, collection: Instructable::PENNSIC_DATES, label_method: :to_s
 
   %fieldset
     %legend After Pennsic Contact

@@ -3,8 +3,8 @@
 - if @target_user.instructor?
   %p.alert.alert-block.alert-info
     You have requested #{@target_user.instructables_session_count} of your
-    allowed #{@target_user.instructor_profile.class_limit} classes.
-    Only classes being taught in track-coordinated locationsspaces count
+    allowed #{@target_user.class_limit} classes.
+    Only classes being taught in track-coordinated locations count
     against your total.  Merchant booths and private camps do not.
 
 %table.table
@@ -20,7 +20,7 @@
     = render :partial => @instructables
 
 - if @target_user.instructor?
-  - if @target_user.instructor_profile.class_limit <= @target_user.instructables_session_count
+  - if @target_user.class_limit <= @target_user.instructables_session_count
     %p.alert.alert-warning
       You are at or over your class session limit.
       While additional classes may be added, you should contact
