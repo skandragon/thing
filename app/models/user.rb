@@ -40,14 +40,7 @@ class User < ActiveRecord::Base
     king queen
     thl).sort
 
-  TITLES_FOR_SELECT = proc {
-    ret = {}
-    TITLES.each do |title|
-      display = (title == 'thl') ? 'THL' : title.titleize
-      ret[display] = title
-    end
-    ret
-  }
+  TITLES_FOR_SELECT = TITLES.map(&:titleize)
 
   # SCA kingdoms, lowercase.
   KINGDOMS = [
@@ -64,7 +57,7 @@ class User < ActiveRecord::Base
   ]
 
   # SCA kingdoms, #titleized.
-  KINGDOMS_TITLEIZED = KINGDOMS.map { |x| x.titleize }
+  KINGDOMS_TITLEIZED = KINGDOMS.map(&:titleize)
 
   attr_accessor :instructor_requested
 
@@ -127,7 +120,7 @@ class User < ActiveRecord::Base
   end
 
   def titled_sca_name
-    [sca_title, sca_name].compact.join(" ")
+    [sca_title.present? ? sca_title.titleize : nil, sca_name].compact.join(" ")
   end
 
   # If any contact protocols are missing from this profile, add them with
