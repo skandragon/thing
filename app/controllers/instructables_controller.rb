@@ -88,7 +88,7 @@ class InstructablesController < ApplicationController
     admin_addresses -= [user_address]
 
     InstructablesMailer.on_create(@instructable, user_address).deliver
-    for address in admin_addresses
+    admin_addresses.each do |address|
       InstructablesMailer.on_create(@instructable, address).deliver
     end
   end

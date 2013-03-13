@@ -8,7 +8,7 @@ class ConflictCheck
     while instances.size > 0
       instance = instances.pop
       next if instances.size == 0
-      for other in instances
+      instances.each do |other|
         conflicts = instance_overlap?(instance, other)
         if conflicts.size > 0
           @conflicts << [conflicts, [instance, other]]
@@ -54,5 +54,4 @@ class ConflictCheck
     ret << :instructor if instance_instructor_overlap?(a, b)
     ret
   end
-
 end

@@ -5,7 +5,7 @@ class Admin::TracksController < ApplicationController
     @totals = Instructable.group(:track).count
 
     @percent_completed = {}
-    for track in Instructable::TRACKS.keys
+    Instructable::TRACKS.keys.each do |track|
       total = @totals[track]
       if total.to_f > 0
         scheduled = @scheduled[track] || 0

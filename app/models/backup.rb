@@ -31,7 +31,7 @@ class Backup
 
     @filenames = []
     ActiveRecord::Base.transaction do
-      for table in tables
+      tables.each do |table|
         filename = "#{table.table_name}.json"
         File.open("#{base}/#{filename}", "w") do |f|
           f.write table.all.to_json
@@ -41,12 +41,12 @@ class Backup
     end
 
     Zip::ZipFile.open(zip_filename, Zip::ZipFile::CREATE) do |zip|
-      for filename in @filenames
+      @filenames.each do |filename|
         zip.add("#{now_filename}/#{filename}", "#{base}/#{filename}")
       end
     end
 
-    for filename in @filenames
+    @filenames.each do |filename|
       File.unlink("#{base}/#{filename}")
     end
 
