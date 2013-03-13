@@ -53,27 +53,22 @@ describe InstructorProfilesController do
 
   describe "hides contact methods", js: true do
     describe "on page load" do
-      before :each do
-        log_in_instructor
-      end
-
       it "shows if no_contact is false" do
+        log_in_instructor no_contact: false
         visit edit_user_instructor_profile_path(current_user)
         page.should have_content 'Alternate Email'
       end
 
       it "hides if no_contact is true" do
+        log_in_instructor no_contact: true
         visit edit_user_instructor_profile_path(current_user)
         page.should_not have_content 'Alternate Email'
       end
     end
 
     describe "on click" do
-      before :each do
-        log_in_instructor
-      end
-
       it "shows if initially hiden" do
+        log_in_instructor no_contact: true
         visit edit_user_instructor_profile_path(current_user)
         page.should_not have_content 'Alternate Email'
         uncheck "No contact"
@@ -81,6 +76,7 @@ describe InstructorProfilesController do
       end
 
       it "hides if initiailly shown" do
+        log_in_instructor no_contact: false
         visit edit_user_instructor_profile_path(current_user)
         page.should have_content 'Alternate Email'
 #        page.driver.render('/tmp/file1.png', :full => true)
