@@ -42,7 +42,9 @@ class Instance < ActiveRecord::Base
   end
 
   def formatted_location_and_time
-    [formatted_location, formatted_start_time].compact.join(" on ")
+    ret = [formatted_location, formatted_start_time].compact.join(" on ")
+    ret = 'Unscheduled' if ret.blank?
+    ret
   end
 
   private
