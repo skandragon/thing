@@ -17,7 +17,7 @@
         %td= @unscheduled[track]
         %td
           - if @percent_completed[track].blank?
-            %span.label No classes
+            %span.muted No classes
           - elsif @percent_completed[track] < 100
             %span.label.label-warning= "%0.2f%%" % @percent_completed[track]
           - else
