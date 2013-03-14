@@ -33,10 +33,11 @@ class InstructablesMailer < ActionMailer::Base
   #  Listing of scheduling conflicts for their area
   #
   def track_status(address, track, instructables)
+    @track = track
     @track_classes = instructables
     @unscheduled_classes = @track_classes.select { |instructable| !instructable.scheduled? }
-    @conflicts = ConflictCheck.conflicts(track: track)
+    @conflicts = ConflictCheck.conflicts(track: @track)
 
-    mail(to: address, subject: "Track summary for #{track}")
+    mail(to: address, subject: "Track summary for #{@track}")
   end
 end

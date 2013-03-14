@@ -10,6 +10,7 @@ describe InstructablesMailer do
     mailer = InstructablesMailer.track_status('example@example.com', 'Middle Eastern', []).deliver
     ActionMailer::Base.deliveries.size.should == 1
     body = ActionMailer::Base.deliveries.first.body
+    body.should match "Track summary for Middle Eastern"
     body.should =~ /0 total classes/
     body.should =~ /0 classes need to be scheduled/
     body.should =~ /Good job!  There are no classes which need to be scheduled./
