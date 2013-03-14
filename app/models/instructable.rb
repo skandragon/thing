@@ -233,11 +233,7 @@ class Instructable < ActiveRecord::Base
   def scheduled_instance_count
     scheduled_instances = 0
     instances.each do |instance|
-      if location_nontrack?
-        scheduled_instances += 1 if instance.start_time.present?
-      else
-        scheduled_instances += 1 if instance.start_time.present? and instance.location.present?
-      end
+      scheduled_instances += 1 if instance.scheduled?
     end
     scheduled_instances
   end

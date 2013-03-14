@@ -22,7 +22,6 @@ class Instance < ActiveRecord::Base
   validate :validate_start_time
 
   def formatted_location
-    ret = []
     if instructable.location_nontrack?
       return instructable.formatted_nontrack_location
     else
@@ -30,8 +29,20 @@ class Instance < ActiveRecord::Base
     end
   end
 
+  def scheduled?
+    if instructable.location_nontrack?
+      start_time.present?
+    else
+      start_time.present? and location.present?
+    end
+  end
+
+  def formatted_start_time
+    start_time.present? ? start_time.to_s(:pennsic_short) : nil
+  end
+
   def formatted_location_and_time
-    [formatted_location, start_time.present? ? start_time.to_s(:long) : nil].compact.join(" on ")
+    [formatted_location, formatted_start_time].compact.join(" on ")
   end
 
   private
