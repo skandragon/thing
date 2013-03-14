@@ -87,4 +87,45 @@ describe Admin::UsersController do
       page.should_not have_content 'User updated.'
     end
   end
+
+  describe 'search' do
+    before :each do
+      log_in admin: true
+      @u1 = create(:instructor, sca_name: 'scaflarg', mundane_name: 'mundaneflarg', email: 'flargemail@example.com')
+      @u2 = create(:instructor, sca_name: 'scabaz', mundane_name: 'mundanebaz', email: 'bazemail@example.com')
+    end
+
+    it 'searches on email' do
+      visit admin_users_path
+      fill_in 'Search', with: 'flargemail'
+      click_on 'Filter'
+      page.should have_content 'mundaneflarg'
+      page.should_not have_content 'scabaz'
+    end
+
+    it 'searches on mundane_name' do
+      visit admin_users_path
+      fill_in 'Search', with: 'mundaneflarg'
+      click_on 'Filter'
+      page.should have_content 'scaflarg'
+      page.should_not have_content 'scabaz'
+    end
+
+    it 'searches on sca_name' do
+      visit admin_users_path
+      fill_in 'Search', with: 'scaflarg'
+      click_on 'Filter'
+      page.should have_content 'mundaneflarg'
+      page.should_not have_content 'scabaz'
+    end
+
+    it 'clears' do
+      visit admin_users_path
+      fill_in 'Search', with: 'scaflarg'
+      click_on 'Filter'
+      click_on 'Clear'
+      page.should have_content 'mundaneflarg'
+      page.should have_content 'scabaz'
+    end
+  end
 end
