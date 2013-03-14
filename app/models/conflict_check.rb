@@ -1,5 +1,13 @@
 class ConflictCheck
-  def self.conflicts
+  def self.conflicts(options = {})
+    #
+    # If options[:track] then limit returned conflicts to instances
+    # that involve that track in some way.  Unfortunately, we still need
+    # to retrieve all the instances which have a start_time set, because
+    # we may have a track class conflict with a non-track class.
+    #
+    track_filter = options[:track]
+
     instances = Instance.where("start_time IS NOT NULL").order(:start_time).includes(:instructable)
     return [] if instances.size < 2
 
@@ -9,6 +17,9 @@ class ConflictCheck
       instance = instances.pop
       next if instances.size == 0
       instances.each do |other|
+        if track_filter.present?
+          next unless instance.instructable.track == track or other.instructable.track == track
+        end
         conflicts = instance_overlap?(instance, other)
         if conflicts.size > 0
           @conflicts << [conflicts, [instance, other]]
