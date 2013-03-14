@@ -43,18 +43,23 @@ class ApplicationController < ActionController::Base
     nil
   end
 
+  def authorization_failure_message(controller, action, current_resource)
+    message = 'Not authorized.'
+    if ['development', 'test'].include?Rails.env
+      message += " (controller: #{controller}, action: #{action}"
+      if current_resource
+        message += ", resource: #{current_resource.class} #{current_resource.id}"
+      end
+      message += ')'
+    end
+    message
+  end
+
   def authorize
     controller = params[:controller]
     action = params[:action]
     unless current_permission.allow?(controller, action, current_resource)
-      message = 'Not authorized.'
-      if ['development', 'test'].include?Rails.env
-        message += " (controller: #{controller}, action: #{action}"
-        if current_resource
-          message += ", resource: #{current_resource.class} #{current_resource.id}"
-        end
-        message += ')'
-      end
+      message = authorization_failure_message(controller, action, current_resource)
       redirect_to root_url, alert: message
     end
   end
