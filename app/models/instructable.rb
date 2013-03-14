@@ -44,6 +44,8 @@ class Instructable < ActiveRecord::Base
   has_many :instances, dependent: :delete_all, order: 'start_time, location'
   accepts_nested_attributes_for :instances, allow_destroy: true
 
+  delegate :titled_sca_name, to: :user
+
   PENNSIC_DATES = (Date.parse('2013-07-19')..Date.parse('2013-08-03')).to_a.map(&:to_s)
   CLASS_DATES = (Date.parse('2013-07-23') .. Date.parse('2013-08-01')).to_a.map(&:to_s)
   CLASS_TIMES = [ '9am to Noon', 'Noon to 3pm', '3pm to 6pm', 'After 6pm' ]

@@ -186,13 +186,13 @@ describe ConflictCheck do
   end
 
   describe "conflicts" do
-    it "returns a string if no instances exist" do
+    it "returns [] if no instances exist" do
       conflicts = ConflictCheck.conflicts
       conflicts.should be_a(Array)
       conflicts.should == []
     end
 
-    it "returns a string if only one instance exists" do
+    it "returns [] if only one instance exists" do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
 
@@ -224,6 +224,31 @@ describe ConflictCheck do
       conflicts[0][0].should == [:location]
       conflicts[0][1].should include(@b)
       conflicts[0][1].should include(@b)
+    end
+
+    it "applies track filter" do
+      @ia = create(:instructable, user_id: 1, track: 'Pennsic University')
+      @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
+      @ib = create(:instructable, user_id: 2, track: 'Middle Eastern')
+      @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
+
+      conflicts = ConflictCheck.conflicts(track: 'Pennsic University')
+      conflicts.should be_a(Array)
+      conflicts.size.should == 1
+      conflicts[0][0].should == [:location]
+      conflicts[0][1].should include(@b)
+      conflicts[0][1].should include(@b)
+    end
+
+    it "returns nothing when all filtered" do
+      @ia = create(:instructable, user_id: 1)
+      @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
+      @ib = create(:instructable, user_id: 2)
+      @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
+
+      conflicts = ConflictCheck.conflicts(track: 'Archery')
+      conflicts.should be_a(Array)
+      conflicts.size.should == 0
     end
   end
 end

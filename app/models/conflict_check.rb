@@ -11,23 +11,21 @@ class ConflictCheck
     instances = Instance.where("start_time IS NOT NULL").order(:start_time).includes(:instructable)
     return [] if instances.size < 2
 
-    @conflicts = []
+    ret = []
 
     while instances.size > 0
       instance = instances.pop
       next if instances.size == 0
       instances.each do |other|
-        if track_filter.present?
-          next unless instance.instructable.track == track or other.instructable.track == track
-        end
+        next unless track_filter.blank? or [instance.instructable.track, other.instructable.track].include?(track_filter)
         conflicts = instance_overlap?(instance, other)
         if conflicts.size > 0
-          @conflicts << [conflicts, [instance, other]]
+          ret << [conflicts, [instance, other]]
         end
       end
     end
 
-    @conflicts
+    ret
   end
 
   # If the provided class's start time or end time falls between the

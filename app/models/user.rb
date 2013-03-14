@@ -83,6 +83,8 @@ class User < ActiveRecord::Base
   validates_length_of :sca_name, :within => 1..30, :if => :instructor?
   validates_inclusion_of :sca_title, in: TITLES, allow_blank: true
   validates_inclusion_of :kingdom, in: KINGDOMS, allow_blank: true
+  
+  scope :for_track, lambda { |track| where('track && ?', "{#{track}}") }
 
   def coordinator?
     tracks.count > 0

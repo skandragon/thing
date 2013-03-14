@@ -1,0 +1,40 @@
+Track Summary for <%= @track %>
+
+<%= @track_classes.size %> total classes in track.
+<%= @unscheduled_classes.size %> classes need to be scheduled.
+<%= pluralize @conflicts.size, 'conflict' %>.
+
+Unscheduled Classes
+-------------------
+
+<% if @unscheduled_classes.empty? %>
+  Good job!  There are no classes which need to be scheduled.
+<% else -%>
+<% @unscheduled_classes.each do |instructable| %>
+  <%= instructable.name %>
+<% end -%>
+<% end -%>
+
+Scheduling Conflicts
+--------------------
+
+<% if @conflicts.empty? %>
+  No conflicts found.
+<% else -%>
+<% @conflicts.each do |conflict| %>
+<% type, instances = conflict %>
+Conflict Type: <%= type.join(", ") %>
+  <%= instances[0].instructable.name %>
+  <%= instances[0].formatted_location_and_time %>
+  <%= instances[0].instructable.titled_sca_name %>
+  <%= instances[0].instructable.track %>
+-- with --
+  <%= instances[1].instructable.name %>
+  <%= instances[1].formatted_location_and_time %>
+  <%= instances[1].instructable.titled_sca_name %>
+  <%= instances[1].instructable.track %>
+
+<% end -%>
+<% end -%>
+
+NOTE:  You are receiving this mail because you are a track coordinator.
