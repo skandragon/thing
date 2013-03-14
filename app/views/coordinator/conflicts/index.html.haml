@@ -15,7 +15,7 @@
       - for conflict in @conflicts
         - type, instances = conflict
         %tr
-          %td{rowspan: 2}= type.join(", ")
+          %td.label.label-important{rowspan: 2}= type.join(", ")
           %td= instances[0].instructable.name
           %td= instances[0].formatted_location_and_time
           %td= instances[0].instructable.user.titled_sca_name
