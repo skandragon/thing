@@ -23,4 +23,16 @@ class InstructablesMailer < ActionMailer::Base
   def on_track_change
     # XXXMLG implement
   end
+
+  #
+  # Send email to track leads consisting of:
+  #  Summary statistics about their area
+  #  Listing of pending-accept classes
+  #  Listing of pending-schedule classes
+  #  Listing of fully-scheduled classes
+  #  Listing of scheduling conflicts for their area
+  #
+  def track_status
+    # XXXMLG implement
+  end
 end
