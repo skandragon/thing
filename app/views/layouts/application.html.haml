@@ -24,20 +24,27 @@
 
     .footer.container-fluid
       .row
-        .span3.offset1
+        - if params[:controller] == 'about' and params[:action] == 'about'
+          .span2.offset1
+            = image_tag 'wolfstar-logo-115x128.png'
+            %br
+            %h3 Wolfstar Approved.
+        - else
+          .span2
+        .span3
           %h1 University
           %ul.unstyled
             %li= link_to 'pennsicuniversity.org', 'http://pennsicuniversity.org', target: '_blank'
             %li= link_to "Teacher's FAQ", 'http://pennsicuniversity.org/univfaq.html', target: '_blank'
             %li= link_to 'Registration FAQ', 'http://pennsicuniversity.org/regfaq.html', target: '_blank'
             %li= link_to 'Facebook', 'http://www.facebook.com/pages/Pennsic-University/151527028266551', target: '_blank'
-        .span3
+        .span2
           %h1 Pennsic
           %ul.unstyled
             %li= link_to 'pennsicwar.org', 'http://pennsicwar.org', target: '_blank'
             %li= link_to 'Registration', 'https://www.cooperslake.com/prereg/home/index.php', target: '_blank'
             %li= link_to 'Pennsic FAQ', 'http://pennsicwp.org/about/faq/', target: '_blank'
-        .span3
+        .span2
           %h1 SCA
           %ul.unstyled
             %li= link_to 'sca.org', 'http://sca.org', target: '_blank'
