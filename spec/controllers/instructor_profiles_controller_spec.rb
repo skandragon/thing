@@ -39,6 +39,22 @@ describe InstructorProfilesController do
     current_user.should be_instructor
   end
 
+  it 'creates with title' do
+    log_in
+    visit new_user_instructor_profile_path(current_user)
+    fill_in 'SCA name', with: 'Fred the Butcher'
+    fill_in 'Legal name', with: 'Fred Baker'
+    find('#user_phone_number').set '+1 405.555.1212'
+    select 'Ansteorra', from: 'SCA kingdom'
+    select 'Duchess', from: 'SCA title'
+    click_button 'Create profile'
+    page.should have_content 'Instructor profile created.'
+    current_user.reload
+    current_user.sca_name.should == 'Fred the Butcher'
+    current_user.should be_instructor
+  end
+
+
   it 'does not create on error' do
     log_in
     visit new_user_instructor_profile_path(current_user)

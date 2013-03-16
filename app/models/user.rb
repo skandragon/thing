@@ -40,8 +40,6 @@ class User < ActiveRecord::Base
     king queen
     thl).sort
 
-  TITLES_FOR_SELECT = TITLES.map(&:titleize)
-
   # SCA kingdoms, lowercase.
   KINGDOMS = [
     "æthelmearc", "ansteorra", "an tir", "artemisia", "atenveldt", "atlantia",
@@ -83,7 +81,7 @@ class User < ActiveRecord::Base
   validates_length_of :sca_name, :within => 1..30, :if => :instructor?
   validates_inclusion_of :sca_title, in: TITLES, allow_blank: true
   validates_inclusion_of :kingdom, in: KINGDOMS, allow_blank: true
-  
+
   scope :for_track, lambda { |track| where('tracks && ?', "{#{track}}") }
 
   def coordinator?
