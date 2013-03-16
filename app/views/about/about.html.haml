@@ -1,10 +1,56 @@
 - title "About"
+
+%header#overview.jumbotron.subhead
+
+.hero-unit
+  %h1 Thing
+  %p Pennsic University Class Scheduling System
+
 .row
   .span12
-    %h1 About
-    
     %p
-      Foo
+      This web site allows instructors to enter University classes
+      to be taught through or in cooperation with the Pennsic University.
+    %p
+      While the initial focus is for Pennsic University classes and other
+      Pennsic classes organized through the University, it could be made
+      more generic to allow use at other events, both inside and outside
+      the SCA.
+    %p
+      It is entirely custom software, designed and implemented by a team
+      of programmers, managed by by Michael Graff, known
+      in the Society for Creative Anachronism as Lord Griffin de Willingeham
+      from the Great Barony of Namron, in the Stellar Kingdom of Ansteorra.
+      Michael is also the primary developer.  Please see the Credits section
+      for a complete author list.
+    %p
+      The software is written in Ruby on Rails.  All the source is open
+      and available on Github as
+      = (link_to 'skandragon/thing', 'https://github.com/skandragon/thing', target: '_blank') + '.'
+      If you are interested in contributing, please drop Michael a note
+      through Github.
 
+.row
+  .span12
+    %h3 Reporting Problems
     %p
-      Bar
+      If you wish to report a defect in how the web site operates, such as
+      errors on form submission, the best option is to
+      = link_to 'open a ticket', 'https://github.com/skandragon/thing/issues'
+      in our bug tracking system.  You will have to create a Github account
+      if you do not already have one.
+    %p
+      If the problem is more administrative, such as scheduling issues,
+      questions about how to use the system, or questions about University
+      procedures, please use the Contact link near the bottom right of every
+      page.  This will reach the Pennsic University staff via email.  You
+      may also use this to report web site errors if you do not wish to use
+      Github to report technical issues.
+
+.row
+  .span12
+    %h3 Authors
+    %p
+      %ul
+        %li Michael Graff (Lead developer and project coordinator)
+        %li Nikk Colton
