@@ -181,10 +181,10 @@ class Instructable < ActiveRecord::Base
   def formatted_nontrack_location
     raise Exception.new("location_type is 'tract' but no location known") unless location_nontrack?
     if location_type == 'private-camp'
-      ret = ['Private Camp:', camp_name]
+      ret = ['Camp:', camp_name]
       ret << "(#{camp_address})" if camp_address.present?
     elsif location_type == 'merchant-booth'
-      ret = ['Merchant Booth:', camp_name]
+      ret = ['Merchant:', camp_name]
       ret << "(#{camp_address})" if camp_address.present?
     end
     ret.join(" ")
