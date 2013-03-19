@@ -9,6 +9,7 @@
         %th Type
         %th Class Name
         %th Instance Time and Location
+        %th Duration
         %th Instructor
         %th Track
     %tbody
@@ -18,10 +19,12 @@
           %td.label.label-important{rowspan: 2}= type.join(", ")
           %td= instances[0].instructable.name
           %td= instances[0].formatted_location_and_time
+          %td= instances[0].instructable.duration
           %td= instances[0].instructable.user.titled_sca_name
           %td= instances[0].instructable.track
         %tr
           %td= instances[1].instructable.name
           %td= instances[1].formatted_location_and_time
+          %td= instances[0].instructable.duration
           %td= instances[1].instructable.user.titled_sca_name
           %td= instances[1].instructable.track
