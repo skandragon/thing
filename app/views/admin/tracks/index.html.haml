@@ -1,4 +1,27 @@
-- title "Track Statistics"
+- title "Statistics"
+
+%h3 Database Summary
+
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th Count
+      %th Item
+  %tbody
+    %tr
+      %td= @instructable_count
+      %td Total Class Count
+    %tr
+      %td= @instructable_session_count
+      %td Total Sessions
+    %tr
+      %td= @instructor_count
+      %td Number of Instructors with classes
+    %tr
+      %td= @total_hours
+      %td Hours of classes
+
+%h3 Track Summary
 
 %table.table.table-striped.table-hover
   %thead
@@ -12,9 +35,15 @@
     - for track in Instructable::TRACKS.keys.sort
       %tr
         %td= track
-        %td= @totals[track]
-        %td= @scheduled[track]
-        %td= @unscheduled[track]
+        %td
+          - if @totals[track].present?
+            = link_to @totals[track], coordinator_instructables_path(track: track)
+        %td
+          - if @scheduled[track]
+            = link_to @scheduled[track], coordinator_instructables_path(track: track, scheduled: true)
+        %td
+          - if @unscheduled[track]
+            = link_to @unscheduled[track], coordinator_instructables_path(track: track, scheduled: false)
         %td
           - if @percent_completed[track].blank?
             %span.muted No classes
@@ -22,3 +51,22 @@
             %span.label.label-warning= "%0.2f%%" % @percent_completed[track]
           - else
             %span.label.label-success= "%0.2f%%" % @percent_completed[track]
+
+%h3 Summary by Subject
+
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th Topic
+      %th Subtopic
+      %th Classes
+      %th Hours
+  %tbody
+    - Instructable::TOPICS.keys.each do |topic|
+      - ( [""] + Instructable::TOPICS[topic].sort).each do |subtopic|
+        - target = [topic, subtopic || ""]
+        %tr
+          %td= link_to topic, coordinator_instructables_path(topic: topic)
+          %td= subtopic
+          %td= @topic_counts[target]
+          %td= @topic_hours[target]

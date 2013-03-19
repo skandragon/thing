@@ -3,6 +3,12 @@ class Admin::TracksController < ApplicationController
     @scheduled = Instructable.group(:track).where(:scheduled => true).count
     @unscheduled = Instructable.group(:track).where(:scheduled => false).count
     @totals = Instructable.group(:track).count
+    @topic_counts = Instructable.group(:topic, :subtopic).count
+    @topic_hours = Instructable.group(:topic, :subtopic).sum("duration * repeat_count")
+    @instructable_count = Instructable.count
+    @instructable_session_count = Instructable.sum(:repeat_count)
+    @instructor_count = Instructable.pluck(:user_id).uniq.size
+    @total_hours = Instructable.sum("duration * repeat_count")
 
     @percent_completed = {}
     Instructable::TRACKS.keys.each do |track|
