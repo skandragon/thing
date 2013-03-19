@@ -174,8 +174,12 @@ class Instructable < ActiveRecord::Base
     self.additional_instructors = items.compact
   end
 
+  def formatted_topic
+    [ topic, subtopic ].select(&:present?).join(' : ')
+  end
+
   def formatted_culture_and_topic
-    [ culture, topic, subtopic ].select(&:present?).join(' : ')
+    [culture, formatted_topic].select(&:present?).join(' : ')
   end
 
   def formatted_nontrack_location

@@ -144,8 +144,82 @@ class CalendarsController < ApplicationController
     send_data(data, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
-  def render_pdf(filename, cache_filename = nil, user = nil)
+  BOX_MARGIN   = 24
+
+  # Additional indentation to keep the line measure with a reasonable size
+  #
+  INNER_MARGIN = 30
+
+  # Vertical Rhythm settings
+  #
+  RHYTHM  = 10
+  LEADING = 2
+
+  # Colors
+  #
+  BLACK      = "000000"
+  LIGHT_GRAY = "F2F2F2"
+  GRAY       = "DDDDDD"
+  DARK_GRAY  = "333333"
+  BROWN      = "A4441C"
+  ORANGE     = "F28157"
+  LIGHT_GOLD = "FBFBBE"
+  DARK_GOLD  = "EBE389"
+  BLUE       = "0000D0"
+
+  # Render a page header. Used on the manual lone pages and package
+  # introductory pages
+  #
+  def pdf_header(pdf, str)
+    pdf_header_box(pdf) do
+      pdf.font_size(24) do
+        pdf.text(str, color: BROWN, valign: :center, align: :center)
+      end
+    end
+  end
+
+  # Renders the page-wide headers
+  #
+  def pdf_header_box(pdf, &block)
+    pdf.bounding_box([-pdf.bounds.absolute_left, pdf.cursor],
+                 :width  => pdf.bounds.absolute_left + pdf.bounds.absolute_right,
+                 :height => BOX_MARGIN * 2 + RHYTHM) do
+
+      pdf.fill_color LIGHT_GRAY
+      pdf.fill_rectangle([pdf.bounds.left, pdf.bounds.top],
+                      pdf.bounds.right,
+                      pdf.bounds.top - pdf.bounds.bottom)
+      pdf.fill_color BLACK
+
+      block.call(pdf)
+    end
+
+    pdf.stroke_color GRAY
+    pdf.stroke_horizontal_line(-BOX_MARGIN * 2, pdf.bounds.width + BOX_MARGIN * 2, :at => pdf.cursor)
+    pdf.stroke_color BLACK
+
+    pdf.move_down(RHYTHM * 3)
+  end
+
+  def generate_magic_tokens
     first = true
+    last_topic = nil
+    magic_token = 0
+
+    @instructable_magic_tokens = {}
+    @instructables.each do |instructable|
+      if last_topic != instructable.topic
+        magic_token += 100 - (magic_token % 100)
+        last_topic = instructable.topic
+      end
+      @instructable_magic_tokens[instructable.id] = magic_token
+      magic_token += 1
+    end
+  end
+
+  def render_pdf(filename, cache_filename = nil, user = nil)
+    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name)
+    generate_magic_tokens
 
     pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :landscape,
       :compress => true, :optimize_objects => true,
@@ -160,11 +234,13 @@ class CalendarsController < ApplicationController
     })
 
     header = [
+      { content: "Id", background_color: 'ffffee' },
       { content: "When and Where", background_color: 'ffffee' },
       { content: "Title and Instructor", background_color: 'ffffee' },
       { content: "Description", background_color: 'ffffee' }
     ]
 
+    first_page = true
     for date in @dates
       items = [ header ]
 
@@ -188,6 +264,7 @@ class CalendarsController < ApplicationController
         times_content = times.join("\n")
 
         items << [
+          { content: @instructable_magic_tokens[event.instructable.id].to_s},
           { content: times_content },
           { content: [ event.instructable.name, event.instructable.user.titled_sca_name ].join("\n\n") },
           { content: [ event.instructable.description_book, limits_content, fees_content ].compact.join("\n") },
@@ -195,29 +272,60 @@ class CalendarsController < ApplicationController
       end
 
       if @events[date].count > 0
-        pdf.start_new_page unless first
-        first = false
+        pdf.start_new_page unless first_page
+        first_page = false
 
         pdf.font_size 25
         pdf.text @formatted_dates[date]
         pdf.font_size 10
-        pdf.text "(#{@events[date].count} events)"
         pdf.move_down 10
 
         pdf.table(items, header: true, width: 720,
-          column_widths: { 0 => 100, 1 => 160 },
+          column_widths: { 0 => 35, 1 => 100, 2 => 160 },
           cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
       end
     end
 
+    # Render class summary
+    pdf.start_new_page(layout: :portrait)
+
+    last_topic = nil
+
+    @instructables.each do |instructable|
+      pdf.group do
+        if last_topic != instructable.topic
+          pdf.move_down(RHYTHM * 2) unless pdf.cursor == pdf.bounds.top
+          pdf_header(pdf, instructable.topic)
+        end
+
+        pdf.move_down RHYTHM * 1.5
+        pdf.font_size 13
+        pdf.formatted_text [
+          { text: "#{@instructable_magic_tokens[instructable.id]}: ", styles: [:bold] },
+          { text: instructable.name },
+        ]
+        pdf.font_size 10
+        pdf.text "Topic: #{instructable.formatted_topic}"
+        pdf.text "Culture: #{instructable.culture}" if instructable.culture.present?
+        pdf.text "Instructor: #{instructable.user.titled_sca_name}"
+        pdf.text "Taught: " + instructable.instances.map(&:formatted_location_and_time).join(", ")
+        pdf.move_down 5
+        pdf.text instructable.description_web.present? ? instructable.description_web : instructable.description_book
+      end
+
+      last_topic = instructable.topic
+    end
+
+    # set page footer
     options = { :at => [pdf.bounds.left, 0],
                 :width => pdf.bounds.right,
                 :align => :center,
                 :start_count_at => 1,
-                :color => "007700" }
+                :color => "007700",
+                font_size: 10 }
 
     now = Time.now.strftime("%A, %B %d, %H:%M %p")
-    pdf.number_pages "Generated on #{now} -- page <page> of <total> -- http://thing.pennsicuniversity.org/", options
+    pdf.number_pages "Generated on #{now} -- page <page> of <total>", options
 
     data = pdf.render
     #cache_in_file(cache_filename, data)
@@ -298,7 +406,7 @@ class CalendarsController < ApplicationController
 
     @events = {}
     for date in @dates
-      @events[date] = Instance.for_date(date).order(:start_time, :location).includes(:instructable)
+      @events[date] = Instance.for_date(date).order(:start_time, :location).includes(:instructable => [ :user ])
     end
   end
 end
