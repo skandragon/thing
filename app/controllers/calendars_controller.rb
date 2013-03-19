@@ -28,18 +28,7 @@ class CalendarsController < ApplicationController
         if File.exists?(cache_filename)
           send_file(cache_filename, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
         else
-          @dates = Instructable::CLASS_DATES
-          @formatted_dates = {}
-
-          for date in @dates
-            @formatted_dates[date] = Time.parse(date).strftime("%A, %B %e").gsub(/\ +/, " ")
-          end
-
-          @events = {}
-          for date in @dates
-            @events[date] = Instance.for_date(date).order(:start_time, :location)
-          end
-
+          load_data
           render_pdf(filename, cache_filename)
         end
       }
@@ -161,20 +150,19 @@ class CalendarsController < ApplicationController
     pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :landscape,
       :compress => true, :optimize_objects => true,
       :info => {
-        :Title => "Pennsic University Class Schedule",
+        :Title => "Pennsic University 42 Class Schedule",
         :Author => "Pennsic University",
-        :Subject => "Pennsic University Classes",
-        :Keywords => "pennsic classes",
+        :Subject => "Pennsic University 42 Classes",
+        :Keywords => "pennsic university classes",
         :Creator => "Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/",
         :Producer => "Pennsic Univeristy Class Maker",
         :CreationDate => Time.now,
     })
 
     header = [
-      { content: "Times", background_color: 'ffffee' },
-      { content: "Title and Subject", background_color: 'ffffee' },
-      { content: "Location and Fees", background_color: 'ffffee' },
-      { content: "Limits", background_color: 'ffffee' }
+      { content: "When and Where", background_color: 'ffffee' },
+      { content: "Title and Instructor", background_color: 'ffffee' },
+      { content: "Description", background_color: 'ffffee' }
     ]
 
     for date in @dates
@@ -182,40 +170,43 @@ class CalendarsController < ApplicationController
 
       for event in @events[date]
         limits = []
-        limits << "Handout: #{event.instructable.handout_limit}" if event.instructable.handout_limit
-        limits << "Materials: #{event.instructable.material_limit}" if event.instructable.material_limit
-
-        times = event.start_time.strftime("%a %b %e") + "\n" + event.start_time.strftime("%I:%M %p") + " - " + event.end_time.strftime("%I:%M %p")
+        limits << "Handout limit: #{event.instructable.handout_limit}" if event.instructable.handout_limit
+        limits << "Materials limit: #{event.instructable.material_limit}" if event.instructable.material_limit
+        limits_content = nil
+        limits_content = limits.join(", ") if limits.size > 0
 
         fees = []
-        fees << "Handout: #{event.instructable.handout_fee}" if event.instructable.handout_fee
-        fees << "Materials: #{event.instructable.material_fee}" if event.instructable.material_fee
+        fees << "Handout fee: $#{'%.2f' % event.instructable.handout_fee}" if event.instructable.handout_fee
+        fees << "Materials fee: $#{'%.2f' % event.instructable.material_fee}" if event.instructable.material_fee
+        fees_content = nil
+        fees_content = fees.join(", ") if fees.size > 0
+
+        times = []
+        times << event.start_time.strftime("%a %b %e")
+        times << event.start_time.strftime("%I:%M %p") + " - " + event.end_time.strftime("%I:%M")
+        times << event.formatted_location
+        times_content = times.join("\n")
 
         items << [
-          { content: times },
-          { content: event.instructable.name },
-          { content: [ event.formatted_location, fees ].compact.join("\n") },
-          { content: [ limits ].join("\n") },
+          { content: times_content },
+          { content: [ event.instructable.name, event.instructable.user.titled_sca_name ].join("\n\n") },
+          { content: [ event.instructable.description_book, limits_content, fees_content ].compact.join("\n") },
         ]
-        unless @omit_descriptions
-          items << [
-            { content: (event.instructable.description_book || "No description provided."), colspan: 4 },
-          ]
-        end
       end
 
       if @events[date].count > 0
         pdf.start_new_page unless first
         first = false
 
-        pdf.font_size(25)
+        pdf.font_size 25
         pdf.text @formatted_dates[date]
         pdf.font_size 10
         pdf.text "(#{@events[date].count} events)"
         pdf.move_down 10
 
         pdf.table(items, header: true, width: 720,
-          cell_style: { overflow: :shrink_to_fit, min_font_size: 10 })
+          column_widths: { 0 => 100, 1 => 160 },
+          cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
       end
     end
 
@@ -294,6 +285,20 @@ class CalendarsController < ApplicationController
         f.write data
       end
       File.rename(tmp_filename, cache_filename)
+    end
+  end
+
+  def load_data
+    @dates = Instructable::CLASS_DATES
+    @formatted_dates = {}
+
+    for date in @dates
+      @formatted_dates[date] = Time.parse(date).strftime("%A, %B %e").gsub(/\ +/, " ")
+    end
+
+    @events = {}
+    for date in @dates
+      @events[date] = Instance.for_date(date).order(:start_time, :location).includes(:instructable)
     end
   end
 end
