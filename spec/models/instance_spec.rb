@@ -39,13 +39,13 @@ describe Instance do
     it "renders private camp correctly" do
       instructable = create(:instructable, location_type: 'private-camp', camp_reason: 'because', camp_address: 'N06', camp_name: 'Flarg')
       instance = instructable.instances.create
-      instance.formatted_location.should == "Private Camp: Flarg (N06)"
+      instance.formatted_location.should == "Camp: Flarg (N06)"
     end
 
     it "renders merchant booth correctly" do
       instructable = create(:instructable, location_type: 'merchant-booth', camp_reason: 'because', camp_address: 'N06', camp_name: 'Flarg')
       instance = instructable.instances.create
-      instance.formatted_location.should == "Merchant Booth: Flarg (N06)"
+      instance.formatted_location.should == "Merchant: Flarg (N06)"
     end
 
     it "renders pennsic location correctly" do
@@ -57,7 +57,7 @@ describe Instance do
     it "handles blank camp_address" do
       instructable = create(:instructable, location_type: 'private-camp', camp_reason: 'because', camp_name: 'Flarg')
       instance = instructable.instances.create
-      instance.formatted_location.should == "Private Camp: Flarg"
+      instance.formatted_location.should == "Camp: Flarg"
     end
 
     it "handles blank location" do
