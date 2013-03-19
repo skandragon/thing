@@ -28,6 +28,8 @@ Thing::Application.routes.draw do
     resources :instructables
   end
 
+  resources :calendars
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

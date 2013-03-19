@@ -10,6 +10,7 @@ class Permission
     allow 'users/passwords', :all
     allow 'users/registrations', :all
     allow :about, :all
+    allow :calendars, :all
 
     if user
       # All users can edit their own data

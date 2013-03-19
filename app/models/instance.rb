@@ -21,6 +21,10 @@ class Instance < ActiveRecord::Base
 
   validate :validate_start_time
 
+  scope :for_date, lambda { |date|
+    where("DATE_TRUNC('day', start_time) = ?", date)
+  }
+
   def formatted_location
     if instructable.location_nontrack?
       return instructable.formatted_nontrack_location

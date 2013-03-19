@@ -75,3 +75,4 @@ gem "redis"
 gem "resque", require: "resque/server"
 gem 'multa_arcana'
 gem 'rubyzip'
+gem 'prawn', '>= 1.0.0.rc2'
