@@ -1,12 +1,14 @@
 class CalendarsController < ApplicationController
+  PENNSIC_YEAR = 42
+
   def index
     respond_to do |format|
       format.html
       format.ics {
-        filename = "pennsic.ics"
+        filename = "pennsic-#{PENNSIC_YEAR}-all.ics"
 
         @events = PennsicEvent.where("start_time IS NOT NULL")
-        @calendar_name = "PennsicU"
+        @calendar_name = "PennsicU #{PENNSIC_YEAR}"
 
         cache_filename = Rails.root.join("tmp", filename)
         if File.exists?(cache_filename)
@@ -19,9 +21,9 @@ class CalendarsController < ApplicationController
         @omit_descriptions = params[:brief].present?
 
         if @omit_descriptions
-          filename = "pennsic-42-all-brief.pdf"
+          filename = "pennsic-#{PENNSIC_YEAR}-all-brief.pdf"
         else
-          filename = "pennsic-42-all.pdf"
+          filename = "pennsic-#{PENNSIC_YEAR}-all.pdf"
         end
 
         cache_filename = Rails.root.join("tmp", filename)
@@ -35,7 +37,7 @@ class CalendarsController < ApplicationController
       format.csv {
         @events = PennsicEvent.order(:start_time, :title)
 
-        render_csv("pennsic-full.csv")
+        render_csv("pennsic-#{PENNSIC_YEAR}-full.csv")
       }
       format.xlsx {
         @dates = PennsicEvent.get_dates
@@ -55,7 +57,7 @@ class CalendarsController < ApplicationController
           @formatted_dates[nil] = "No Date"
         end
 
-        render_xlsx("pennsic-full.xlsx")
+        render_xlsx("pennsic-#{PENNSIC_YEAR}-full.xlsx")
       }
     end
   end
@@ -75,19 +77,19 @@ class CalendarsController < ApplicationController
     respond_to do |format|
       format.html { }
       format.ics {
-        @calendar_name = "PennsicU 42"
-        render_calendar("pennsic-42-all.ics")
+        @calendar_name = "PennsicU #{PENNSIC_YEAR}"
+        render_calendar("pennsic-#{PENNSIC_YEAR}-all.ics")
       }
       format.pdf {
         @omit_descriptions = params[:brief].present?
 
-        render_pdf("pennsic-42-all.pdf", nil, @user)
+        render_pdf("pennsic-#{PENNSIC_YEAR}-all.pdf", nil, @user)
       }
       format.csv {
-        render_csv("pennsic-42-all.csv")
+        render_csv("pennsic-#{PENNSIC_YEAR}-all.csv")
       }
       format.xlsx {
-        render_xlsx("pennsic-42-all.xlsx")
+        render_xlsx("pennsic-#{PENNSIC_YEAR}-all.xlsx")
       }
     end
   end
@@ -112,7 +114,7 @@ class CalendarsController < ApplicationController
       cal.prodid = "//flame.org//PennsicU Converter.0//EN"
       cal.add_x_property("X-WR-CALNAME", @calendar_name)
       cal.add_x_property("X-WR-RELCALID", make_uid(@calendar_name)) # should be static per calendar
-      cal.add_x_property("X-WR-CALDESC", "PennsicU 42 Class Schedule")
+      cal.add_x_property("X-WR-CALDESC", "PennsicU #{PENNSIC_YEAR} Class Schedule")
       cal.add_x_property("X-PUBLISHED-TTL", "3600")
 
       for item in @events
@@ -224,9 +226,9 @@ class CalendarsController < ApplicationController
     pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :landscape,
       :compress => true, :optimize_objects => true,
       :info => {
-        :Title => "Pennsic University 42 Class Schedule",
+        :Title => "Pennsic University #{PENNSIC_YEAR} Class Schedule",
         :Author => "Pennsic University",
-        :Subject => "Pennsic University 42 Classes",
+        :Subject => "Pennsic University #{PENNSIC_YEAR} Classes",
         :Keywords => "pennsic university classes",
         :Creator => "Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/",
         :Producer => "Pennsic Univeristy Class Maker",
@@ -245,17 +247,19 @@ class CalendarsController < ApplicationController
       items = [ header ]
 
       for event in @events[date]
-        limits = []
-        limits << "Handout limit: #{event.instructable.handout_limit}" if event.instructable.handout_limit
-        limits << "Materials limit: #{event.instructable.material_limit}" if event.instructable.material_limit
-        limits_content = nil
-        limits_content = limits.join(", ") if limits.size > 0
+        materials = []
+        handout = []
+        handout << "limit: #{event.instructable.handout_limit}" if event.instructable.handout_limit
+        materials << "limit: #{event.instructable.material_limit}" if event.instructable.material_limit
 
-        fees = []
-        fees << "Handout fee: $#{'%.2f' % event.instructable.handout_fee}" if event.instructable.handout_fee
-        fees << "Materials fee: $#{'%.2f' % event.instructable.material_fee}" if event.instructable.material_fee
-        fees_content = nil
-        fees_content = fees.join(", ") if fees.size > 0
+        handout << "fee: $#{'%.2f' % event.instructable.handout_fee}" if event.instructable.handout_fee
+        materials << "fee: $#{'%.2f' % event.instructable.material_fee}" if event.instructable.material_fee
+
+        handout_content = nil
+        handout_content = "Handout " + handout.join(", ") + '. ' if handout.size > 0
+
+        materials_content = nil
+        materials_content = "Materials " + materials.join(", ") + '. ' if materials.size > 0
 
         times = []
         times << event.start_time.strftime("%a %b %e")
@@ -267,12 +271,12 @@ class CalendarsController < ApplicationController
           { content: @instructable_magic_tokens[event.instructable.id].to_s},
           { content: times_content },
           { content: [ event.instructable.name, event.instructable.user.titled_sca_name ].join("\n\n") },
-          { content: [ event.instructable.description_book, limits_content, fees_content ].compact.join("\n") },
+          { content: [ event.instructable.description_book, [handout_content, materials_content].compact.join(' ') ].compact.join("\n") },
         ]
       end
 
       if @events[date].count > 0
-        pdf.start_new_page unless first_page
+        pdf.move_down 20 unless first_page
         first_page = false
 
         pdf.font_size 25
@@ -299,14 +303,13 @@ class CalendarsController < ApplicationController
         end
 
         pdf.move_down RHYTHM * 1.5
-        pdf.font_size 13
         pdf.formatted_text [
-          { text: "#{@instructable_magic_tokens[instructable.id]}: ", styles: [:bold] },
-          { text: instructable.name },
+          { text: "#{@instructable_magic_tokens[instructable.id]}: ", styles: [:bold], font_size: 13 },
+          { text: instructable.name, font_size: 13 },
         ]
-        pdf.font_size 10
-        pdf.text "Topic: #{instructable.formatted_topic}"
-        pdf.text "Culture: #{instructable.culture}" if instructable.culture.present?
+        topic = "Topic: #{instructable.formatted_topic}"
+        culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
+        pdf.text [topic, culture].compact.join(", ")
         pdf.text "Instructor: #{instructable.user.titled_sca_name}"
         pdf.text "Taught: " + instructable.instances.map(&:formatted_location_and_time).join(", ")
         pdf.move_down 5
