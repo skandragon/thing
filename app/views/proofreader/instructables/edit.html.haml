@@ -1,0 +1,33 @@
+- title "Proofreading #{@instructable.name}"
+
+%p.alert.alert-info Track: #{@instructable.track}
+
+= simple_form_for @instructable, url: proofreader_instructable_path(@instructable), html: { :class => "form-horizontal" } do |f|
+  %fieldset
+    %legend Class Information
+    = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }
+    = f.input :description_book, label: "Description (book)", input_html: { rows: 3, maxlength: 150, class: 'input-xxlarge' }, hint: "Book description limited to 150 characters"
+    = f.input :description_web, label: "Description (web)", input_html: { rows: 3, class: 'input-xxlarge' }, hint: "Web description is not limited, but please keep it concise.  If this is blank, the book description will be used."
+    = f.input :culture, collection: Instructable::CULTURES, hint: "If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus."
+    = f.input :topic, collection: Instructable::TOPICS.keys, hint: "Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies."
+    #subtopic
+      = f.input :subtopic, collection: Instructable::TOPICS[@instructable.topic] || []
+
+  - if @instructable.location_nontrack?
+    %fieldset
+      %legend Location
+      = f.input :camp_name, required: true, label: "Camp or Merchant Booth Name", hint: "If this class is being taught in a camp or merchant booth, enter the camp or merchant name."
+      = f.input :camp_address, label: "Camp or Booth Location", hint: "If using a camp or merchant booth, enter it's location here (e.g, N06)"
+
+  = f.button :submit, "Save and Mark Proofread", :class => "btn btn-primary submit-button"
+  = f.button :submit, "Save and Mark Not Proofread", :class => "btn"
+  = link_to "Cancel", session[:instructable_back] || proofreader_instructables_path, :class => "btn"
+
+/ This is gross, but it works...
+:javascript
+  window.thing_topics = #{Instructable::TOPICS.to_json}
+  window.thing_selected_subtopic = #{@instructable.subtopic.to_json}
+- if admin?
+  :javascript
+    window.thing_tracks = #{Instructable::TRACKS.to_json}
+    window.thing_selected_locations = #{@instructable.instances.map(&:location).map(&:to_s).to_json}

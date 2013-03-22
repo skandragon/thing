@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   helper_method :instructor?
   helper_method :coordinator?
   helper_method :coordinator_for?
+  helper_method :proofreader?
 
   private
 
@@ -33,6 +34,10 @@ class ApplicationController < ActionController::Base
 
   def coordinator_for?(track)
     admin? or (coordinator? and current_user.tracks.include?track)
+  end
+
+  def proofreader?
+    admin? or (current_user && current_user.proofreader?)
   end
 
   def current_permission

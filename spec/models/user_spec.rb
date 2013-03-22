@@ -47,6 +47,41 @@ describe User do
     end
   end
 
+  describe '#display_roles' do
+    it 'no roles for no roles' do
+      u = build(:user)
+      u.display_roles.should == []
+    end
+
+    it 'admin if admin?' do
+      u = build(:user, admin: true)
+      u.display_roles.should include'Admin'
+    end
+
+    it 'coordinator if tracks' do
+      u = build(:user, tracks: ['Middle Eastern'])
+      u.display_roles.should include'Coordinator'
+    end
+
+    it 'proofreader if proofreader?' do
+      u = build(:user, proofreader: true)
+      u.display_roles.should include'Proofreader'
+    end
+
+    it 'PU Staff if pu_staff?' do
+      u = build(:user, pu_staff: true)
+      u.display_roles.should include'PU Staff'
+    end
+
+    it 'returns them all' do
+      u = build(:user, admin: true, proofreader: true, pu_staff: true, tracks: ['Middle Eastern'])
+      u.display_roles.should include'Admin'
+      u.display_roles.should include'Coordinator'
+      u.display_roles.should include'Proofreader'
+      u.display_roles.should include'PU Staff'
+    end
+  end
+
   describe '#instructables_session_count' do
     it 'returns 0 if no instructables' do
       u = create(:user)

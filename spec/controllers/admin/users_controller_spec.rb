@@ -10,7 +10,8 @@ describe Admin::UsersController do
     it "renders user's name, email, and track" do
       log_in admin: true, mundane_name: 'Fred', tracks: [Instructable::TRACKS.keys.first, Instructable::TRACKS.keys.last]
       visit admin_users_path
-      find('.admin').should have_content('Yes')
+      find('.roles').should have_content('Admin')
+      find('.roles').should have_content('Coordinator')
       find('.display_name').should have_content('Fred')
       find('.display_name').should have_content current_user.email
       for track in current_user.tracks

@@ -8,5 +8,6 @@ FactoryGirl.define do
     duration 1
     topic Instructable::TOPICS.keys.first
     location_type 'track'
+    is_proofreader { |u| u.proofread? }
   end
 end

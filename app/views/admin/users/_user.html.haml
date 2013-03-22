@@ -11,6 +11,5 @@
       = user.instructables_session_count
     - else
       = "-"
-  %td.pu_staff= user.pu_staff? ? 'Yes' : '-'
-  %td.admin= user.admin? ? 'Yes' : '-'
+  %td.roles= user.display_roles.join(", ")
   %td.last_login= pretty_date_from_now(user.current_sign_in_at)

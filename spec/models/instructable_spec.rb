@@ -221,4 +221,29 @@ describe Instructable do
       found.should == [get_date(1), get_date(2), get_date(3)]
     end
   end
+
+  describe "proofread" do
+    describe "on update" do
+      before :each do
+        @instructable = create(:instructable, proofread: true, is_proofreader: true)
+        @instructable = Instructable.find @instructable.id
+      end
+
+      it "clears on name change" do
+        @instructable.proofread.should be_true
+        @instructable.name = "Flarg"
+        @instructable.save!
+        @instructable.reload
+        @instructable.proofread.should_not be_true
+      end
+
+      it "unafffected on duration change" do
+        @instructable.proofread.should be_true
+        @instructable.duration = @instructable.duration + 1
+        @instructable.save!
+        @instructable.reload
+        @instructable.proofread.should be_true
+      end
+    end
+  end
 end

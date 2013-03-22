@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130309232231) do
+ActiveRecord::Schema.define(:version => 20130322232227) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(:version => 20130309232231) do
     t.string   "track"
     t.boolean  "scheduled",                 :default => false
     t.string   "location_type",             :default => "track"
+    t.boolean  "proofread",                 :default => false
   end
 
   create_table "instructor_profile_contacts", :force => true do |t|
@@ -107,6 +108,7 @@ ActiveRecord::Schema.define(:version => 20130309232231) do
     t.boolean  "no_contact",             :default => false
     t.date     "available_days",                                            :array => true
     t.boolean  "instructor",             :default => false
+    t.boolean  "proofreader",            :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

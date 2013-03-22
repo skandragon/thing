@@ -38,6 +38,12 @@ class Permission
       allow 'coordinator/instructables', :index
       allow 'coordinator/conflicts', :index
     end
+
+    if user && user.proofreader?
+      allow 'proofreader/instructables', :all do
+        true
+      end
+    end
   end
 
   def allow?(controller, action, resource = nil)

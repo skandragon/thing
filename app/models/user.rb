@@ -128,6 +128,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  #
+  # Return a list of roles.
+  #
+  def display_roles
+    roles = []
+    roles << "Instructor" if instructor?
+    roles << "Coordinator" if coordinator?
+    roles << "Admin" if admin?
+    roles << "Proofreader" if proofreader?
+    roles << "PU Staff" if pu_staff?
+    roles
+  end
+
   private
 
   def generate_access_token

@@ -51,6 +51,23 @@ describe Permission do
       should allow(:instructables, :edit, instructable)
       should_not allow(:instructables, :new, other_instructable)
       should_not allow(:instructables, :edit, other_instructable)
+      should_not allow(:proofreader, :edit)
+    }
+  end
+
+  #
+  # Proofreaders can edit any instructable, but only with limited
+  # fields.
+  #
+  describe "as proofreader" do
+    let(:user) { create(:proofreader) }
+
+    subject { Permission.new(user) }
+
+    it {
+      should allow('proofreader/instructables', :index)
+      should allow('proofreader/instructables', :edit)
+      should allow('proofreader/instructables', :update)
     }
   end
 
@@ -71,6 +88,7 @@ describe Permission do
       should allow(:instructables, :edit, instructable)
       should allow(:instructables, :edit, other_track_instructable)
       should_not allow(:instructables, :edit, other_nontrack_instructable)
+      should_not allow(:proofreader, :edit)
     }
   end
 

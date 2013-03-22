@@ -148,6 +148,17 @@ class Instructable < ActiveRecord::Base
   before_validation :check_fees_for_zero
   before_validation :set_default_track, on: :create
   before_save :update_scheduled_flag
+  after_save :check_for_proofread_changes
+
+  def is_proofreader=(value)
+    @is_proofreader = value
+  end
+
+  PROOFREADER_FIELDS = [
+    :description_web, :description_book, :name,
+    :camp_name, :camp_address,
+    :culture, :topic, :subtopic, :proofread,
+  ]
 
   def location_nontrack?
     location_type != 'track'
@@ -278,6 +289,16 @@ class Instructable < ActiveRecord::Base
     end
     if material_fee.present?
       self.material_fee = nil if handout_fee.to_f == 0.0
+    end
+  end
+
+  def check_for_proofread_changes
+    return(true) if !proofread? or @is_proofreader
+    changes.keys.each do |field_name|
+      if PROOFREADER_FIELDS.include?(field_name.to_sym)
+        update_column(:proofread, false) #bypasses callbacks, or we'd loop
+        return true
+      end
     end
   end
 end

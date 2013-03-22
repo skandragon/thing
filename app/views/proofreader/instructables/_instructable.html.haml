@@ -1,0 +1,5 @@
+%tr
+  %td= link_to(instructable.name, edit_proofreader_instructable_path(instructable))
+  %td= instructable.track
+  %td= instructable.formatted_culture_and_topic
+  %td= instructable.proofread? ? "Yes" : "No"

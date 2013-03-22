@@ -12,6 +12,10 @@ Thing::Application.routes.draw do
     resources :conflicts
   end
 
+  namespace :proofreader do
+    resources :instructables
+  end
+
   match 'sitemap(.:format)' => 'sitemap#index'
 
   match 'about/:action' => 'about'
