@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CalendarsController, focus: true do
+describe CalendarsController do
   def create_instructables
     @user1 = create(:instructor)
     @user2 = create(:instructor)
