@@ -11,26 +11,15 @@ FactoryGirl.define do
     password_confirmation { |u| u.password }
   end
 
-  factory :instructor, class: User do
+  factory :instructor, parent: :user do
     instructor true
     sequence(:sca_name) { |n| "rothgar#{n}" }
     sca_title 'lord'
     kingdom 'ansteorra'
-    phone_number '+1 405.555.1212'
-    mundane_name 'Bob Smith'
-    email { generate :email }
-    password "abcd1234"
-    password_confirmation { |u| u.password }
     class_limit 4
   end
 
-  factory :proofreader, class: User do
-    sequence(:sca_name) { |n| "rothgar#{n}" }
-    phone_number '+1 405.555.1212'
-    mundane_name 'Bob Smith'
-    email { generate :email }
-    password "abcd1234"
-    password_confirmation { |u| u.password }
+  factory :proofreader, parent: :user do
     proofreader true
   end
 end

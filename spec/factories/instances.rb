@@ -2,8 +2,7 @@
 
 FactoryGirl.define do
   factory :instance do
-    start_time "2013-03-02 14:34:50"
-    end_time "2013-03-02 14:34:50"
+    start_time Instructable::CLASS_DATES[1]
     location "MyString"
   end
 end

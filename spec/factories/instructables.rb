@@ -10,4 +10,10 @@ FactoryGirl.define do
     location_type 'track'
     is_proofreader { |u| u.proofread? }
   end
+
+  factory :scheduled_instructable, parent: :instructable do
+    after(:create) do |instructable, evaluator|
+      create_list(:instance, evaluator.repeat_count, instructable: instructable)
+    end
+  end
 end
