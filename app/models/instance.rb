@@ -71,6 +71,6 @@ class Instance < ActiveRecord::Base
   end
 
   def update_instructable
-    instructable.update_scheduled_flag_from_instance
+    instructable.update_scheduled_flag_from_instance if instructable.present?
   end
 end
