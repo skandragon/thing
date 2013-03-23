@@ -62,38 +62,6 @@ class CalendarsController < ApplicationController
     end
   end
 
-  def show
-    @dates = Instructable::CLASS_DATES
-    @formatted_dates = {}
-    @dates.each do |date|
-      @formatted_dates[date] = Date.parse(date).to_s(:pennsic)
-    end
-
-    @events = {}
-    @dates.each do |date|
-      @events[date] = Instance.where("DATE_TRUNC('day', start_time) = ?", date).order(:start_time, :location)
-    end
-
-    respond_to do |format|
-      format.html { }
-      format.ics {
-        @calendar_name = "PennsicU #{PENNSIC_YEAR}"
-        render_calendar("pennsic-#{PENNSIC_YEAR}-all.ics")
-      }
-      format.pdf {
-        @omit_descriptions = params[:brief].present?
-
-        render_pdf("pennsic-#{PENNSIC_YEAR}-all.pdf", nil, @user)
-      }
-      format.csv {
-        render_csv("pennsic-#{PENNSIC_YEAR}-all.csv")
-      }
-      format.xlsx {
-        render_xlsx("pennsic-#{PENNSIC_YEAR}-all.xlsx")
-      }
-    end
-  end
-
   private
 
   def make_uid(*items)
@@ -238,9 +206,12 @@ class CalendarsController < ApplicationController
     header = [
       { content: "Id", background_color: 'ffffee' },
       { content: "When and Where", background_color: 'ffffee' },
-      { content: "Title and Instructor", background_color: 'ffffee' },
-      { content: "Description", background_color: 'ffffee' }
+      { content: "Title and Instructor", background_color: 'ffffee' }
     ]
+
+    unless @omit_descriptions
+      header << { content: "Description", background_color: 'ffffee' }
+    end
 
     first_page = true
     for date in @dates
@@ -267,12 +238,15 @@ class CalendarsController < ApplicationController
         times << event.formatted_location
         times_content = times.join("\n")
 
-        items << [
+        new_items = [
           { content: @instructable_magic_tokens[event.instructable.id].to_s},
           { content: times_content },
           { content: [ event.instructable.name, event.instructable.user.titled_sca_name ].join("\n\n") },
-          { content: [ event.instructable.description_book, [handout_content, materials_content].compact.join(' ') ].compact.join("\n") },
         ]
+        unless @omit_descriptions
+          new_items << { content: [ event.instructable.description_book, [handout_content, materials_content].compact.join(' ') ].compact.join("\n") }
+        end
+        items << new_items
       end
 
       if @events[date].count > 0
@@ -284,8 +258,16 @@ class CalendarsController < ApplicationController
         pdf.font_size 10
         pdf.move_down 10
 
-        pdf.table(items, header: true, width: 720,
-          column_widths: { 0 => 35, 1 => 100, 2 => 160 },
+        if @omit_descriptions
+          column_widths = { 0 => 35, 1 => 180, 2 => 250 }
+          total_width = column_widths.values.inject(:+)
+        else
+          column_widths = { 0 => 35, 1 => 100, 2 => 160 }
+          total_width = 720
+        end
+
+        pdf.table(items, header: true, width: total_width,
+          column_widths: column_widths,
           cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
       end
     end
