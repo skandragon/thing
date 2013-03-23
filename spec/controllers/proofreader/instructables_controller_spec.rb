@@ -145,7 +145,7 @@ describe Proofreader::InstructablesController do
       visit edit_proofreader_instructable_path(@random_instructable)
       fill_in 'Class title', with: ""
       click_on 'Save and Mark Not Proofread'
-      page.should have_content 'cannot be blank'
+      page.should have_content "can't be blank"
       @random_instructable.reload
       @random_instructable.name.should be_present
       @random_instructable.proofread.should_not be_true
