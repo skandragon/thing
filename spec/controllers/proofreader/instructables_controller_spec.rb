@@ -49,6 +49,22 @@ describe Proofreader::InstructablesController do
       page.should have_select('track')
     end
 
+    it 'filters based on track' do
+      select 'Middle Eastern', from: 'track'
+      click_on 'Filter'
+      page.should have_content 'MEMusicUnscheduledUnproofed'
+      page.should have_content 'MEDanceUnscheduledProofed'
+      page.should have_content 'MEHistoryScheduledProofed'
+    end
+
+    it 'filters based on track of No Track' do
+      select 'No Track', from: 'track'
+      click_on 'Filter'
+      page.should_not have_content 'MEMusicUnscheduledUnproofed'
+      page.should_not have_content 'MEDanceUnscheduledProofed'
+      page.should_not have_content 'MEHistoryScheduledProofed'
+    end
+
     it 'filters based on proofread = 1' do
       select 'Proofread', from: 'proofread'
       click_on 'Filter'
@@ -122,6 +138,16 @@ describe Proofreader::InstructablesController do
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
       @random_instructable.name.should == "Foo Class Name Here"
+      @random_instructable.proofread.should_not be_true
+    end
+
+    it "rejects badness" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in 'Class title', with: ""
+      click_on 'Save and Mark Not Proofread'
+      page.should have_content 'cannot be blank'
+      @random_instructable.reload
+      @random_instructable.name.should be_present
       @random_instructable.proofread.should_not be_true
     end
   end
