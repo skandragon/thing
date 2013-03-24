@@ -1,3 +1,5 @@
+require 'csv'
+
 class CalendarsController < ApplicationController
   PENNSIC_YEAR = 42
 
@@ -7,14 +9,14 @@ class CalendarsController < ApplicationController
       format.ics {
         filename = "pennsic-#{PENNSIC_YEAR}-all.ics"
 
-        @events = PennsicEvent.where("start_time IS NOT NULL")
         @calendar_name = "PennsicU #{PENNSIC_YEAR}"
 
         cache_filename = Rails.root.join("tmp", filename)
         if File.exists?(cache_filename)
           send_file(cache_filename, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
         else
-          render_calendar(filename, cache_filename)
+          load_data
+          render_ics(filename, cache_filename)
         end
       }
       format.pdf {
@@ -35,28 +37,11 @@ class CalendarsController < ApplicationController
         end
       }
       format.csv {
-        @events = PennsicEvent.order(:start_time, :title)
-
+        load_data
         render_csv("pennsic-#{PENNSIC_YEAR}-full.csv")
       }
       format.xlsx {
-        @dates = PennsicEvent.get_dates
-        @formatted_dates = {}
-
-        for date in @dates
-          @formatted_dates[date] = Time.parse(date).strftime("%A, %B %e").gsub(/\ +/, " ")
-        end
-
-        @events = {}
-        for date in @dates
-          @events[date] = PennsicEvent.for_date(date).order(:start_time, :title)
-        end
-        @events[nil] = PennsicEvent.for_date(nil).order(:start_time, :title)
-        if @events[nil].count > 0
-          @dates << nil
-          @formatted_dates[nil] = "No Date"
-        end
-
+        load_data
         render_xlsx("pennsic-#{PENNSIC_YEAR}-full.xlsx")
       }
     end
@@ -71,11 +56,7 @@ class CalendarsController < ApplicationController
     d.hexdigest + "@pennsic.flame.org"
   end
 
-  def date_format(d)
-    d.utc.strftime("%Y%m%dT%H%M%SZ")
-  end
-
-  def render_calendar(filename, cache_filename = nil)
+  def render_ics(filename, cache_filename = nil)
     now = Time.now.utc
 
     calendar = RiCal.Calendar do |cal|
@@ -85,32 +66,32 @@ class CalendarsController < ApplicationController
       cal.add_x_property("X-WR-CALDESC", "PennsicU #{PENNSIC_YEAR} Class Schedule")
       cal.add_x_property("X-PUBLISHED-TTL", "3600")
 
-      for item in @events
+      for instance in @instances
         cal.event do |event|
+          instructable = instance.instructable
           prefix = []
-          prefix << "Subject: #{item.subject}" if item.subject
-          prefix << "Secondary Subject: #{item.subject2}" if item.subject2
-          prefix << "Instructor: #{item.instructor_titled}" if item.instructor_titled
-          prefix << "Additional Instructors: #{item.additional_instructors}" if item.additional_instructors
-          prefix << "Class limit: #{item.class_limit}" if item.class_limit
-          prefix << "Handout limit: #{item.handout_limit}" if item.handout_limit
+          prefix << "Subject: #{instructable.formatted_topic}"
+          prefix << "Instructor: #{instructable.titled_sca_name}"
+          prefix << "Additional Instructors: #{instructable.additional_instructors.join(', ')}" if instructable.additional_instructors.present?
+          prefix << "Material limit: #{instructable.material_limit}" if instructable.material_limit
+          prefix << "Handout limit: #{instructable.handout_limit}" if instructable.handout_limit
 
-          event.dtstamp = date_format(now)
-          event.dtstart = date_format(item.start_time)
-          event.dtend = date_format(item.finish_time)
-          event.summary = item.title
-          event.description = [ prefix.join("\n"), "", item.description ].join("\n")
-          event.location = item.location
-          event.uid = make_uid(item)
+          event.dtstamp = now
+          event.dtstart = instance.start_time
+          event.dtend = instance.end_time
+          event.summary = instructable.name
+          event.description = [ prefix.join("\n"), "", instructable.description_web ].join("\n")
+          event.location = instance.formatted_location
+          event.uid = make_uid(instance)
           event.transp = "OPAQUE"
           event.status = "CONFIRMED"
-          event.sequence = item.updated_at.to_i
+          event.sequence = instructable.updated_at.to_i
         end
       end
     end
 
     data = calendar.to_s.gsub("::", ":")
-    cache_in_file(cache_filename, data)
+#    cache_in_file(cache_filename, data)
     send_data(data, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
@@ -187,8 +168,22 @@ class CalendarsController < ApplicationController
     end
   end
 
+  def render_table(pdf, items, header)
+    return unless items.size > 0
+    if @omit_descriptions
+      column_widths = { 0 => 35, 1 => 180, 2 => 250 }
+      total_width = column_widths.values.inject(:+)
+    else
+      column_widths = { 0 => 35, 1 => 100, 2 => 160 }
+      total_width = 720
+    end
+
+    pdf.table([header] + items, header: true, width: total_width,
+      column_widths: column_widths,
+      cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
+  end
+
   def render_pdf(filename, cache_filename = nil, user = nil)
-    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name)
     generate_magic_tokens
 
     pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :landscape,
@@ -214,63 +209,58 @@ class CalendarsController < ApplicationController
     end
 
     first_page = true
-    for date in @dates
-      items = [ header ]
+    last_date = nil
+    items = []
 
-      for event in @events[date]
-        materials = []
-        handout = []
-        handout << "limit: #{event.instructable.handout_limit}" if event.instructable.handout_limit
-        materials << "limit: #{event.instructable.material_limit}" if event.instructable.material_limit
-
-        handout << "fee: $#{'%.2f' % event.instructable.handout_fee}" if event.instructable.handout_fee
-        materials << "fee: $#{'%.2f' % event.instructable.material_fee}" if event.instructable.material_fee
-
-        handout_content = nil
-        handout_content = "Handout " + handout.join(", ") + '. ' if handout.size > 0
-
-        materials_content = nil
-        materials_content = "Materials " + materials.join(", ") + '. ' if materials.size > 0
-
-        times = []
-        times << event.start_time.strftime("%a %b %e")
-        times << event.start_time.strftime("%I:%M %p") + " - " + event.end_time.strftime("%I:%M")
-        times << event.formatted_location
-        times_content = times.join("\n")
-
-        new_items = [
-          { content: @instructable_magic_tokens[event.instructable.id].to_s},
-          { content: times_content },
-          { content: [ event.instructable.name, event.instructable.user.titled_sca_name ].join("\n\n") },
-        ]
-        unless @omit_descriptions
-          new_items << { content: [ event.instructable.description_book, [handout_content, materials_content].compact.join(' ') ].compact.join("\n") }
+    for instance in @instances
+      if last_date != instance.start_time.to_date
+        if items.size > 0
+          render_table(pdf, items, header)
+          items = []
         end
-        items << new_items
-      end
 
-      if @events[date].count > 0
         pdf.move_down 20 unless first_page
-        first_page = false
-
         pdf.font_size 25
-        pdf.text @formatted_dates[date]
+        pdf.text instance.start_time.to_date.to_s(:pennsic)
         pdf.font_size 10
         pdf.move_down 10
+        last_date = instance.start_time.to_date
 
-        if @omit_descriptions
-          column_widths = { 0 => 35, 1 => 180, 2 => 250 }
-          total_width = column_widths.values.inject(:+)
-        else
-          column_widths = { 0 => 35, 1 => 100, 2 => 160 }
-          total_width = 720
-        end
-
-        pdf.table(items, header: true, width: total_width,
-          column_widths: column_widths,
-          cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
+        first_page = false
       end
+
+      materials = []
+      handout = []
+      handout << "limit: #{instance.instructable.handout_limit}" if instance.instructable.handout_limit
+      materials << "limit: #{instance.instructable.material_limit}" if instance.instructable.material_limit
+
+      handout << "fee: $#{'%.2f' % instance.instructable.handout_fee}" if instance.instructable.handout_fee
+      materials << "fee: $#{'%.2f' % instance.instructable.material_fee}" if instance.instructable.material_fee
+
+      handout_content = nil
+      handout_content = "Handout " + handout.join(", ") + '. ' if handout.size > 0
+
+      materials_content = nil
+      materials_content = "Materials " + materials.join(", ") + '. ' if materials.size > 0
+
+      times = []
+      times << instance.start_time.strftime("%a %b %e")
+      times << instance.start_time.strftime("%I:%M %p") + " - " + instance.end_time.strftime("%I:%M")
+      times << instance.formatted_location
+      times_content = times.join("\n")
+
+      new_items = [
+        { content: @instructable_magic_tokens[instance.instructable.id].to_s},
+        { content: times_content },
+        { content: [ instance.instructable.name, instance.instructable.user.titled_sca_name ].join("\n\n") },
+      ]
+      unless @omit_descriptions
+        new_items << { content: [ instance.instructable.description_book, [handout_content, materials_content].compact.join(' ') ].compact.join("\n") }
+      end
+      items << new_items
     end
+
+    render_table(pdf, items, header)
 
     # Render class summary
     pdf.start_new_page(layout: :portrait)
@@ -318,11 +308,22 @@ class CalendarsController < ApplicationController
   end
 
   def render_csv(filename)
-    column_names = PennsicEvent.column_names - [ 'created_at', 'updated_at', 'start_date' ]
+    column_names = %w(
+      name track culture topic_and_subtopic
+      adult_only
+      description_book description_web
+      duration fee_itemization handout_fee handout_limit material_fee
+      material_limit repeat_count updated_at
+    )
     data = CSV.generate do |csv|
-      csv << column_names
-      @events.each do |event|
-        csv << event.attributes.values_at(*column_names)
+      names = ['id', 'location', 'start_time', 'end_time', 'instructor' ] + column_names
+      csv << names
+      @instances.each do |instance|
+        instructable = instance.instructable
+        user = instructable.user
+        data = [instructable.id, instance.formatted_location, instance.start_time, instance.end_time, instructable.titled_sca_name ]
+        data += instructable.attributes.values_at(*column_names)
+        csv << data
       end
     end
 
@@ -337,33 +338,37 @@ class CalendarsController < ApplicationController
 
       wb.styles do |s|
         header_style = s.add_style :bg_color => "00", :fg_color => "FF"
+        date_format = wb.styles.add_style :format_code => 'MM-DD'
+        time_format = wb.styles.add_style :format_code => 'hh:mm'
 
-        for date in @dates
-          wb.add_worksheet(:name => @formatted_dates[date]) do |sheet|
-            sheet.add_row [
-              "ID",
-              "DateTime",
-              "Duration",
-              "Title",
-              "Subjects",
-              "Source",
-              "Description",
-            ]
+        column_names = %W(
+          name track culture formatted_topic
+          adult_only repeat_count updated_at
+          description_book description_web
+          duration fee_itemization handout_fee handout_limit material_fee
+          material_limit
+        )
+        header = ['id', 'location', 'start_date', 'start_time', 'end_time', 'instructor' ] + column_names
 
-            for event in @events[date]
-              sheet.add_row [
-                event.id,
-                event.start_time ? event.start_time.strftime("%y-%m-%d %H:%M") : nil,
-                event.duration,
-                event.title,
-                [ event.subject, event.subject2 ].compact.join("\n"),
-                event.data_source,
-                event.description,
-              ]
+        wb.add_worksheet(:name => "Pennsic #{PENNSIC_YEAR}") do |sheet|
+          sheet.add_row header
+
+          for instance in @instances
+            instructable = instance.instructable
+            user = instructable.user
+            data = [instructable.id, instance.formatted_location, instance.start_time.to_date, instance.start_time.to_time, instance.end_time.to_time, instructable.titled_sca_name ]
+            column_names.each do |column_name|
+              data += [ instructable.send(column_name) ]
             end
 
-            sheet.row_style 0, header_style
+            sheet.add_row data, style: [
+              nil, nil, date_format, time_format, time_format, nil,
+              nil, nil, nil, nil, nil, nil, date_format,
+            ]
+            sheet.column_widths 4, 10, 6, 6, 6, nil, nil, nil, nil, nil, nil, 4, 6
           end
+
+          sheet.row_style 0, header_style
         end
       end
 
@@ -382,16 +387,7 @@ class CalendarsController < ApplicationController
   end
 
   def load_data
-    @dates = Instructable::CLASS_DATES
-    @formatted_dates = {}
-
-    for date in @dates
-      @formatted_dates[date] = Time.parse(date).strftime("%A, %B %e").gsub(/\ +/, " ")
-    end
-
-    @events = {}
-    for date in @dates
-      @events[date] = Instance.for_date(date).order(:start_time, :location).includes(:instructable => [ :user ])
-    end
+    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:user)
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order(:start_time, :location).includes(:instructable)
   end
 end

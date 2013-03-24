@@ -6,9 +6,76 @@ describe CalendarsController do
     @user2 = create(:instructor)
     @instructable1 = create(:scheduled_instructable, user_id: @user1.id)
     @instructable2 = create(:scheduled_instructable, user_id: @user2.id)
+  end
 
-    @instructable1.update_column(:scheduled, true)
-    @instructable2.update_column(:scheduled, true)
+  describe "XSLS" do
+    describe "without classes" do
+      it "renders full" do
+        visit calendars_path(format: :xlsx)
+        page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      end
+    end
+
+    describe "with classes" do
+      before :each do
+        create_instructables
+      end
+
+      it "renders full" do
+        visit calendars_path(format: :xlsx)
+        page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      end
+    end
+  end
+
+  describe "CSV" do
+    describe "without classes" do
+      it "renders full" do
+        visit calendars_path(format: :csv)
+        page.response_headers['Content-Type'].should == 'text/csv'
+        page.body.should_not be_blank
+      end
+    end
+
+    describe "with classes" do
+      before :each do
+        create_instructables
+      end
+
+      it "renders full" do
+        visit calendars_path(format: :csv)
+        page.response_headers['Content-Type'].should == 'text/csv'
+        page.body.should_not be_blank
+        page.body.should match @instructable1.name
+        page.body.should match @instructable2.name
+      end
+    end
+  end
+
+  describe "ICS" do
+    describe "without classes" do
+      it "renders full" do
+        visit calendars_path(format: :ics)
+        page.response_headers['Content-Type'].should == 'text/calendar'
+        page.body.should_not be_blank
+        page.body[0..14].should == 'BEGIN:VCALENDAR'
+      end
+    end
+
+    describe "with classes" do
+      before :each do
+        create_instructables
+      end
+
+      it "renders full" do
+        visit calendars_path(format: :ics)
+        page.response_headers['Content-Type'].should == 'text/calendar'
+        page.body.should_not be_blank
+        page.body[0..14].should == 'BEGIN:VCALENDAR'
+        page.body.should match @instructable1.name
+        page.body.should match @instructable2.name
+      end
+    end
   end
 
   describe "PDF" do
