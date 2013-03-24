@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -76,3 +76,4 @@ gem "resque", require: "resque/server"
 gem 'multa_arcana'
 gem 'rubyzip'
 gem 'prawn', '>= 1.0.0.rc2'
+gem 'ri_cal'
