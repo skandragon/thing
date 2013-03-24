@@ -19,7 +19,7 @@
               /%li= link_to 'iCalendar', calendars_path(format: :ics)
               %li= link_to 'Excel (spreadsheet)', calendars_path(format: :xlsx)
               %li= link_to 'CSV (spreadsheet)', calendars_path(format: :csv)
-            
+
           - if instructor?
             %li.dropdown
               %a.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}
