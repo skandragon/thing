@@ -62,6 +62,7 @@ class CalendarsController < ApplicationController
     now = Time.now.utc
 
     calendar = RiCal.Calendar do |cal|
+      cal.default_tzid = "America/New_York"
       cal.prodid = "//flame.org//PennsicU Converter.0//EN"
       cal.add_x_property("X-WR-CALNAME", @calendar_name)
       cal.add_x_property("X-WR-RELCALID", make_uid(@calendar_name)) # should be static per calendar
@@ -79,6 +80,7 @@ class CalendarsController < ApplicationController
           prefix << "Handout limit: #{instructable.handout_limit}" if instructable.handout_limit
 
           event.dtstamp = now
+          event.created = instance.instructable.created_at
           event.dtstart = instance.start_time
           event.dtend = instance.end_time
           event.summary = instructable.name
