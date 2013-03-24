@@ -15,11 +15,22 @@
 #  last_sign_in_ip        :string(255)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  name                   :string(255)
+#  mundane_name           :string(255)
 #  access_token           :string(255)
 #  admin                  :boolean          default(FALSE)
 #  pu_staff               :boolean
 #  tracks                 :string(255)      default([])
+#  sca_name               :string(255)
+#  sca_title              :string(255)
+#  phone_number           :string(255)
+#  class_limit            :integer
+#  kingdom                :string(255)
+#  phone_number_onsite    :string(255)
+#  contact_via            :text
+#  no_contact             :boolean          default(FALSE)
+#  available_days         :date
+#  instructor             :boolean          default(FALSE)
+#  proofreader            :boolean          default(FALSE)
 #
 
 require 'spec_helper'

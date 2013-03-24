@@ -19,24 +19,25 @@
 #  topic                     :string(255)
 #  subtopic                  :string(255)
 #  description_book          :text
+#  additional_instructors    :string(255)
 #  camp_name                 :string(255)
 #  camp_address              :string(255)
 #  camp_reason               :string(255)
 #  adult_only                :boolean          default(FALSE)
 #  adult_reason              :string(255)
 #  fee_itemization           :text
+#  requested_days            :date
 #  repeat_count              :integer          default(0)
 #  scheduling_additional     :text
+#  special_needs             :string(255)
 #  special_needs_description :text
 #  heat_source               :boolean          default(FALSE)
 #  heat_source_description   :text
-#  additional_instructors    :string(255)
-#  requested_days            :date
-#  special_needs             :string(255)
 #  requested_times           :string(255)
 #  track                     :string(255)
 #  scheduled                 :boolean          default(FALSE)
 #  location_type             :string(255)      default("track")
+#  proofread                 :boolean          default(FALSE)
 #
 
 class Instructable < ActiveRecord::Base

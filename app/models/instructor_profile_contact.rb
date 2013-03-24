@@ -3,12 +3,12 @@
 #
 # Table name: instructor_profile_contacts
 #
-#  id                    :integer          not null, primary key
-#  instructor_profile_id :integer
-#  protocol              :string(255)
-#  address               :string(255)
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  id         :integer          not null, primary key
+#  protocol   :string(255)
+#  address    :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :integer
 #
 
 class InstructorProfileContact < ActiveRecord::Base
