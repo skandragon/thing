@@ -7,6 +7,7 @@
       %th Duration
       %th Where
       %th Name
+      %th Instructor
       %th Description
   %tbody
     - @instances.each do |instance|
@@ -18,6 +19,7 @@
         %td= instance.instructable.duration
         %td= instance.formatted_location
         %td= instance.instructable.name
+        %td= instance.instructable.user.titled_sca_name
         %td= instance.instructable.description_web.present? ? instance.instructable.description_web : instance.instructable.description_book
 
 %p.alert.alert-info Rendered: #{Time.now}

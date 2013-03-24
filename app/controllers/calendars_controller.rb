@@ -321,10 +321,8 @@ class CalendarsController < ApplicationController
       names = ['id', 'location', 'start_time', 'end_time', 'instructor' ] + column_names
       csv << names
       @instances.each do |instance|
-        instructable = instance.instructable
-        user = instructable.user
-        data = [instructable.id, instance.formatted_location, instance.start_time, instance.end_time, instructable.titled_sca_name ]
-        data += instructable.attributes.values_at(*column_names)
+        data = [instance.instructable.id, instance.formatted_location, instance.start_time, instance.end_time, instance.instructable.user.titled_sca_name ]
+        data += instance.instructable.attributes.values_at(*column_names)
         csv << data
       end
     end
@@ -389,7 +387,7 @@ class CalendarsController < ApplicationController
   end
 
   def load_data
-    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:user)
-    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order(:start_time, :location).includes(:instructable)
+    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name)
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order(:start_time, :location).includes(instructable: [:user])
   end
 end
