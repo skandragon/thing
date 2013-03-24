@@ -1,0 +1,23 @@
+- title "Foo"
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th When
+      %th Duration
+      %th Where
+      %th Name
+      %th Description
+  %tbody
+    - @instances.each do |instance|
+      %tr
+        %td
+          = instance.start_time.strftime("%m-%d")
+          %br
+          = instance.start_time.strftime("%H:%M")
+        %td= instance.instructable.duration
+        %td= instance.formatted_location
+        %td= instance.instructable.name
+        %td= instance.instructable.description_web.present? ? instance.instructable.description_web : instance.instructable.description_book
+
+%p.alert.alert-info Rendered: #{Time.now}

@@ -5,7 +5,9 @@ class CalendarsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html
+      format.html {
+        load_data
+      }
       format.ics {
         filename = "pennsic-#{PENNSIC_YEAR}-all.ics"
 

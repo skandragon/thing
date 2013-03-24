@@ -8,6 +8,27 @@ describe CalendarsController do
     @instructable2 = create(:scheduled_instructable, user_id: @user2.id)
   end
 
+  describe "HTML" do
+      describe "without classes" do
+        it "renders full" do
+          visit calendars_path
+        end
+      end
+
+      describe "with classes" do
+        before :each do
+          create_instructables
+        end
+
+        it "renders full" do
+          visit calendars_path
+          page.should have_content @instructable1.name
+          page.should have_content @instructable2.name
+        end
+      end
+    end
+
+
   describe "XSLS" do
     describe "without classes" do
       it "renders full" do
