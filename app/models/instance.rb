@@ -21,10 +21,6 @@ class Instance < ActiveRecord::Base
 
   validate :validate_start_time
 
-  scope :for_date, lambda { |date|
-    where("DATE_TRUNC('day', start_time) = ?", date)
-  }
-
   def formatted_location
     if instructable.location_nontrack?
       return instructable.formatted_nontrack_location
@@ -68,9 +64,11 @@ class Instance < ActiveRecord::Base
         self.end_time = start_time + instructable.duration.hours
       end
     end
+    true
   end
 
   def update_instructable
     instructable.update_scheduled_flag_from_instance if instructable.present?
+    true
   end
 end
