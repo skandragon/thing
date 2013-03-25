@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130322232227) do
+ActiveRecord::Schema.define(:version => 20130323030559) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -24,6 +24,17 @@ ActiveRecord::Schema.define(:version => 20130322232227) do
   end
 
   add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
+
+  create_table "changelog", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "model_id"
+    t.string   "action"
+    t.string   "model_name"
+    t.text     "changelog"
+    t.boolean  "notified",   :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "instances", :force => true do |t|
     t.integer  "instructable_id"
