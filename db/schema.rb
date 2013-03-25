@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20130323030559) do
 
   add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
 
-  create_table "changelog", :force => true do |t|
+  create_table "changelogs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "model_id"
     t.string   "action"

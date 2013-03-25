@@ -130,6 +130,7 @@ describe Proofreader::InstructablesController do
       @random_instructable.reload
       @random_instructable.name.should == "Foo Class Name Here"
       @random_instructable.proofread.should be_true
+      Changelog.count.should == 1
     end
 
     it "submits, updates, marks not proofread" do
@@ -139,6 +140,7 @@ describe Proofreader::InstructablesController do
       @random_instructable.reload
       @random_instructable.name.should == "Foo Class Name Here"
       @random_instructable.proofread.should_not be_true
+      Changelog.count.should == 1
     end
 
     it "rejects badness" do
@@ -149,6 +151,14 @@ describe Proofreader::InstructablesController do
       @random_instructable.reload
       @random_instructable.name.should be_present
       @random_instructable.proofread.should_not be_true
+    end
+
+    it "does not create a changelog on badness" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in 'Class title', with: ""
+      click_on 'Save and Mark Not Proofread'
+      page.should have_content "can't be blank"
+      Changelog.count.should == 0
     end
   end
 end

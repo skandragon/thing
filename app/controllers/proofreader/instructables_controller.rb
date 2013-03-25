@@ -52,8 +52,10 @@ class Proofreader::InstructablesController < ApplicationController
     elsif params['commit'] == 'Save and Mark Proofread'
       @instructable.proofread = true
     end
+    changelog = Changelog.build_changes('update', @instructable, current_user)
     if @instructable.update_attributes(permitted_params)
       @instructable.cleanup_unneeded_instances
+      changelog.save # failure is an option...
       redirect_to session[:instructable_back] || proofreader_instructables_path, notice: "Class updated."
     else
       render action: :edit

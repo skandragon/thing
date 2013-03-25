@@ -52,12 +52,14 @@ describe InstructablesController do
         select 'History', from: 'Topic'
         click_on 'Create class'
         page.should have_content('Class created.')
+        Changelog.count.should == 1
       end
 
       it "does not with bad data" do
         visit new_user_instructable_path(current_user)
         click_on 'Create class'
         page.should have_content("can't be blank")
+        Changelog.count.should == 0
       end
 
       it "has one submit button" do
@@ -132,6 +134,7 @@ describe InstructablesController do
         instructable.reload
         instructable.name.should == 'Foo Class Name'
         instructable.description_book.should == 'Foo Description'
+        Changelog.count.should == 1
       end
 
       it "does not with bad data" do
@@ -140,6 +143,7 @@ describe InstructablesController do
         fill_in 'Class title', with: ''
         click_on 'Update class'
         page.should have_content("can't be blank")
+        Changelog.count.should == 0
       end
 
       it "has one submit button" do
@@ -230,6 +234,7 @@ describe InstructablesController do
         page.should have_content "Are you sure you want to delete"
         click_on "Yes, I'm positively certain."
         page.should have_content("Class deleted.")
+        Changelog.count.should == 1
       end
     end
   end
@@ -264,6 +269,7 @@ describe InstructablesController do
       page.should have_content 'Class updated.'
       @other_instructable.reload
       @other_instructable.approved.should be_true
+      Changelog.count.should == 1
     end
 
     it "shows repeat_count sessions" do
@@ -329,6 +335,7 @@ describe InstructablesController do
       page.should have_content 'Class updated.'
       @other_instructable.reload
       @other_instructable.track.should == 'Performing Arts'
+      Changelog.count.should == 1
     end
 
     it "has no options in location select if track is empty", js: true do

@@ -20,7 +20,9 @@ class Admin::UsersController < ApplicationController
   end
 
   def update
+    changelog = Changelog.build_changes('update', current_resource, current_user)
     if current_resource.update_attributes(user_params)
+      changelog.save # failure is an option...
       redirect_to admin_users_path, notice: "User updated."
     else
       render action: :edit
