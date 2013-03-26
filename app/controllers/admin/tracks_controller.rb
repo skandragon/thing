@@ -9,6 +9,7 @@ class Admin::TracksController < ApplicationController
     @instructable_session_count = Instructable.sum(:repeat_count)
     @instructor_count = Instructable.pluck(:user_id).uniq.size
     @total_hours = Instructable.sum("duration * repeat_count")
+    @needs_proofread_count = @instructable_count - Instructable.where(:proofread => true).count
 
     @percent_completed = {}
     Instructable::TRACKS.keys.each do |track|
