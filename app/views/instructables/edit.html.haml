@@ -97,7 +97,7 @@
     = f.input :location_type, label: "Private camp or merchant?", as: :select, collection: [['No', 'track'], ['Merchant Booth', 'merchant-booth'], ['Private Camp', 'private-camp']], include_blank: false
     #location-camp
       = f.input :camp_name, required: true, label: "Camp or Merchant Booth Name", hint: "If this class is being taught in a camp or merchant booth, enter the camp or merchant name."
-      = f.input :camp_address, label: "Camp or Booth Location", hint: "If using a camp or merchant booth, enter it's location here (e.g, N06)"
+      = f.input :camp_address, label: "Camp or Booth Location", hint: "If using a camp or merchant booth, enter its location here (e.g, N06)"
       = f.input :camp_reason, required: true, label: "Reason for teaching in a private camp or booth"
 
   %fieldset

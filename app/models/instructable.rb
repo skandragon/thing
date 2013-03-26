@@ -187,11 +187,11 @@ class Instructable < ActiveRecord::Base
   end
 
   def formatted_topic
-    [ topic, subtopic ].select(&:present?).join(' : ')
+    [ topic, subtopic ].select(&:present?).join(': ')
   end
 
   def formatted_culture_and_topic
-    [culture, formatted_topic].select(&:present?).join(' : ')
+    [culture, formatted_topic].select(&:present?).join(': ')
   end
 
   def formatted_nontrack_location
