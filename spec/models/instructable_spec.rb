@@ -130,14 +130,14 @@ describe Instructable do
       @instructable.culture = "culture"
       @instructable.topic = "topic"
       @instructable.subtopic = "subtopic"
-      @instructable.formatted_culture_and_topic.should == "culture : topic : subtopic"
+      @instructable.formatted_culture_and_topic.should == "culture: topic: subtopic"
     end
 
     it "renders with culture and topic" do
       @instructable.culture = "culture"
       @instructable.topic = "topic"
       @instructable.subtopic = ""
-      @instructable.formatted_culture_and_topic.should == "culture : topic"
+      @instructable.formatted_culture_and_topic.should == "culture: topic"
     end
 
     it "renders with only topic" do
