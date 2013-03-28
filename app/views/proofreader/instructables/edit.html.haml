@@ -5,13 +5,19 @@
 = simple_form_for @instructable, url: proofreader_instructable_path(@instructable), html: { :class => "form-horizontal" } do |f|
   %fieldset
     %legend Class Information
-    = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }
+    = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'span5' }
     = f.input :description_book, label: "Description (book)", input_html: { rows: 3, maxlength: 150, class: 'input-xxlarge' }, hint: "Book description limited to 150 characters"
     = f.input :description_web, label: "Description (web)", input_html: { rows: 3, class: 'input-xxlarge' }, hint: "Web description is not limited, but please keep it concise.  If this is blank, the book description will be used."
     = f.input :culture, collection: Instructable::CULTURES, hint: "If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus."
     = f.input :topic, collection: Instructable::TOPICS.keys, hint: "Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies."
     #subtopic
       = f.input :subtopic, collection: Instructable::TOPICS[@instructable.topic] || []
+
+  %p.alert.alert-info Preview of book description:
+  = markdown_html(@instructable.description_book)
+
+  %p.alert.alert-info Preview of web description:
+  = markdown_html(@instructable.description_web)
 
   - if @instructable.location_nontrack?
     %fieldset

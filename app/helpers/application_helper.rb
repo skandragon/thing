@@ -18,4 +18,19 @@ module ApplicationHelper
     end
     ret
   end
+
+  def markdown_html(text)
+    return '' if text.blank?
+
+    @markdown_renderer ||= Redcarpet::Render::XHTML.new(
+      :filter_html => true,
+      :no_images => true,
+      :no_links => true,
+      :no_styles => true)
+    @markdown ||= Redcarpet::Markdown.new(@markdown_renderer,
+                               :no_intra_emphasis => true,
+                               :strikethrough => true,
+                               :superscript => true)
+    @markdown.render(text).html_safe
+  end
 end

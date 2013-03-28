@@ -20,6 +20,6 @@
         %td= instance.formatted_location
         %td= instance.instructable.name
         %td= instance.instructable.titled_sca_name
-        %td= instance.instructable.description_web.present? ? instance.instructable.description_web : instance.instructable.description_book
+        %td= markdown_html(instance.instructable.description_web.present? ? instance.instructable.description_web : instance.instructable.description_book)
 
 %p.alert.alert-info Rendered: #{Time.now}

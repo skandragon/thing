@@ -24,4 +24,31 @@ describe ApplicationHelper do
       helper.pretty_date_from_now(now + 10).should == 'in less than a minute'
     end
   end
+
+  describe '#markdown_html' do
+    it "renders markdown" do
+      message = helper.markdown_html("this is a test")
+      message.strip.should == '<p>this is a test</p>'
+    end
+
+    it "renders blank string" do
+      message = helper.markdown_html("")
+      message.strip.should == ''
+    end
+
+    it "renders nil as blank string" do
+      message = helper.markdown_html(nil)
+      message.strip.should == ''
+    end
+
+    it "renders italic" do
+      message = helper.markdown_html("this *is* a test")
+      message.strip.should == '<p>this <em>is</em> a test</p>'
+    end
+
+    it "renders bold" do
+      message = helper.markdown_html("this **is** a test")
+      message.strip.should == '<p>this <strong>is</strong> a test</p>'
+    end
+  end
 end
