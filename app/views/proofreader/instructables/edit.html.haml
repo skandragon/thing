@@ -19,6 +19,14 @@
   %p.alert.alert-info Preview of web description:
   %p= markdown_html(@instructable.description_web)
 
+  %fieldset
+    %legend Handouts and Materials
+    = f.input :handout_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: "In dollars"
+    = f.input :handout_limit, as: :string, input_html: { pattern: '\d*' }
+    = f.input :material_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: "In dollars"
+    = f.input :material_limit, as: :string, input_html: { pattern: '\d*' }
+    = f.input :fee_itemization, input_html: { rows: 3 }
+
   - if @instructable.location_nontrack?
     %fieldset
       %legend Location

@@ -159,6 +159,8 @@ class Instructable < ActiveRecord::Base
     :description_web, :description_book, :name,
     :camp_name, :camp_address,
     :culture, :topic, :subtopic, :proofread,
+    :handout_fee, :handout_limit, :material_fee, :material_limit,
+    :fee_itemization,
   ]
 
   def location_nontrack?
