@@ -300,6 +300,7 @@ DEPENDENCIES
   devise
   factory_girl_rails
   haml-rails
+  htmlentities
   jquery-rails
   launchy
   less-rails

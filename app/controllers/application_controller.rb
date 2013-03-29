@@ -11,8 +11,34 @@ class ApplicationController < ActionController::Base
   helper_method :coordinator?
   helper_method :coordinator_for?
   helper_method :proofreader?
+  helper_method :markdown_html
 
   private
+
+  def helpers
+    @helper ||= Helper.instance
+  end
+
+  class Helper
+    include Singleton
+    include ActionView::Helpers::TextHelper
+  end
+
+  def markdown_html(text)
+    return '' if text.blank?
+
+    @markdown_renderer ||= Redcarpet::Render::XHTML.new(
+      :filter_html => true,
+      :no_images => true,
+      :no_links => true,
+      :no_styles => true)
+    @markdown ||= Redcarpet::Markdown.new(@markdown_renderer,
+                               :no_intra_emphasis => true,
+                               :strikethrough => true,
+                               :superscript => true)
+    @coder ||= HTMLEntities.new
+    helpers.sanitize @coder.decode(@markdown.render(text)), tags: %w(strong em sup del)
+  end
 
   def miniprofiler
     if current_user && admin? && current_user.email == 'explorer@flame.org'

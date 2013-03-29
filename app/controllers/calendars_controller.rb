@@ -259,7 +259,7 @@ class CalendarsController < ApplicationController
         { content: [ instance.instructable.name, instance.instructable.user.titled_sca_name ].join("\n\n") },
       ]
       unless @omit_descriptions
-        new_items << { content: [ instance.instructable.description_book, [handout_content, materials_content].compact.join(' ') ].compact.join("\n") }
+        new_items << { inline_format: true, content: [ markdown_html(instance.instructable.description_book), [handout_content, materials_content].compact.join(' ') ].compact.join("\n") }
       end
       items << new_items
     end
@@ -289,7 +289,7 @@ class CalendarsController < ApplicationController
         pdf.text "Instructor: #{instructable.user.titled_sca_name}"
         pdf.text "Taught: " + instructable.instances.map(&:formatted_location_and_time).join(", ")
         pdf.move_down 5
-        pdf.text instructable.description_web.present? ? instructable.description_web : instructable.description_book
+        pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true
       end
 
       last_topic = instructable.topic

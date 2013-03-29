@@ -14,10 +14,10 @@
       = f.input :subtopic, collection: Instructable::TOPICS[@instructable.topic] || []
 
   %p.alert.alert-info Preview of book description:
-  = markdown_html(@instructable.description_book)
+  %p= markdown_html(@instructable.description_book)
 
   %p.alert.alert-info Preview of web description:
-  = markdown_html(@instructable.description_web)
+  %p= markdown_html(@instructable.description_web)
 
   - if @instructable.location_nontrack?
     %fieldset
