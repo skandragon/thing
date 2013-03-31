@@ -13,7 +13,7 @@ FactoryGirl.define do
 
   factory :scheduled_instructable, parent: :instructable do
     after(:create) do |instructable, evaluator|
-      create_list(:instance, evaluator.repeat_count, instructable_id: instructable.id)
+      create_list(:instance, instructable.repeat_count, location: 'A&S 1', start_time: Instructable::CLASS_DATES[1], instructable_id: instructable.id)
     end
   end
 end

@@ -37,6 +37,7 @@ class Permission
       end
       allow 'coordinator/instructables', :index
       allow 'coordinator/conflicts', :index
+      allow 'coordinator/locations', :all
     end
 
     if user && user.proofreader?

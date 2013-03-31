@@ -87,6 +87,8 @@ describe Permission do
     it {
       should allow(:instructables, :edit, instructable)
       should allow(:instructables, :edit, other_track_instructable)
+      should allow('coordinator/conflicts', :index)
+      should allow('coordinator/locations', :anything)
       should_not allow(:instructables, :edit, other_nontrack_instructable)
       should_not allow(:proofreader, :edit)
     }

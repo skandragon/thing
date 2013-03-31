@@ -10,6 +10,11 @@ Thing::Application.routes.draw do
   namespace :coordinator do
     resources :instructables
     resources :conflicts
+    resources :locations do
+      collection do
+        get :timesheets
+      end
+    end
   end
 
   namespace :proofreader do

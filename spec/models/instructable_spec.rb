@@ -247,4 +247,26 @@ describe Instructable do
       end
     end
   end
+
+  describe '::locations' do
+    it 'renders all' do
+      locations = Instructable::locations
+      keys = locations.keys
+      keys.should include 'A&S 2'
+
+      items = locations['A&S 2']
+      items.should include 'Pennsic University'
+      items.should include 'Heraldry'
+    end
+
+    it 'renders just for specific tracks' do
+      locations = Instructable::locations('Pennsic University')
+      keys = locations.keys
+      keys.should include 'A&S 2'
+
+      items = locations['A&S 2']
+      items.should include 'Pennsic University'
+      items.size.should == 1
+    end
+  end
 end

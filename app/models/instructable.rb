@@ -108,6 +108,20 @@ class Instructable < ActiveRecord::Base
     'Youth Combat' => [ 'Youth Combat' ],
   }
 
+  def self.locations(filter = nil)
+    filter = Array(filter) unless filter.nil?
+    ret = {}
+    TRACKS.each do |track, locations|
+      if filter.nil? or filter.include?(track)
+        locations.each do |location|
+          ret[location] ||= []
+          ret[location] << track
+        end
+      end
+    end
+    ret
+  end
+
   validates_presence_of :name
   validates_length_of :name, :within => 3..50
 

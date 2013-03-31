@@ -1,0 +1,14 @@
+- title "Locations"
+
+#location-timesheets
+  %h3 Location timesheets
+
+  %p
+    Generate a set of printable sheets that can be placed at locations,
+    listing all of today's events.
+
+  = form_for :filter, method: :get, url: timesheets_coordinator_locations_path, html: { class: 'form-inline' } do
+    - if current_user.allowed_tracks.count > 1
+      = select_tag :track, options_for_select([''] + current_user.allowed_tracks, @track), class: 'input-medium'
+    = select_tag :date, options_for_select([''] + Instructable::CLASS_DATES, @date), class: 'input-medium'
+    = submit_tag "Go", :class => "btn"
