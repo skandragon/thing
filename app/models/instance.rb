@@ -42,7 +42,11 @@ class Instance < ActiveRecord::Base
   end
 
   def formatted_location_and_time
-    ret = [formatted_location, formatted_start_time].compact.join(" on ")
+    if start_time.present?
+      ret = [formatted_location, formatted_start_time].compact.join(" on ")
+    else
+      ret = [formatted_location,  "time pending"].compact.join(", ")
+    end
     ret = 'Unscheduled' if ret.blank?
     ret
   end

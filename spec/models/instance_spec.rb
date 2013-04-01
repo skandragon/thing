@@ -66,4 +66,28 @@ describe Instance do
       instance.formatted_location.should be_blank
     end
   end
+
+  describe '#formatted_location_and_time' do
+    before :each do
+      @time = get_date(1, 14 * 3600)
+    end
+
+    it "Renders times" do
+      instructable = create(:instructable, location_type: 'track')
+      instance = instructable.instances.create(start_time: @time)
+      instance.formatted_location_and_time.should == "#{@time.to_s(:pennsic_short)}"
+    end
+
+    it "renders 'time pending' for locationless unscheduled" do
+      instructable = create(:instructable, location_type: 'track')
+      instance = instructable.instances.create(start_time: nil)
+      instance.formatted_location_and_time.should == 'time pending'
+    end
+
+    it "renders ', time pending' for locationed unscheduled" do
+      instructable = create(:instructable, location_type: 'track')
+      instance = instructable.instances.create(start_time: nil, location: 'A&S 1')
+      instance.formatted_location_and_time.should include ', time pending'
+    end
+  end
 end
