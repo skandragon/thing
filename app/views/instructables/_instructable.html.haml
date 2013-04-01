@@ -5,8 +5,5 @@
   %td= instructable.repeat_count
   %td
     = instructable.formatted_culture_and_topic
-  %td= instructable.status_message
   %td
-    - for instance in instructable.instances
-      = instance.formatted_location_and_time
-      %br
+    = render :partial => 'instructable_schedule_details', locals: { instructable: instructable }
