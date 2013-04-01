@@ -80,8 +80,8 @@ describe Instance do
 
     it "renders 'time pending' for locationless unscheduled" do
       instructable = create(:instructable, location_type: 'track')
-      instance = instructable.instances.create(start_time: nil)
-      instance.formatted_location_and_time.should == 'time pending'
+      instance = instructable.instances.create(start_time: nil, location: "")
+      instance.formatted_location_and_time.should == 'Location and time pending'
     end
 
     it "renders ', time pending' for locationed unscheduled" do

@@ -25,7 +25,7 @@ class Instance < ActiveRecord::Base
     if instructable.location_nontrack?
       return instructable.formatted_nontrack_location
     else
-      return location
+      return location || nil
     end
   end
 
@@ -42,12 +42,16 @@ class Instance < ActiveRecord::Base
   end
 
   def formatted_location_and_time
-    if start_time.present?
-      ret = [formatted_location, formatted_start_time].compact.join(" on ")
+    loc = formatted_location
+    if start_time.present? and loc.present?
+      ret = [loc, formatted_start_time].join(" on ")
+    elsif start_time.present? and loc.blank?
+      ret = formatted_start_time
+    elsif start_time.blank? and loc.present?
+      ret = "#{loc}, time pending"
     else
-      ret = [formatted_location,  "time pending"].compact.join(", ")
+      ret = "Location and time pending"
     end
-    ret = 'Unscheduled' if ret.blank?
     ret
   end
 
