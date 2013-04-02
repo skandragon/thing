@@ -58,4 +58,11 @@ module GriffinPdf
     pdf.move_down(RHYTHM * 3)
   end
 
+  def pdf_render_table(pdf, items, header, total_width, column_widths)
+    return unless items.size > 0
+    pdf.table([header] + items, header: true, width: total_width,
+      column_widths: column_widths,
+      cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
+  end
+
 end

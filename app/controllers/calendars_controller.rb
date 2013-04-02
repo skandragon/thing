@@ -117,8 +117,9 @@ class CalendarsController < ApplicationController
     end
   end
 
-  def render_table(pdf, items, header)
-    return unless items.size > 0
+  def render_pdf(filename, cache_filename = nil, user = nil)
+    generate_magic_tokens
+
     if @omit_descriptions
       column_widths = { 0 => 35, 1 => 180, 2 => 250 }
       total_width = column_widths.values.inject(:+)
@@ -126,14 +127,6 @@ class CalendarsController < ApplicationController
       column_widths = { 0 => 35, 1 => 100, 2 => 160 }
       total_width = 720
     end
-
-    pdf.table([header] + items, header: true, width: total_width,
-      column_widths: column_widths,
-      cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
-  end
-
-  def render_pdf(filename, cache_filename = nil, user = nil)
-    generate_magic_tokens
 
     pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :landscape,
       :compress => true, :optimize_objects => true,
@@ -164,7 +157,7 @@ class CalendarsController < ApplicationController
     for instance in @instances
       if last_date != instance.start_time.to_date
         if items.size > 0
-          render_table(pdf, items, header)
+          pdf_render_table(pdf, items, header, total_width, column_widths)
           items = []
         end
 
@@ -209,7 +202,7 @@ class CalendarsController < ApplicationController
       items << new_items
     end
 
-    render_table(pdf, items, header)
+    pdf_render_table(pdf, items, header, total_width, column_widths)
 
     # Render class summary
     pdf.start_new_page(layout: :portrait)

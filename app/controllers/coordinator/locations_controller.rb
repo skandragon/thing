@@ -21,12 +21,12 @@ class Coordinator::LocationsController < ApplicationController
     end
 
     load_data
-    
+
     if @instances.count == 0
       redirect_to coordinator_locations_path, notice: "There are no instances of classes for that track on those days"
       return
     end
-    
+
     filename = [
       'timesheets',
       Time.parse(@date).strftime('%Y-%m-%d'),
@@ -37,13 +37,6 @@ class Coordinator::LocationsController < ApplicationController
   end
 
   private
-
-  def render_table(pdf, items, header, total_width, column_widths)
-    return unless items.size > 0
-    pdf.table([header] + items, header: true, width: total_width,
-      column_widths: column_widths,
-      cell_style: { overflow: :shrink_to_fit, min_font_size: 8 })
-  end
 
   def render_pdf(filename, cache_filename = nil, user = nil)
     pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :landscape,
@@ -71,7 +64,7 @@ class Coordinator::LocationsController < ApplicationController
     for instance in @instances
       if last_selector != [instance.start_time.to_date, instance.formatted_location]
         if items.size > 0
-          render_table(pdf, items, header, 720, { 0 => 90, })
+          pdf_render_table(pdf, items, header, 720, { 0 => 90, })
           items = []
         end
 
@@ -103,7 +96,7 @@ class Coordinator::LocationsController < ApplicationController
       items << new_items
     end
 
-    render_table(pdf, items, header, 720, { 0 => 90, })
+    pdf_render_table(pdf, items, header, 720, { 0 => 90, })
 
     # set page footer
     options = {
