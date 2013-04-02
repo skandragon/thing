@@ -1,7 +1,8 @@
 %tr
-  %td= link_to(instructable.name, edit_user_instructable_path(instructable.user, instructable))
-  %td= instructable.track
-  %td= instructable.repeat_count
+  %td
+    = link_to(instructable.name, edit_user_instructable_path(instructable.user, instructable))
+    %br
+    = instructable.track
   %td= instructable.formatted_culture_and_topic
   %td= instructable.approved? ? "Yes" : "No"
   %td= render :partial => 'instructables/instructable_schedule_details', locals: { instructable: instructable }
