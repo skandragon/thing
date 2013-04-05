@@ -106,6 +106,7 @@ class Instructable < ActiveRecord::Base
     'Bardic' => ['A&S 9'],
     'Music' => ['A&S 9'],
     'Youth Combat' => [ 'Youth Combat' ],
+    'In Persona' => [ 'A&S 15' ],
   }
 
   def self.locations(filter = nil)
