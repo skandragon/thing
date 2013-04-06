@@ -3,19 +3,37 @@
 %header#overview.jumbotron.subhead
 
 .hero-unit
-  %h1
-    Pennsic University
   - unless user_signed_in?
+    %h1 Pennsic University
+    %p Currently, you only need to sign up if you wish to teach at Pennsic.
     %p
       %a.btn.btn-primary.btn-large{:href => new_user_session_path } Sign in
       or
       %a.btn.btn-primary.btn-large{:href => new_user_registration_path } Sign up
   - else
-    %p
-      - if instructor?
+    - if instructor?
+      %h1
+        Welcome!
+      %p
+        Thank you,
+        %b #{current_user.sca_name},
+        for sharing your knowledge.
+      %p
+        Use the buttons below, or anything under the Instructor menu
+        on the top of the page, to manage your classes and update your
+        profile as needed.
+      %p
         %a.btn.btn-primary{:href => edit_user_instructor_profile_path(current_user) } Update instructor profile
         %a.btn.btn-primary{:href => user_instructables_path(current_user) } Your classes
-      - else
+    - else
+      %h1 Welcome!
+      %p
+        Hello there,
+        %b #{current_user.mundane_name}.
+      %p
+        If you wish to share your knowledge and teach at Pennsic, you
+        must first create a profile.
+      %p
         %a.btn.btn-primary{:href => new_user_instructor_profile_path(current_user) } Become an instructor
 
 //%section.marketing
