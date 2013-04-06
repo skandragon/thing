@@ -53,7 +53,6 @@ class Proofreader::InstructablesController < ApplicationController
       @instructable.is_proofreader = current_user.id
     end
     changelog = Changelog.build_changes('update', @instructable, current_user)
-    puts @instructable.inspect
     if @instructable.update_attributes(permitted_params)
       @instructable.cleanup_unneeded_instances
       changelog.save # failure is an option...
