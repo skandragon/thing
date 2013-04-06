@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130406022532) do
+ActiveRecord::Schema.define(:version => 20130406231036) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20130406022532) do
     t.string   "location_type",             :default => "track"
     t.boolean  "proofread",                 :default => false
     t.integer  "proofread_by",              :default => [],                      :array => true
+    t.text     "proofreader_comments"
   end
 
   create_table "instructor_profile_contacts", :force => true do |t|

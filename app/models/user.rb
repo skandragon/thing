@@ -128,6 +128,14 @@ class User < ActiveRecord::Base
     [sca_title.present? ? sca_title.titleize : nil, sca_name].compact.join(" ")
   end
 
+  def best_name
+    if instructor?
+      titled_sca_name
+    else
+      mundane_name
+    end
+  end
+
   # If any contact protocols are missing from this profile, add them with
   # default values.  This is called on profile load, prior to presenting
   # a form to edit the profile.
