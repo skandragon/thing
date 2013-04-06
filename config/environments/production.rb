@@ -38,6 +38,11 @@ Thing::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
+  config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+
+  # Precompile additional assets
+  config.assets.precompile += %w( .svg .eot .woff .ttf .otf )
+
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
 
