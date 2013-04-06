@@ -72,7 +72,7 @@ class Proofreader::InstructablesController < ApplicationController
   end
 
   def permitted_params
-    allowed = Instructable::PROOFREADER_FIELDS
+    allowed = Instructable::PROOFREADER_FIELDS + [ :proofreader_comments ]
     params.require(:instructable).permit(*allowed)
   end
 end

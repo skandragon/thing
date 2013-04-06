@@ -50,6 +50,18 @@ describe Instructable do
     @instructable.should be_valid
   end
 
+  it "requires fee_itemization if handout_fee" do
+    @instructable.handout_fee = 10
+    @instructable.should_not be_valid
+    @instructable.errors_on(:fee_itemization).should include("can't be blank")
+  end
+
+  it "requires fee_itemization if material_fee" do
+    @instructable.material_fee = 10
+    @instructable.should_not be_valid
+    @instructable.errors_on(:fee_itemization).should include("can't be blank")
+  end
+
   describe 'validation of subtopic' do
     it "fails for invalid subtopic" do
       @instructable.topic = 'Martial'

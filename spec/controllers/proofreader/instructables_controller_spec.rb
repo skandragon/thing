@@ -145,7 +145,6 @@ describe Proofreader::InstructablesController do
       Changelog.count.should == 1
     end
 
-
     it "submits, updates, marks not proofread" do
       visit edit_proofreader_instructable_path(@random_instructable)
       fill_in 'Class title', with: "Foo Class Name Here"
@@ -154,6 +153,96 @@ describe Proofreader::InstructablesController do
       @random_instructable.name.should == "Foo Class Name Here"
       @random_instructable.proofread.should_not be_true
       Changelog.count.should == 1
+    end
+
+    it "updates culture" do
+      @random_instructable.culture.should_not == "Multiple Cultures"
+      visit edit_proofreader_instructable_path(@random_instructable)
+      select "Multiple Cultures", from: 'Culture'
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.culture.should == "Multiple Cultures"
+    end
+
+    it "updates culture" do
+      @random_instructable.topic.should_not == "Language"
+      @random_instructable.sub_topic.should_not == "Research"
+      visit edit_proofreader_instructable_path(@random_instructable)
+      select "Language", from: 'Topic'
+      select "Research", from: 'Subtopic'
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.topic.should == "Language"
+      @random_instructable.subtopic.should == "Research"
+    end
+
+    it "updates culture" do
+      @random_instructable.culture.should_not == "Multiple Cultures"
+      visit edit_proofreader_instructable_path(@random_instructable)
+      select "Multiple Cultures", from: 'Culture'
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.culture.should == "Multiple Cultures"
+    end
+
+    it "updates handout_fee" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in "Handout fee", with: "10"
+      fill_in "Fee itemization", with: "This is a test!"
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.handout_fee.should == 10
+      @random_instructable.fee_itemization.should == "This is a test!"
+    end
+
+    it "updates handout_limit" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in "Handout limit", with: "10"
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.handout_limit.should == 10
+    end
+
+    it "updates material_fee" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in "Material fee", with: "10"
+      fill_in "Fee itemization", with: "This is a test!"
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.material_fee.should == 10
+      @random_instructable.fee_itemization.should == "This is a test!"
+    end
+
+    it "updates material_limit" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in "Material limit", with: "10"
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.material_limit.should == 10
+    end
+
+    it "updates fee_itemization" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in "Fee itemization", with: "This is a test!"
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.fee_itemization.should == "This is a test!"
+    end
+
+    it "updates proofreader_comments" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in "Comments", with: "This is a test!"
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.proofreader_comments.should == "This is a test!"
+    end
+
+    it "clears proofreader_comments" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in "Comments", with: ""
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.proofreader_comments.should be_blank
     end
 
     it "rejects badness" do

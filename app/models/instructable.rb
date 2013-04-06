@@ -174,7 +174,8 @@ class Instructable < ActiveRecord::Base
     :description_web, :description_book, :name,
     :camp_name, :camp_address,
     :culture, :topic, :subtopic,
-    :handout_fee, :handout_limit, :material_fee, :material_limit,
+    :handout_fee, :handout_limit,
+    :material_fee, :material_limit,
     :fee_itemization,
   ]
 
@@ -183,7 +184,9 @@ class Instructable < ActiveRecord::Base
   end
 
   def fee_itemization_required?
-    handout_fee.present? or material_fee.present?
+    return true if handout_fee.present?
+    return true if material_fee.present?
+    false
   end
 
   def status_message
@@ -306,7 +309,7 @@ class Instructable < ActiveRecord::Base
       self.handout_fee = nil if handout_fee.to_f == 0.0
     end
     if material_fee.present?
-      self.material_fee = nil if handout_fee.to_f == 0.0
+      self.material_fee = nil if material_fee.to_f == 0.0
     end
   end
 
