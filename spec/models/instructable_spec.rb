@@ -224,10 +224,39 @@ describe Instructable do
   end
 
   describe "proofread" do
+    describe "on self-update" do
+      before :each do
+        @instructable = create(:instructable)
+        @instructable.reload
+        @instructable.proofread_by = [123]
+        @instructable.is_proofreader = 123
+        @instructable.save!
+        @instructable.is_proofreader = false
+        @instructable.reload
+      end
+
+      it "on name change" do
+        @instructable.proofread.should_not be_true
+        @instructable.proofread_by.should == [123]
+        @instructable.name = "Flarg"
+        @instructable.is_proofreader = 123
+        @instructable.save!
+        @instructable.reload
+        @instructable.proofread.should_not be_true
+        @instructable.proofread_by.should == [123]
+      end
+    end
+
     describe "on update" do
       before :each do
-        @instructable = create(:instructable, proofread: true, is_proofreader: true)
-        @instructable = Instructable.find @instructable.id
+        @instructable = create(:instructable)
+        @instructable.reload
+        @instructable.proofread_by = [123, 456]
+        @instructable.proofread = true
+        @instructable.is_proofreader = 123
+        @instructable.save!
+        @instructable.is_proofreader = false
+        @instructable.reload
       end
 
       it "clears on name change" do
@@ -236,14 +265,36 @@ describe Instructable do
         @instructable.save!
         @instructable.reload
         @instructable.proofread.should_not be_true
+        @instructable.proofread_by.should be_empty
       end
 
-      it "unafffected on duration change" do
+      it "unaffected on duration change" do
         @instructable.proofread.should be_true
         @instructable.duration = @instructable.duration + 1
         @instructable.save!
         @instructable.reload
         @instructable.proofread.should be_true
+        @instructable.proofread_by.should_not be_empty
+      end
+
+      it "clears on new proofreader, on name change" do
+        @instructable.proofread.should be_true
+        @instructable.name = "Flarg"
+        @instructable.is_proofreader = 987
+        @instructable.save!
+        @instructable.reload
+        @instructable.proofread.should_not be_true
+        @instructable.proofread_by.should == [ 987 ]
+      end
+
+      it "does not clear on new proofreader, on uninteresting change" do
+        @instructable.proofread.should be_true
+        @instructable.duration = @instructable.duration + 1
+        @instructable.is_proofreader = 987
+        @instructable.save!
+        @instructable.reload
+        @instructable.proofread.should be_true
+        @instructable.proofread_by.should include(987)
       end
     end
   end

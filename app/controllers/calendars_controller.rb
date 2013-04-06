@@ -194,7 +194,7 @@ class CalendarsController < ApplicationController
       new_items = [
         { content: @instructable_magic_tokens[instance.instructable.id].to_s},
         { content: times_content },
-        { content: [ instance.instructable.name, instance.instructable.user.titled_sca_name ].join("\n\n") },
+        { content: [ markdown_html(instance.instructable.name), instance.instructable.user.titled_sca_name ].join("\n\n"), inline_format: true },
       ]
       unless @omit_descriptions
         new_items << { inline_format: true, content: [ markdown_html(instance.instructable.description_book), [handout_content, materials_content].compact.join(' ') ].compact.join("\n") }
@@ -217,10 +217,7 @@ class CalendarsController < ApplicationController
         end
 
         pdf.move_down RHYTHM * 1.5
-        pdf.formatted_text [
-          { text: "#{@instructable_magic_tokens[instructable.id]}: ", styles: [:bold], font_size: 13 },
-          { text: instructable.name, font_size: 13 },
-        ]
+        pdf.text markdown_html("**#{@instructable_magic_tokens[instructable.id]}**: #{instructable.name}"), inline_format: true
         topic = "Topic: #{instructable.formatted_topic}"
         culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
         pdf.text [topic, culture].compact.join(", ")

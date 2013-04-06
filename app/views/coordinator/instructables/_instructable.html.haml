@@ -1,6 +1,6 @@
 %tr
   %td
-    = link_to(instructable.name, edit_user_instructable_path(instructable.user, instructable))
+    = link_to(markdown_html(instructable.name), edit_user_instructable_path(instructable.user, instructable))
     %br
     = instructable.track
   %td= instructable.formatted_culture_and_topic

@@ -173,7 +173,7 @@ class Instructable < ActiveRecord::Base
   PROOFREADER_FIELDS = [
     :description_web, :description_book, :name,
     :camp_name, :camp_address,
-    :culture, :topic, :subtopic, :proofread,
+    :culture, :topic, :subtopic,
     :handout_fee, :handout_limit, :material_fee, :material_limit,
     :fee_itemization,
   ]
@@ -311,12 +311,42 @@ class Instructable < ActiveRecord::Base
   end
 
   def check_for_proofread_changes
-    return(true) if !proofread? or @is_proofreader
+    return true if @is_proofreader and @is_proofreader == :no_really
+
+    needs_clearing = false
     changes.keys.each do |field_name|
+      data = changes[field_name]
+      next if data[0].blank? and data[1].blank?
+      if data[0].present? and data[1].present?
+        next if data[0].to_s.strip == data[1].to_s.strip
+      end
       if PROOFREADER_FIELDS.include?(field_name.to_sym)
-        update_column(:proofread, false) #bypasses callbacks, or we'd loop
-        return true
+        needs_clearing = true
       end
     end
+
+    if @is_proofreader
+      if proofread_by == [ @is_proofreader ]
+        # they are the only proofreader.  Ensure the flag is clear, but
+        # don't change the proofread_by list.
+        update_column(:proofread, false) if proofread
+      else
+        # they are the first proofreader, or they are not the only
+        # proofreader.
+        if needs_clearing
+          update_column(:proofread, false) if proofread
+          update_column(:proofread_by, [ @is_proofreader ])
+        else
+          update_column(:proofread_by, (proofread_by + [ @is_proofreader ]).uniq)
+          if proofread_by.size >= 2
+            update_column(:proofread, true) unless proofread
+          end
+        end
+      end
+    elsif needs_clearing
+      update_column(:proofread, false) if proofread
+      update_column(:proofread_by, []) unless proofread_by.empty?
+    end
   end
+  true
 end

@@ -1,5 +1,17 @@
 %tr
-  %td= link_to(instructable.name, edit_proofreader_instructable_path(instructable))
+  %td= link_to(markdown_html(instructable.name), edit_proofreader_instructable_path(instructable))
   %td= instructable.track
   %td= instructable.formatted_culture_and_topic
-  %td= instructable.proofread? ? "Yes" : "No"
+  %td
+    - if instructable.proofread_by.empty?
+      %span.label.label-important Nobody
+    - else
+      - approval_list = User.where(id: instructable.proofread_by)
+      - approval_list.each do |user|
+        - if instructable.proofread?
+          %span.label.label-success= user.titled_sca_name
+        - else
+          - if instructable.proofread_by.include?(current_user.id)
+            %span.label.label-warning= user.titled_sca_name
+          - else
+            %span.label.label-important= user.titled_sca_name

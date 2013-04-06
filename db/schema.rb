@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130323030559) do
+ActiveRecord::Schema.define(:version => 20130406022532) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20130323030559) do
 
   create_table "changelogs", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "model_id"
     t.string   "action"
+    t.integer  "model_id"
     t.string   "model_name"
     t.text     "changelog"
     t.boolean  "notified",   :default => false
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20130323030559) do
     t.boolean  "scheduled",                 :default => false
     t.string   "location_type",             :default => "track"
     t.boolean  "proofread",                 :default => false
+    t.integer  "proofread_by",              :default => [],                      :array => true
   end
 
   create_table "instructor_profile_contacts", :force => true do |t|

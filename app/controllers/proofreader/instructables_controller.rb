@@ -46,13 +46,14 @@ class Proofreader::InstructablesController < ApplicationController
   end
 
   def update
-    @instructable.is_proofreader = true
     if params['commit'] == 'Save and Mark Not Proofread'
-      @instructable.proofread = false
+      @instructable.proofread_by = @instructable.proofread_by - [current_user.id]
+      @instructable.proofread = @instructable.proofread_by.size >= 2
     elsif params['commit'] == 'Save and Mark Proofread'
-      @instructable.proofread = true
+      @instructable.is_proofreader = current_user.id
     end
     changelog = Changelog.build_changes('update', @instructable, current_user)
+    puts @instructable.inspect
     if @instructable.update_attributes(permitted_params)
       @instructable.cleanup_unneeded_instances
       changelog.save # failure is an option...

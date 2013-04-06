@@ -7,14 +7,14 @@ describe Proofreader::InstructablesController do
            topic: 'Music', name: 'MEMusicUnscheduledUnproofed')
     create(:instructable, user_id: user.id, track: 'Middle Eastern',
            topic: 'Dance', name: 'MEDanceUnscheduledProofed',
-           proofread: true, is_proofreader: true)
+           proofread: true, proofread_by: [user, 123], is_proofreader: :no_really)
     i = create(:instructable, user_id: user.id, track: 'Middle Eastern',
                topic: 'History', name: 'MEHistoryScheduledProofed',
-               proofread: true, is_proofreader: true)
+               proofread: true, proofread_by: [user, 123], is_proofreader: :no_really)
     i.instances.create(start_time: get_date(0), location: 'Foo')
     i = create(:instructable, user_id: user.id, track: 'Performing Arts',
                topic: 'History', name: 'PAHistoryScheduledProofed',
-               proofread: true, is_proofreader: true)
+               proofread: true, proofread_by: [user, 123], is_proofreader: :no_really)
     i.instances.create(start_time: get_date(1), location: 'Foo')
     create(:instructable, user_id: user.id, track: 'Archery',
            topic: 'Martial', name: 'ArcheryUnscheduledUnproofed')
@@ -112,6 +112,7 @@ describe Proofreader::InstructablesController do
       @random_user = create(:instructor)
       @random_instructable = create(:instructable, user_id: @random_user.id)
       log_in proofreader: true
+      @random_proofread = create(:instructable, user_id: @random_user.id, proofread: true, proofread_by: [@random_user.id], is_proofreader: :no_really)
     end
 
     it "renders edit form" do
@@ -124,14 +125,26 @@ describe Proofreader::InstructablesController do
     end
 
     it "submits, updates, marks proofread" do
-      visit edit_proofreader_instructable_path(@random_instructable)
+      visit edit_proofreader_instructable_path(@random_proofread)
       fill_in 'Class title', with: "Foo Class Name Here"
       click_on 'Save and Mark Proofread'
-      @random_instructable.reload
-      @random_instructable.name.should == "Foo Class Name Here"
-      @random_instructable.proofread.should be_true
+      @random_proofread.reload
+      @random_proofread.name.should == "Foo Class Name Here"
+      @random_proofread.proofread.should_not be_true
+      @random_proofread.proofread_by.should == [current_user.id]
       Changelog.count.should == 1
     end
+
+    it "marks proofread when really proofread" do
+      visit edit_proofreader_instructable_path(@random_proofread)
+      click_on 'Save and Mark Proofread'
+      @random_proofread.reload
+      @random_proofread.proofread_by.should include(current_user.id)
+      @random_proofread.proofread_by.size.should == 2
+      @random_proofread.proofread.should be_true
+      Changelog.count.should == 1
+    end
+
 
     it "submits, updates, marks not proofread" do
       visit edit_proofreader_instructable_path(@random_instructable)
