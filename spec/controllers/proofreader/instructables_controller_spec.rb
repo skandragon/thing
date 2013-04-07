@@ -145,7 +145,7 @@ describe Proofreader::InstructablesController do
       Changelog.count.should == 1
     end
 
-    it "submits, updates, marks not proofread" do
+    it "updates title, marks not proofread" do
       visit edit_proofreader_instructable_path(@random_instructable)
       fill_in 'Class title', with: "Foo Class Name Here"
       click_on 'Save and Mark Not Proofread'
@@ -155,18 +155,25 @@ describe Proofreader::InstructablesController do
       Changelog.count.should == 1
     end
 
-    it "updates culture" do
-      @random_instructable.culture.should_not == "Multiple Cultures"
+    it "updates web description" do
       visit edit_proofreader_instructable_path(@random_instructable)
-      select "Multiple Cultures", from: 'Culture'
+      fill_in 'Description (web)', with: "Foo Class Description Here"
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.culture.should == "Multiple Cultures"
+      @random_instructable.description_web.should == "Foo Class Description Here"
     end
 
-    it "updates culture" do
+    it "updates book description" do
+      visit edit_proofreader_instructable_path(@random_instructable)
+      fill_in 'Description (book)', with: "Foo Class Description Here"
+      click_on 'Save and Mark Not Proofread'
+      @random_instructable.reload
+      @random_instructable.description_book.should == "Foo Class Description Here"
+    end
+
+    it "updates topic and subtopic", js: true do
       @random_instructable.topic.should_not == "Language"
-      @random_instructable.sub_topic.should_not == "Research"
+      @random_instructable.subtopic.should_not == "Research"
       visit edit_proofreader_instructable_path(@random_instructable)
       select "Language", from: 'Topic'
       select "Research", from: 'Subtopic'
