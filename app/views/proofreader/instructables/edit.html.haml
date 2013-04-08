@@ -37,8 +37,11 @@
     %legend Proofreader
     = f.input :proofreader_comments, label: "Comments", placeholder: "Enter comments here.  They will only be seen by proofreaders and administrators.", input_html: { rows: 3, class: 'input-xxlarge' }
 
+  = render partial: 'instructables/changelog_modal', locals: { instructable: @instructable }
+
   = f.button :submit, "Save and Mark Proofread", :class => "btn btn-primary submit-button"
   = f.button :submit, "Save and Mark Not Proofread", :class => "btn"
+  = link_to "Changelog", '#', :class => 'btn', data: { toggle: 'modal', target: '#changelog-modal'}
   = link_to "Cancel", session[:instructable_back] || proofreader_instructables_path, :class => "btn"
 
 / This is gross, but it works...

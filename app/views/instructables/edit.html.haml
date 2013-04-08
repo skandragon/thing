@@ -41,14 +41,7 @@
     = link_to "Changelog", '#', :class => 'btn', data: { toggle: 'modal', target: '#changelog-modal'}
     = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
 
-    %div#changelog-modal.modal.fade.hide
-      .modal-header
-        %button{ type: 'button', class: 'close', data: { dismiss: "modal", 'aria-hidden' => 'true' }} &times;
-        %h3 Modification History
-      .modal-body
-        = render partial: 'instructables/changelog', locals: { instructable: @instructable }
-      .modal-footer
-        %button{class: "btn", data: { dismiss: "modal", 'aria-hidden' => "true"}} Close
+    = render partial: 'instructables/changelog_modal', locals: { instructable: @instructable }
 
     %div#arrival-modal.modal.fade.hide
       .modal-header
