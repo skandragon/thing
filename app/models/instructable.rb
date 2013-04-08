@@ -101,7 +101,7 @@ class Instructable < ActiveRecord::Base
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 5'],
     'Thrown Weapons' => ['Thrown Weapons'],
-    'Archery' => ['Archery'],
+    'Archery' => ['Archery', 'Family Range', 'Novelty Range', 'Archery Tent'],
     'Parent/Child' => ['A&S 8'],
     'First Aid' => ['A&S 1'],
     'Bardic' => ['A&S 9'],
