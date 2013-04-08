@@ -22,14 +22,36 @@ class Changelog < ActiveRecord::Base
     item.valid?  # force validation just to normalize model
     new(action: action, user_id: user_id, model_id: item.id, model_name: item.class.to_s, changelog: sanitize_changes(item.changes))
   end
-  
-  private
-  
-  def self.sanitize_changes(list)
-    keys = list.keys
-    keys.each do |key|
-      list.delete(key) if list[key][0] == list[key][1]
+
+  def validate_and_save
+    return if changelog.empty?
+    save
+  end
+
+  def self.tidy_all
+    Changelog.all.each do |cl|
+      if cl.changelog.blank? or cl.changelog.empty?
+        cl.destroy
+      else
+        cl.changelog = sanitize_changes(cl.changelog)
+        if cl.changelog.empty?
+          cl.destroy
+        else
+          cl.save!
+        end
+      end
     end
-    list
+  end
+
+  private
+
+  def self.sanitize_changes(list)
+    data = list.to_json
+    data = JSON::load data
+    keys = data.keys
+    keys.each do |key|
+      data.delete(key) if data[key][0] == data[key][1]
+    end
+    data
   end
 end

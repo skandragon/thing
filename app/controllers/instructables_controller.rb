@@ -16,6 +16,7 @@ class InstructablesController < ApplicationController
     @instructable = @target_user.instructables.build(permitted_params)
     changelog = Changelog.build_changes('create', @instructable, current_user)
     if @instructable.save
+      changelog.model_id = @instructable.id
       changelog.save # failure is an option...
       send_email_on_create
       redirect_to user_instructables_path(@target_user), notice: "Class created."
@@ -37,7 +38,7 @@ class InstructablesController < ApplicationController
     @instructable.assign_attributes(permitted_params)
     changelog = Changelog.build_changes('update', @instructable, current_user)
     if @instructable.save
-      changelog.save # failure is an option...
+      changelog.validate_and_save # failure is an option...
       @instructable.cleanup_unneeded_instances
       redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: "Class updated."
     else
