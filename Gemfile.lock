@@ -124,7 +124,6 @@ GEM
       actionpack (>= 3.1)
       less (~> 2.3.1)
     libv8 (3.3.10.4)
-    lorem (0.1.2)
     mail (2.5.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -304,7 +303,6 @@ DEPENDENCIES
   jquery-rails
   launchy
   less-rails
-  lorem
   multa_arcana
   pg
   poltergeist

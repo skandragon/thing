@@ -39,12 +39,8 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 group :development, :test do
-  gem "annotate"
   gem "simplecov", platform: :ruby, require: false, group: :test
-  gem "railroady"
   gem "rspec-rails", '>= 2.12'
-  gem "autotest"
-  gem "autotest-growl"
   gem "thin"
   gem "factory_girl_rails"
   gem "capybara"
@@ -56,6 +52,10 @@ end
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
+  gem "annotate"
+  gem "railroady"
+  gem "autotest"
+  gem "autotest-growl"
 end
 
 group :production do
@@ -70,7 +70,6 @@ gem "simple_form"
 gem "will_paginate"
 gem "devise"
 gem "dalli"
-gem "lorem"
 gem "redis"
 gem "resque", require: "resque/server"
 gem 'multa_arcana'
