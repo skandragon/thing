@@ -308,6 +308,15 @@ describe InstructablesController do
       find("#instructable_instances_attributes_0_start_time")['disabled'].should == 'disabled'
       find("#instructable_instances_attributes_0_location")['disabled'].should == 'disabled'
     end
+
+    it "allows update of requested times with error for other field", focus: true do
+      @other_instructable.save!
+      visit edit_user_instructable_path(@other_user, @other_instructable)
+      fill_in 'Class title', with: ''
+      find(:css, '#instructable_requested_days_2013-07-26').set(true)
+      first('.submit-button').click
+      page.should have_content "can't be blank"
+    end
   end
 
   describe "as admin" do
