@@ -27,7 +27,7 @@ class Changelog < ActiveRecord::Base
   end
 
   def validate_and_save
-    return if changelog.empty?
+    return if (action == 'update') and changelog.empty?
     save
   end
 

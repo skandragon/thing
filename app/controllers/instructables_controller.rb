@@ -16,7 +16,7 @@ class InstructablesController < ApplicationController
     @instructable = @target_user.instructables.build(permitted_params)
     changelog = Changelog.build_changes('create', @instructable, current_user)
     if @instructable.save
-      changelog.model_id = @instructable.id
+      changelog.target_id = @instructable.id
       changelog.save # failure is an option...
       send_email_on_create
       redirect_to user_instructables_path(@target_user), notice: "Class created."
@@ -48,8 +48,6 @@ class InstructablesController < ApplicationController
 
   def destroy
     if @instructable
-      changelog = Changelog.build_changes('destroy', current_resource, current_user)
-      changelog.save # failure is an option...
       @instructable.destroy
     end
     redirect_to user_instructables_path(@target_user), notice: "Class deleted."

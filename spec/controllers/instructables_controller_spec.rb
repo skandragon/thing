@@ -234,7 +234,6 @@ describe InstructablesController do
         page.should have_content "Are you sure you want to delete"
         click_on "Yes, I'm positively certain."
         page.should have_content("Class deleted.")
-        Changelog.count.should == 1
       end
     end
   end
