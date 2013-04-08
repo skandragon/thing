@@ -17,7 +17,7 @@ class Proofreader::InstructablesController < ApplicationController
     @instructables = Instructable.includes(:user, :instances).order(:name)
 
     if @search.present?
-      @instructables = @instructables.where('name ILIKE ?', "%#{@search.strip}%")
+      @instructables = @instructables.where('name ILIKE ? OR description_web ILIKE ? or description_book ILIKE ?', "%#{@search.strip}%", "%#{@search.strip}%", "%#{@search.strip}%")
     end
 
     if @track.present?
