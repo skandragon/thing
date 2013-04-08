@@ -28,21 +28,6 @@ class Changelog < ActiveRecord::Base
     save
   end
 
-  def self.tidy_all
-    Changelog.all.each do |cl|
-      if cl.changelog.blank? or cl.changelog.empty?
-        cl.destroy
-      else
-        cl.changelog = sanitize_changes(cl.changelog)
-        if cl.changelog.empty?
-          cl.destroy
-        else
-          cl.save!
-        end
-      end
-    end
-  end
-
   private
 
   def self.sanitize_changes(list)
