@@ -52,7 +52,7 @@
         - else
           %ul
             - for date in dates
-              %li= date.to_s(:pennsic)
+              %li= (date.is_a?(String) ? date : date.to_s(:pennsic))
         %h5 Requested Times (this class)
         - times = @instructable.requested_times
         - if times.empty?
