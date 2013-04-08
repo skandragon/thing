@@ -74,7 +74,7 @@
           = @instructable.special_needs.join(", ")
         = @instructable.special_needs_description
       .modal-footer
-        = link_to 'Close', '#', class: 'btn'
+        %button{class: "btn", data: { dismiss: "modal", 'aria-hidden' => "true"}} Close
 
   %fieldset
     %legend Class Information
