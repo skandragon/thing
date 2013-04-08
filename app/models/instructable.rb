@@ -93,15 +93,13 @@ class Instructable < ActiveRecord::Base
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
-    'Performing Arts' => [
-      'Performing Arts Tent', 'New PA Tent', 'Amphetheater'
-    ],
+    'Performing Arts' => [ 'Amphetheater', 'Performing Arts Tent', 'New PA Tent' ],
     'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 5'],
     'Thrown Weapons' => ['Thrown Weapons'],
-    'Archery' => ['Archery', 'Family Range', 'Novelty Range', 'Archery Tent'],
+    'Archery' => [ 'Archery', 'Archery Tent', 'Family Range', 'Novelty Range' ],
     'Parent/Child' => ['A&S 8'],
     'First Aid' => ['A&S 1'],
     'Bardic' => ['A&S 9'],
