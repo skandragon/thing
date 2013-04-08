@@ -1,4 +1,4 @@
-- changelogs = Changelog.where(model_id: instructable.id, model_name: 'Instructable').order('created_at DESC')
+- changelogs = instructable.changelogs
 - changelogs.each do |changelog|
   %h5= changelog.created_at.to_s(:pennsic)
   %table.table
