@@ -1,0 +1,22 @@
+- changelogs = Changelog.where(model_id: instructable.id, model_name: 'Instructable').order('created_at DESC')
+- changelogs.each do |changelog|
+  %h5= changelog.created_at.to_s(:pennsic)
+  %table.table
+    %thead
+      %tr
+        %th Field
+        %th Old
+        %th New Value
+    %tbody
+      - changelog.changelog.keys.sort.each do |field|
+        %tr
+          - changes = changelog.changelog[field]
+          %td= field
+          - if changes[0].is_a?Array
+            %td= changes[0].join(", ")
+          - else
+            %td= changes[0]
+          - if changes[1].is_a?Array
+            %td= changes[1].join(", ")
+          - else
+            %td= changes[1]
