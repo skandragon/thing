@@ -4,7 +4,6 @@ rvm:
   - 1.9.3
   - 2.0.0
   - ruby-head
-  - rbx-19mode
 
 before_install:
   - rvm rubygems 1.8.25
