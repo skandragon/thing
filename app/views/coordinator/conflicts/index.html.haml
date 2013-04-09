@@ -3,7 +3,7 @@
 - if @conflicts.size == 0
   %h2 No conflicts found.
 - else
-  %table.table.table-zebra4
+  %table.table.table-striped
     %thead
       %tr
         %th Type
@@ -16,16 +16,24 @@
       - for conflict in @conflicts
         - type, instances = conflict
         %tr
-          %td.label.label-important{colspan: 2}= type.join(", ")
-          %td= instances[0].instructable.name
-          %td= instances[0].formatted_location_and_time
-          %td= instances[0].instructable.duration
-          %td= instances[0].instructable.user.titled_sca_name
-          %td= instances[0].instructable.track
-        %tr
+          %td.label.label-important= type.join(", ")
           %td
-          %td= instances[1].instructable.name
-          %td= instances[1].formatted_location_and_time
-          %td= instances[0].instructable.duration
-          %td= instances[1].instructable.user.titled_sca_name
-          %td= instances[1].instructable.track
+            = instances[0].instructable.name
+            %br
+            = instances[1].instructable.name
+          %td
+            = instances[0].formatted_location_and_time
+            %br
+            = instances[1].formatted_location_and_time
+          %td
+            = instances[0].instructable.duration
+            %br
+            = instances[1].instructable.duration
+          %td
+            = instances[0].instructable.user.titled_sca_name
+            %br
+            = instances[1].instructable.user.titled_sca_name
+          %td
+            = instances[0].instructable.track
+            %br
+            = instances[1].instructable.track
