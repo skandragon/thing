@@ -16,7 +16,9 @@
       - for conflict in @conflicts
         - type, instances = conflict
         %tr
-          %td.label.label-important= type.join(", ")
+          %td
+            - type.each do |specific_type|
+              %span.label.label-important= specific_type
           %td
             = instances[0].instructable.name
             %br
