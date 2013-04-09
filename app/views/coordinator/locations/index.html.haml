@@ -10,5 +10,22 @@
   = form_for :filter, method: :get, url: timesheets_coordinator_locations_path, html: { class: 'form-inline' } do
     - if current_user.allowed_tracks.count > 1
       = select_tag :track, options_for_select([''] + current_user.allowed_tracks, @track), class: 'input-medium'
+    - else
+      = hidden_field_tag(:track, current_user.allowed_tracks.first)
     = select_tag :date, options_for_select([''] + Instructable::CLASS_DATES, @date), class: 'input-medium'
+    = submit_tag "Go", :class => "btn"
+
+  %h3 Free/Allocated
+
+  %p
+    Generate a list of free / busy times in a grid format, for each track
+    location.  Note that busy times may be scheduled by any track coordinator
+    if the location is shared with more than one track.  Only track locations
+    are included; private camps and merchant areas are not.
+
+  = form_for :filter, method: :get, url: freebusy_coordinator_locations_path, html: { class: 'form-inline' } do
+    - if current_user.allowed_tracks.count > 1
+      = select_tag :track, options_for_select([''] + current_user.allowed_tracks, @track), class: 'input-medium'
+    - else
+      = hidden_field_tag(:track, current_user.allowed_tracks.first)
     = submit_tag "Go", :class => "btn"

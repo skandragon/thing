@@ -1,0 +1,26 @@
+- title "Free/Busy for track #{@track}"
+
+- @report.keys.sort.each do |date|
+  %h3= date
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th
+        - @report[date][:xlabels].each do |location|
+          %th= location
+    %tbody
+      - counter = 0
+      - @report[date][:ylabels].each do |hour|
+        %tr
+          - row = @report[date][:grid][counter]
+          - counter += 1
+          %th= "%02d:00" % hour.to_i
+          - row.each do |item|
+            - css = 'item-free'
+            - if item.count > 1
+              - css = 'item-error'
+            - elsif item.count == 1
+              - css = 'item-busy'
+            %td{class: css}
+              - item.each do |instance|
+                %div{rel: 'popover', data: {trigger: 'click', placement: 'top', title: markdown_html(instance.instructable.name), html: 1, content: render(partial: 'instructable_content', locals: { instance: instance })}}= instance.id

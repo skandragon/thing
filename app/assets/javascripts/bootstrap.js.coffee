@@ -22,3 +22,7 @@ jQuery ->
 
   $(window).scroll ->
     processScroll()
+
+jQuery ->
+  $('[rel=tooltip]').tooltip()
+  $('[rel=popover]').popover(placement: 'top', trigger: 'click')

@@ -1,0 +1,12 @@
+%ul.unstyled
+  %li
+    %strong Times:
+    = instance.start_time.strftime("%H:%M")
+    \-
+    = instance.end_time.strftime("%H:%M")
+  %li
+    %strong Sessions:
+    = instance.instructable.repeat_count
+
+- if current_user.allowed_tracks.include?(instance.instructable.track)
+  = link_to "Edit class", edit_user_instructable_path(instance.instructable.user_id, instance.instructable)

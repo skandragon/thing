@@ -13,6 +13,7 @@ Thing::Application.routes.draw do
     resources :locations do
       collection do
         get :timesheets
+        get :freebusy
       end
     end
   end

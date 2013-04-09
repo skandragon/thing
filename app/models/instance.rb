@@ -21,6 +21,14 @@ class Instance < ActiveRecord::Base
 
   validate :validate_start_time
 
+  def self.for_date(date)
+    not_before = Time.parse(date).utc
+    not_after = Time.parse(date).end_of_day.utc
+    instances = Instance.where("start_time >= ? AND end_time <= ?", not_before, not_after).order(:location, :start_time).includes(:instructable)
+    instances = instances.select { |x| !x.instructable.location_nontrack? }
+    instances
+  end
+
   def formatted_location
     if instructable.location_nontrack?
       return instructable.formatted_nontrack_location
@@ -55,7 +63,46 @@ class Instance < ActiveRecord::Base
     ret
   end
 
+  def self.free_busy_report_for(date, track)
+    instances = for_date(date)
+    locations = Instructable::TRACKS[track]
+    grid = make_grid(locations)
+
+    instances.each do |instance|
+      x = grid[:xlabels].index(instance.location)
+      hour_start = instance.start_time.hour
+      hour_end = (instance.end_time - 1).hour
+      (hour_start..hour_end).each do |hour|
+        y = grid[:ylabels].index("%02d" % hour)
+        grid[:grid][y][x] << instance if (x.present? and y.present?)
+      end
+    end
+
+    grid
+  end
+
   private
+
+  def self.make_row(size)
+    ret = []
+    size.times do
+      ret << []
+    end
+    ret
+  end
+
+  def self.make_grid(locations)
+    hours = []
+    (9..21).each do |hour|
+      hours << ("%02d" % hour)
+    end
+    grid = []
+    hours.size.times do
+      grid << make_row(locations.size)
+    end
+
+    { grid: grid, xlabels: locations, ylabels: hours }
+  end
 
   def validate_start_time
     return if start_time.blank?

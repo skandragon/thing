@@ -6,21 +6,40 @@ class Coordinator::LocationsController < ApplicationController
   def index
   end
 
+  def freebusy
+    @track = params[:track]
+    if @track.blank?
+      redirect_to coordinator_locations_path, notice: "Select a track"
+      return
+    end
+
+    unless current_user.allowed_tracks.include?(@track)
+      redirect_to coordinator_locations_path, notice: "Select a track you are coordinator for"
+      return
+    end
+
+    @report = {}
+    Instructable::CLASS_DATES.each do |date|
+      @report[date] = Instance::free_busy_report_for(date, @track)
+    end
+  end
+
+
   def timesheets
     @date = params[:date]
     @track = params[:track]
 
     if @date.blank? or @track.blank?
-      redirect_to coordinator_locations_path, notice: "Select both a location and a track"
+      redirect_to coordinator_locations_path, notice: "Select both a date and a track"
       return
     end
 
     unless Instructable::CLASS_DATES.include?(@date) and current_user.allowed_tracks.include?(@track)
-      redirect_to coordinator_locations_path, notice: "Select a valid location and track"
+      redirect_to coordinator_locations_path, notice: "Select a valid date and track you are coordinator for"
       return
     end
 
-    load_data
+    load_data(@date)
 
     if @instances.count == 0
       redirect_to coordinator_locations_path, notice: "There are no instances of classes for that track on those days"
@@ -115,13 +134,8 @@ class Coordinator::LocationsController < ApplicationController
     send_data(data, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
-  def load_data
-    not_before = Time.parse(@date).utc
-    not_after = Time.parse(@date).end_of_day.utc
-    @instances = Instance.where("start_time >= ? AND end_time <= ?", not_before, not_after).order(:location, :start_time).includes(:instructable => [:user])
-    @instances = @instances.select { |x|
-      !x.instructable.location_nontrack? and x.instructable.track == @track
-    }
+  def load_data(date)
+    @instances = Instance.for_date(date)
   end
 
 end
