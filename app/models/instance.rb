@@ -22,8 +22,8 @@ class Instance < ActiveRecord::Base
   validate :validate_start_time
 
   def self.for_date(date)
-    not_before = Time.parse(date).utc
-    not_after = Time.parse(date).end_of_day.utc
+    not_before = Time.zone.parse(date).utc
+    not_after = Time.zone.parse(date).end_of_day.utc
     instances = Instance.where("start_time >= ? AND end_time <= ?", not_before, not_after).order(:location, :start_time).includes(:instructable)
     instances = instances.select { |x| !x.instructable.location_nontrack? }
     instances
