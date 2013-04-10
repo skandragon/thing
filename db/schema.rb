@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408052835) do
+ActiveRecord::Schema.define(:version => 20130410012740) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -53,8 +53,8 @@ ActiveRecord::Schema.define(:version => 20130408052835) do
     t.integer  "material_limit"
     t.integer  "handout_limit"
     t.text     "description_web"
-    t.integer  "handout_fee"
-    t.integer  "material_fee"
+    t.float    "handout_fee"
+    t.float    "material_fee"
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
     t.float    "duration"

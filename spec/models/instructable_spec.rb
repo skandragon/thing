@@ -183,6 +183,18 @@ describe Instructable do
       @instructable.should be_valid
     end
   end
+  
+  describe "fees are floating values" do
+    it "accepts 1.5 for handout_fee" do
+      @instructable.handout_fee = "1.5"
+      @instructable.handout_fee.should == 1.5
+    end
+
+    it "accepts 1.5 for masterial_fee" do
+      @instructable.material_fee = "1.5"
+      @instructable.material_fee.should == 1.5
+    end
+  end
 
   describe '#cleanup_needed_instances' do
     before :each do
