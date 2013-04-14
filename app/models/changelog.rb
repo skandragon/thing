@@ -30,14 +30,13 @@ class Changelog < ActiveRecord::Base
     changes = item.changes.dup
     nested_names = item.nested_attributes_options.keys
     nested_names.each do |nested_name|
+      nested_changes = {}
       item.send(nested_name).each do |nested|
         if nested.changed?
-          nested.changes.each do |field, value|
-            tag = "#{nested_name}-#{nested.id}-#{field}"
-            changes[tag] = value
-          end
+          nested_changes[nested.id] = nested.changes
         end
       end
+      changes[nested_name] = nested_changes unless nested_changes.keys.empty?
     end
     changes
   end
@@ -47,6 +46,30 @@ class Changelog < ActiveRecord::Base
     save
   end
 
+  def self.decompose_hash(field_name, data, ret)
+    data.each do |key, item|
+      name = "#{field_name}-#{key}"
+      if item.is_a?Array
+        ret[name] = item
+      else
+        decompose_hash(name, item, ret)
+      end
+    end
+  end
+
+  def self.decompose(data, prefix = nil)
+    ret = {}
+
+    data.each do |field_name, item|
+      if item.is_a?Array
+        ret[field_name] = item
+      else
+        decompose_hash(field_name, item, ret)
+      end
+    end
+    ret
+  end
+
   private
 
   def self.sanitize_changes(list)
@@ -54,7 +77,16 @@ class Changelog < ActiveRecord::Base
     data = JSON::load data
     keys = data.keys
     keys.each do |key|
-      data.delete(key) if data[key][0] == data[key][1]
+      if data[key].is_a?Array
+        data.delete(key) if data[key][0] == data[key][1]
+      else
+        new_data = sanitize_changes(data[key])
+        if new_data.empty?
+          data.delete(key)
+        else
+          data[key] = new_data
+        end
+      end
     end
     data
   end

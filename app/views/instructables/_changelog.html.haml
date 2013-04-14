@@ -1,16 +1,15 @@
 - changelogs = instructable.changelogs
 - changelogs.each do |changelog|
   %h5= changelog.created_at.to_s(:pennsic)
-  %table.table
+  %table.table#changelog-modal
     %thead
       %tr
-        %th Field
-        %th Old
-        %th New Value
+        %th.field Field
+        %th.old-value Old
+        %th.new-value New Value
     %tbody
-      - changelog.changelog.keys.sort.each do |field|
+      - Changelog.decompose(changelog.changelog).sort.each do |field, changes|
         %tr
-          - changes = changelog.changelog[field]
           %td= field
           - if changes[0].is_a?Array
             %td= changes[0].join(", ")
