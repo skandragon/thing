@@ -1,0 +1,9 @@
+/ This is gross, but it works...
+:javascript
+  window.thing_topics = #{Instructable::TOPICS.to_json}
+  window.thing_selected_subtopic = #{instructable.subtopic.to_json}
+- if admin?
+  :javascript
+    window.all_locations = #{Instructable::all_locations.to_json}
+    window.thing_tracks = #{Instructable::TRACKS.to_json}
+    window.thing_selected_locations = #{instructable.instances.map(&:location).map(&:to_s).to_json}

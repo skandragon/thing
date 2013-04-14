@@ -108,6 +108,10 @@ class Instructable < ActiveRecord::Base
     'In Persona' => [ 'A&S 15' ],
   }
 
+  def self.all_locations
+    TRACKS.values.flatten.uniq
+  end
+
   def self.locations(filter = nil)
     filter = Array(filter) unless filter.nil?
     ret = {}

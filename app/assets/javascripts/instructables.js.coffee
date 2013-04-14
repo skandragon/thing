@@ -56,7 +56,7 @@ jQuery ->
 jQuery ->
   if window.thing_tracks
     repopulate_targets = (options) ->
-      pu_locations = window.thing_tracks['Pennsic University']
+      pu_locations = window.all_locations
       for n in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         target = $('#instructable_instances_attributes_' + n + '_location')
         if $(target).size() > 0

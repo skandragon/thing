@@ -148,11 +148,4 @@
   = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary submit-button"
   = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
 
-/ This is gross, but it works...
-:javascript
-  window.thing_topics = #{Instructable::TOPICS.to_json}
-  window.thing_selected_subtopic = #{@instructable.subtopic.to_json}
-- if admin?
-  :javascript
-    window.thing_tracks = #{Instructable::TRACKS.to_json}
-    window.thing_selected_locations = #{@instructable.instances.map(&:location).map(&:to_s).to_json}
+= render partial: 'instructables/set_javascript_vars', locals: { instructable: @instructable }
