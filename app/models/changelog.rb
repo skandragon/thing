@@ -23,7 +23,23 @@ class Changelog < ActiveRecord::Base
   def self.build_changes(action, item, user)
     user_id = user.present? ? user.id : nil
     item.valid?  # force validation just to normalize model
-    new(action: action, user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: sanitize_changes(item.changes))
+    new(action: action, user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: sanitize_changes(recursive_changes(item)))
+  end
+
+  def self.recursive_changes(item)
+    changes = item.changes.dup
+    nested_names = item.nested_attributes_options.keys
+    nested_names.each do |nested_name|
+      item.send(nested_name).each do |nested|
+        if nested.changed?
+          nested.changes.each do |field, value|
+            tag = "#{nested_name}-#{nested.id}-#{field}"
+            changes[tag] = value
+          end
+        end
+      end
+    end
+    changes
   end
 
   def validate_and_save
