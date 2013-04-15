@@ -62,9 +62,9 @@ class Changelog < ActiveRecord::Base
 
     data.each do |field_name, item|
       if item.is_a?Array
-        ret[field_name] = item
+        ret[field_name.to_s] = item
       else
-        decompose_hash(field_name, item, ret)
+        decompose_hash(field_name.to_s, item, ret)
       end
     end
     ret
