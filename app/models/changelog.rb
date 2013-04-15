@@ -3,15 +3,15 @@
 #
 # Table name: changelogs
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer
-#  model_id   :integer
-#  action     :string(255)
-#  model_type :string(255)
-#  changelog  :text
-#  notified   :boolean          default(FALSE)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  user_id     :integer
+#  action      :string(255)
+#  target_id   :integer
+#  target_type :string(255)
+#  changelog   :text
+#  notified    :boolean          default(FALSE)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 class Changelog < ActiveRecord::Base

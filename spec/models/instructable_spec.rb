@@ -9,8 +9,8 @@
 #  material_limit            :integer
 #  handout_limit             :integer
 #  description_web           :text
-#  handout_fee               :integer
-#  material_fee              :integer
+#  handout_fee               :float
+#  material_fee              :float
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  duration                  :float
@@ -37,6 +37,8 @@
 #  scheduled                 :boolean          default(FALSE)
 #  location_type             :string(255)      default("track")
 #  proofread                 :boolean          default(FALSE)
+#  proofread_by              :integer          default([])
+#  proofreader_comments      :text
 #
 
 require 'spec_helper'
