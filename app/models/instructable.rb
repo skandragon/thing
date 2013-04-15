@@ -165,6 +165,7 @@ class Instructable < ActiveRecord::Base
   before_validation :check_fees_for_zero
   before_validation :set_default_track, on: :create
   before_save :update_scheduled_flag
+  before_save :adjust_instances
   after_save :check_for_proofread_changes
 
   def is_proofreader=(value)
@@ -227,7 +228,6 @@ class Instructable < ActiveRecord::Base
     ret.join(" ")
   end
 
-
   def update_scheduled_flag_from_instance
     update_column(:scheduled, fully_scheduled?)
 
@@ -256,6 +256,12 @@ class Instructable < ActiveRecord::Base
     unused_entries = instances.reorder('start_time DESC').limit(overage)
     overage -= unused_entries.size
     unused_entries.destroy_all
+  end
+
+  def adjust_instances
+    instances.each do |instance|
+      instance.update_end_time
+    end
   end
 
   private

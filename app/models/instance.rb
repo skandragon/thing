@@ -81,6 +81,16 @@ class Instance < ActiveRecord::Base
     grid
   end
 
+  def update_end_time
+    if start_time.present?
+      self.start_time -= start_time.sec  # remove any seconds
+      if instructable.present?
+        self.end_time = start_time + instructable.duration.hours
+      end
+    end
+    true
+  end
+
   private
 
   def self.make_row(size)
@@ -110,16 +120,6 @@ class Instance < ActiveRecord::Base
       errors.add(:start_time, start_time.to_s)
       errors.add(:start_time, "#{start_time.to_date} is not a class day (#{Instructable::CLASS_DATES.join(', ')})")
     end
-  end
-
-  def update_end_time
-    if start_time.present?
-      self.start_time -= start_time.sec  # remove any seconds
-      if instructable.present?
-        self.end_time = start_time + instructable.duration.hours
-      end
-    end
-    true
   end
 
   def update_instructable
