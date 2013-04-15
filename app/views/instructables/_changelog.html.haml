@@ -1,14 +1,14 @@
-- changelogs = instructable.changelogs
+- changelogs = instructable.changelogs.order("created_at DESC")
 - changelogs.each do |changelog|
-  %h5= changelog.created_at.to_s(:pennsic)
-  %table.table#changelog-modal
+  %h4= changelog.created_at.to_s(:pennsic)
+  %table.table.table-bordered#changelog-modal
     %thead
       %tr
         %th.field Field
         %th.old-value Old
         %th.new-value New Value
     %tbody
-      - Changelog.decompose(changelog.changelog).sort.each do |field, changes|
+      - Changelog.decompose(changelog.changelog).each do |field, changes|
         %tr
           %td= field
           - if changes[0].is_a?Array
