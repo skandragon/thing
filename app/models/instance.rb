@@ -117,7 +117,6 @@ class Instance < ActiveRecord::Base
   def validate_start_time
     return if start_time.blank? or override_location?
     unless Instructable::CLASS_DATES.include?(start_time.to_date.to_s)
-      errors.add(:start_time, start_time.to_s)
       errors.add(:start_time, "#{start_time.to_date} is not a class day (#{Instructable::CLASS_DATES.join(', ')})")
     end
   end
