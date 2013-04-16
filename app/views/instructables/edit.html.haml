@@ -30,7 +30,7 @@
             = i.input :location, label: disabled ? 'Location' : 'Location', as: :select, collection: locations, input_html: { class: 'input-medium' }, disabled: disabled
             - location_was_overridden ||= disabled
             - if admin?
-              = i.input :override_location
+              = i.input :override_location, label: "Override"
       - if location_was_overridden and !admin?
         %p.alert.alert-warning At least one time and location is overridden by an administrator, and cannot be changed.
       - if @instructable.location_nontrack?
