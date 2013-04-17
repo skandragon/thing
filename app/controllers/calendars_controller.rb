@@ -358,6 +358,6 @@ class CalendarsController < ApplicationController
 
   def load_data
     @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
-    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order("start_time, btrsort(location) NULLS FIRST").includes(instructable: [:user])
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order("start_time, btrsort(location)").includes(instructable: [:user])
   end
 end
