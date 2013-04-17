@@ -116,19 +116,60 @@ class CalendarsController < ApplicationController
       magic_token += 1
     end
   end
+  
+  def materials_and_handout_content(instructable)
+    materials = []
+    handout = []
+    handout << "limit: #{instructable.handout_limit}" if instructable.handout_limit
+    materials << "limit: #{instructable.material_limit}" if instructable.material_limit
+
+    handout << "fee: $#{'%.2f' % instructable.handout_fee}" if instructable.handout_fee
+    materials << "fee: $#{'%.2f' % instructable.material_fee}" if instructable.material_fee
+
+    handout_content = nil
+    handout_content = "Handout " + handout.join(", ") + '. ' if handout.size > 0
+
+    materials_content = nil
+    materials_content = "Materials " + materials.join(", ") + '. ' if materials.size > 0
+    
+    [ handout_content, materials_content ].compact
+  end
+
+  def render_topic_list(pdf, instructables)
+    puts "Rendering #{instructables.size} instructables for #{instructables.first.topic}."
+    pdf.move_down(RHYTHM * 2) unless pdf.cursor == pdf.bounds.top
+    pdf.font_size 14
+    pdf.text instructables.first.topic
+    pdf.move_down 8
+    pdf.font_size 8
+
+    instructables.each do |instructable|
+      pdf.move_down RHYTHM * 1.2 unless instructable == instructables.first
+      pdf.text markdown_html("**#{@instructable_magic_tokens[instructable.id]}**: **#{instructable.name}**"), inline_format: true
+      topic = "Topic: #{instructable.formatted_topic}"
+      culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
+      pdf.text [topic, culture].compact.join(", ")
+      pdf.text "Instructor: #{instructable.user.titled_sca_name}"
+      pdf.text "Taught: " + instructable.instances.map(&:formatted_location_and_time).join(", ")
+    
+      pdf.text materials_and_handout_content(instructable).join(" ")
+      pdf.move_down 5
+      pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
+    end
+  end
 
   def render_pdf(filename, cache_filename = nil, user = nil)
     generate_magic_tokens
 
     if @omit_descriptions
-      column_widths = { 0 => 35, 1 => 180, 2 => 250 }
+      column_widths = { 0 => 35, 1 => 105, 2 => 150 }
       total_width = column_widths.values.inject(:+)
     else
-      column_widths = { 0 => 35, 1 => 100, 2 => 160 }
-      total_width = 720
+      column_widths = { 0 => 75, 1 => 175 }
+      total_width = 540
     end
 
-    pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :landscape,
+    pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait,
       :compress => true, :optimize_objects => true,
       :info => {
         :Title => "Pennsic University #{PENNSIC_YEAR} Class Schedule",
@@ -141,13 +182,12 @@ class CalendarsController < ApplicationController
     })
 
     header = [
-      { content: "Id", background_color: 'ffffee' },
-      { content: "When and Where", background_color: 'ffffee' },
-      { content: "Title and Instructor", background_color: 'ffffee' }
+      { content: "When and Where", background_color: 'eeeeee' },
+      { content: "Title and Instructor", background_color: 'eeeeee' }
     ]
 
     unless @omit_descriptions
-      header << { content: "Description", background_color: 'ffffee' }
+      header << { content: "Description", background_color: 'eeeeee' }
     end
 
     first_page = true
@@ -161,29 +201,15 @@ class CalendarsController < ApplicationController
           items = []
         end
 
-        pdf.move_down 20 unless first_page
-        pdf.font_size 25
+        pdf.move_down 10 unless first_page
+        pdf.font_size 14
         pdf.text instance.start_time.to_date.to_s(:pennsic)
-        pdf.font_size 10
-        pdf.move_down 10
+        pdf.font_size 8
+        pdf.move_down 8
         last_date = instance.start_time.to_date
 
         first_page = false
       end
-
-      materials = []
-      handout = []
-      handout << "limit: #{instance.instructable.handout_limit}" if instance.instructable.handout_limit
-      materials << "limit: #{instance.instructable.material_limit}" if instance.instructable.material_limit
-
-      handout << "fee: $#{'%.2f' % instance.instructable.handout_fee}" if instance.instructable.handout_fee
-      materials << "fee: $#{'%.2f' % instance.instructable.material_fee}" if instance.instructable.material_fee
-
-      handout_content = nil
-      handout_content = "Handout " + handout.join(", ") + '. ' if handout.size > 0
-
-      materials_content = nil
-      materials_content = "Materials " + materials.join(", ") + '. ' if materials.size > 0
 
       times = []
       times << instance.start_time.strftime("%a %b %e")
@@ -191,13 +217,22 @@ class CalendarsController < ApplicationController
       times << instance.formatted_location
       times_content = times.join("\n")
 
+      token = @instructable_magic_tokens[instance.instructable.id].to_s
       new_items = [
-        { content: @instructable_magic_tokens[instance.instructable.id].to_s},
         { content: times_content },
-        { content: [ markdown_html(instance.instructable.name), instance.instructable.user.titled_sca_name ].join("\n\n"), inline_format: true },
+        { content: [
+          markdown_html(instance.instructable.name + " (#{token})"),
+          "(#{instance.instructable.user.titled_sca_name})"
+        ].join(" "), inline_format: true },
       ]
       unless @omit_descriptions
-        new_items << { inline_format: true, content: [ markdown_html(instance.instructable.description_book), [handout_content, materials_content].compact.join(' ') ].compact.join("\n") }
+        new_items << {
+          inline_format: true,
+          content: markdown_html([
+            instance.instructable.description_book,
+            materials_and_handout_content(instance.instructable).join(" "),
+          ].compact.join(' '))
+        }
       end
       items << new_items
     end
@@ -207,31 +242,28 @@ class CalendarsController < ApplicationController
     # Render class summary
     pdf.start_new_page(layout: :portrait)
 
+    instructables = []
     last_topic = nil
 
-    @instructables.each do |instructable|
-      pdf.group do
-        if last_topic != instructable.topic
-          pdf.move_down(RHYTHM * 2) unless pdf.cursor == pdf.bounds.top
-          pdf_header(pdf, instructable.topic)
+    pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 20, width: pdf.bounds.width) do
+      @instructables.each do |instructable|
+        if last_topic != instructable.topic && !instructables.empty?
+          render_topic_list(pdf, instructables)
+          instructables = []
         end
 
-        pdf.move_down RHYTHM * 1.5
-        pdf.text markdown_html("**#{@instructable_magic_tokens[instructable.id]}**: #{instructable.name}"), inline_format: true
-        topic = "Topic: #{instructable.formatted_topic}"
-        culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
-        pdf.text [topic, culture].compact.join(", ")
-        pdf.text "Instructor: #{instructable.user.titled_sca_name}"
-        pdf.text "Taught: " + instructable.instances.map(&:formatted_location_and_time).join(", ")
-        pdf.move_down 5
-        pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true
+        last_topic = instructable.topic
+        instructables << instructable
       end
-
-      last_topic = instructable.topic
+    
+      unless instructables.empty?
+        render_topic_list(pdf, instructables)
+        instructables = []
+      end
     end
-
+    
     # set page footer
-    options = { :at => [pdf.bounds.left, 0],
+    options = { :at => [pdf.bounds.left, -5],
                 :width => pdf.bounds.right,
                 :align => :center,
                 :start_count_at => 1,
@@ -324,7 +356,7 @@ class CalendarsController < ApplicationController
   end
 
   def load_data
-    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name)
-    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order(:start_time, :location).includes(instructable: [:user])
+    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order("start_time, btrsort(location)").includes(instructable: [:user])
   end
 end
