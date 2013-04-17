@@ -162,12 +162,11 @@ class CalendarsController < ApplicationController
     generate_magic_tokens
 
     if @omit_descriptions
-      column_widths = { 0 => 35, 1 => 105, 2 => 150 }
-      total_width = column_widths.values.inject(:+)
+      column_widths = { 0 => 200  }
     else
       column_widths = { 0 => 75, 1 => 175 }
-      total_width = 540
     end
+    total_width = 540
 
     pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait,
       :compress => true, :optimize_objects => true,
@@ -214,12 +213,15 @@ class CalendarsController < ApplicationController
       times = []
       times << instance.start_time.strftime("%a %b %e")
       times << instance.start_time.strftime("%I:%M %p") + " - " + instance.end_time.strftime("%I:%M")
-      times << instance.formatted_location
-      times_content = times.join("\n")
+      if @omit_descriptions
+        times_content = times.join(", ")
+      else
+        times_content = times.join("\n")
+      end
 
       token = @instructable_magic_tokens[instance.instructable.id].to_s
       new_items = [
-        { content: times_content },
+        { content: [times_content, instance.formatted_location].join("\n") },
         { content: [
           markdown_html(instance.instructable.name + " (#{token})"),
           "(#{instance.instructable.user.titled_sca_name})"
