@@ -88,6 +88,10 @@ class Instance < ActiveRecord::Base
         self.end_time = start_time + instructable.duration.hours
       end
     end
+
+    if instructable.present? and instructable.location_nontrack?
+      self.location = instructable.formatted_nontrack_location
+    end
     true
   end
 

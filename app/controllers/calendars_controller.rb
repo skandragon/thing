@@ -116,7 +116,7 @@ class CalendarsController < ApplicationController
       magic_token += 1
     end
   end
-  
+
   def materials_and_handout_content(instructable)
     materials = []
     handout = []
@@ -131,12 +131,11 @@ class CalendarsController < ApplicationController
 
     materials_content = nil
     materials_content = "Materials " + materials.join(", ") + '. ' if materials.size > 0
-    
+
     [ handout_content, materials_content ].compact
   end
 
   def render_topic_list(pdf, instructables)
-    puts "Rendering #{instructables.size} instructables for #{instructables.first.topic}."
     pdf.move_down(RHYTHM * 2) unless pdf.cursor == pdf.bounds.top
     pdf.font_size 14
     pdf.text instructables.first.topic
@@ -151,7 +150,7 @@ class CalendarsController < ApplicationController
       pdf.text [topic, culture].compact.join(", ")
       pdf.text "Instructor: #{instructable.user.titled_sca_name}"
       pdf.text "Taught: " + instructable.instances.map(&:formatted_location_and_time).join(", ")
-    
+
       pdf.text materials_and_handout_content(instructable).join(" ")
       pdf.move_down 5
       pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
@@ -257,13 +256,13 @@ class CalendarsController < ApplicationController
         last_topic = instructable.topic
         instructables << instructable
       end
-    
+
       unless instructables.empty?
         render_topic_list(pdf, instructables)
         instructables = []
       end
     end
-    
+
     # set page footer
     options = { :at => [pdf.bounds.left, -5],
                 :width => pdf.bounds.right,
@@ -359,6 +358,6 @@ class CalendarsController < ApplicationController
 
   def load_data
     @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
-    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order("start_time, btrsort(location)").includes(instructable: [:user])
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order("start_time, btrsort(location) NULLS FIRST").includes(instructable: [:user])
   end
 end
