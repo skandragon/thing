@@ -18,7 +18,17 @@ class Changelog < ActiveRecord::Base
   belongs_to :user
   belongs_to :target, polymorphic: true
 
+  before_save :abort_if_useless
+
   serialize :changelog, JSON
+
+  def abort_if_useless
+    !useless?
+  end
+
+  def useless?
+    changelog.blank?
+  end
 
   def self.build_changes(action, item, user)
     user_id = user.present? ? user.id : nil
@@ -27,13 +37,19 @@ class Changelog < ActiveRecord::Base
   end
 
   def self.recursive_changes(item)
+    new_counter = 0
     changes = item.changes.dup
     nested_names = item.nested_attributes_options.keys
     nested_names.each do |nested_name|
       nested_changes = {}
       item.send(nested_name).each do |nested|
         if nested.changed?
-          nested_changes[nested.id] = nested.changes
+          nested_id = nested.id
+          if nested_id.blank?
+            nested_id = "new#{new_counter}"
+            new_counter += 1
+          end
+          nested_changes[nested_id] = nested.changes
         end
       end
       changes[nested_name] = nested_changes unless nested_changes.keys.empty?
@@ -72,13 +88,17 @@ class Changelog < ActiveRecord::Base
 
   private
 
+  def self.identical(a, b)
+    a.to_s.strip == b.to_s.strip
+  end
+
   def self.sanitize_changes(list)
     data = list.to_json
     data = JSON::load data
     keys = data.keys
     keys.each do |key|
       if data[key].is_a?Array
-        data.delete(key) if data[key][0] == data[key][1]
+        data.delete(key) if identical(data[key][0], data[key][1])
       else
         new_data = sanitize_changes(data[key])
         if new_data.empty?

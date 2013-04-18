@@ -13,15 +13,56 @@
 #  updated_at  :datetime         not null
 #
 
-
 require 'spec_helper'
 
 describe Changelog do
+  describe '#useless?' do
+    it "returns true for {}" do
+      cl = Changelog.new(changelog: {})
+      cl.should be_useless
+    end
+
+    it "returns true for nil" do
+      cl = Changelog.new(changelog: nil)
+      cl.should be_useless
+    end
+  end
+
   describe '#sanitize_changes' do
     it "removes unneeded deltas" do
       data = {
         :instance => {
           1 => { foo: [1, 1] }
+        }
+      }
+      ret = Changelog.send(:sanitize_changes, data)
+      ret.should == {}
+    end
+
+    it "removes if only whitespace changes" do
+      data = {
+        :instance => {
+          1 => { foo: ["this", "\nthis"] }
+        }
+      }
+      ret = Changelog.send(:sanitize_changes, data)
+      ret.should == {}
+    end
+
+    it "removes if one is nil and another ''" do
+      data = {
+        :instance => {
+          1 => { foo: [nil, ""] }
+        }
+      }
+      ret = Changelog.send(:sanitize_changes, data)
+      ret.should == {}
+    end
+
+    it "removes if both nil" do
+      data = {
+        :instance => {
+          1 => { foo: [nil, nil] }
         }
       }
       ret = Changelog.send(:sanitize_changes, data)

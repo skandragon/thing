@@ -133,16 +133,20 @@ describe Proofreader::InstructablesController do
       @random_proofread.proofread.should_not be_true
       @random_proofread.proofread_by.should == [current_user.id]
       Changelog.count.should == 1
+      cl = Changelog.first
+      cl.changelog.should_not == {}
+      cl.changelog.should have_key("name")
     end
 
     it "marks proofread when really proofread" do
+      @random_proofread.proofread_by.should_not include(current_user.id)
       visit edit_proofreader_instructable_path(@random_proofread)
       click_on 'Save and Mark Proofread'
       @random_proofread.reload
       @random_proofread.proofread_by.should include(current_user.id)
       @random_proofread.proofread_by.size.should == 2
       @random_proofread.proofread.should be_true
-      Changelog.count.should == 1
+      Changelog.count.should == 0
     end
 
     it "updates title, marks not proofread" do
