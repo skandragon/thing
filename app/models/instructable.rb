@@ -219,7 +219,7 @@ class Instructable < ActiveRecord::Base
   end
 
   def formatted_nontrack_location
-    raise Exception.new("location_type is 'tract' but no location known") unless location_nontrack?
+    raise Exception.new("location_type is 'track' but no location known") unless location_nontrack?
     if location_type == 'private-camp'
       ret = [camp_name]
       ret << "(#{camp_address})" if camp_address.present?
