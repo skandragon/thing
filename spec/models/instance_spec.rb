@@ -29,10 +29,17 @@ describe Instance do
     end
   end
 
-  it "rejects out of range dates" do
-    instance = build(:instance, start_time: '2000-01-01')
-    instance.should_not be_valid
-    instance.errors[:start_time].should_not be_empty
+  describe 'start date' do
+    it "rejects out of range dates" do
+      instance = build(:instance, start_time: '2000-01-01')
+      instance.should_not be_valid
+      instance.errors[:start_time].should_not be_empty
+    end
+
+    it "accepts bogus dates if overridden" do
+      instance = build(:instance, override_location: true, start_time: '2000-01-01')
+      instance.should be_valid
+    end
   end
 
   describe '#formatted_location' do
