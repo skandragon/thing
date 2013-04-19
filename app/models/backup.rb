@@ -19,7 +19,7 @@ class Backup
   end
 
   def tables
-    [ User, InstructorProfileContact, Instructable, Instance ]
+    [ User, InstructorProfileContact, Instructable, Instance, Changelog ]
   end
 
   def base
