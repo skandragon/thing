@@ -39,13 +39,13 @@ describe Instance do
     it "renders private camp correctly" do
       instructable = create(:instructable, location_type: 'private-camp', camp_reason: 'because', camp_address: 'N06', camp_name: 'Flarg')
       instance = instructable.instances.create
-      instance.formatted_location.should == "Camp: Flarg (N06)"
+      instance.formatted_location.should == "Flarg (N06)"
     end
 
     it "renders merchant booth correctly" do
       instructable = create(:instructable, location_type: 'merchant-booth', camp_reason: 'because', camp_address: 'N06', camp_name: 'Flarg')
       instance = instructable.instances.create
-      instance.formatted_location.should == "Merchant: Flarg (N06)"
+      instance.formatted_location.should == "Flarg (N06)"
     end
 
     it "renders pennsic location correctly" do
@@ -57,7 +57,7 @@ describe Instance do
     it "handles blank camp_address" do
       instructable = create(:instructable, location_type: 'private-camp', camp_reason: 'because', camp_name: 'Flarg')
       instance = instructable.instances.create
-      instance.formatted_location.should == "Camp: Flarg"
+      instance.formatted_location.should == "Flarg"
     end
 
     it "handles blank location" do
@@ -75,7 +75,8 @@ describe Instance do
     it "Renders times" do
       instructable = create(:instructable, location_type: 'track')
       instance = instructable.instances.create(start_time: @time)
-      instance.formatted_location_and_time.should == "#{@time.to_s(:pennsic_short)}"
+      instance.formatted_location_and_time.should include("#{@time.to_s(:pennsic_short)}")
+      instance.formatted_location_and_time.should include("Location pending")
     end
 
     it "renders 'time pending' for locationless unscheduled" do
@@ -87,7 +88,8 @@ describe Instance do
     it "renders ', time pending' for locationed unscheduled" do
       instructable = create(:instructable, location_type: 'track')
       instance = instructable.instances.create(start_time: nil, location: 'A&S 1')
-      instance.formatted_location_and_time.should include ', time pending'
+      instance.formatted_location_and_time.should include 'time pending'
+      instance.formatted_location_and_time.should include 'A&S 1'
     end
   end
 end

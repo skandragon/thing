@@ -54,7 +54,7 @@ class Instance < ActiveRecord::Base
     if start_time.present? and loc.present?
       ret = [loc, formatted_start_time].join(" on ")
     elsif start_time.present? and loc.blank?
-      ret = formatted_start_time
+      ret = "Location pending, #{formatted_start_time}"
     elsif start_time.blank? and loc.present?
       ret = "#{loc}, time pending"
     else
