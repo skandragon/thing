@@ -227,11 +227,14 @@ class CalendarsController < ApplicationController
         ].join(" "), inline_format: true },
       ]
       unless @omit_descriptions
+        taught_message = nil
+        taught_message = "Taught #{helpers.pluralize(instance.instructable.repeat_count, 'time')}." if instance.instructable.repeat_count > 1
         new_items << {
           inline_format: true,
           content: markdown_html([
             instance.instructable.description_book,
             materials_and_handout_content(instance.instructable).join(" "),
+            taught_message,
           ].compact.join(' '))
         }
       end
