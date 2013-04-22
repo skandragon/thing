@@ -312,9 +312,8 @@ class CalendarsController < ApplicationController
       wb = p.workbook
 
       wb.styles do |s|
-        header_style = s.add_style :bg_color => "00", :fg_color => "FF"
-        date_format = wb.styles.add_style :format_code => 'MM-DD'
-        time_format = wb.styles.add_style :format_code => 'hh:mm'
+        header_style = s.add_style bg_color: "00", fg_color: "FF"
+        date_format = wb.styles.add_style format_code: 'MM-DD hh:mm'
 
         column_names = %W(
           name track culture formatted_topic
@@ -323,24 +322,26 @@ class CalendarsController < ApplicationController
           duration fee_itemization handout_fee handout_limit material_fee
           material_limit
         )
-        header = ['id', 'location', 'start_date', 'start_time', 'end_time', 'instructor' ] + column_names
+        header = ['id', 'location', 'start_time', 'end_time', 'instructor' ] + column_names
 
-        wb.add_worksheet(:name => "Pennsic #{PENNSIC_YEAR}") do |sheet|
+        wb.add_worksheet(name: "Pennsic #{PENNSIC_YEAR}") do |sheet|
           sheet.add_row header
 
           for instance in @instances
             instructable = instance.instructable
             user = instructable.user
-            data = [instructable.id, instance.formatted_location, instance.start_time.to_date, instance.start_time.to_time, instance.end_time.to_time, instructable.titled_sca_name ]
+            start_time = Time.at(instance.start_time.to_f + instance.start_time.utc_offset.to_f)
+            end_time = Time.at(instance.end_time.to_f + instance.end_time.utc_offset.to_f)
+            data = [instructable.id, instance.formatted_location, start_time, end_time, instructable.titled_sca_name ]
             column_names.each do |column_name|
               data += [ instructable.send(column_name) ]
             end
 
             sheet.add_row data, style: [
-              nil, nil, date_format, time_format, time_format, nil,
+              nil, nil, date_format, date_format, nil,
               nil, nil, nil, nil, nil, nil, date_format,
             ]
-            sheet.column_widths 4, 10, 6, 6, 6, nil, nil, nil, nil, nil, nil, 4, 6
+            sheet.column_widths 4, 10, 10, 10, nil, nil, nil, nil, nil, nil, 4, 6
           end
 
           sheet.row_style 0, header_style
