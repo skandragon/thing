@@ -24,8 +24,19 @@ class ApplicationController < ActionController::Base
     include ActionView::Helpers::TextHelper
   end
 
-  def markdown_html(text)
+  def markdown_html(text, options = {})
     return '' if text.blank?
+
+    options.reverse_merge!({
+      tags: %w(strong em sup del),
+      tags_add: [],
+      tags_remove: [],
+    })
+
+    tags = Array(options[:tags])
+    tags += Array(options[:tags_add])
+    tags -= Array(options[:tags_remove])
+    tags = tags.map(&:to_s)
 
     @markdown_renderer ||= Redcarpet::Render::XHTML.new(
       :filter_html => true,
@@ -37,7 +48,7 @@ class ApplicationController < ActionController::Base
                                :strikethrough => true,
                                :superscript => true)
     @coder ||= HTMLEntities.new
-    helpers.sanitize @coder.decode(@markdown.render(text)), tags: %w(strong em sup del)
+    helpers.sanitize(@coder.decode(@markdown.render(text)), tags: tags).strip.html_safe
   end
 
   def miniprofiler

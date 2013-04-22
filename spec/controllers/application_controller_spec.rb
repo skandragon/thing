@@ -51,5 +51,27 @@ describe ApplicationController do
       message = controller.send(:markdown_html, "this &amp; that&#39;s it")
       message.strip.should == 'this & that\'s it'
     end
+
+    it "Skips bold if not in the approved list" do
+      message = controller.send(:markdown_html, "this **is** a test", {
+        tags: 'em'
+      })
+      message.strip.should == 'this is a test'
+    end
+
+    it "Skips bold if removed from the approved list" do
+      message = controller.send(:markdown_html, "this **is** a test", {
+        tags_remove: 'strong'
+      })
+      message.strip.should == 'this is a test'
+    end
+
+    it "Allows bold if added to the approved list" do
+      message = controller.send(:markdown_html, "this **is** a test", {
+        tags: [],
+        tags_add: 'strong'
+      })
+      message.strip.should == 'this <strong>is</strong> a test'
+    end
   end
 end
