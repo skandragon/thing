@@ -144,7 +144,9 @@ class CalendarsController < ApplicationController
 
     instructables.each do |instructable|
       pdf.move_down RHYTHM * 1.2 unless instructable == instructables.first
-      pdf.text markdown_html("**#{@instructable_magic_tokens[instructable.id]}**: **#{instructable.name}**"), inline_format: true
+      name = markdown_html(instructable.name, tags_remove: 'strong')
+      token = @instructable_magic_tokens[instructable.id]
+      pdf.text "<strong>#{token}</strong>: <strong>#{name}</strong>", inline_format: true
       topic = "Topic: #{instructable.formatted_topic}"
       culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
       pdf.text [topic, culture].compact.join(", ")
