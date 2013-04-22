@@ -136,14 +136,14 @@ class CalendarsController < ApplicationController
   end
 
   def render_topic_list(pdf, instructables)
-    pdf.move_down(RHYTHM * 2) unless pdf.cursor == pdf.bounds.top
-    pdf.font_size 14
+    pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
+    pdf.font_size 16
     pdf.text instructables.first.topic
-    pdf.move_down 8
+    pdf.move_down 6
     pdf.font_size 8
 
     instructables.each do |instructable|
-      pdf.move_down RHYTHM * 1.2 unless instructable == instructables.first
+      pdf.move_down 6 unless instructable == instructables.first
       name = markdown_html(instructable.name, tags_remove: 'strong')
       token = @instructable_magic_tokens[instructable.id]
       pdf.text "<strong>#{token}</strong>: <strong>#{name}</strong>", inline_format: true
@@ -151,10 +151,10 @@ class CalendarsController < ApplicationController
       culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
       pdf.text [topic, culture].compact.join(", ")
       pdf.text "Instructor: #{instructable.user.titled_sca_name}"
-      pdf.text "Taught: " + instructable.instances.map(&:formatted_location_and_time).join(", ")
+      pdf.text "Taught: " + instructable.instances.map(&:formatted_start_time).join(", ")
 
       pdf.text materials_and_handout_content(instructable).join(" ")
-      pdf.move_down 5
+      pdf.move_down 2
       pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
     end
   end
