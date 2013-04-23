@@ -220,18 +220,24 @@ class CalendarsController < ApplicationController
         first_page = false
       end
 
-      times = []
-      times << instance.start_time.strftime("%a %b %e")
-      times << instance.start_time.strftime("%I:%M %p") + " - " + instance.end_time.strftime("%I:%M")
-      if @omit_descriptions
-        times_content = times.join(", ")
-      else
+      if !@omit_descriptions and instance.formatted_location =~ /A\&S /
+        times = []
+        times << "#{instance.start_time.strftime('%a %b %e')} - #{instance.formatted_location}"
+        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
         times_content = times.join("\n")
+
+        location = nil
+      else
+        times = []
+        times << instance.start_time.strftime('%a %b %e')
+        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
+        times_content = times.join("\n")
+        location = instance.formatted_location
       end
 
       token = @instructable_magic_tokens[instance.instructable.id].to_s
       new_items = [
-        { content: [times_content, instance.formatted_location].join("\n") },
+        { content: [times_content, location].join("\n") },
         { content: [
           markdown_html(instance.instructable.name + " (#{token})"),
           "\n#{instance.instructable.user.titled_sca_name}"
