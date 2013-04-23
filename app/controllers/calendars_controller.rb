@@ -231,16 +231,18 @@ class CalendarsController < ApplicationController
         times = []
         times << instance.start_time.strftime('%a %b %e')
         times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
-        times_content = times.join("\n")
+        times_content = times.join(@omit_descriptions ? " " : "\n")
         location = instance.formatted_location
       end
 
+      maybe_newline = @omit_descriptions ? " - " : "\n"
+
       token = @instructable_magic_tokens[instance.instructable.id].to_s
       new_items = [
-        { content: [times_content, location].join("\n") },
+        { content: [times_content, location].join(maybe_newline) },
         { content: [
           markdown_html(instance.instructable.name + " (#{token})"),
-          "\n#{instance.instructable.user.titled_sca_name}"
+          "#{maybe_newline}#{instance.instructable.user.titled_sca_name}"
         ].join(" "), inline_format: true },
       ]
       unless @omit_descriptions
