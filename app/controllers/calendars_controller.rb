@@ -97,7 +97,7 @@ class CalendarsController < ApplicationController
     end
 
     data = calendar.to_s.gsub("::", ":")
-#    cache_in_file(cache_filename, data)
+    cache_in_file(cache_filename, data)
     send_data(data, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
@@ -139,22 +139,26 @@ class CalendarsController < ApplicationController
     pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
     pdf.font_size 16
     pdf.text instructables.first.topic
-    pdf.move_down 6
     pdf.font_size 8
 
     instructables.each do |instructable|
-      pdf.move_down 6 unless instructable == instructables.first
+      pdf.move_down 6 unless pdf.cursor == pdf.bounds.top
       name = markdown_html(instructable.name, tags_remove: 'strong')
       token = @instructable_magic_tokens[instructable.id]
-      pdf.text "<strong>#{token}</strong>: <strong>#{name}</strong>", inline_format: true
-      topic = "Topic: #{instructable.formatted_topic}"
-      culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
-      pdf.text [topic, culture].compact.join(", ")
-      pdf.text "Instructor: #{instructable.user.titled_sca_name}"
-      pdf.text "Taught: " + instructable.instances.map(&:formatted_start_time).join(", ")
 
-      pdf.text materials_and_handout_content(instructable).join(" ")
-      pdf.move_down 2
+      topic = "Topic: #{instructable.formatted_topic}",
+      culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
+
+      lines = [
+        "<strong>#{token}</strong>: <strong>#{name}</strong>",
+        [topic, culture].compact.join(", "),
+        "Instructor: #{instructable.user.titled_sca_name}",
+        "Taught: " + instructable.instances.map(&:formatted_start_time).join(", "),
+        materials_and_handout_content(instructable).join(" "),
+      ]
+      pdf.text lines.join("\n"), inline_format: true
+
+      pdf.move_down 4 unless pdf.cursor == pdf.bounds.top
       pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
     end
   end
@@ -201,7 +205,9 @@ class CalendarsController < ApplicationController
           items = []
         end
 
-        pdf.move_down 10 unless first_page
+        unless pdf.cursor == pdf.bounds.top
+          pdf.move_down 10
+        end
         pdf.font_size 14
         pdf.text instance.start_time.to_date.to_s(:pennsic)
         pdf.font_size 8
@@ -251,7 +257,7 @@ class CalendarsController < ApplicationController
     instructables = []
     last_topic = nil
 
-    pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 20, width: pdf.bounds.width) do
+    pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 10, width: pdf.bounds.width) do
       @instructables.each do |instructable|
         if last_topic != instructable.topic && !instructables.empty?
           render_topic_list(pdf, instructables)
@@ -274,13 +280,13 @@ class CalendarsController < ApplicationController
                 :align => :center,
                 :start_count_at => 1,
                 :color => "007700",
-                font_size: 10 }
+                font_size: 8 }
 
-    now = Time.now.strftime("%A, %B %d, %H:%M %p")
+    now = Time.now.in_time_zone.strftime("%A, %B %d, %H:%M %p")
     pdf.number_pages "Generated on #{now} -- page <page> of <total>", options
 
     data = pdf.render
-    #cache_in_file(cache_filename, data)
+    cache_in_file(cache_filename, data)
     send_data(data, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
