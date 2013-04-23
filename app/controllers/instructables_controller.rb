@@ -36,6 +36,7 @@ class InstructablesController < ApplicationController
 
   def update
     @instructable.assign_attributes(permitted_params)
+    @instructable.adjust_instances
     changelog = Changelog.build_changes('update', @instructable, current_user)
     if @instructable.save
       changelog.validate_and_save # failure is an option...

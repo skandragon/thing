@@ -54,6 +54,7 @@ class Proofreader::InstructablesController < ApplicationController
     end
 
     @instructable.assign_attributes(permitted_params)
+    @instructable.adjust_instances
     changelog = Changelog.build_changes('update', @instructable, current_user)
     if @instructable.save
       @instructable.cleanup_unneeded_instances
