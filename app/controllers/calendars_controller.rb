@@ -25,12 +25,13 @@ class CalendarsController < ApplicationController
       }
       format.pdf {
         @omit_descriptions = params[:brief].present?
+        @no_page_numbers = params[:unnumbered].present?
 
-        if @omit_descriptions
-          filename = "pennsic-#{PENNSIC_YEAR}-all-brief.pdf"
-        else
-          filename = "pennsic-#{PENNSIC_YEAR}-all.pdf"
-        end
+        filename = [
+          "pennsic-#{PENNSIC_YEAR}-all",
+          @omit_descriptions ? "brief" : nil,
+          @no_page_numbers ? "unnumbered" : nil,
+        ].compact.join("-") + ".pdf"
 
         cache_filename = Rails.root.join("tmp", filename)
         if File.exists?(cache_filename)
@@ -142,7 +143,7 @@ class CalendarsController < ApplicationController
     pdf.font_size 8
 
     instructables.each do |instructable|
-      pdf.move_down 6 unless pdf.cursor == pdf.bounds.top
+      pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
       name = markdown_html(instructable.name, tags_remove: 'strong')
       token = @instructable_magic_tokens[instructable.id]
 
@@ -158,7 +159,7 @@ class CalendarsController < ApplicationController
       ]
       pdf.text lines.join("\n"), inline_format: true
 
-      pdf.move_down 4 unless pdf.cursor == pdf.bounds.top
+      pdf.move_down 2 unless pdf.cursor == pdf.bounds.top
       pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
     end
   end
@@ -169,7 +170,7 @@ class CalendarsController < ApplicationController
     if @omit_descriptions
       column_widths = { 0 => 200  }
     else
-      column_widths = { 0 => 75, 1 => 175 }
+      column_widths = { 0 => 95, 1 => 170 }
     end
     total_width = 540
 
@@ -209,7 +210,7 @@ class CalendarsController < ApplicationController
           pdf.move_down 10
         end
         pdf.font_size 14
-        pdf.text instance.start_time.to_date.to_s(:pennsic)
+        pdf.text instance.start_time.to_date.strftime("%A, %B %e")
         pdf.font_size 8
         pdf.move_down 8
         last_date = instance.start_time.to_date
@@ -282,8 +283,10 @@ class CalendarsController < ApplicationController
                 :color => "007700",
                 font_size: 8 }
 
-    now = Time.now.in_time_zone.strftime("%A, %B %d, %H:%M %p")
-    pdf.number_pages "Generated on #{now} -- page <page> of <total>", options
+    unless @no_page_numbers
+      now = Time.now.in_time_zone.strftime("%A, %B %d, %H:%M %p")
+      pdf.number_pages "Generated on #{now} -- page <page> of <total>", options
+    end
 
     data = pdf.render
     cache_in_file(cache_filename, data)
