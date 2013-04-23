@@ -97,7 +97,7 @@ class CalendarsController < ApplicationController
     end
 
     data = calendar.to_s.gsub("::", ":")
-    cache_in_file(cache_filename, data)
+    #cache_in_file(cache_filename, data)
     send_data(data, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
