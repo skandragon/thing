@@ -140,7 +140,7 @@ class CalendarsController < ApplicationController
     pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
     pdf.font_size 16
     pdf.text instructables.first.topic
-    pdf.font_size 8
+    pdf.font_size 7
 
     instructables.each do |instructable|
       pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
@@ -207,12 +207,12 @@ class CalendarsController < ApplicationController
         end
 
         unless pdf.cursor == pdf.bounds.top
-          pdf.move_down 10
+          pdf.move_down 12
         end
         pdf.font_size 14
         pdf.text instance.start_time.to_date.strftime("%A, %B %e")
-        pdf.font_size 8
-        pdf.move_down 8
+        pdf.font_size 7
+        pdf.move_down 7
         last_date = instance.start_time.to_date
 
         first_page = false
@@ -232,7 +232,7 @@ class CalendarsController < ApplicationController
         { content: [times_content, instance.formatted_location].join("\n") },
         { content: [
           markdown_html(instance.instructable.name + " (#{token})"),
-          "(#{instance.instructable.user.titled_sca_name})"
+          "\n#{instance.instructable.user.titled_sca_name}"
         ].join(" "), inline_format: true },
       ]
       unless @omit_descriptions
@@ -280,8 +280,7 @@ class CalendarsController < ApplicationController
                 :width => pdf.bounds.right,
                 :align => :center,
                 :start_count_at => 1,
-                :color => "007700",
-                font_size: 8 }
+                font_size: 6 }
 
     unless @no_page_numbers
       now = Time.now.in_time_zone.strftime("%A, %B %d, %H:%M %p")
