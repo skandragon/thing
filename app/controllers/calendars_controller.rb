@@ -136,11 +136,13 @@ class CalendarsController < ApplicationController
     [ handout_content, materials_content ].compact
   end
 
+  PDF_FONT_SIZE = 8
+
   def render_topic_list(pdf, instructables)
     pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
     pdf.font_size 16
     pdf.text instructables.first.topic
-    pdf.font_size 7
+    pdf.font_size PDF_FONT_SIZE
 
     instructables.each do |instructable|
       pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
@@ -212,7 +214,7 @@ class CalendarsController < ApplicationController
         pdf.font_size 14
         pdf.text instance.start_time.to_date.strftime("%A, %B %e")
         pdf.font_size 7
-        pdf.move_down 7
+        pdf.move_down PDF_FONT_SIZE
         last_date = instance.start_time.to_date
 
         first_page = false
