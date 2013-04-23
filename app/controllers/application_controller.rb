@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
                                :strikethrough => true,
                                :superscript => true)
     @coder ||= HTMLEntities.new
-    helpers.sanitize(@coder.decode(@markdown.render(text)), tags: tags).strip.html_safe
+    helpers.sanitize(@coder.decode(@markdown.render(text.strip)), tags: tags).strip.html_safe
   end
 
   def miniprofiler
