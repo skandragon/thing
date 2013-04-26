@@ -44,8 +44,8 @@
 
 class Instructable < ActiveRecord::Base
   belongs_to :user
-  has_many :instances, dependent: :delete_all, order: 'start_time, location'
-  has_many :changelogs, dependent: :delete_all, as: :target
+  has_many :instances, dependent: :destroy, order: 'start_time, location'
+  has_many :changelogs, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
   has_paper_trail
