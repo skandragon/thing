@@ -27,7 +27,7 @@ module Thing
       routing_specs: false,
       conroller_specs: true,
       request_specs: true
-    g.fixture_replacement :factory_girl, :dir => 'spec/factories',
+    g.fixture_replacement :factory_girl, :dir => 'spec/factories'
 
     g.template_engine :haml
     g.stylesheets false
