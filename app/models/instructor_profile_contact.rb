@@ -14,6 +14,8 @@
 class InstructorProfileContact < ActiveRecord::Base
   belongs_to :user
 
+  has_paper_trail
+
   PROTOCOL_TYPES = {
     "profile email" => :email,
     "alternate email" => :email,
@@ -22,7 +24,7 @@ class InstructorProfileContact < ActiveRecord::Base
     "web page" => :url,
   }
   PROTOCOLS = PROTOCOL_TYPES.keys
-  
+
   def <=>(other)
     PROTOCOLS.index(protocol) <=> PROTOCOLS.index(other.protocol)
   end

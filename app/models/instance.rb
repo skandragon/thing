@@ -16,6 +16,8 @@
 class Instance < ActiveRecord::Base
   belongs_to :instructable, touch: true
 
+  has_paper_trail
+
   after_save :update_instructable
   before_validation :update_end_time
 

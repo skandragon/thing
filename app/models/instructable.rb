@@ -48,6 +48,8 @@ class Instructable < ActiveRecord::Base
   has_many :changelogs, dependent: :delete_all, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
+  has_paper_trail
+
   delegate :titled_sca_name, to: :user
 
   PENNSIC_DATES = (Date.parse('2013-07-19')..Date.parse('2013-08-03')).to_a.map(&:to_s)

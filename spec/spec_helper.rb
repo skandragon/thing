@@ -66,6 +66,8 @@ RSpec.configure do |config|
 
   config.after :each do
     DatabaseCleaner.clean
+    PaperTrail.controller_info = {}
+    PaperTrail.whodunnit = nil
   end
 
   config.include FactoryGirl::Syntax::Methods

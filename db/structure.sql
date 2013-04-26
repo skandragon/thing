@@ -31,17 +31,17 @@ SET search_path = public, pg_catalog;
 CREATE FUNCTION btrsort(text) RETURNS text
     LANGUAGE sql IMMUTABLE
     AS $_$ 
-            SELECT 
-                    CASE WHEN char_length($1)>0 THEN 
-                            CASE WHEN $1 ~ '^[^0-9]+' THEN 
-                                    RPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[^0-9]+'), ''), 1, 12), 12, ' ') || btrsort(btrsort_nextunit($1)) 
-                            ELSE 
-                                    LPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[0-9]+'), ''), 1, 12), 12, ' ') || btrsort(btrsort_nextunit($1)) 
-                            END 
-                    ELSE 
-                            $1 
-                    END 
-          ; 
+      SELECT 
+        CASE WHEN char_length($1) > 0 THEN 
+          CASE WHEN $1 ~ '^[^0-9]+' THEN 
+            RPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[^0-9]+'), ''), 1, 30), 30, ' ') || btrsort(btrsort_nextunit($1)) 
+          ELSE 
+            LPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[0-9]+'), ''), 1, 30), 30, '0') || btrsort(btrsort_nextunit($1)) 
+          END 
+        ELSE 
+          $1 
+        END 
+      ; 
     $_$;
 
 
@@ -335,6 +335,40 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE versions (
+    id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    item_id integer NOT NULL,
+    event character varying(255) NOT NULL,
+    whodunnit character varying(255),
+    object text,
+    created_at timestamp without time zone
+);
+
+
+--
+-- Name: versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -374,6 +408,13 @@ ALTER TABLE ONLY instructor_profile_contacts ALTER COLUMN id SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
 
 
 --
@@ -425,6 +466,14 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY versions
+    ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_authentications_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -443,6 +492,13 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: index_versions_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING btree (item_type, item_id);
 
 
 --
@@ -527,3 +583,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130408052835');
 INSERT INTO schema_migrations (version) VALUES ('20130410012740');
 
 INSERT INTO schema_migrations (version) VALUES ('20130417073037');
+
+INSERT INTO schema_migrations (version) VALUES ('20130426200209');

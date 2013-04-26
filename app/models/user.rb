@@ -37,6 +37,8 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
+  has_paper_trail
+
   # SCA titles, lowercase.
   # These are currently focused on the British words,
   # although UTF-8 strings for other languages would work.
