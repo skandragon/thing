@@ -40,7 +40,6 @@ describe Changelog do
       i = create(:scheduled_instructable)
       i.reload
       cl = Changelog.build_destroy(i, nil)
-      puts i.instances.inspect
       cl.changelog.should have_key("instances")
       cl.changelog["instances"].should be_a_kind_of(Array)
       cl.changelog["instances"].size.should == i.repeat_count

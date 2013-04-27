@@ -49,6 +49,7 @@ class InstructablesController < ApplicationController
 
   def destroy
     if @instructable
+      Changelog.build_destroy(@instructable, current_user)
       @instructable.destroy
     end
     redirect_to user_instructables_path(@target_user), notice: "Class deleted."
