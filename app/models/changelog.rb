@@ -57,6 +57,22 @@ class Changelog < ActiveRecord::Base
     changes
   end
 
+  def self.build_destroy(item, user)
+    user_id = user.present? ? user.id : nil
+    item.valid?  # force validation just to normalize model
+    new(action: "destroy", user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: recursive_destroy(item))
+  end
+
+  def self.recursive_destroy(item)
+    data = item.attributes
+
+    nested_names = item.nested_attributes_options.keys
+    nested_names.each do |nested_name|
+      data[nested_name.to_s] = item.send(nested_name).map { |x| recursive_destroy(x) }
+    end
+    data
+  end
+
   def validate_and_save
     return if (action == 'update') and changelog.empty?
     save
