@@ -35,12 +35,14 @@ class InstructablesController < ApplicationController
   end
 
   def update
+    preflight = Changelog.build_attributes(@instructable)
     @instructable.assign_attributes(permitted_params)
     @instructable.adjust_instances
     changelog = Changelog.build_changes('update', @instructable, current_user)
     if @instructable.save
-      changelog.validate_and_save # failure is an option...
       @instructable.cleanup_unneeded_instances
+      changelog.original = preflight
+      changelog.validate_and_save # failure is an option...
       redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: "Class updated."
     else
       render action: :edit
@@ -48,8 +50,11 @@ class InstructablesController < ApplicationController
   end
 
   def destroy
+    preflight = Changelog.build_attributes(@instructable)
     if @instructable
-      Changelog.build_destroy(@instructable, current_user)
+      changelog = Changelog.build_destroy(@instructable, current_user)
+      changelog.original = preflight
+      changelog.save # failure is an option...
       @instructable.destroy
     end
     redirect_to user_instructables_path(@target_user), notice: "Class deleted."

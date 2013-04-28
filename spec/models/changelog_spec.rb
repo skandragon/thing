@@ -28,21 +28,21 @@ describe Changelog do
     end
   end
 
-  describe '#record_destroy' do
+  describe '#build_destroy' do
     it "should render current values for a simple object" do
       i = build(:instructable)
       cl = Changelog.build_destroy(i, nil)
-      cl.changelog.should have_key("name")
-      cl.changelog["name"].should == i.name
+      cl.original.should have_key("name")
+      cl.original["name"].should == i.name
     end
 
     it "renders related objects" do
       i = create(:scheduled_instructable)
       i.reload
       cl = Changelog.build_destroy(i, nil)
-      cl.changelog.should have_key("instances")
-      cl.changelog["instances"].should be_a_kind_of(Array)
-      cl.changelog["instances"].size.should == i.repeat_count
+      cl.original.should have_key("instances")
+      cl.original["instances"].should be_a_kind_of(Array)
+      cl.original["instances"].size.should == i.repeat_count
     end
   end
 

@@ -21,6 +21,8 @@ class Changelog < ActiveRecord::Base
   before_save :abort_if_useless
 
   serialize :changelog, JSON
+  serialize :committed, JSON
+  serialize :original, JSON
 
   def useless?
     changelog.blank?
@@ -29,13 +31,18 @@ class Changelog < ActiveRecord::Base
   def self.build_changes(action, item, user)
     user_id = user.present? ? user.id : nil
     item.valid?  # force validation just to normalize model
-    new(action: action, user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: sanitize_changes(recursive_changes(item)))
+    new(action: action, user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: sanitize_changes(recursive_changes(item)), committed: recursive_attributes(item))
   end
 
   def self.build_destroy(item, user)
     user_id = user.present? ? user.id : nil
     item.valid?  # force validation just to normalize model
-    new(action: "destroy", user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: recursive_destroy(item))
+    snapshot = recursive_attributes(item)
+    new(action: "destroy", user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: nil, original: snapshot)
+  end
+
+  def self.build_attributes(item)
+    recursive_attributes(item)
   end
 
   def self.decompose(data, prefix = nil)
@@ -88,12 +95,12 @@ class Changelog < ActiveRecord::Base
     !useless?
   end
 
-  def self.recursive_destroy(item)
+  def self.recursive_attributes(item)
     data = item.attributes
 
     nested_names = item.nested_attributes_options.keys
     nested_names.each do |nested_name|
-      data[nested_name.to_s] = item.send(nested_name).map { |x| recursive_destroy(x) }
+      data[nested_name.to_s] = item.send(nested_name).map { |x| recursive_attributes(x) }
     end
     data
   end

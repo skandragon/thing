@@ -53,12 +53,13 @@ class Proofreader::InstructablesController < ApplicationController
       @instructable.is_proofreader = current_user.id
     end
 
+    preflight = Changelog.build_attributes(@instructable)
     @instructable.assign_attributes(permitted_params)
     @instructable.adjust_instances
     changelog = Changelog.build_changes('update', @instructable, current_user)
     if @instructable.save
       @instructable.cleanup_unneeded_instances
-      changelog.save # failure is an option...
+      changelog.validate_and_save # failure is an option...
       redirect_to session[:instructable_back] || proofreader_instructables_path, notice: "Class updated."
     else
       render action: :edit

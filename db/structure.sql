@@ -113,7 +113,9 @@ CREATE TABLE changelogs (
     changelog text,
     notified boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    original text,
+    committed text
 );
 
 
@@ -584,3 +586,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130410012740');
 INSERT INTO schema_migrations (version) VALUES ('20130417073037');
 
 INSERT INTO schema_migrations (version) VALUES ('20130426200209');
+
+INSERT INTO schema_migrations (version) VALUES ('20130428100303');
