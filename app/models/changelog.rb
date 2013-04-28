@@ -25,7 +25,7 @@ class Changelog < ActiveRecord::Base
   serialize :original, JSON
 
   def useless?
-    changelog.blank?
+    action == 'destroy' ? original.blank? : changelog.blank?
   end
 
   def self.build_changes(action, item, user)

@@ -50,10 +50,8 @@ class InstructablesController < ApplicationController
   end
 
   def destroy
-    preflight = Changelog.build_attributes(@instructable)
     if @instructable
       changelog = Changelog.build_destroy(@instructable, current_user)
-      changelog.original = preflight
       changelog.save # failure is an option...
       @instructable.destroy
     end
