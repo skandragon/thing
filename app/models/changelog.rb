@@ -22,10 +22,6 @@ class Changelog < ActiveRecord::Base
 
   serialize :changelog, JSON
 
-  def abort_if_useless
-    !useless?
-  end
-
   def useless?
     changelog.blank?
   end
@@ -34,6 +30,72 @@ class Changelog < ActiveRecord::Base
     user_id = user.present? ? user.id : nil
     item.valid?  # force validation just to normalize model
     new(action: action, user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: sanitize_changes(recursive_changes(item)))
+  end
+
+  def self.build_destroy(item, user)
+    user_id = user.present? ? user.id : nil
+    item.valid?  # force validation just to normalize model
+    new(action: "destroy", user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: recursive_destroy(item))
+  end
+
+  def self.decompose(data, prefix = nil)
+    ret = {}
+
+    data.each do |field_name, item|
+      if item.is_a?Array
+        ret[field_name.to_s] = item
+      else
+        decompose_hash(field_name.to_s, item, ret)
+      end
+    end
+    ret
+  end
+
+  def validate_and_save
+    return if (action == 'update') and changelog.empty?
+    save
+  end
+
+  def self.recursive_flarg(item, previous_field = nil)
+    item.each do |field, changes|
+      if changes.is_a?Array and changes[0].is_a?Hash
+        changes.each do |item|
+          puts "#{item}"
+          recursive_flarg(item, field)
+        end
+      else
+        puts "#{field}: #{changes[0]} -> #{changes[1]}"
+      end
+    end
+  end
+
+  def self.flarg(target_class, timestamp)
+    changelogs = Changelog.
+      where(target_type: target_class).
+      where('created_at >= ?', timestamp).
+      order(:created_at)
+
+    changelogs.each do |cl|
+      recursive_flarg(cl.changelog)
+    end
+
+    nil
+  end
+
+  private
+
+  def abort_if_useless
+    !useless?
+  end
+
+  def self.recursive_destroy(item)
+    data = item.attributes
+
+    nested_names = item.nested_attributes_options.keys
+    nested_names.each do |nested_name|
+      data[nested_name.to_s] = item.send(nested_name).map { |x| recursive_destroy(x) }
+    end
+    data
   end
 
   def self.recursive_changes(item)
@@ -57,27 +119,6 @@ class Changelog < ActiveRecord::Base
     changes
   end
 
-  def self.build_destroy(item, user)
-    user_id = user.present? ? user.id : nil
-    item.valid?  # force validation just to normalize model
-    new(action: "destroy", user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: recursive_destroy(item))
-  end
-
-  def self.recursive_destroy(item)
-    data = item.attributes
-
-    nested_names = item.nested_attributes_options.keys
-    nested_names.each do |nested_name|
-      data[nested_name.to_s] = item.send(nested_name).map { |x| recursive_destroy(x) }
-    end
-    data
-  end
-
-  def validate_and_save
-    return if (action == 'update') and changelog.empty?
-    save
-  end
-
   def self.decompose_hash(field_name, data, ret)
     data.each do |key, item|
       name = "#{field_name}-#{key}"
@@ -89,28 +130,12 @@ class Changelog < ActiveRecord::Base
     end
   end
 
-  def self.decompose(data, prefix = nil)
-    ret = {}
-
-    data.each do |field_name, item|
-      if item.is_a?Array
-        ret[field_name.to_s] = item
-      else
-        decompose_hash(field_name.to_s, item, ret)
-      end
-    end
-    ret
-  end
-
-  private
-
   def self.identical(a, b)
     a.to_s.strip == b.to_s.strip
   end
 
   def self.sanitize_changes(list)
-    data = list.to_json
-    data = JSON::load data
+    data = JSON::load list.to_json
     keys = data.keys
     keys.each do |key|
       if data[key].is_a?Array
