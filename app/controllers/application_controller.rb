@@ -13,6 +13,9 @@ class ApplicationController < ActionController::Base
   helper_method :proofreader?
   helper_method :markdown_html
 
+  include GriffinJSON
+  helper_method :json_for
+
   private
 
   def helpers

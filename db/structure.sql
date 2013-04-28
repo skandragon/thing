@@ -30,18 +30,18 @@ SET search_path = public, pg_catalog;
 
 CREATE FUNCTION btrsort(text) RETURNS text
     LANGUAGE sql IMMUTABLE
-    AS $_$ 
-      SELECT 
-        CASE WHEN char_length($1) > 0 THEN 
-          CASE WHEN $1 ~ '^[^0-9]+' THEN 
-            RPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[^0-9]+'), ''), 1, 30), 30, ' ') || btrsort(btrsort_nextunit($1)) 
-          ELSE 
-            LPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[0-9]+'), ''), 1, 30), 30, '0') || btrsort(btrsort_nextunit($1)) 
-          END 
-        ELSE 
-          $1 
-        END 
-      ; 
+    AS $_$
+      SELECT
+        CASE WHEN char_length($1) > 0 THEN
+          CASE WHEN $1 ~ '^[^0-9]+' THEN
+            RPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[^0-9]+'), ''), 1, 30), 30, ' ') || btrsort(btrsort_nextunit($1))
+          ELSE
+            LPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[0-9]+'), ''), 1, 30), 30, '0') || btrsort(btrsort_nextunit($1))
+          END
+        ELSE
+          $1
+        END
+      ;
     $_$;
 
 
@@ -51,14 +51,13 @@ CREATE FUNCTION btrsort(text) RETURNS text
 
 CREATE FUNCTION btrsort_nextunit(text) RETURNS text
     LANGUAGE sql IMMUTABLE
-    AS $_$ 
-            SELECT 
-                    CASE WHEN $1 ~ '^[^0-9]+' THEN 
-                            COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[^0-9]+'))+1 ), '' ) 
-                    ELSE 
-                            COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[0-9]+'))+1 ), '' ) 
-                    END 
-
+    AS $_$
+      SELECT
+        CASE WHEN $1 ~ '^[^0-9]+' THEN
+          COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[^0-9]+'))+1 ), '' )
+        ELSE
+          COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[0-9]+'))+1 ), '' )
+        END
     $_$;
 
 
