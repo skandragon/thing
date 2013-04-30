@@ -36,6 +36,7 @@ Thing::Application.routes.draw do
   resources :users do
     resource :instructor_profile
     resources :instructables
+    resource :schedule, controller: 'users/schedules'
   end
 
   resources :calendars

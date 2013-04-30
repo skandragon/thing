@@ -3,66 +3,60 @@
 %header#overview.jumbotron.subhead
 
 .hero-unit.opening-page
+  %h1 Pennsic University
   - unless user_signed_in?
-    %h1 Pennsic University
-    %p Currently, you only need to sign up if you wish to teach at Pennsic.
     %p
-      %a.btn.btn-primary.btn-large{:href => new_user_session_path } Sign in
+      %a.btn.btn-primary{:href => new_user_session_path } Sign in
       or
-      %a.btn.btn-primary.btn-large{:href => new_user_registration_path } Sign up
+      %a.btn.btn-primary{:href => new_user_registration_path } Sign up
   - else
-    - if instructor?
-      %h1
-        Welcome!
-      %p
-        Thank you,
-        %b #{current_user.sca_name},
-        for sharing your knowledge.
-      %p
-        Use the buttons below, or anything under the Instructor menu
-        on the top of the page, to manage your classes and update your
-        profile as needed.
-      %p
-        %a.btn.btn-primary{:href => edit_user_instructor_profile_path(current_user) } Update instructor profile
-        %a.btn.btn-primary{:href => user_instructables_path(current_user) } Your classes
-    - else
-      %h1 Welcome!
-      %p
-        Hello there,
-        %b #{current_user.mundane_name}.
-      %p
-        If you wish to share your knowledge and teach at Pennsic, you
-        must first create a profile.
-      %p
-        %a.btn.btn-primary{:href => new_user_instructor_profile_path(current_user) } Become an instructor
+    %p
+      Welcome, #{current_user.best_name}.
 
-//%section.marketing
-//  .row
-//    .span4
-//      %h3 Woot!
-//      %p
-//        I can has...
-//    .span4
-//      %h3 Woot!
-//      %p
-//        I can has...
-//    .span4
-//      %h3 Woot!
-//      %p
-//        I can has...
-//
-//  .row
-//    .span4
-//      %h3 Woot!
-//      %p
-//        I can has...
-//      .g-plusone
-//
-//    .span4
-//      %h3 Woot!
-//      %p
-//        I can has...
-//    .span4
-//      %h3 Contact Us
-//      %p
-//        I can has...
+%section.marketing
+  .row
+    .span4.offset1
+      %h3 Instructors
+      - if instructor?
+        %p
+          Thank you, #{current_user.titled_sca_name}, for sharing your knowledge.
+        %p
+          Use the buttons below to manage classes you are teaching,
+          and update your instructor profile.  These are also available under
+          the Instructor menu option near the top of the page.
+        %p
+          %a.btn{:href => user_instructables_path(current_user) } Your classes
+          %a.btn{:href => edit_user_instructor_profile_path(current_user) } Update instructor profile
+      - else
+        %p
+          Students come to Pennsic University classes to learn about a
+          huge variety of topics.  Perhaps you have something to share?
+        - if user_signed_in?
+          %p
+            If you wish to share your knowledge and teach at Pennsic, you
+            must first create a profile.
+          %p
+            %a.btn{:href => new_user_instructor_profile_path(current_user) } Become an instructor
+        - else
+          %p
+            Sign in or sign up to request to teach a class at Pennsic,
+            or to manage those you are already teaching.
+    .span4.offset1
+      %h3 Students
+      - if user_signed_in?
+        %p
+          Create a schedule of just the classes you want to attend.
+          Then, download this schedule in PDF to view or print.
+          You can also download it into your calendar, for your computer
+          or mobile device.
+      - else
+        %p
+          Sign in or sign up to create a customized schedule of just the
+          classes you wish to attend.
+          Then, download this schedule in PDF to view or print.
+          You can also download it into your calendar, for your computer
+          or mobile device.
+      %p
+        You can also view or download the entire schedule.  These
+        options are found in the Schedules menu item, near the top of the
+        page.

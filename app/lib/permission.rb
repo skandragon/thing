@@ -25,6 +25,14 @@ class Permission
       allow :instructables, [ :show, :new, :create, :edit, :update, :destroy ] do |record|
         record.user_id == user.id
       end
+
+      allow 'users/schedules', [ :show ] do |record|
+        record.user_id == user.id or record.published?
+      end
+
+      allow 'users/schedules', [ :new, :create, :edit, :update, :destroy ] do |record|
+        record.user_id == user.id
+      end
     end
 
     if user && user.admin?

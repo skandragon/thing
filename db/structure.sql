@@ -30,18 +30,18 @@ SET search_path = public, pg_catalog;
 
 CREATE FUNCTION btrsort(text) RETURNS text
     LANGUAGE sql IMMUTABLE
-    AS $_$
-      SELECT
-        CASE WHEN char_length($1) > 0 THEN
-          CASE WHEN $1 ~ '^[^0-9]+' THEN
-            RPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[^0-9]+'), ''), 1, 30), 30, ' ') || btrsort(btrsort_nextunit($1))
-          ELSE
-            LPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[0-9]+'), ''), 1, 30), 30, '0') || btrsort(btrsort_nextunit($1))
-          END
-        ELSE
-          $1
-        END
-      ;
+    AS $_$ 
+      SELECT 
+        CASE WHEN char_length($1) > 0 THEN 
+          CASE WHEN $1 ~ '^[^0-9]+' THEN 
+            RPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[^0-9]+'), ''), 1, 30), 30, ' ') || btrsort(btrsort_nextunit($1)) 
+          ELSE 
+            LPAD(SUBSTR(COALESCE(SUBSTRING($1 FROM '^[0-9]+'), ''), 1, 30), 30, '0') || btrsort(btrsort_nextunit($1)) 
+          END 
+        ELSE 
+          $1 
+        END 
+      ; 
     $_$;
 
 
@@ -51,13 +51,14 @@ CREATE FUNCTION btrsort(text) RETURNS text
 
 CREATE FUNCTION btrsort_nextunit(text) RETURNS text
     LANGUAGE sql IMMUTABLE
-    AS $_$
-      SELECT
-        CASE WHEN $1 ~ '^[^0-9]+' THEN
-          COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[^0-9]+'))+1 ), '' )
-        ELSE
-          COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[0-9]+'))+1 ), '' )
-        END
+    AS $_$ 
+            SELECT 
+                    CASE WHEN $1 ~ '^[^0-9]+' THEN 
+                            COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[^0-9]+'))+1 ), '' ) 
+                    ELSE 
+                            COALESCE( SUBSTR( $1, LENGTH(SUBSTRING($1 FROM '[0-9]+'))+1 ), '' ) 
+                    END 
+
     $_$;
 
 
@@ -271,6 +272,40 @@ ALTER SEQUENCE instructor_profile_contacts_id_seq OWNED BY instructor_profile_co
 
 
 --
+-- Name: schedules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE schedules (
+    id integer NOT NULL,
+    user_id integer,
+    instructables integer[] DEFAULT '{}'::integer[],
+    watch_topics character varying(255)[] DEFAULT '{}'::character varying[],
+    watch_cultures character varying(255)[] DEFAULT '{}'::character varying[],
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: schedules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE schedules_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: schedules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE schedules_id_seq OWNED BY schedules.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -408,6 +443,13 @@ ALTER TABLE ONLY instructor_profile_contacts ALTER COLUMN id SET DEFAULT nextval
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY schedules ALTER COLUMN id SET DEFAULT nextval('schedules_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -456,6 +498,14 @@ ALTER TABLE ONLY instructables
 
 ALTER TABLE ONLY instructor_profile_contacts
     ADD CONSTRAINT instructor_profile_contacts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY schedules
+    ADD CONSTRAINT schedules_pkey PRIMARY KEY (id);
 
 
 --
@@ -588,3 +638,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130417073037');
 INSERT INTO schema_migrations (version) VALUES ('20130426200209');
 
 INSERT INTO schema_migrations (version) VALUES ('20130428100303');
+
+INSERT INTO schema_migrations (version) VALUES ('20130430220849');
