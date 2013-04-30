@@ -49,7 +49,7 @@ GEM
     bootstrap-editable-rails (0.0.4)
       railties (~> 3.1)
     builder (3.0.4)
-    capistrano (2.15.3)
+    capistrano (2.15.4)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -110,6 +110,7 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     hashery (2.1.0)
+    hashie (2.0.4)
     highline (1.6.18)
     hike (1.2.2)
     htmlentities (4.3.1)
@@ -129,7 +130,7 @@ GEM
       actionpack (>= 3.1)
       less (~> 2.3.1)
     libv8 (3.3.10.4)
-    listen (1.0.2)
+    listen (1.0.3)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
@@ -324,6 +325,7 @@ DEPENDENCIES
   guard
   guard-rspec
   haml-rails
+  hashie
   htmlentities
   jquery-rails
   launchy

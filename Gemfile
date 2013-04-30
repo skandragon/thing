@@ -85,3 +85,4 @@ gem 'redcarpet'
 gem 'htmlentities'
 gem 'paper_trail', '~> 2'
 gem "active_model_serializers", "~> 0.7.0"
+gem "hashie"
