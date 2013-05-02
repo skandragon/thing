@@ -8,8 +8,9 @@ class Users::SchedulesController < ApplicationController
       else
         redirect_to root_path, alert: "No such schedule"
       end
+    else
+      @instances = Instance.where(instructable_id: @user.schedule.instructables)
     end
-    @instances = Instance.where(instructable_id: @user.schedule.instructables)
   end
 
   def edit
