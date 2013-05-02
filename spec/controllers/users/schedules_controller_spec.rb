@@ -27,7 +27,7 @@ describe Users::SchedulesController do
       end
     end
 
-    describe '#edit', focus: true do
+    describe '#edit' do
       before :each do
         log_in
       end
