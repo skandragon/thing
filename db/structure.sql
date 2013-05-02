@@ -279,8 +279,7 @@ CREATE TABLE schedules (
     id integer NOT NULL,
     user_id integer,
     instructables integer[] DEFAULT '{}'::integer[],
-    watch_topics character varying(255)[] DEFAULT '{}'::character varying[],
-    watch_cultures character varying(255)[] DEFAULT '{}'::character varying[],
+    published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

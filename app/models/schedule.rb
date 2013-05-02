@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: schedules
+#
+#  id            :integer          not null, primary key
+#  user_id       :integer
+#  instructables :integer          default([])
+#  published     :boolean          default(FALSE)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 class Schedule < ActiveRecord::Base
-  attr_accessible :instructables, :user_id, :watch_cultures, :watch_topics
+  belongs_to :user
 end

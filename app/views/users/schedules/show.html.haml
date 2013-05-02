@@ -1,0 +1,42 @@
+- title "Custom Schedule for #{@user.best_name}"
+
+%h3= "Custom Schedule for #{@user.best_name}"
+
+%p
+  = link_to('Edit', edit_user_schedule_path(@user), class: 'btn')
+  this schedule to add or remove classes.
+
+%p.alert.alert-info
+  - if @user.schedule.published?
+    Your schedule is accessible by others.  To disable this, click the
+    edit button above and uncheck the "Publish Publicly" check box.
+  - else
+    To share your schedule with others, click the
+    edit button above and check the "Publish Publicly" check box.
+
+%p.alert.alert-info
+  Coming soon: PDF, Excel, and iCalendar format.
+
+%table.table.table-striped#schedule
+  %thead
+    %tr
+      %th.when When & Where
+      %th.name Name
+      %th.instructor Instructor
+      %th.description Description
+  %tbody
+    - @instances.each do |instance|
+      %tr
+        %td
+          = instance.start_time.strftime("%m-%d")
+          %br
+          = instance.start_time.strftime("%H:%M")
+          %br
+          = "#{instance.instructable.duration}&nbsp;hr".html_safe
+          %br
+          = instance.formatted_location
+        %td= markdown_html instance.instructable.name
+        %td= instance.instructable.titled_sca_name
+        %td= markdown_html(instance.instructable.description_web.present? ? instance.instructable.description_web : instance.instructable.description_book)
+
+%p.alert.alert-info Rendered: #{Time.now}

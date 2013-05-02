@@ -78,6 +78,7 @@ class User < ActiveRecord::Base
   has_many :instructables, dependent: :destroy
   has_many :instructor_profile_contacts
   has_many :changelogs # do not delete changelogs!
+  has_one :schedule, dependent: :destroy
 
   accepts_nested_attributes_for :instructor_profile_contacts
 
