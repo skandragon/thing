@@ -149,7 +149,7 @@ class CalendarsController < ApplicationController
       name = markdown_html(instructable.name, tags_remove: 'strong')
       token = @instructable_magic_tokens[instructable.id]
 
-      topic = "Topic: #{instructable.formatted_topic}",
+      topic = "Topic: #{instructable.formatted_topic}"
       culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
 
       lines = [
