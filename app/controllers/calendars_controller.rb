@@ -156,9 +156,17 @@ class CalendarsController < ApplicationController
         "<strong>#{token}</strong>: <strong>#{name}</strong>",
         [topic, culture].compact.join(", "),
         "Instructor: #{instructable.user.titled_sca_name}",
-        "Taught: " + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(", "),
-        materials_and_handout_content(instructable).join(" "),
       ]
+
+      if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
+        lines << "Taught: " + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(", ")
+        lines << "Location: " + instructable.instances.first.formatted_location
+      else
+        lines << "Taught: " + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(", ")
+      end
+
+      lines << materials_and_handout_content(instructable).join(" ")
+
       pdf.text lines.join("\n"), inline_format: true
 
       pdf.move_down 2 unless pdf.cursor == pdf.bounds.top
