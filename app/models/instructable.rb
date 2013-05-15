@@ -97,7 +97,7 @@ class Instructable < ActiveRecord::Base
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
-    'Performing Arts' => [ 'Amphetheater', 'Performing Arts Tent', 'New PA Tent' ],
+    'Performing Arts' => [ 'Amphitheater', 'Performing Arts Tent', 'New PA Tent' ],
     'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
