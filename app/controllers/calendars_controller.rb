@@ -156,7 +156,7 @@ class CalendarsController < ApplicationController
         "<strong>#{token}</strong>: <strong>#{name}</strong>",
         [topic, culture].compact.join(", "),
         "Instructor: #{instructable.user.titled_sca_name}",
-        "Taught: " + instructable.instances.map(&:formatted_start_time).join(", "),
+        "Taught: " + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(", "),
         materials_and_handout_content(instructable).join(" "),
       ]
       pdf.text lines.join("\n"), inline_format: true
