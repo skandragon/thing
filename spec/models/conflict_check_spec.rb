@@ -158,7 +158,7 @@ describe ConflictCheck do
     it "returns [:location] if time overlaps and location conflicts" do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
-      @ib = create(:instructable, user_id: 2)
+      @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])
       @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
 
       ConflictCheck.instance_overlap?(@a, @b).should == [:location]
@@ -167,7 +167,7 @@ describe ConflictCheck do
     it "returns [:instructor] if time overlaps and instructor conflicts" do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1))
-      @ib = create(:instructable, user_id: 1)
+      @ib = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[1])
       @b = @ib.instances.create!(start_time: get_date(1))
 
       ConflictCheck.instance_overlap?(@a, @b).should == [:instructor]
@@ -215,7 +215,7 @@ describe ConflictCheck do
     it "returns location and instances if it conflicts" do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
-      @ib = create(:instructable, user_id: 2)
+      @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])
       @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
 
       conflicts = ConflictCheck.conflicts
@@ -229,7 +229,7 @@ describe ConflictCheck do
     it "applies track filter" do
       @ia = create(:instructable, user_id: 1, track: 'Pennsic University')
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
-      @ib = create(:instructable, user_id: 2, track: 'Middle Eastern')
+      @ib = create(:instructable, user_id: 2, track: 'Middle Eastern', topic: Instructable::TOPICS.keys[1])
       @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
 
       conflicts = ConflictCheck.conflicts(track: 'Pennsic University')

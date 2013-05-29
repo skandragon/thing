@@ -53,6 +53,11 @@ class ConflictCheck
     a.instructable.user_id == b.instructable.user_id
   end
 
+  # return true only if the subject (topic) is equal
+  def self.instance_subject_overlap?(a, b)
+    a.instructable.topic == b.instructable.topic
+  end
+
   #
   # Put all of the sub-overlap checks together.
   #
@@ -61,6 +66,7 @@ class ConflictCheck
     ret = []
     ret << :location if instance_location_overlap?(a, b)
     ret << :instructor if instance_instructor_overlap?(a, b)
+    ret << :subject if instance_subject_overlap?(a, b)
     ret
   end
 end
