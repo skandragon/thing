@@ -8,7 +8,7 @@ class ConflictCheck
     #
     track_filter = options[:track]
 
-    instances = Instance.where("start_time IS NOT NULL").order(:start_time).includes(:instructable)
+    instances = Instance.where("start_time IS NOT NULL").order(:start_time).includes(:instructable => [ :user ])
     return [] if instances.size < 2
 
     ret = []

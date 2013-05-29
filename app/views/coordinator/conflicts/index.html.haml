@@ -3,38 +3,38 @@
 - if @conflicts.size == 0
   %h2 No conflicts found.
 - else
-  %table.table.table-striped
+  %table#conflicts.table.table-striped
     %thead
       %tr
-        %th Type
+        %th Conflict Type
         %th Class Name
-        %th Instance Time and Location
+        %th Date and Time
         %th Duration
-        %th Instructor
         %th Track
     %tbody
-      - for conflict in @conflicts
+      - @conflicts.each do |conflict|
         - type, instances = conflict
         %tr
           %td
             - type.each do |specific_type|
-              %span.label.label-important= specific_type
+              - field = @type_to_field_mapping[specific_type]
+              %ul.inline
+                %li
+                  %span.label.label-important= specific_type
+                %li
+                  = instances[0].send(field)
           %td
             = instances[0].instructable.name
             %br
             = instances[1].instructable.name
           %td
-            = instances[0].formatted_location_and_time
+            = instances[0].formatted_start_time
             %br
-            = instances[1].formatted_location_and_time
+            = instances[1].formatted_start_time
           %td
             = instances[0].instructable.duration
             %br
             = instances[1].instructable.duration
-          %td
-            = instances[0].instructable.user.titled_sca_name
-            %br
-            = instances[1].instructable.user.titled_sca_name
           %td
             = instances[0].instructable.track
             %br

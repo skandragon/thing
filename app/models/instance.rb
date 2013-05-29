@@ -23,6 +23,9 @@ class Instance < ActiveRecord::Base
 
   validate :validate_start_time
 
+  delegate :topic, to: :instructable
+  delegate :titled_sca_name, to: :instructable
+
   def self.for_date(date)
     not_before = Time.zone.parse(date).utc
     not_after = Time.zone.parse(date).end_of_day.utc
