@@ -125,7 +125,7 @@ class Instructable < ActiveRecord::Base
     'First Aid' => ['A&S 1'],
     'Bardic' => ['A&S 9'],
     'Music' => ['A&S 9'],
-    'Youth Combat' => [ 'Youth Combat' ],
+    'Youth Combat' => [ 'Youth Combat List' ],
     'In Persona' => [ 'A&S 15' ],
     'Martial Activities' => [
       'Battlefield List',
