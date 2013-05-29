@@ -156,7 +156,7 @@ describe ConflictCheck do
     end
 
     it "returns [:location] if time overlaps and location conflicts" do
-      @ia = create(:instructable, user_id: 1)
+      @ia = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[0])
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])
       @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
@@ -165,12 +165,22 @@ describe ConflictCheck do
     end
 
     it "returns [:instructor] if time overlaps and instructor conflicts" do
-      @ia = create(:instructable, user_id: 1)
+      @ia = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[0])
       @a = @ia.instances.create!(start_time: get_date(1))
       @ib = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[1])
       @b = @ib.instances.create!(start_time: get_date(1))
 
       ConflictCheck.instance_overlap?(@a, @b).should == [:instructor]
+    end
+
+    it "returns [:subject] if time overlaps and topic conflicts" do
+      @ia = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[1])
+      @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
+      @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])
+      @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 2')
+
+      ret = ConflictCheck.instance_overlap?(@a, @b)
+      ret.should == [:subject]
     end
 
     it "returns [:location, :instructor] if time overlaps and both location and instructor conflict" do
