@@ -320,6 +320,7 @@ DEPENDENCIES
   dalli
   database_cleaner
   devise
+  diff-lcs
   factory_girl_rails
   guard
   guard-rspec
