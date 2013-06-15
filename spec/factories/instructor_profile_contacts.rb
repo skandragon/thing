@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :instructor_profile_contact do
-    protocol "MyString"
-    address "MyString"
+    protocol 'MyString'
+    address 'MyString'
   end
 end

@@ -4,5 +4,5 @@
     %br
     = instructable.track
   %td= instructable.formatted_culture_and_topic
-  %td= instructable.approved? ? "Yes" : "No"
+  %td= instructable.approved? ? 'Yes' : 'No'
   %td= render :partial => 'instructables/instructable_schedule_details', locals: { instructable: instructable }

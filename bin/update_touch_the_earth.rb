@@ -8,16 +8,16 @@ instructables.each do |instructable|
   instructable.reload
 
   instructable.instances.each do |instance|
-    instance.location = "Touch The Earth"
+    instance.location = 'Touch The Earth'
     instance.save!
   end
 
   puts instructable.id
   puts instructable.name
   puts instructable.track
-  puts instructable.instances.pluck(:location).join(", ")
+  puts instructable.instances.pluck(:location).join(', ')
   puts
   ids << instructable.id
 end
 
-puts ids.join(", ")
+puts ids.join(', ')

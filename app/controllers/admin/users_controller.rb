@@ -2,7 +2,7 @@ class Admin::UsersController < ApplicationController
   def index
     @search = params[:search]
 
-    if params[:commit] == "Clear"
+    if params[:commit] == 'Clear'
       @search = nil
     end
 
@@ -23,7 +23,7 @@ class Admin::UsersController < ApplicationController
     changelog = Changelog.build_changes('update', current_resource, current_user)
     if current_resource.update_attributes(user_params)
       changelog.save # failure is an option...
-      redirect_to admin_users_path, notice: "User updated."
+      redirect_to admin_users_path, notice: 'User updated.'
     else
       render action: :edit
     end

@@ -36,25 +36,25 @@
 require 'spec_helper'
 
 describe User do
-  it "generates an access token automatically" do
+  it 'generates an access token automatically' do
     u = FactoryGirl.create(:user)
     u.access_token.should_not be_nil
   end
 
   describe '#display_name' do
-    it "returns the email address if email is set but name is blank" do
-      u = FactoryGirl.build(:user, mundane_name: nil, email: "foo")
-      u.display_name.should == "foo"
+    it 'returns the email address if email is set but name is blank' do
+      u = FactoryGirl.build(:user, mundane_name: nil, email: 'foo')
+      u.display_name.should == 'foo'
     end
 
-    it "returns the name and email if both are set" do
-      u = FactoryGirl.build(:user, mundane_name: "foo", email: "bar")
-      u.display_name.should == "foo (bar)"
+    it 'returns the name and email if both are set' do
+      u = FactoryGirl.build(:user, mundane_name: 'foo', email: 'bar')
+      u.display_name.should == 'foo (bar)'
     end
 
-    it "returns the name if set, but email is blank" do
-      u = FactoryGirl.build(:user, mundane_name: "foo", email: nil)
-      u.display_name.should == "foo"
+    it 'returns the name if set, but email is blank' do
+      u = FactoryGirl.build(:user, mundane_name: 'foo', email: nil)
+      u.display_name.should == 'foo'
     end
   end
 
@@ -111,7 +111,7 @@ describe User do
     it 'returns 4 for three non-PU-space classes with various repeat counts' do
       u = create(:user)
       2.times do
-        create(:instructable, user_id: u.id, location_type: 'private-camp', camp_reason: 'This is the reason', camp_name: "Foo")
+        create(:instructable, user_id: u.id, location_type: 'private-camp', camp_reason: 'This is the reason', camp_name: 'Foo')
       end
       create(:instructable, user_id: u.id, repeat_count: 2, location_type: 'merchant-booth', camp_reason: 'This is the reason', camp_name: 'Foo')
       u.instructables_session_count.should == 0

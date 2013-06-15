@@ -55,16 +55,16 @@ class User < ActiveRecord::Base
 
   # SCA kingdoms, lowercase.
   KINGDOMS = [
-    "æthelmearc", "ansteorra", "an tir", "artemisia", "atenveldt", "atlantia",
-    "caid", "calontir",
-    "drachenwald", "ealdormere", "east",
-    "gleann abhann",
-    "lochac",
-    "meridies", "middle",
-    "northshield",
-    "outlands",
-    "trimaris",
-    "west",
+    'æthelmearc', 'ansteorra', 'an tir', 'artemisia', 'atenveldt', 'atlantia',
+    'caid', 'calontir',
+    'drachenwald', 'ealdormere', 'east',
+    'gleann abhann',
+    'lochac',
+    'meridies', 'middle',
+    'northshield',
+    'outlands',
+    'trimaris',
+    'west',
   ]
 
   # SCA kingdoms, #titleized.
@@ -114,6 +114,7 @@ class User < ActiveRecord::Base
   def instructables_session_count
     total = instructables.where(location_type: 'track').pluck(:repeat_count).inject(:+)
     total ||= 0
+    total
   end
 
   def display_name
@@ -129,7 +130,7 @@ class User < ActiveRecord::Base
   end
 
   def titled_sca_name
-    [sca_title.present? ? sca_title.titleize : nil, sca_name].compact.join(" ")
+    [sca_title.present? ? sca_title.titleize : nil, sca_name].compact.join(' ')
   end
 
   def best_name
@@ -156,11 +157,11 @@ class User < ActiveRecord::Base
   #
   def display_roles
     roles = []
-    roles << "Instructor" if instructor?
-    roles << "Coordinator" if coordinator?
-    roles << "Admin" if admin?
-    roles << "Proofreader" if proofreader?
-    roles << "PU Staff" if pu_staff?
+    roles << 'Instructor' if instructor?
+    roles << 'Coordinator' if coordinator?
+    roles << 'Admin' if admin?
+    roles << 'Proofreader' if proofreader?
+    roles << 'PU Staff' if pu_staff?
     roles
   end
 
@@ -170,7 +171,6 @@ class User < ActiveRecord::Base
     return unless access_token.blank?
 
     possible_token = nil
-    conflict = true
     while possible_token.blank?
       possible_token = SecureRandom.base64(24)
       u = User.find_by_access_token(possible_token)

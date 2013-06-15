@@ -238,7 +238,7 @@ class Instructable < ActiveRecord::Base
   def status_message
     return 'Pending Approval' unless approved?
     return 'Pending Scheduling' unless scheduled?
-    return 'Approved and Scheduled'
+    'Approved and Scheduled'
   end
 
   def additional_instructors_expanded
@@ -269,7 +269,7 @@ class Instructable < ActiveRecord::Base
       ret = [camp_name]
       ret << "(#{camp_address})" if camp_address.present?
     end
-    ret.join(" ")
+    ret.join(' ')
   end
 
   def update_scheduled_flag_from_instance
@@ -291,14 +291,13 @@ class Instructable < ActiveRecord::Base
     return if overage <= 0
 
     # Second, drop the ones with an empty start_time alone
-    unused_entries = instances.where("start_time IS NULL").limit(overage)
+    unused_entries = instances.where('start_time IS NULL').limit(overage)
     overage -= unused_entries.size
     unused_entries.destroy_all
     return if overage <= 0
 
     # lastly, drop the extras, oldest first
     unused_entries = instances.reorder('start_time DESC').limit(overage)
-    overage -= unused_entries.size
     unused_entries.destroy_all
   end
 

@@ -111,7 +111,7 @@ class ApplicationController < ActionController::Base
 
   def authorize_user
     unless current_user
-      redirect_to root_url, alert: "You must log in." and return false
+      redirect_to root_url, alert: 'You must log in.' and return false
     end
     @target_user ||= User.find(params[:user_id])
     @target_user.id == current_user.id or current_user.admin?

@@ -1,18 +1,18 @@
 - title 'Admin : Users'
 
 = form_for :filter, :method => 'get', :html => { :class => 'form-inline' } do
-  = text_field_tag :search, @search, class: "input-medium search-query", placeholder: "Search"
-  = submit_tag "Filter", :class => "btn"
-  = submit_tag "Clear", :class => "btn"
+  = text_field_tag :search, @search, class: 'input-medium search-query', placeholder: 'Search'
+  = submit_tag 'Filter', :class => 'btn'
+  = submit_tag 'Clear', :class => 'btn'
 
 %table.table
   %thead
     %tr
-      %th{scope: "col"} Name
-      %th{scope: "col"} Tracks
-      %th{scope: "col"} Classes
-      %th{scope: "col"} Roles
-      %th{scope: "col"} Last Login
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Tracks
+      %th{scope: 'col'} Classes
+      %th{scope: 'col'} Roles
+      %th{scope: 'col'} Last Login
   %tbody
     = render :partial => @users
 

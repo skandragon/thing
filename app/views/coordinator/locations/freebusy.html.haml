@@ -14,7 +14,7 @@
         %tr
           - row = @report[date][:grid][counter]
           - counter += 1
-          %th= "%02d:00" % hour.to_i
+          %th= '%02d:00' % hour.to_i
           - row.each do |item|
             - css = 'item-free'
             - if item.count > 1

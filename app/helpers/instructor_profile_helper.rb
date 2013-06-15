@@ -10,8 +10,8 @@ module InstructorProfileHelper
   # parameter
   def placeholder_for_protocol(protocol)
     type = InstructorProfileContact::PROTOCOL_TYPES[protocol]
-    return "http://www.example.com/" if type == :url
-    return "user@example.com" if type == :email
+    return 'http://www.example.com/' if type == :url
+    'user@example.com' if type == :email
   end
   
   def mailto_link_for_instructable(instructable)

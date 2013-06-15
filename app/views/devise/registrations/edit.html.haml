@@ -1,21 +1,21 @@
-- title "Modify Profile"
+- title 'Modify Profile'
 
-= simple_form_for @user, :url => user_registration_path, :html => { :class => "form-horizontal" } do |f|
+= simple_form_for @user, :url => user_registration_path, :html => { :class => 'form-horizontal' } do |f|
   %fieldset
     %legend Modify Profile
-    = f.input :current_password, :hint => "Needed to confirm your changes."
+    = f.input :current_password, :hint => 'Needed to confirm your changes.'
     = f.input :email
     = f.input :mundane_name, :required => true
-    #submit= f.button :submit, "Update Profile", :class => "btn btn-primary btn-large"
+    #submit= f.button :submit, 'Update Profile', :class => 'btn btn-primary btn-large'
 
   %fieldset
     %legend Change Password
     = f.input :password, :hint => "(leave blank if you don't want to change it)"
     = f.input :password_confirmation
-    = f.button :submit, "Update Profile", :class => "btn btn-primary btn-large"
+    = f.button :submit, 'Update Profile', :class => 'btn btn-primary btn-large'
 
 %p
   Unhappy?
-  = link_to "Cancel my account", user_registration_path, :confirm => "Are you sure?", :method => :delete
+  = link_to 'Cancel my account', user_registration_path, :confirm => 'Are you sure?', :method => :delete
 
-= link_to "Back", :back
+= link_to 'Back', :back

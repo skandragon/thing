@@ -17,11 +17,11 @@ class InstructorProfileContact < ActiveRecord::Base
   has_paper_trail
 
   PROTOCOL_TYPES = {
-    "profile email" => :email,
-    "alternate email" => :email,
-    "twitter" => :string,
-    "facebook" => :string,
-    "web page" => :url,
+    'profile email' => :email,
+    'alternate email' => :email,
+    'twitter' => :string,
+    'facebook' => :string,
+    'web page' => :url,
   }
   PROTOCOLS = PROTOCOL_TYPES.keys
 

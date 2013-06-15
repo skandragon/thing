@@ -1,4 +1,4 @@
-- title "Statistics"
+- title 'Statistics'
 
 %h3 Database Summary
 
@@ -51,9 +51,9 @@
           - if @percent_completed[track].blank?
             %span.muted No classes
           - elsif @percent_completed[track] < 100
-            %span.label.label-warning= "%0.2f%%" % @percent_completed[track]
+            %span.label.label-warning= '%0.2f%%' % @percent_completed[track]
           - else
-            %span.label.label-success= "%0.2f%%" % @percent_completed[track]
+            %span.label.label-success= '%0.2f%%' % @percent_completed[track]
 
 %h3 Summary by Subject
 
@@ -66,8 +66,8 @@
       %th Hours
   %tbody
     - Instructable::TOPICS.keys.each do |topic|
-      - ( [""] + Instructable::TOPICS[topic].sort).each do |subtopic|
-        - target = [topic, subtopic || ""]
+      - ( [''] + Instructable::TOPICS[topic].sort).each do |subtopic|
+        - target = [topic, subtopic || '']
         %tr
           %td= link_to topic, coordinator_instructables_path(topic: topic)
           %td= subtopic

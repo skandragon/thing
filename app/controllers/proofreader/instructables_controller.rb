@@ -7,7 +7,7 @@ class Proofreader::InstructablesController < ApplicationController
     @topic = params[:topic]
     @search = params[:search]
 
-    if params[:commit] == "Clear"
+    if params[:commit] == 'Clear'
       @search = nil
       @track = nil
       @proofread = nil
@@ -21,7 +21,7 @@ class Proofreader::InstructablesController < ApplicationController
     end
 
     if @track.present?
-      if @track == "No Track"
+      if @track == 'No Track'
         @instructables = @instructables.where("track IS NULL OR track=''")
       else
         @instructables = @instructables.where(track: @track)
@@ -60,7 +60,7 @@ class Proofreader::InstructablesController < ApplicationController
     if @instructable.save
       @instructable.cleanup_unneeded_instances
       changelog.validate_and_save # failure is an option...
-      redirect_to session[:instructable_back] || proofreader_instructables_path, notice: "Class updated."
+      redirect_to session[:instructable_back] || proofreader_instructables_path, notice: 'Class updated.'
     else
       render action: :edit
     end

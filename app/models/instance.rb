@@ -29,16 +29,16 @@ class Instance < ActiveRecord::Base
   def self.for_date(date)
     not_before = Time.zone.parse(date).utc
     not_after = Time.zone.parse(date).end_of_day.utc
-    instances = Instance.where("start_time >= ? AND end_time <= ?", not_before, not_after).order(:location, :start_time).includes(:instructable)
+    instances = Instance.where('start_time >= ? AND end_time <= ?', not_before, not_after).order(:location, :start_time).includes(:instructable)
     instances = instances.select { |x| !x.instructable.location_nontrack? }
     instances
   end
 
   def formatted_location
     if instructable.location_nontrack?
-      return instructable.formatted_nontrack_location
+      instructable.formatted_nontrack_location
     else
-      return location || nil
+      location || nil
     end
   end
 
@@ -57,13 +57,13 @@ class Instance < ActiveRecord::Base
   def formatted_location_and_time
     loc = formatted_location
     if start_time.present? and loc.present?
-      ret = [loc, formatted_start_time].join(" on ")
+      ret = [loc, formatted_start_time].join(' on ')
     elsif start_time.present? and loc.blank?
       ret = "Location pending, #{formatted_start_time}"
     elsif start_time.blank? and loc.present?
       ret = "#{loc}, time pending"
     else
-      ret = "Location and time pending"
+      ret = 'Location and time pending'
     end
     ret
   end
@@ -78,7 +78,7 @@ class Instance < ActiveRecord::Base
       hour_start = instance.start_time.hour
       hour_end = (instance.end_time - 1).hour
       (hour_start..hour_end).each do |hour|
-        y = grid[:ylabels].index("%02d" % hour)
+        y = grid[:ylabels].index('%02d' % hour)
         grid[:grid][y][x] << instance if (x.present? and y.present?)
       end
     end
@@ -113,7 +113,7 @@ class Instance < ActiveRecord::Base
   def self.make_grid(locations)
     hours = []
     (9..21).each do |hour|
-      hours << ("%02d" % hour)
+      hours << ('%02d' % hour)
     end
     grid = []
     hours.size.times do

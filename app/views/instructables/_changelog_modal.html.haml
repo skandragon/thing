@@ -1,8 +1,8 @@
 %div#changelog-modal.modal.fade.hide
   .modal-header
-    %button{ type: 'button', class: 'close', data: { dismiss: "modal", 'aria-hidden' => 'true' }} &times;
+    %button{ type: 'button', class: 'close', data: { dismiss: 'modal', 'aria-hidden' => 'true' }} &times;
     %h3 Modification History
   .modal-body
     = render partial: 'instructables/changelog', locals: { instructable: instructable }
   .modal-footer
-    %button{class: "btn", data: { dismiss: "modal", 'aria-hidden' => "true"}} Close
+    %button{class: 'btn', data: { dismiss: 'modal', 'aria-hidden' => 'true'}} Close

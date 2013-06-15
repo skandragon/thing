@@ -61,9 +61,9 @@ describe Coordinator::InstructablesController do
 
     it 'allows admin to select any track' do
       page.should have_select('track')
-      for tract in Instructable::TRACKS.keys
+      Instructable::TRACKS.keys.each { |tract|
         select tract, from: 'track'
-      end
+      }
     end
   end
 
@@ -76,9 +76,9 @@ describe Coordinator::InstructablesController do
 
     it 'allows selection of track' do
       page.should have_select('track')
-      for tract in current_user.allowed_tracks
+      current_user.allowed_tracks.each { |tract|
         select tract, from: 'track'
-      end
+      }
     end
 
     it 'ignores disallowed track filter' do

@@ -1,13 +1,13 @@
 - create_or_update = @instructable.new_record? ? 'Create' : 'Update'
 - title "#{create_or_update} University Class"
 
-= simple_form_for [@target_user, @instructable], html: { :class => "form-horizontal" } do |f|
+= simple_form_for [@target_user, @instructable], html: { :class => 'form-horizontal' } do |f|
   - if !@instructable.new_record? and coordinator_for?(@instructable.track)
     %fieldset
       %legend Scheduling
       - if admin?
         = f.input :track, collection: Instructable::TRACKS.keys.sort, include_blank: (@instructable.track.blank? or !Instructable::TRACKS.keys.include?(@instructable.track))
-      = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: "input-mini" }
+      = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: 'input-mini' }
       %p.alert.alert-info
         #{pluralize @instructable.repeat_count, 'session'} requested.
         - if @instructable.user
@@ -30,22 +30,22 @@
             = i.input :location, label: disabled ? 'Location' : 'Location', as: :select, collection: locations, input_html: { class: 'input-medium' }, disabled: disabled
             - location_was_overridden ||= disabled
             - if admin?
-              = i.input :override_location, label: "Override"
+              = i.input :override_location, label: 'Override'
       - if location_was_overridden and !admin?
         %p.alert.alert-warning At least one time and location is overridden by an administrator, and cannot be changed.
       - if @instructable.location_nontrack?
         %p.alert.alert-info Taught: #{@instructable.formatted_nontrack_location}
 
-    = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary submit-button"
-    = link_to "Show Instructor Dates", '#', :class => 'btn', data: { toggle: 'modal', target: '#arrival-modal'}
-    = link_to "Changelog", '#', :class => 'btn', data: { toggle: 'modal', target: '#changelog-modal'}
-    = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
+    = f.button :submit, "#{create_or_update} class", :class => 'btn btn-primary submit-button'
+    = link_to 'Show Instructor Dates', '#', :class => 'btn', data: { toggle: 'modal', target: '#arrival-modal'}
+    = link_to 'Changelog', '#', :class => 'btn', data: { toggle: 'modal', target: '#changelog-modal'}
+    = link_to 'Cancel', session[:instructable_back] || user_instructables_path(@target_user), :class => 'btn'
 
     = render partial: 'instructables/changelog_modal', locals: { instructable: @instructable }
 
     %div#arrival-modal.modal.fade.hide
       .modal-header
-        %button{ type: 'button', class: 'close', data: { dismiss: "modal", 'aria-hidden' => 'true' }} &times;
+        %button{ type: 'button', class: 'close', data: { dismiss: 'modal', 'aria-hidden' => 'true' }} &times;
         %h3 Available Dates
       .modal-body
         %h5 Requested Days (this class)
@@ -74,31 +74,31 @@
               %li= date.to_s
         %h5 Special Needs (this class)
         - if @instructable.special_needs.count > 0
-          = @instructable.special_needs.join(", ")
+          = @instructable.special_needs.join(', ')
         = @instructable.special_needs_description
       .modal-footer
-        %button{class: "btn", data: { dismiss: "modal", 'aria-hidden' => "true"}} Close
+        %button{class: 'btn', data: { dismiss: 'modal', 'aria-hidden' => 'true'}} Close
 
   %fieldset
     %legend Class Information
-    = f.input :name, label: "Class title", hint: "Limited to 50 characters", input_html: { maxlength: 50, class: 'input-xlarge' }
-    = f.input :description_book, label: "Description (book)", input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: "Book description, limited to 150 characters"
-    = f.input :description_web, label: "Description (web)", input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: "Web description is not limited, but please keep it concise.  If this is blank, the book description will be used."
-    = f.input :duration, label: "Duration (hours)", input_html: { step: 0.25, class: 'input-mini', min: "0.25", max: 4 }
-    = f.input :additional_instructors_expanded, label: "Additional instructors", hint: "Enter the SCA names of other instructors, separated by commas, of any additional instructors.  Leave it blank if none."
-    = f.input :repeat_count, label: 'Sessions', as: :select, input_html: { class: "input-mini" }, collection: 1..10, default: 1, hint: "Number of times this class will be taught."
-    = f.input :culture, collection: Instructable::CULTURES, hint: "If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus."
-    = f.input :topic, collection: Instructable::TOPICS.keys, hint: "Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies."
+    = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'input-xlarge' }
+    = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: 'Book description, limited to 150 characters'
+    = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
+    = f.input :duration, label: 'Duration (hours)', input_html: { step: 0.25, class: 'input-mini', min: '0.25', max: 4 }
+    = f.input :additional_instructors_expanded, label: 'Additional instructors', hint: 'Enter the SCA names of other instructors, separated by commas, of any additional instructors.  Leave it blank if none.'
+    = f.input :repeat_count, label: 'Sessions', as: :select, input_html: { class: 'input-mini' }, collection: 1..10, default: 1, hint: 'Number of times this class will be taught.'
+    = f.input :culture, collection: Instructable::CULTURES, hint: 'If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus.'
+    = f.input :topic, collection: Instructable::TOPICS.keys, hint: 'Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies.'
     #subtopic
       = f.input :subtopic, collection: Instructable::TOPICS[@instructable.topic] || []
 
   %fieldset
     %legend Private Camp or Merchant Booth
-    = f.input :location_type, label: "Private camp or merchant?", as: :select, collection: [['No', 'track'], ['Merchant Booth', 'merchant-booth'], ['Private Camp', 'private-camp']], include_blank: false
+    = f.input :location_type, label: 'Private camp or merchant?', as: :select, collection: [['No', 'track'], ['Merchant Booth', 'merchant-booth'], ['Private Camp', 'private-camp']], include_blank: false
     #location-camp
-      = f.input :camp_name, required: true, label: "Camp or Merchant Booth Name", hint: "If this class is being taught in a camp or merchant booth, enter the camp or merchant name."
-      = f.input :camp_address, label: "Camp or Booth Location", hint: "If using a camp or merchant booth, enter its location here (e.g, N06)"
-      = f.input :camp_reason, required: true, label: "Reason for teaching in a private camp or booth"
+      = f.input :camp_name, required: true, label: 'Camp or Merchant Booth Name', hint: 'If this class is being taught in a camp or merchant booth, enter the camp or merchant name.'
+      = f.input :camp_address, label: 'Camp or Booth Location', hint: 'If using a camp or merchant booth, enter its location here (e.g, N06)'
+      = f.input :camp_reason, required: true, label: 'Reason for teaching in a private camp or booth'
 
   %fieldset
     %legend Age Ranges or Restrictions
@@ -119,13 +119,13 @@
 
     = f.input :adult_only
     #adult-only
-      = f.input :adult_reason, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: "Describe why this class is limited to adults."
+      = f.input :adult_reason, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Describe why this class is limited to adults.'
 
   %fieldset
     %legend Handouts and Materials
-    = f.input :handout_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: "In dollars"
+    = f.input :handout_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: 'In dollars'
     = f.input :handout_limit, as: :string, input_html: { pattern: '\d*' }
-    = f.input :material_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: "In dollars"
+    = f.input :material_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: 'In dollars'
     = f.input :material_limit, as: :string, input_html: { pattern: '\d*' }
     = f.input :fee_itemization, input_html: { rows: 3 }
 
@@ -134,18 +134,18 @@
     %p.alert.alert-info
       Requested days and times are best effort.  Leave them all blank, and we will use the days you will be attending Pennsic from your profile.
     = f.input :requested_days, as: :check_boxes, checked: @instructable.requested_days, collection: Instructable::CLASS_DATES, label_method: :to_s, hint: "Select the days you prefer to teach this class, or leave blank and your profile's days will be used."
-    = f.input :requested_times, as: :check_boxes, checked: @instructable.requested_times, collection:Instructable::CLASS_TIMES, hint: "Select the times you prefer to teach this class, or leave blank to indicate anytime is OK."
+    = f.input :requested_times, as: :check_boxes, checked: @instructable.requested_times, collection:Instructable::CLASS_TIMES, hint: 'Select the times you prefer to teach this class, or leave blank to indicate anytime is OK.'
     = f.input :scheduling_additional, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Please describe any additional scheduling requests, such as "Avoid conflicting with battles", etc.'
 
   %fieldset
     %legend Special Needs
-    = f.input :special_needs, as: :check_boxes, checked: @instructable.special_needs, collection: [ "Electricity", "Whiteboard and Markers", "LOUD class", "Running water", "Messy class area" ]
-    = f.input :special_needs_description, placeholder: "Sanitary disposal, excess or hazardous waste removal, etc", input_html: { rows: 3, class: 'input-xxlarge' }
-    = f.input :heat_source, inline_label: "Are you using a source of heat of any type?"
+    = f.input :special_needs, as: :check_boxes, checked: @instructable.special_needs, collection: [ 'Electricity', 'Whiteboard and Markers', 'LOUD class', 'Running water', 'Messy class area' ]
+    = f.input :special_needs_description, placeholder: 'Sanitary disposal, excess or hazardous waste removal, etc', input_html: { rows: 3, class: 'input-xxlarge' }
+    = f.input :heat_source, inline_label: 'Are you using a source of heat of any type?'
     #heat-source
-      = f.input :heat_source_description, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: "Describe the heat source you will be using."
+      = f.input :heat_source_description, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Describe the heat source you will be using.'
 
-  = f.button :submit, "#{create_or_update} class", :class => "btn btn-primary submit-button"
-  = link_to "Cancel", session[:instructable_back] || user_instructables_path(@target_user), :class => "btn"
+  = f.button :submit, "#{create_or_update} class", :class => 'btn btn-primary submit-button'
+  = link_to 'Cancel', session[:instructable_back] || user_instructables_path(@target_user), :class => 'btn'
 
 = render partial: 'instructables/set_javascript_vars', locals: { instructable: @instructable }

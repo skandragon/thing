@@ -2,9 +2,9 @@ require 'spec_helper'
 
 def attempt_sign_up(args)
   visit new_user_registration_path
-  for field in args.keys
+  args.keys.each { |field|
     find('#user_' + field.to_s).set args[field]
-  end
+  }
   click_button 'Sign up'
 end
 
@@ -89,32 +89,32 @@ describe Users::RegistrationsController do
       visit edit_user_registration_path
     end
 
-    it "changes when current password matches" do
+    it 'changes when current password matches' do
       fill_in 'Current password', with: 'abc123'
       first('#user_password').set 'flarg123'
       fill_in 'Password confirmation', with: 'flarg123'
       within '#submit' do
         click_button 'Update Profile'
       end
-      page.should have_content "You updated your account successfully."
+      page.should have_content 'You updated your account successfully.'
     end
 
-    it "will not change when the current password is not provided" do
+    it 'will not change when the current password is not provided' do
       within '#submit' do
         click_button 'Update Profile'
       end
       page.should have_content "can't be blank"
     end
 
-    it "will not change when the current password is incorrect" do
+    it 'will not change when the current password is incorrect' do
       fill_in 'Current password', with: 'flarg'
       within '#submit' do
         click_button 'Update Profile'
       end
-      page.should have_content "is invalid"
+      page.should have_content 'is invalid'
     end
 
-    it "will not change when the confirmation is wrong" do
+    it 'will not change when the confirmation is wrong' do
       fill_in 'Current password', with: 'abc123'
       first('#user_password').set 'flarg123'
       fill_in 'Password confirmation', with: 'flarg321'

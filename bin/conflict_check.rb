@@ -29,13 +29,13 @@ def show_instance(instance)
   puts "     Track: #{instance.instructable.track}"
 end
 
-for conflict in @conflicts
+@conflicts.each { |conflict|
   type, instances = conflict
   puts "  Conflict: #{type.join(', ')}"
   show_instance(instances[0])
-  puts " -- with --"
+  puts ' -- with --'
   show_instance(instances[1])
   puts
-end
+}
 
 puts "Summary: #{help.pluralize @conflicts.size, 'conflict'}."

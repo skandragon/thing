@@ -6,10 +6,10 @@ class Users::SchedulesController < ApplicationController
       if current_user.id == @user.id
         redirect_to edit_user_schedule_path(@user)
       else
-        redirect_to root_path, alert: "No such schedule"
+        redirect_to root_path, alert: 'No such schedule'
       end
     else
-      @instances = Instance.where(instructable_id: @user.schedule.instructables).order("start_time, btrsort(location)")
+      @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)')
     end
   end
 
@@ -23,13 +23,13 @@ class Users::SchedulesController < ApplicationController
   def update
     respond_to do |format|
       format.json {
-        if params.has_key?:published
+        if params.has_key?(:published)
           @user.schedule.published = params[:published]
         end
-        if params.has_key?:add_instructable
+        if params.has_key?(:add_instructable)
           @user.schedule.instructables = (@user.schedule.instructables + [params[:add_instructable].to_i]).uniq.sort
         end
-        if params.has_key?:remove_instructable
+        if params.has_key?(:remove_instructable)
           @user.schedule.instructables = (@user.schedule.instructables - [params[:remove_instructable].to_i]).sort
         end
         if @user.schedule.save
@@ -48,7 +48,7 @@ class Users::SchedulesController < ApplicationController
     @culture = params[:culture]
     @search = params[:search]
 
-    if params[:commit] == "Clear"
+    if params[:commit] == 'Clear'
       @search = nil
       @topic = nil
       @culture = nil
@@ -74,7 +74,7 @@ class Users::SchedulesController < ApplicationController
   def load_user
     @user ||= User.where(id: params[:user_id]).first
     if @user.nil?
-      redirect_to root_path, alert: "No such schedule" and return false
+      redirect_to root_path, alert: 'No such schedule' and return false
     end
     true
   end

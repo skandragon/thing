@@ -9,10 +9,10 @@ module AuthMacros
     visit new_user_session_path
     page.should have_content 'Remember me'
 
-    fill_in "Email", with: @_current_user.email
-    fill_in "Password", with: @_current_user.password
-    click_button "Sign in"
-    page.should have_content "Signed in successfully"
+    fill_in 'Email', with: @_current_user.email
+    fill_in 'Password', with: @_current_user.password
+    click_button 'Sign in'
+    page.should have_content 'Signed in successfully'
   end
 
   def current_user

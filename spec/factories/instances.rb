@@ -3,6 +3,6 @@
 FactoryGirl.define do
   factory :instance do
     start_time Instructable::CLASS_DATES[1]
-    location "MyString"
+    location 'MyString'
   end
 end

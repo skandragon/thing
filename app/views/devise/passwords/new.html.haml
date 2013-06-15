@@ -1,8 +1,8 @@
-- title "Recover Password"
+- title 'Recover Password'
 %h2 Forgot your password?
 
 = simple_form_for(resource, :as => resource_name, :url => user_password_path, :html => { :method => :post }) do |f|
   = f.input :email
-  = f.button :submit, "Send me reset password instructions", :class => "btn btn-primary btn-large"
+  = f.button :submit, 'Send me reset password instructions', :class => 'btn btn-primary btn-large'
 
-= render "links"
+= render 'links'

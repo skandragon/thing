@@ -15,7 +15,7 @@ class CalendarsController < ApplicationController
 
         @calendar_name = "PennsicU #{PENNSIC_YEAR}"
 
-        cache_filename = Rails.root.join("tmp", filename)
+        cache_filename = Rails.root.join('tmp', filename)
         if File.exists?(cache_filename)
           send_file(cache_filename, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
         else
@@ -29,11 +29,11 @@ class CalendarsController < ApplicationController
 
         filename = [
           "pennsic-#{PENNSIC_YEAR}-all",
-          @omit_descriptions ? "brief" : nil,
-          @no_page_numbers ? "unnumbered" : nil,
-        ].compact.join("-") + ".pdf"
+          @omit_descriptions ? 'brief' : nil,
+          @no_page_numbers ? 'unnumbered' : nil,
+        ].compact.join('-') + '.pdf'
 
-        cache_filename = Rails.root.join("tmp", filename)
+        cache_filename = Rails.root.join('tmp', filename)
         if File.exists?(cache_filename)
           send_file(cache_filename, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
         else
@@ -55,24 +55,24 @@ class CalendarsController < ApplicationController
   private
 
   def make_uid(*items)
-    items << @cal_id or "all"
+    items << @cal_id or 'all'
     d = Digest::SHA1.new
-    d << items.join("/")
-    d.hexdigest + "@pennsic.flame.org"
+    d << items.join('/')
+    d.hexdigest + '@pennsic.flame.org'
   end
 
   def render_ics(filename, cache_filename = nil)
     now = Time.now.utc
 
     calendar = RiCal.Calendar do |cal|
-      cal.default_tzid = "America/New_York"
-      cal.prodid = "//flame.org//PennsicU Converter.0//EN"
-      cal.add_x_property("X-WR-CALNAME", @calendar_name)
-      cal.add_x_property("X-WR-RELCALID", make_uid(@calendar_name)) # should be static per calendar
-      cal.add_x_property("X-WR-CALDESC", "PennsicU #{PENNSIC_YEAR} Class Schedule")
-      cal.add_x_property("X-PUBLISHED-TTL", "3600")
+      cal.default_tzid = 'America/New_York'
+      cal.prodid = '//flame.org//PennsicU Converter.0//EN'
+      cal.add_x_property('X-WR-CALNAME', @calendar_name)
+      cal.add_x_property('X-WR-RELCALID', make_uid(@calendar_name)) # should be static per calendar
+      cal.add_x_property('X-WR-CALDESC', "PennsicU #{PENNSIC_YEAR} Class Schedule")
+      cal.add_x_property('X-PUBLISHED-TTL', '3600')
 
-      for instance in @instances
+      @instances.each { |instance|
         cal.event do |event|
           instructable = instance.instructable
           prefix = []
@@ -87,23 +87,22 @@ class CalendarsController < ApplicationController
           event.dtstart = instance.start_time
           event.dtend = instance.end_time
           event.summary = instructable.name
-          event.description = [ prefix.join("\n"), "", instructable.description_web ].join("\n")
+          event.description = [prefix.join("\n"), '', instructable.description_web].join("\n")
           event.location = instance.formatted_location
           event.uid = make_uid(instance)
-          event.transp = "OPAQUE"
-          event.status = "CONFIRMED"
+          event.transp = 'OPAQUE'
+          event.status = 'CONFIRMED'
           event.sequence = instructable.updated_at.to_i
         end
-      end
+      }
     end
 
-    data = calendar.to_s.gsub("::", ":")
+    data = calendar.to_s.gsub('::', ':')
     #cache_in_file(cache_filename, data)
     send_data(data, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
   def generate_magic_tokens
-    first = true
     last_topic = nil
     magic_token = 0
 
@@ -128,10 +127,10 @@ class CalendarsController < ApplicationController
     materials << "fee: $#{'%.2f' % instructable.material_fee}" if instructable.material_fee
 
     handout_content = nil
-    handout_content = "Handout " + handout.join(", ") + '. ' if handout.size > 0
+    handout_content = 'Handout ' + handout.join(', ') + '. ' if handout.size > 0
 
     materials_content = nil
-    materials_content = "Materials " + materials.join(", ") + '. ' if materials.size > 0
+    materials_content = 'Materials ' + materials.join(', ') + '. ' if materials.size > 0
 
     [ handout_content, materials_content ].compact
   end
@@ -154,18 +153,18 @@ class CalendarsController < ApplicationController
 
       lines = [
         "<strong>#{token}</strong>: <strong>#{name}</strong>",
-        [topic, culture].compact.join(", "),
+        [topic, culture].compact.join(', '),
         "Instructor: #{instructable.user.titled_sca_name}",
       ]
 
       if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
-        lines << "Taught: " + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(", ")
-        lines << "Location: " + instructable.instances.first.formatted_location
+        lines << 'Taught: ' + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
+        lines << 'Location: ' + instructable.instances.first.formatted_location
       else
-        lines << "Taught: " + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(", ")
+        lines << 'Taught: ' + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(', ')
       end
 
-      lines << materials_and_handout_content(instructable).join(" ")
+      lines << materials_and_handout_content(instructable).join(' ')
 
       pdf.text lines.join("\n"), inline_format: true
 
@@ -184,32 +183,32 @@ class CalendarsController < ApplicationController
     end
     total_width = 540
 
-    pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait,
+    pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
       :compress => true, :optimize_objects => true,
       :info => {
         :Title => "Pennsic University #{PENNSIC_YEAR} Class Schedule",
-        :Author => "Pennsic University",
+        :Author => 'Pennsic University',
         :Subject => "Pennsic University #{PENNSIC_YEAR} Classes",
-        :Keywords => "pennsic university classes",
-        :Creator => "Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/",
-        :Producer => "Pennsic Univeristy Class Maker",
+        :Keywords => 'pennsic university classes',
+        :Creator => 'Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/',
+        :Producer => 'Pennsic Univeristy Class Maker',
         :CreationDate => Time.now,
     })
 
     header = [
-      { content: "When and Where", background_color: 'eeeeee' },
-      { content: "Title and Instructor", background_color: 'eeeeee' }
+      { content: 'When and Where', background_color: 'eeeeee' },
+      { content: 'Title and Instructor', background_color: 'eeeeee' }
     ]
 
     unless @omit_descriptions
-      header << { content: "Description", background_color: 'eeeeee' }
+      header << { content: 'Description', background_color: 'eeeeee' }
     end
 
     first_page = true
     last_date = nil
     items = []
 
-    for instance in @instances
+    @instances.each { |instance|
       if last_date != instance.start_time.to_date
         if items.size > 0
           pdf_render_table(pdf, items, header, total_width, column_widths)
@@ -220,7 +219,7 @@ class CalendarsController < ApplicationController
           pdf.move_down 12
         end
         pdf.font_size 14
-        pdf.text instance.start_time.to_date.strftime("%A, %B %e")
+        pdf.text instance.start_time.to_date.strftime('%A, %B %e')
         pdf.font_size PDF_FONT_SIZE
         pdf.move_down PDF_FONT_SIZE
         last_date = instance.start_time.to_date
@@ -239,34 +238,34 @@ class CalendarsController < ApplicationController
         times = []
         times << instance.start_time.strftime('%a %b %e')
         times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
-        times_content = times.join(@omit_descriptions ? " " : "\n")
+        times_content = times.join(@omit_descriptions ? ' ' : "\n")
         location = instance.formatted_location
       end
 
-      maybe_newline = @omit_descriptions ? " - " : "\n"
+      maybe_newline = @omit_descriptions ? ' - ' : "\n"
 
       token = @instructable_magic_tokens[instance.instructable.id].to_s
       new_items = [
-        { content: [times_content, location].join(maybe_newline) },
-        { content: [
-          markdown_html(instance.instructable.name + " (#{token})"),
-          "#{maybe_newline}#{instance.instructable.user.titled_sca_name}"
-        ].join(" "), inline_format: true },
+          {content: [times_content, location].join(maybe_newline)},
+          {content: [
+              markdown_html(instance.instructable.name + " (#{token})"),
+              "#{maybe_newline}#{instance.instructable.user.titled_sca_name}"
+          ].join(' '), inline_format: true},
       ]
       unless @omit_descriptions
         taught_message = nil
         taught_message = "Taught #{helpers.pluralize(instance.instructable.repeat_count, 'time')}." if instance.instructable.repeat_count > 1
         new_items << {
-          inline_format: true,
-          content: markdown_html([
-            instance.instructable.description_book,
-            materials_and_handout_content(instance.instructable).join(" "),
-            taught_message,
-          ].compact.join(' '))
+            inline_format: true,
+            content: markdown_html([
+                                       instance.instructable.description_book,
+                                       materials_and_handout_content(instance.instructable).join(' '),
+                                       taught_message,
+                                   ].compact.join(' '))
         }
       end
       items << new_items
-    end
+    }
 
     pdf_render_table(pdf, items, header, total_width, column_widths)
 
@@ -301,7 +300,7 @@ class CalendarsController < ApplicationController
                 font_size: 6 }
 
     unless @no_page_numbers
-      now = Time.now.in_time_zone.strftime("%A, %B %d, %H:%M %p")
+      now = Time.now.in_time_zone.strftime('%A, %B %d, %H:%M %p')
       pdf.number_pages "Generated on #{now} -- page <page> of <total>", options
     end
 
@@ -338,7 +337,7 @@ class CalendarsController < ApplicationController
     wb = p.workbook
 
     wb.styles do |s|
-      header_style = s.add_style bg_color: "00", fg_color: "FF"
+      header_style = s.add_style bg_color: '00', fg_color: 'FF'
       date_format = wb.styles.add_style format_code: 'MM-DD hh:mm'
 
       column_names = %W(
@@ -353,22 +352,21 @@ class CalendarsController < ApplicationController
       wb.add_worksheet(name: "Pennsic #{PENNSIC_YEAR}") do |sheet|
         sheet.add_row header
 
-        for instance in @instances
+        @instances.each { |instance|
           instructable = instance.instructable
-          user = instructable.user
           start_time = Time.at(instance.start_time.to_f + instance.start_time.utc_offset.to_f)
           end_time = Time.at(instance.end_time.to_f + instance.end_time.utc_offset.to_f)
-          data = [instructable.id, instance.formatted_location, start_time, end_time, instructable.titled_sca_name ]
+          data = [instructable.id, instance.formatted_location, start_time, end_time, instructable.titled_sca_name]
           column_names.each do |column_name|
-            data += [ instructable.send(column_name) ]
+            data += [instructable.send(column_name)]
           end
 
           sheet.add_row data, style: [
-            nil, nil, date_format, date_format, nil,
-            nil, nil, nil, nil, nil, nil, date_format,
+              nil, nil, date_format, date_format, nil,
+              nil, nil, nil, nil, nil, nil, date_format,
           ]
           sheet.column_widths 4, 10, 10, 10, nil, nil, nil, nil, nil, nil, 4, 6
-        end
+        }
 
         sheet.row_style 0, header_style
       end
@@ -381,7 +379,7 @@ class CalendarsController < ApplicationController
   def cache_in_file(cache_filename, data)
     if cache_filename
       tmp_filename = [cache_filename, SecureRandom.hex(16)].join
-      File.open(tmp_filename, "wb") do |f|
+      File.open(tmp_filename, 'wb') do |f|
         f.write data
       end
       File.rename(tmp_filename, cache_filename)
@@ -390,6 +388,6 @@ class CalendarsController < ApplicationController
 
   def load_data
     @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
-    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order("start_time, btrsort(location)").includes(instructable: [:user])
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).order('start_time, btrsort(location)').includes(instructable: [:user])
   end
 end

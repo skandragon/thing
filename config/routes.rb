@@ -28,9 +28,9 @@ Thing::Application.routes.draw do
   match '/about' => 'about#about'
   root :to => 'about#index'
 
-  devise_for :users, path: "sessions", controllers: {
-    registrations: "users/registrations",
-    passwords: "users/passwords"
+  devise_for :users, path: 'sessions', controllers: {
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
   }
 
   resources :users do

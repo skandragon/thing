@@ -1,22 +1,22 @@
 !!! 5
 %html{lang: "#{I18n.locale}"}
   %head
-    %meta{charset: "utf-8"}
+    %meta{charset: 'utf-8'}
     %title= title_content
     /[if lt IE 9]
-      %script{src: "http://html5shim.googlecode.com/svn/trunk/html5.js", media: "all"}
-    = stylesheet_link_tag "screen", media: "all"
-    = stylesheet_link_tag "print", media: "print"
-    = javascript_include_tag "application", media: "all"
+      %script{src: 'http://html5shim.googlecode.com/svn/trunk/html5.js', media: 'all'}
+    = stylesheet_link_tag 'screen', media: 'all'
+    = stylesheet_link_tag 'print', media: 'print'
+    = javascript_include_tag 'application', media: 'all'
     = csrf_meta_tags
     = favicon_links
-    %meta{name: "viewport", content: 'width=device-width, initial-scale=1.0' }
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     = yield(:meta_block)
     = yield(:head)
 
-  %body{data: {spy: "scroll", target: ".subnav", offset: 50}}
+  %body{data: {spy: 'scroll', target: '.subnav', offset: 50}}
     %div
-      = render :partial => "layouts/navigation"
+      = render :partial => 'layouts/navigation'
 
       %div.container-fluid
         = render_flashes

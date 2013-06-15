@@ -1,4 +1,4 @@
-- title "Pennsic University 42 Class Schedule"
+- title 'Pennsic University 42 Class Schedule'
 
 %table.table.table-striped
   %thead
@@ -13,9 +13,9 @@
     - @instances.each do |instance|
       %tr
         %td
-          = instance.start_time.strftime("%m-%d")
+          = instance.start_time.strftime('%m-%d')
           %br
-          = instance.start_time.strftime("%H:%M")
+          = instance.start_time.strftime('%H:%M')
         %td= instance.instructable.duration
         %td= instance.formatted_location
         %td= markdown_html instance.instructable.name

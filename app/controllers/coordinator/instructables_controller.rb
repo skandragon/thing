@@ -8,7 +8,7 @@ class Coordinator::InstructablesController < ApplicationController
     @topic = params[:topic]
     @search = params[:search]
 
-    if params[:commit] == "Clear"
+    if params[:commit] == 'Clear'
       @search = nil
       @track = nil
       @approved = nil
@@ -34,7 +34,7 @@ class Coordinator::InstructablesController < ApplicationController
         @instructables = @instructables.where(track: @allowed_tracks)
       end
     else
-      if admin? && @track == "No Track"
+      if admin? && @track == 'No Track'
         @instructables = @instructables.where("track IS NULL OR track=''")
       elsif coordinator_for?(@track)
         @instructables = @instructables.where(track: @track)

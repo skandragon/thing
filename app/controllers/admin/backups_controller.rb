@@ -12,6 +12,6 @@ class Admin::BackupsController < ApplicationController
   # create new one
   def new
     Backup.new.backup
-    redirect_to admin_backups_path, notice: "New backup file created."
+    redirect_to admin_backups_path, notice: 'New backup file created.'
   end
 end

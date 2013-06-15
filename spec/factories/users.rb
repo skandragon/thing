@@ -7,7 +7,7 @@ FactoryGirl.define do
     phone_number '+1 405.555.1212'
     mundane_name 'Bob Smith'
     email { generate :email }
-    password "abcd1234"
+    password 'abcd1234'
     password_confirmation { |u| u.password }
   end
 

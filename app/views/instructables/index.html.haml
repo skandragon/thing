@@ -1,4 +1,4 @@
-- title "Classes"
+- title 'Classes'
 
 - if @target_user.instructor?
   %p.alert.alert-block.alert-info
@@ -25,6 +25,6 @@
       While additional classes may be added, you should contact
       Pennsic University staff to discuss your desire to teach more sessions
       or classes.
-  .add-button= link_to 'Request a class', new_user_instructable_path(@target_user), :class => "btn btn-primary"
+  .add-button= link_to 'Request a class', new_user_instructable_path(@target_user), :class => 'btn btn-primary'
 
 = page_navigation_links @instructables

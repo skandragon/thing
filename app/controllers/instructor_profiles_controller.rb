@@ -10,9 +10,9 @@ class InstructorProfilesController < ApplicationController
 
   def update
     if @user.instructor?
-      notice = "Instructor profile updated."
+      notice = 'Instructor profile updated.'
     else
-      notice = "Instructor profile created."
+      notice = 'Instructor profile created.'
     end
     @user.instructor = true
     if @user.update_attributes(permitted_params)

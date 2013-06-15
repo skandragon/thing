@@ -1,7 +1,7 @@
 .navbar.navbar-fixed-top
   .navbar-inner
     .container-fluid
-      %a.btn.btn-navbar{:data => { :toggle => "collapse", :target => ".nav-collapse"} }
+      %a.btn.btn-navbar{:data => { :toggle => 'collapse', :target => '.nav-collapse'} }
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
@@ -9,7 +9,7 @@
       .nav-collapse
         %ul.nav
           %li.dropdown
-            %a.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}
+            %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
               Schedules
               %b.caret
             %ul.dropdown-menu
@@ -29,7 +29,7 @@
 
           - if instructor?
             %li.dropdown
-              %a.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}
+              %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
                 Instructor
                 %b.caret
               %ul.dropdown-menu
@@ -41,14 +41,14 @@
             = render :partial => 'proofreader/menu_additions'
           - if user_signed_in?
             %li.dropdown
-              %a.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}
+              %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
                 Account
                 %b.caret
               %ul.dropdown-menu
-                %li= link_to "Change password", edit_user_registration_path
+                %li= link_to 'Change password', edit_user_registration_path
                 - unless instructor?
                   %li= link_to 'Request to be an instructor', new_user_instructor_profile_path(current_user)
-            %li= link_to "Sign out", destroy_user_session_path, :method => :delete
+            %li= link_to 'Sign out', destroy_user_session_path, :method => :delete
           - else
             %li= link_to 'Sign in or Sign up', new_user_session_path
           - if admin?

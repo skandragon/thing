@@ -1,4 +1,4 @@
-- title "Locations"
+- title 'Locations'
 
 #location-timesheets
   %h3 Location timesheets
@@ -13,7 +13,7 @@
     - else
       = hidden_field_tag(:track, current_user.allowed_tracks.first)
     = select_tag :date, options_for_select([''] + Instructable::CLASS_DATES, @date), class: 'input-medium'
-    = submit_tag "Go", :class => "btn"
+    = submit_tag 'Go', :class => 'btn'
 
   %h3 Free/Allocated
 
@@ -28,4 +28,4 @@
       = select_tag :track, options_for_select([''] + current_user.allowed_tracks, @track), class: 'input-medium'
     - else
       = hidden_field_tag(:track, current_user.allowed_tracks.first)
-    = submit_tag "Go", :class => "btn"
+    = submit_tag 'Go', :class => 'btn'

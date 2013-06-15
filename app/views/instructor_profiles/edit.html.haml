@@ -1,15 +1,15 @@
 - create_or_update = current_user.instructor? ? 'Update' : 'Create'
 - title "#{create_or_update} Instructor Profile"
 
-= simple_form_for current_user, url: user_instructor_profile_path(current_user), html: { :class => "form-horizontal" } do |f|
+= simple_form_for current_user, url: user_instructor_profile_path(current_user), html: { :class => 'form-horizontal' } do |f|
   %fieldset
     %legend Name and Required Contact Information
-    = f.input :mundane_name, label: "Legal name", placeholder: "Full name"
-    = f.input :sca_title, label: "SCA title", hint: "SCA title, if any", collection: User::TITLES, label_method: :titleize
-    = f.input :sca_name, label: "SCA name", hint: "SCA name, up to 30 characters, without title", input_html: { maxlength: 30 }
-    = f.input :kingdom, label: "SCA kingdom", hint: "SCA kingdom, if any", collection: User::KINGDOMS, label_method: :titleize
-    = f.input :phone_number, placeholder: "+1 405.555.1212", hint: "Pre-pennsic contact number."
-    = f.input :phone_number_onsite, placeholder: "+1 405.555.1212", hint: "Cell or other on site contact number"
+    = f.input :mundane_name, label: 'Legal name', placeholder: 'Full name'
+    = f.input :sca_title, label: 'SCA title', hint: 'SCA title, if any', collection: User::TITLES, label_method: :titleize
+    = f.input :sca_name, label: 'SCA name', hint: 'SCA name, up to 30 characters, without title', input_html: { maxlength: 30 }
+    = f.input :kingdom, label: 'SCA kingdom', hint: 'SCA kingdom, if any', collection: User::KINGDOMS, label_method: :titleize
+    = f.input :phone_number, placeholder: '+1 405.555.1212', hint: 'Pre-pennsic contact number.'
+    = f.input :phone_number_onsite, placeholder: '+1 405.555.1212', hint: 'Cell or other on site contact number'
     %p.alert.alert-info
       Please select the days you plan on being on site and available to
       teach classes.  These will be used by default for classes you
@@ -22,15 +22,15 @@
     %p
       After Pennsic ends, you may optionally allow students to contact you.
       Select one or more methods below to allow this.
-    = f.input :no_contact, label: "No contact", as: :boolean
+    = f.input :no_contact, label: 'No contact', as: :boolean
     #contact-fields
       = f.simple_fields_for :instructor_profile_contacts, f.object.instructor_profile_contacts.sort do |ipc|
         - protocol = ipc.object.protocol
-        - if protocol == "profile email"
+        - if protocol == 'profile email'
           = ipc.input :address, inline_label: current_user.email, as: :boolean
         - else
           = ipc.input :address, placeholder: placeholder_for_protocol(protocol), as: as_for_protocol(protocol), label: ipc.object.protocol.titleize
         = ipc.input :protocol, as: :hidden
 
-  = f.button :submit, "#{create_or_update} profile", :class => "btn btn-primary"
-  = link_to "Cancel", :back, :class => "btn"
+  = f.button :submit, "#{create_or_update} profile", :class => 'btn btn-primary'
+  = link_to 'Cancel', :back, :class => 'btn'

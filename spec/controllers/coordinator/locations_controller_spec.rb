@@ -53,11 +53,11 @@ describe Coordinator::LocationsController do
   end
 
   describe '#freebusy' do
-    it "should render all tables and track locations" do
+    it 'should render all tables and track locations' do
       visit freebusy_coordinator_locations_path(track: 'Pennsic University')
       Instructable::CLASS_DATES.each do |date|
         within(:css, "table\##{date}") do
-          within(:xpath, ".//thead/tr[1]") do
+          within(:xpath, './/thead/tr[1]') do
             Instructable::TRACKS['Pennsic University'].each do |location|
               page.should have_content(location)
             end
@@ -66,7 +66,7 @@ describe Coordinator::LocationsController do
       end
     end
 
-    it "should render our instance in a specific location" do
+    it 'should render our instance in a specific location' do
       date = Instructable::CLASS_DATES.first
       visit freebusy_coordinator_locations_path(track: 'Pennsic University')
       within(:xpath, "//table[@id='#{date}']/tbody/tr[13]/td[6]") do

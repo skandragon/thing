@@ -12,15 +12,15 @@ module GriffinPdf
 
   # Colors
   #
-  BLACK      = "000000"
-  LIGHT_GRAY = "F2F2F2"
-  GRAY       = "DDDDDD"
-  DARK_GRAY  = "333333"
-  BROWN      = "A4441C"
-  ORANGE     = "F28157"
-  LIGHT_GOLD = "FBFBBE"
-  DARK_GOLD  = "EBE389"
-  BLUE       = "0000D0"
+  BLACK      = '000000'
+  LIGHT_GRAY = 'F2F2F2'
+  GRAY       = 'DDDDDD'
+  DARK_GRAY  = '333333'
+  BROWN      = 'A4441C'
+  ORANGE     = 'F28157'
+  LIGHT_GOLD = 'FBFBBE'
+  DARK_GOLD  = 'EBE389'
+  BLUE       = '0000D0'
 
   #
   # Render a page header. Used on the manual lone pages and package

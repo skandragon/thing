@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe Admin::UsersController do
-  it "requires admin" do
+  it 'requires admin' do
     visit admin_users_path
     page.should have_content('Not authorized')
   end
 
-  describe "listing" do
+  describe 'listing' do
     it "renders user's name, email, and track" do
       log_in admin: true, mundane_name: 'Fred', tracks: [Instructable::TRACKS.keys.first, Instructable::TRACKS.keys.last]
       visit admin_users_path
@@ -14,9 +14,9 @@ describe Admin::UsersController do
       find('.roles').should have_content('Coordinator')
       find('.display_name').should have_content('Fred')
       find('.display_name').should have_content current_user.email
-      for track in current_user.tracks
+      current_user.tracks.each { |track|
         find('.tracks').should have_content track
-      end
+      }
     end
 
     it "renders '-' if the user has no track" do
@@ -25,7 +25,7 @@ describe Admin::UsersController do
       find('.tracks').should have_content '-'
     end
 
-    it "renders with more than a page full of users" do
+    it 'renders with more than a page full of users' do
       30.times do
         create(:user)
       end
@@ -33,7 +33,7 @@ describe Admin::UsersController do
       visit admin_users_path
     end
 
-    it "renders the bootstrap_renderer gap" do
+    it 'renders the bootstrap_renderer gap' do
       70.times do
         create(:user)
       end
@@ -42,37 +42,37 @@ describe Admin::UsersController do
     end
   end
 
-  describe "edit user" do
+  describe 'edit user' do
     before :each do
       log_in admin: true
       @other_user = create(:user)
       @link_id = "\#edit_user_#{@other_user.id}"
     end
 
-    it "shows link" do
+    it 'shows link' do
       visit admin_users_path
       find(@link_id).should have_content @other_user.email
     end
 
-    it "link works" do
+    it 'link works' do
       visit admin_users_path
       click_on @other_user.display_name
       page.should have_content "Editing #{@other_user.display_name}"
     end
   end
 
-  describe "edit" do
+  describe 'edit' do
     before :each do
       log_in admin: true
       @other_user = create(:user)
     end
 
-    it "renders" do
+    it 'renders' do
       visit edit_admin_user_path(@other_user)
       page.should have_content "Editing #{@other_user.display_name}"
     end
 
-    it "updates" do
+    it 'updates' do
       visit edit_admin_user_path(@other_user)
       page.should have_content @other_user.email
       fill_in 'Email address', with: 'example@example.com'
@@ -80,7 +80,7 @@ describe Admin::UsersController do
       page.should have_content 'User updated.'
     end
 
-    it "re-renders form on error" do
+    it 're-renders form on error' do
       visit edit_admin_user_path(@other_user)
       page.should have_content @other_user.email
       fill_in 'Email address', with: ''

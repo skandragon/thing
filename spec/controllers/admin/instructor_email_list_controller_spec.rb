@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Admin::InstructorEmailListController do
-  it "requires admin" do
+  it 'requires admin' do
     visit admin_instructor_email_list_index_path
     page.should have_content('Not authorized')
   end
 
-  describe "listing" do
-    it "renders only instructor email addresses" do
-      some_user = create(:user)
+  describe 'listing' do
+    it 'renders only instructor email addresses' do
+      create(:user)
       some_instructor = create(:instructor)
       log_in admin: true
       visit admin_instructor_email_list_index_path

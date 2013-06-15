@@ -40,14 +40,14 @@ class Changelog < ActiveRecord::Base
     user_id = user.present? ? user.id : nil
     item.valid?  # force validation just to normalize model
     snapshot = recursive_attributes(item)
-    new(action: "destroy", user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: nil, original: snapshot)
+    new(action: 'destroy', user_id: user_id, target_id: item.id, target_type: item.class.to_s, changelog: nil, original: snapshot)
   end
 
   def self.build_attributes(item)
     recursive_attributes(item)
   end
 
-  def self.decompose(data, prefix = nil)
+  def self.decompose(data)
     ret = {}
 
     data.each do |field_name, item|
@@ -65,7 +65,7 @@ class Changelog < ActiveRecord::Base
     save
   end
 
-  def self.recursive_flarg(item, previous_field = nil)
+  def self.recursive_flarg(item)
     item.each do |field, changes|
       if changes.is_a?Array and changes[0].is_a?Hash
         changes.each do |item|

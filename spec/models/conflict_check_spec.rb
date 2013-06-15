@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ConflictCheck do
-  describe "instance_time_overlap?" do
+  describe 'instance_time_overlap?' do
     def i1
       @i1 ||= create(:instructable, duration: 3)
     end
@@ -15,111 +15,111 @@ describe ConflictCheck do
       @i2 = nil
     end
 
-    it "does if b.start_time between a.start_time/end_time" do
+    it 'does if b.start_time between a.start_time/end_time' do
       a = i1.instances.create!(start_time: get_date(0, 1))
       b = i1.instances.create!(start_time: get_date(0, 1) + 1)
       ConflictCheck.instance_time_overlap?(a, b).should be_true
     end
 
-    it "does if b.end_time between a.start_time/end_time" do
+    it 'does if b.end_time between a.start_time/end_time' do
       a = i1.instances.create!(start_time: get_date(0, 1))
       b = i1.instances.create!(start_time: get_date(0, 1) - 1)
       ConflictCheck.instance_time_overlap?(a, b).should be_true
     end
 
-    it "does not for a.end_time = b.start_time" do
+    it 'does not for a.end_time = b.start_time' do
       a = i1.instances.create!(start_time: get_date(0, 1))
       b = i1.instances.create!(start_time: a.end_time)
       ConflictCheck.instance_time_overlap?(a, b).should be_false
     end
 
-    it "does not for a.start_time = b.end_time" do
+    it 'does not for a.start_time = b.end_time' do
       b = i1.instances.create!(start_time: get_date(0, 1))
       a = i1.instances.create!(start_time: b.end_time)
       ConflictCheck.instance_time_overlap?(a, b).should be_false
     end
 
-    it "does not if a.start_time is nil" do
+    it 'does not if a.start_time is nil' do
       a = i1.instances.create!
       b = i1.instances.create!(start_time: get_date(0, 1))
       ConflictCheck.instance_time_overlap?(a, b).should be_false
     end
 
-    it "does not if b.start_time is nil" do
+    it 'does not if b.start_time is nil' do
       a = i1.instances.create!(start_time: get_date(0, 1))
       b = i1.instances.create!
       ConflictCheck.instance_time_overlap?(a, b).should be_false
     end
 
-    it "does not if both a and b.start_time are nil" do
+    it 'does not if both a and b.start_time are nil' do
       a = i1.instances.create!
       b = i1.instances.create!
       ConflictCheck.instance_time_overlap?(a, b).should be_false
     end
   end
 
-  describe "instance_location_overlap?" do
-    describe "Not in a camp" do
+  describe 'instance_location_overlap?' do
+    describe 'Not in a camp' do
       before :each do
         @ia = create(:instructable)
         @ib = create(:instructable)
       end
 
-      it "does not if a.location is blank" do
+      it 'does not if a.location is blank' do
         a = @ia.instances.create!
-        b = @ib.instances.create!(location: "A&S 1")
+        b = @ib.instances.create!(location: 'A&S 1')
         ConflictCheck.instance_location_overlap?(a, b).should be_false
       end
 
-      it "does not if b.location is blank" do
-        a = @ib.instances.create!(location: "A&S 1")
+      it 'does not if b.location is blank' do
+        a = @ib.instances.create!(location: 'A&S 1')
         b = @ia.instances.create!
         ConflictCheck.instance_location_overlap?(a, b).should be_false
       end
 
-      it "does not if both locations are blank" do
+      it 'does not if both locations are blank' do
         a = @ia.instances.create!
         b = @ib.instances.create!
         ConflictCheck.instance_location_overlap?(a, b).should be_false
       end
 
-      it "does if a.location == b.location" do
-        a = @ia.instances.create!(location: "A&S 1")
-        b = @ib.instances.create!(location: "A&S 1")
+      it 'does if a.location == b.location' do
+        a = @ia.instances.create!(location: 'A&S 1')
+        b = @ib.instances.create!(location: 'A&S 1')
         ConflictCheck.instance_location_overlap?(a, b).should be_true
       end
     end
 
-    describe "both in camps" do
-      it "in the same camp does" do
-        @ia = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: "Foo", camp_reason: "bar")
-        @ib = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: "Foo", camp_reason: "bar")
+    describe 'both in camps' do
+      it 'in the same camp does' do
+        @ia = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: 'Foo', camp_reason: 'bar')
+        @ib = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: 'Foo', camp_reason: 'bar')
         @a = @ia.instances.create!
         @b = @ib.instances.create!
         ConflictCheck.instance_location_overlap?(@a, @b).should be_true
       end
 
-      it "in different camps does not" do
-        @ia = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: "Foo", camp_reason: "bar")
-        @ib = create(:instructable, location_type: 'private-camp', camp_name: 'bar', camp_address: "Foo", camp_reason: "bar")
+      it 'in different camps does not' do
+        @ia = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: 'Foo', camp_reason: 'bar')
+        @ib = create(:instructable, location_type: 'private-camp', camp_name: 'bar', camp_address: 'Foo', camp_reason: 'bar')
         @a = @ia.instances.create!
         @b = @ib.instances.create!
         ConflictCheck.instance_location_overlap?(@a, @b).should be_false
       end
     end
 
-    describe "one in camp" do
-      it "a in camp, b not" do
-        @ia = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: "Foo", camp_reason: "bar")
+    describe 'one in camp' do
+      it 'a in camp, b not' do
+        @ia = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: 'Foo', camp_reason: 'bar')
         @ib = create(:instructable)
         @a = @ia.instances.create!
         @b = @ib.instances.create!(location: 'A&S 1')
         ConflictCheck.instance_location_overlap?(@a, @b).should be_false
       end
 
-      it "a not in camp, b in camp" do
+      it 'a not in camp, b in camp' do
         @ia = create(:instructable)
-        @ib = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: "Foo", camp_reason: "bar")
+        @ib = create(:instructable, location_type: 'private-camp', camp_name: 'foo', camp_address: 'Foo', camp_reason: 'bar')
         @a = @ia.instances.create!(location: 'A&S 1')
         @b = @ib.instances.create!
         ConflictCheck.instance_location_overlap?(@a, @b).should be_false
@@ -127,8 +127,8 @@ describe ConflictCheck do
     end
   end
 
-  describe "instance_instructor_overlap?" do
-    it "conflicts if user_id equal" do
+  describe 'instance_instructor_overlap?' do
+    it 'conflicts if user_id equal' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!
       @ib = create(:instructable, user_id: 1)
@@ -136,7 +136,7 @@ describe ConflictCheck do
       ConflictCheck.instance_instructor_overlap?(@a, @b).should be_true
     end
 
-    it "does not conflict if user_id unequal" do
+    it 'does not conflict if user_id unequal' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!
       @ib = create(:instructable, user_id: 2)
@@ -145,8 +145,8 @@ describe ConflictCheck do
     end
   end
 
-  describe "instance_overlap?" do
-    it "returns [] if time does not overlap at all" do
+  describe 'instance_overlap?' do
+    it 'returns [] if time does not overlap at all' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1))
       @ib = create(:instructable, user_id: 2)
@@ -155,7 +155,7 @@ describe ConflictCheck do
       ConflictCheck.instance_overlap?(@a, @b).should == []
     end
 
-    it "returns [:location] if time overlaps and location conflicts" do
+    it 'returns [:location] if time overlaps and location conflicts' do
       @ia = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[0])
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])
@@ -164,7 +164,7 @@ describe ConflictCheck do
       ConflictCheck.instance_overlap?(@a, @b).should == [:location]
     end
 
-    it "returns [:instructor] if time overlaps and instructor conflicts" do
+    it 'returns [:instructor] if time overlaps and instructor conflicts' do
       @ia = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[0])
       @a = @ia.instances.create!(start_time: get_date(1))
       @ib = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[1])
@@ -173,7 +173,7 @@ describe ConflictCheck do
       ConflictCheck.instance_overlap?(@a, @b).should == [:instructor]
     end
 
-    it "returns [:topic] if time overlaps and topic conflicts" do
+    it 'returns [:topic] if time overlaps and topic conflicts' do
       @ia = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[1])
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])
@@ -183,7 +183,7 @@ describe ConflictCheck do
       ret.should == [:topic]
     end
 
-    it "returns [:location, :instructor] if time overlaps and both location and instructor conflict" do
+    it 'returns [:location, :instructor] if time overlaps and both location and instructor conflict' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 1)
@@ -195,14 +195,14 @@ describe ConflictCheck do
     end
   end
 
-  describe "conflicts" do
-    it "returns [] if no instances exist" do
+  describe 'conflicts' do
+    it 'returns [] if no instances exist' do
       conflicts = ConflictCheck.conflicts
       conflicts.should be_a(Array)
       conflicts.should == []
     end
 
-    it "returns [] if only one instance exists" do
+    it 'returns [] if only one instance exists' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
 
@@ -211,7 +211,7 @@ describe ConflictCheck do
       conflicts.should == []
     end
 
-    it "returns [] if time does not overlap at all" do
+    it 'returns [] if time does not overlap at all' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1))
       @ib = create(:instructable, user_id: 2)
@@ -222,7 +222,7 @@ describe ConflictCheck do
       conflicts.should == []
     end
 
-    it "returns location and instances if it conflicts" do
+    it 'returns location and instances if it conflicts' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])
@@ -236,7 +236,7 @@ describe ConflictCheck do
       conflicts[0][1].should include(@b)
     end
 
-    it "applies track filter" do
+    it 'applies track filter' do
       @ia = create(:instructable, user_id: 1, track: 'Pennsic University')
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 2, track: 'Middle Eastern', topic: Instructable::TOPICS.keys[1])
@@ -250,7 +250,7 @@ describe ConflictCheck do
       conflicts[0][1].should include(@b)
     end
 
-    it "returns nothing when all filtered" do
+    it 'returns nothing when all filtered' do
       @ia = create(:instructable, user_id: 1)
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 2)

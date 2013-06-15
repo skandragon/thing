@@ -1,13 +1,13 @@
 %ul.unstyled
   %li
     %strong
-      = instance.start_time.strftime("%H:%M")
+      = instance.start_time.strftime('%H:%M')
       \-
-      = instance.end_time.strftime("%H:%M")
+      = instance.end_time.strftime('%H:%M')
   %li
     = pluralize(instance.instructable.duration, 'hour')
   %li
     = pluralize(instance.instructable.repeat_count, 'session')
 
 - if current_user.allowed_tracks.include?(instance.instructable.track)
-  = link_to "Edit class", edit_user_instructable_path(instance.instructable.user_id, instance.instructable)
+  = link_to 'Edit class', edit_user_instructable_path(instance.instructable.user_id, instance.instructable)

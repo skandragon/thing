@@ -7,7 +7,7 @@ RSpec::Matchers.define :allow do |*args|
 end
 
 describe Permission do
-  describe "as guest" do
+  describe 'as guest' do
     subject { Permission.new(nil) }
 
     it { should allow(:about, :anything) }
@@ -20,7 +20,7 @@ describe Permission do
     it { should_not allow(:users, :show) }
   end
 
-  describe "as user" do
+  describe 'as user' do
     let(:user) { create(:instructor) }
     let(:instructable) { create(:instructable, user_id: user.id) }
 
@@ -59,7 +59,7 @@ describe Permission do
   # Proofreaders can edit any instructable, but only with limited
   # fields.
   #
-  describe "as proofreader" do
+  describe 'as proofreader' do
     let(:user) { create(:proofreader) }
 
     subject { Permission.new(user) }
@@ -71,7 +71,7 @@ describe Permission do
     }
   end
 
-  describe "as coordinator" do
+  describe 'as coordinator' do
     let(:track) { Instructable::TRACKS.keys.first }
     let(:other_track) { Instructable::TRACKS.keys.last }
 
@@ -94,7 +94,7 @@ describe Permission do
     }
   end
 
-  describe "as admin" do
+  describe 'as admin' do
     let(:user) { build(:user, admin: true) }
     let(:other_user) { create(:user) }
     subject { Permission.new(user) }

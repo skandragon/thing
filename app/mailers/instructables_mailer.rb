@@ -1,5 +1,5 @@
 class InstructablesMailer < ActionMailer::Base
-  default from: "noreply@pennsicuniversity.org"
+  default from: 'noreply@pennsicuniversity.org'
 
   #
   # On create, send mail to the user who created it so they know it
@@ -9,9 +9,9 @@ class InstructablesMailer < ActionMailer::Base
   def on_create(instructable, address)
     @instructable = instructable
     if address == @instructable.user.email
-      @reason = "you created this class"
+      @reason = 'you created this class'
     else
-      @reason = "you are an admin of the system"
+      @reason = 'you are an admin of the system'
     end
 
     mail(to: address, subject: "Class added: #{@instructable.name}")

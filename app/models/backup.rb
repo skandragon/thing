@@ -6,11 +6,11 @@ class Backup
   end
 
   def now_filename
-    @now_filename ||= Time.now.strftime("thing-%Y%m%d-%H%M%S")
+    @now_filename ||= Time.now.strftime('thing-%Y%m%d-%H%M%S')
   end
 
   def backup_path
-    @backup_path ||= Rails.root.join("tmp", "backup")
+    @backup_path ||= Rails.root.join('tmp', 'backup')
   end
 
   def make_dirs
@@ -33,7 +33,7 @@ class Backup
     ActiveRecord::Base.transaction do
       tables.each do |table|
         filename = "#{table.table_name}.json"
-        File.open("#{base}/#{filename}", "w") do |f|
+        File.open("#{base}/#{filename}", 'w') do |f|
           f.write table.all.to_json
         end
         @filenames << filename

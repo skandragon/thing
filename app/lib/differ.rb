@@ -29,8 +29,7 @@ class Differ
     private
 
     def append_state(new_state, character)
-      if (@state == new_state)
-      else
+      if @state != new_state
         dump_buffer(new_state)
       end
       @buffer += character
@@ -48,12 +47,14 @@ class Differ
     seq1 ||= ''
     seq2 ||= ''
 
-    diff = Diff::LCS.diff(seq1, seq2)
+    seq1 = seq1.join(', ') if seq1.is_a?Array
+    seq2 = seq2.join(', ') if seq2.is_a?Array
+
     @comparison = Comparison.new
     Diff::LCS.traverse_sequences(seq1, seq2, @comparison)
     @comparison.finalize
   end
-  
+
   def sequences
     @comparison.sequences
   end

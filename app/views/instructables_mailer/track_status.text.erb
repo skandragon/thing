@@ -23,7 +23,7 @@ Scheduling Conflicts
 <% else -%>
 <% @conflicts.each do |conflict| %>
 <% type, instances = conflict %>
-Conflict Type: <%= type.join(", ") %>
+Conflict Type: <%= type.join(', ') %>
   <%= instances[0].instructable.name %>
   <%= instances[0].formatted_location_and_time %>, duration <%= instances[0].instructable.duration %>
   <%= instances[0].instructable.titled_sca_name %>

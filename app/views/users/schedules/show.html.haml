@@ -28,9 +28,9 @@
     - @instances.each do |instance|
       %tr
         %td
-          = instance.start_time.strftime("%m-%d")
+          = instance.start_time.strftime('%m-%d')
           %br
-          = instance.start_time.strftime("%H:%M")
+          = instance.start_time.strftime('%H:%M')
           %br
           = "#{instance.instructable.duration}&nbsp;hr".html_safe
           %br

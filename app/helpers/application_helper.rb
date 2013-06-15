@@ -12,7 +12,7 @@ module ApplicationHelper
     ret = distance_of_time_in_words_to_now(date)
     now = Time.now
     if date < now
-      ret += " ago"
+      ret += ' ago'
     elsif date > now
       ret = "in #{ret}"
     end

@@ -19,8 +19,7 @@ class InstructablesController < ApplicationController
       changelog.target_id = @instructable.id
       changelog.save # failure is an option...
       send_email_on_create
-      redirect_to user_instructables_path(@target_user), notice: "Class created."
-      return
+      redirect_to user_instructables_path(@target_user), notice: 'Class created.'
     else
       render action: :edit
     end
@@ -30,7 +29,7 @@ class InstructablesController < ApplicationController
     @instances = @instructable.instances
     need = @instructable.repeat_count - @instructable.instances.count
     need.times do
-      i = @instances.build
+      @instances.build
     end
   end
 
@@ -43,7 +42,7 @@ class InstructablesController < ApplicationController
       @instructable.cleanup_unneeded_instances
       changelog.original = preflight
       changelog.validate_and_save # failure is an option...
-      redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: "Class updated."
+      redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: 'Class updated.'
     else
       render action: :edit
     end
@@ -55,7 +54,7 @@ class InstructablesController < ApplicationController
       changelog.save # failure is an option...
       @instructable.destroy
     end
-    redirect_to user_instructables_path(@target_user), notice: "Class deleted."
+    redirect_to user_instructables_path(@target_user), notice: 'Class deleted.'
   end
 
   private
@@ -78,7 +77,7 @@ class InstructablesController < ApplicationController
       :culture, :topic, :subtopic,
     ]
     allowed += [{:requested_days => [], :requested_times => [], :special_needs => []}]
-    if params[:action] == "update"
+    if params[:action] == 'update'
       if coordinator_for?(current_resource.track)
         if admin?
           allowed += [ :approved, :instances_attributes => [ :id, :start_time, :location, :override_location ] ]
@@ -108,7 +107,7 @@ class InstructablesController < ApplicationController
       begin
         InstructablesMailer.on_create(@instructable, address).deliver
       rescue Exception => e
-        flash[:error] = "Email could not be sent to one or more track coordinators.  However, your class was added and will appear on their pending class lists."
+        flash[:error] = 'Email could not be sent to one or more track coordinators.  However, your class was added and will appear on their pending class lists.'
       end
     end
   end

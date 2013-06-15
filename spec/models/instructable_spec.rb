@@ -48,36 +48,36 @@ describe Instructable do
     @instructable = build(:instructable)
   end
 
-  it "baseline validations" do
+  it 'baseline validations' do
     @instructable.should be_valid
   end
 
-  it "requires fee_itemization if handout_fee" do
+  it 'requires fee_itemization if handout_fee' do
     @instructable.handout_fee = 10
     @instructable.should_not be_valid
     @instructable.errors_on(:fee_itemization).should include("can't be blank")
   end
 
-  it "requires fee_itemization if material_fee" do
+  it 'requires fee_itemization if material_fee' do
     @instructable.material_fee = 10
     @instructable.should_not be_valid
     @instructable.errors_on(:fee_itemization).should include("can't be blank")
   end
 
   describe 'validation of subtopic' do
-    it "fails for invalid subtopic" do
+    it 'fails for invalid subtopic' do
       @instructable.topic = 'Martial'
       @instructable.subtopic = 'XXX'
       @instructable.should_not be_valid
     end
 
-    it "passes for valid subtopic" do
+    it 'passes for valid subtopic' do
       @instructable.topic = 'Martial'
       @instructable.subtopic = 'Archery'
       @instructable.should be_valid
     end
 
-    it "passes for blank subtopic" do
+    it 'passes for blank subtopic' do
       @instructable.topic = 'Martial'
       @instructable.subtopic = ''
       @instructable.should be_valid
@@ -99,7 +99,7 @@ describe Instructable do
       @instructable.approved = true
       @instructable.repeat_count = 2
       @instructable.save!
-      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0], location: "foo")
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0], location: 'foo')
       @instructable.reload
       @instructable.status_message.should == 'Pending Scheduling'
     end
@@ -108,8 +108,8 @@ describe Instructable do
       @instructable.approved = true
       @instructable.repeat_count = 2
       @instructable.save!
-      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0], location: "foo")
-      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[1], location: "foo")
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0], location: 'foo')
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[1], location: 'foo')
       @instructable.reload
       @instructable.status_message.should == 'Approved and Scheduled'
     end
@@ -119,7 +119,7 @@ describe Instructable do
       @instructable.repeat_count = 2
       @instructable.save!
       @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0])
-      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[1], location: "foo")
+      @instructable.instances.create!(start_time: Instructable::CLASS_DATES[1], location: 'foo')
       @instructable.reload
       @instructable.status_message.should == 'Pending Scheduling'
     end
@@ -127,9 +127,9 @@ describe Instructable do
     it 'approved and in a camp' do
       @instructable.approved = true
       @instructable.location_type = 'private-camp'
-      @instructable.camp_name = "Flarg"
-      @instructable.camp_address = "Flarg"
-      @instructable.camp_reason = "Flarg"
+      @instructable.camp_name = 'Flarg'
+      @instructable.camp_address = 'Flarg'
+      @instructable.camp_reason = 'Flarg'
       @instructable.repeat_count = 2
       @instructable.save!
       @instructable.instances.create!(start_time: Instructable::CLASS_DATES[0])
@@ -140,31 +140,31 @@ describe Instructable do
   end
 
   describe '#formatted_culture_and_topic' do
-    it "renders with culture, topic, and subtopic" do
-      @instructable.culture = "culture"
-      @instructable.topic = "topic"
-      @instructable.subtopic = "subtopic"
-      @instructable.formatted_culture_and_topic.should == "culture: topic: subtopic"
+    it 'renders with culture, topic, and subtopic' do
+      @instructable.culture = 'culture'
+      @instructable.topic = 'topic'
+      @instructable.subtopic = 'subtopic'
+      @instructable.formatted_culture_and_topic.should == 'culture: topic: subtopic'
     end
 
-    it "renders with culture and topic" do
-      @instructable.culture = "culture"
-      @instructable.topic = "topic"
-      @instructable.subtopic = ""
-      @instructable.formatted_culture_and_topic.should == "culture: topic"
+    it 'renders with culture and topic' do
+      @instructable.culture = 'culture'
+      @instructable.topic = 'topic'
+      @instructable.subtopic = ''
+      @instructable.formatted_culture_and_topic.should == 'culture: topic'
     end
 
-    it "renders with only topic" do
-      @instructable.culture = ""
-      @instructable.topic = "topic"
-      @instructable.subtopic = ""
-      @instructable.formatted_culture_and_topic.should == "topic"
+    it 'renders with only topic' do
+      @instructable.culture = ''
+      @instructable.topic = 'topic'
+      @instructable.subtopic = ''
+      @instructable.formatted_culture_and_topic.should == 'topic'
     end
   end
 
   describe '#additional_instructables_expanded' do
     it 'encodes into array' do
-      @instructable.additional_instructors_expanded = "This, That, Those"
+      @instructable.additional_instructors_expanded = 'This, That, Those'
       @instructable.additional_instructors.should == ['This', 'That', 'Those']
     end
 
@@ -174,26 +174,26 @@ describe Instructable do
     end
   end
 
-  describe "fees of to_f == 0.0 convert into nil" do
-    it "converts handout_fee" do
-      @instructable.handout_fee = "0.0"
+  describe 'fees of to_f == 0.0 convert into nil' do
+    it 'converts handout_fee' do
+      @instructable.handout_fee = '0.0'
       @instructable.should be_valid
     end
 
-    it "converts material_fee" do
-      @instructable.material_fee = "0.0"
+    it 'converts material_fee' do
+      @instructable.material_fee = '0.0'
       @instructable.should be_valid
     end
   end
   
-  describe "fees are floating values" do
-    it "accepts 1.5 for handout_fee" do
-      @instructable.handout_fee = "1.5"
+  describe 'fees are floating values' do
+    it 'accepts 1.5 for handout_fee' do
+      @instructable.handout_fee = '1.5'
       @instructable.handout_fee.should == 1.5
     end
 
-    it "accepts 1.5 for masterial_fee" do
-      @instructable.material_fee = "1.5"
+    it 'accepts 1.5 for masterial_fee' do
+      @instructable.material_fee = '1.5'
       @instructable.material_fee.should == 1.5
     end
   end
@@ -203,7 +203,7 @@ describe Instructable do
       @instructable = create(:instructable, repeat_count: 3)
     end
 
-    it "does nothing if instance count == needed" do
+    it 'does nothing if instance count == needed' do
       @instructable.repeat_count.times do
         @instructable.instances.create!
       end
@@ -212,14 +212,14 @@ describe Instructable do
       @instructable.instances.count.should == @instructable.repeat_count
     end
 
-    it "does nothing if instance count < needed" do
+    it 'does nothing if instance count < needed' do
       @instructable.instances.create!
       @instructable.cleanup_unneeded_instances
       @instructable.reload
       @instructable.instances.count.should == 1
     end
 
-    it "removes extra instances if blank ones are present" do
+    it 'removes extra instances if blank ones are present' do
       5.times do
         @instructable.instances.create!
       end
@@ -228,7 +228,7 @@ describe Instructable do
       @instructable.instances.count.should == @instructable.repeat_count
     end
 
-    it "removes extra instances if blank start_times are present" do
+    it 'removes extra instances if blank start_times are present' do
       5.times do
         @instructable.instances.create!(location: 'A&S 1')
       end
@@ -237,7 +237,7 @@ describe Instructable do
       @instructable.instances.count.should == @instructable.repeat_count
     end
 
-    it "removes the oldest entries if start_time is set" do
+    it 'removes the oldest entries if start_time is set' do
       5.times do |n|
         @instructable.instances.create!(start_time: get_date(n + 1), location: 'A&S 1')
       end
@@ -249,8 +249,8 @@ describe Instructable do
     end
   end
 
-  describe "proofread" do
-    describe "on self-update" do
+  describe 'proofread' do
+    describe 'on self-update' do
       before :each do
         @instructable = create(:instructable)
         @instructable.reload
@@ -261,10 +261,10 @@ describe Instructable do
         @instructable.reload
       end
 
-      it "on name change" do
+      it 'on name change' do
         @instructable.proofread.should_not be_true
         @instructable.proofread_by.should == [123]
-        @instructable.name = "Flarg"
+        @instructable.name = 'Flarg'
         @instructable.is_proofreader = 123
         @instructable.save!
         @instructable.reload
@@ -273,7 +273,7 @@ describe Instructable do
       end
     end
 
-    describe "on update" do
+    describe 'on update' do
       before :each do
         @instructable = create(:instructable)
         @instructable.reload
@@ -285,16 +285,16 @@ describe Instructable do
         @instructable.reload
       end
 
-      it "clears on name change" do
+      it 'clears on name change' do
         @instructable.proofread.should be_true
-        @instructable.name = "Flarg"
+        @instructable.name = 'Flarg'
         @instructable.save!
         @instructable.reload
         @instructable.proofread.should_not be_true
         @instructable.proofread_by.should be_empty
       end
 
-      it "unaffected on duration change" do
+      it 'unaffected on duration change' do
         @instructable.proofread.should be_true
         @instructable.duration = @instructable.duration + 1
         @instructable.save!
@@ -303,9 +303,9 @@ describe Instructable do
         @instructable.proofread_by.should_not be_empty
       end
 
-      it "clears on new proofreader, on name change" do
+      it 'clears on new proofreader, on name change' do
         @instructable.proofread.should be_true
-        @instructable.name = "Flarg"
+        @instructable.name = 'Flarg'
         @instructable.is_proofreader = 987
         @instructable.save!
         @instructable.reload
@@ -313,7 +313,7 @@ describe Instructable do
         @instructable.proofread_by.should == [ 987 ]
       end
 
-      it "does not clear on new proofreader, on uninteresting change" do
+      it 'does not clear on new proofreader, on uninteresting change' do
         @instructable.proofread.should be_true
         @instructable.duration = @instructable.duration + 1
         @instructable.is_proofreader = 987

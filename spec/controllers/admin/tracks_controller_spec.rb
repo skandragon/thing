@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 describe Admin::TracksController do
-  it "requires admin" do
+  it 'requires admin' do
     visit admin_tracks_path
     page.should have_content('Not authorized')
   end
 
-  describe "index" do
+  describe 'index' do
     before :each do
       log_in admin: true
     end
 
-    it "renders" do
+    it 'renders' do
       visit admin_tracks_path
-      for track in Instructable::TRACKS.keys
+      Instructable::TRACKS.keys.each { |track|
         page.should have_content track
-      end
+      }
     end
 
     it "displays 'No classes'" do
@@ -25,17 +25,17 @@ describe Admin::TracksController do
       end
     end
 
-    it "renders 50% for a track" do
+    it 'renders 50% for a track' do
       i1 = create(:instructable, track: 'Middle Eastern')
       i1.instances.create!(start_time: get_date(0), location: 'Touch the Earch')
-      i2 = create(:instructable, track: 'Middle Eastern')
+      create(:instructable, track: 'Middle Eastern')
       visit admin_tracks_path
       first('.badge.badge-warning') do
         should have_content('50.00%')
       end
     end
 
-    it "renders 100% for a track" do
+    it 'renders 100% for a track' do
       i1 = create(:instructable, track: 'Middle Eastern')
       i1.instances.create!(start_time: get_date(0), location: 'Touch the Earch')
       visit admin_tracks_path

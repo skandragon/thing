@@ -1,4 +1,4 @@
-- changelogs = instructable.changelogs.order("created_at DESC")
+- changelogs = instructable.changelogs.order('created_at DESC')
 - changelogs.each do |changelog|
   - next if changelog.useless?
   %h4= changelog.created_at.to_s(:pennsic)
@@ -10,17 +10,9 @@
     %thead
       %tr
         %th.field Field
-        %th.old-value Old
-        %th.new-value New Value
+        %th.old-value Change
     %tbody
       - Changelog.decompose(changelog.changelog).each do |field, changes|
         %tr
           %td= field
-          - if changes[0].is_a?Array
-            %td= changes[0].join(", ")
-          - else
-            %td= changes[0]
-          - if changes[1].is_a?Array
-            %td= changes[1].join(", ")
-          - else
-            %td= changes[1]
+          %td= html_diff(changes[0].to_s, changes[1].to_s)

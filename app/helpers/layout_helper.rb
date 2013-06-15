@@ -2,21 +2,22 @@
 
 module LayoutHelper
   def render_flashes
-    ret = ""
+    ret = ''
     flash.each do |name, msg|
-      css_class = "alert alert-block"
+      css_class = 'alert alert-block'
       case name
       when :notice
-        css_class << " alert-success"
+        css_class << ' alert-success'
       when :error
-        css_class << " alert-error"
+        css_class << ' alert-error'
       when :alert
-        css_class << " alert-error"
+        css_class << ' alert-error'
+      else
       end
       ret << '<div class="' + css_class + '">'
       ret << '<a class="close" data-dismiss="alert">×</a>'
       ret << h(msg)
-      ret << "</div>"
+      ret << '</div>'
     end
     ret.html_safe
   end
@@ -27,7 +28,7 @@ module LayoutHelper
     else
       new_title = [ application_name, window_title ]
     end
-    content_for(:window_title) { new_title.join(" : ") }
+    content_for(:window_title) { new_title.join(' : ') }
   end
 
   def title_content
@@ -41,7 +42,7 @@ module LayoutHelper
   end
 
   def favicon_links
-    ret = [
+    [
       '<link rel="shortcut icon" href="' + image_path('logo-16x16.ico') + '" />',
       '<link rel="icon" type="image/vnd.microsoft.icon" href="' + image_path('logo-16x16.ico') + '" />',
       '<link rel="icon" type="image/png" href="' + image_path('logo-16x16.png') + '" />',
@@ -57,8 +58,8 @@ module LayoutHelper
   end
 
   def button_link_to(text, href, options = {})
-    classes = (options[:class] || '').split(" ")
-    classes << 'btn' unless classes.include?("btn")
+    classes = (options[:class] || '').split(' ')
+    classes << 'btn' unless classes.include?('btn')
     options[:class] = classes
     link_to text, href, options
   end
@@ -76,14 +77,14 @@ module LayoutHelper
 
   def icon(type, inverse = false)
     css_class = "icon-#{type}"
-    css_class += " icon-white" if inverse
+    css_class += ' icon-white' if inverse
     content_tag :i, '', class: css_class
   end
 
   def revision
     if current_user and current_user.admin?
       begin
-        content_tag :span, read_revision, :class => "revision"
+        content_tag :span, read_revision, :class => 'revision'
       rescue
       end
     else
@@ -94,6 +95,6 @@ module LayoutHelper
   private
 
   def read_revision
-    @revision ||= File.read(File.join(Rails.root, "hash.txt"))
+    @revision ||= File.read(File.join(Rails.root, 'hash.txt'))
   end
 end
