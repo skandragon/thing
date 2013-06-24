@@ -93,7 +93,7 @@ GEM
       eventmachine (>= 0.12.0)
     ffi (1.9.0)
     formatador (0.2.4)
-    guard (1.8.0)
+    guard (1.8.1)
       formatador (>= 0.2.4)
       listen (>= 1.0.0)
       lumberjack (>= 1.0.2)
@@ -130,7 +130,8 @@ GEM
       actionpack (>= 3.1)
       less (~> 2.3.1)
     libv8 (3.3.10.4)
-    listen (1.2.1)
+    liquid (2.5.0)
+    listen (1.2.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
@@ -170,7 +171,7 @@ GEM
       faye-websocket (>= 0.4.4, < 0.5.0)
       http_parser.rb (~> 0.5.3)
     polyglot (0.3.3)
-    postgres_ext (0.3.1)
+    postgres_ext (0.4.0)
       activerecord (~> 3.2.0)
       pg_array_parser (~> 0.0.8)
     prawn (1.0.0.rc2)
@@ -210,7 +211,7 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     raindrops (0.11.0)
-    rake (10.0.4)
+    rake (10.1.0)
     rb-fchange (0.0.6)
       ffi
     rb-fsevent (0.9.3)
@@ -295,7 +296,7 @@ GEM
     uglifier (2.1.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    unicorn (4.6.2)
+    unicorn (4.6.3)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
@@ -333,6 +334,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   less-rails
+  liquid
   multa_arcana
   paper_trail (~> 2)
   pg
