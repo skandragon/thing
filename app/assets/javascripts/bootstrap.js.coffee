@@ -1,7 +1,8 @@
 jQuery ->
   $("a[rel=popover]").popover()
+  $('[rel=popover]').popover(placement: 'top', trigger: 'click')
+  $('[rel=tooltip]').tooltip()
   $(".tooltip").tooltip()
-  $("a[rel=tooltip]").tooltip()
   window.prettyPrint && prettyPrint()
 
 jQuery ->
@@ -22,7 +23,3 @@ jQuery ->
 
   $(window).scroll ->
     processScroll()
-
-jQuery ->
-  $('[rel=tooltip]').tooltip()
-  $('[rel=popover]').popover(placement: 'top', trigger: 'click')
