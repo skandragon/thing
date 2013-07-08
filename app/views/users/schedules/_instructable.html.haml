@@ -7,7 +7,7 @@
       - classes = ''
       - message = 'Add'
     %a.watch.btn{class: classes, data: { 'user-id' => @user.id, id: instructable.id }}= message
-  %td 
+  %td
     %a.popover-wide{rel: 'popover', data: {trigger: 'click', placement: 'right', title: markdown_html(instructable.name), html: 1, content: markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book)}}= markdown_html(instructable.name)
     %br
     = instructable.titled_sca_name
