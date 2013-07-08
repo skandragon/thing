@@ -5,6 +5,11 @@ Thing::Application.routes.draw do
     resources :instructor_email_list
     resources :track_lead_email_list
     resources :backups
+    resources :reports do
+      collection do
+        get :instructor_signin
+      end
+    end
   end
 
   namespace :coordinator do
