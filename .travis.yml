@@ -5,6 +5,10 @@ rvm:
   - 2.0.0
   - ruby-head
 
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+
 before_install:
   - rvm rubygems 1.8.25
   - gem --version
