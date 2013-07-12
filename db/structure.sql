@@ -531,6 +531,13 @@ CREATE INDEX index_authentications_on_user_id ON authentications USING btree (us
 
 
 --
+-- Name: index_instances_on_instructable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_instances_on_instructable_id ON instances USING btree (instructable_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -639,3 +646,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130426200209');
 INSERT INTO schema_migrations (version) VALUES ('20130428100303');
 
 INSERT INTO schema_migrations (version) VALUES ('20130430220849');
+
+INSERT INTO schema_migrations (version) VALUES ('20130712182934');
