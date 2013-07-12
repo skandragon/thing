@@ -10,6 +10,7 @@ matrix:
     - rvm: ruby-head
 
 before_install:
+  - rvm get stable
   - rvm rubygems current
   - gem --version
   - rvm list known
