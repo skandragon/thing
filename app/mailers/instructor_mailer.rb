@@ -1,4 +1,6 @@
 class InstructorMailer < ActionMailer::Base
+  include GriffinMarkdown
+
   default from: 'noreply@pennsicuniversity.org'
 
   #
@@ -13,23 +15,9 @@ class InstructorMailer < ActionMailer::Base
     @text = replace_tokens(markdown_html(text))
     mail(to: user.email, subject: "Pennsic University: #{subject}")
   end
-  
+
   private
-  
-  def helpers
-    @helper ||= Helper.instance
-  end
 
-  class Helper
-    include Singleton
-    include ActionView::Helpers::TextHelper
-    include MarkdownHelper
-  end
-
-  def markdown_html(text, options = {})
-    helpers.markdown_html(text, options)
-  end
-  
   def replace_tokens(text)
     text.gsub('@name@', helpers.escape_html(@user.titled_sca_name)).html_safe
   end
