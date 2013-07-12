@@ -70,6 +70,7 @@ def get_updated_at
   current_dates = []
   current_dates << Instance.order('updated_at DESC').limit(1).pluck(:updated_at)
   current_dates << Instructable.order('updated_at DESC').limit(1).pluck(:updated_at)
+  current_dates << User.order('updated_at DESC').limit(1).pluck(:updated_at)
 
   current_dates.max
 end
