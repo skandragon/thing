@@ -8,10 +8,12 @@ rvm:
 matrix:
   allow_failures:
     - rvm: ruby-head
+    - rvm: 2.0.0
 
 before_install:
   - rvm rubygems 1.8.25
   - gem --version
+  - rvm list known
   - gem install brakeman
 
 before_script:
