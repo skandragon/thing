@@ -11,5 +11,7 @@
 #
 
 class Schedule < ActiveRecord::Base
+  PENNSIC_YEAR = 42
+
   belongs_to :user
 end
