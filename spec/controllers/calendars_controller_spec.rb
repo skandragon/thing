@@ -11,7 +11,7 @@ describe CalendarsController do
   describe 'HTML' do
       describe 'without classes' do
         it 'renders full' do
-          visit calendars_path
+          visit calendars_path(uncached_for_tests: true)
         end
       end
 
@@ -21,7 +21,7 @@ describe CalendarsController do
         end
 
         it 'renders full' do
-          visit calendars_path
+          visit calendars_path(uncached_for_tests: true)
           page.should have_content @instructable1.name
           page.should have_content @instructable2.name
         end
@@ -32,7 +32,7 @@ describe CalendarsController do
   describe 'XSLS' do
     describe 'without classes' do
       it 'renders full' do
-        visit calendars_path(format: :xlsx)
+        visit calendars_path(format: :xlsx, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       end
     end
@@ -43,7 +43,7 @@ describe CalendarsController do
       end
 
       it 'renders full' do
-        visit calendars_path(format: :xlsx)
+        visit calendars_path(format: :xlsx, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       end
     end
@@ -52,7 +52,7 @@ describe CalendarsController do
   describe 'CSV' do
     describe 'without classes' do
       it 'renders full' do
-        visit calendars_path(format: :csv)
+        visit calendars_path(format: :csv, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'text/csv'
         page.body.should_not be_blank
       end
@@ -64,7 +64,7 @@ describe CalendarsController do
       end
 
       it 'renders full' do
-        visit calendars_path(format: :csv)
+        visit calendars_path(format: :csv, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'text/csv'
         page.body.should_not be_blank
         page.body.should match @instructable1.name
@@ -76,7 +76,7 @@ describe CalendarsController do
   describe 'ICS' do
     describe 'without classes' do
       it 'renders full' do
-        visit calendars_path(format: :ics)
+        visit calendars_path(format: :ics, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'text/calendar'
         page.body.should_not be_blank
         page.body[0..14].should == 'BEGIN:VCALENDAR'
@@ -89,7 +89,7 @@ describe CalendarsController do
       end
 
       it 'renders full' do
-        visit calendars_path(format: :ics)
+        visit calendars_path(format: :ics, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'text/calendar'
         page.body.should_not be_blank
         page.body[0..14].should == 'BEGIN:VCALENDAR'
@@ -102,14 +102,14 @@ describe CalendarsController do
   describe 'PDF' do
     describe 'without classes' do
       it 'renders full' do
-        visit calendars_path(format: :pdf)
+        visit calendars_path(format: :pdf, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'application/pdf'
         page.body.should_not be_blank
         page.body[0..3].should == '%PDF'
       end
 
       it 'renders brief' do
-        visit calendars_path(format: :pdf, brief: true)
+        visit calendars_path(format: :pdf, brief: true, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'application/pdf'
         page.body.should_not be_blank
         page.body[0..3].should == '%PDF'
@@ -122,14 +122,14 @@ describe CalendarsController do
       end
 
       it 'renders full' do
-        visit calendars_path(format: :pdf)
+        visit calendars_path(format: :pdf, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'application/pdf'
         page.body.should_not be_blank
         page.body[0..3].should == '%PDF'
       end
 
       it 'renders brief' do
-        visit calendars_path(format: :pdf, brief: true)
+        visit calendars_path(format: :pdf, brief: true, uncached_for_tests: true)
         page.response_headers['Content-Type'].should == 'application/pdf'
         page.body.should_not be_blank
         page.body[0..3].should == '%PDF'
