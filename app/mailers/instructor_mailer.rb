@@ -11,14 +11,22 @@ class InstructorMailer < ActionMailer::Base
     @user = user
     ids = Instructable.where(user_id: @user.id).pluck(:id)
     @instances = Instance.where(instructable_id: ids).includes(:instructable)
+    @name = @user.titled_sca_name
 
-    @text = replace_tokens(markdown_html(text))
+#    @text = replace_tokens(markdown_html(text))
     mail(to: user.email, subject: "Pennsic University: #{subject}")
   end
 
   private
 
   def replace_tokens(text)
-    text.gsub('@name@', helpers.escape_html(@user.titled_sca_name)).html_safe
+    text.scan(/@[a-z]+@/).uniq.each do |item|
+      case item
+      when '@name@'
+        text.gsub!('@name@', markdown_html(@user.titled_sca_name)).html_safe
+      end
+    end
+    text
   end
+
 end

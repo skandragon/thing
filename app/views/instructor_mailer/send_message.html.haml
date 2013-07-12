@@ -1,1 +1,8 @@
-= @text
+%html
+  %body
+
+    Hello, #{@name}!
+
+    %br
+
+    = render 'instances', collection: @instances
