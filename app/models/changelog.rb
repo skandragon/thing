@@ -91,6 +91,80 @@ class Changelog < ActiveRecord::Base
     nil
   end
 
+  def self.instance_changes(original, current)
+    ret = { id: original.id }
+
+    %w( location start_time end_time ).each do |field|
+      if original[field] != current[field]
+        ret[field] = [ original[field], current[field] ]
+      end
+    end
+
+    ret
+  end
+
+  def self.changes_for_instances(original, current)
+    original_ids = original.map(&:id)
+    current_ids = current.map(&:id)
+    ret = {}
+
+    shared_ids = original_ids & current_ids
+    deleted_ids = original_ids - shared_ids
+    added_ids = current_ids - shared_ids
+
+    deleted_ids.each do |id|
+      ret[:deleted] ||= []
+      ret[:deleted] << original.select { |x| x.id == id }.first
+    end
+
+    added_ids.each do |id|
+      ret[:added] ||= []
+      ret[:added] << current.select { |x| x.id == id }.first
+    end
+
+    shared_ids.each do |id|
+      oi = original.select { |x| x.id == id }.first
+      ci = current.select { |x| x.id == id }.first
+
+      delta = instance_changes(oi, ci)
+      ret[id] = delta unless delta.blank?
+    end
+
+    ret
+  end
+
+  def self.changes_for(list)
+    original = Hashie::Mash.new(list[0])
+    current = Hashie::Mash.new(list[1])
+    ret = { id: original.id }
+
+    %w( name material_limit handout_limit description_web description_book handout_fee material_fee duration culture topic subtopic adult_only fee_itemization track ).each do |field|
+      if original[field] != current[field]
+        ret[field] = [ original[field], current[field] ]
+      end
+    end
+
+    ret[:instances] = changes_for_instances(original['instances'], current['instances'])
+
+    Hashie::Mash.new(ret)
+  end
+
+  def self.changes_since(date = Date.parse('20130511T075500Z'))
+    changes = Changelog.where(target_type: "Instructable").where('created_at >= ?', date).where('original is not null').order(:created_at).group_by(&:target_id)
+
+    ret = []
+    changes.each do |key, changelist|
+      ret << changes_for(split_by_date(changelist, date))
+    end
+
+    ret
+  end
+
+  def self.split_by_date(logs, date)
+    logs = logs.sort { |a, b| a.created_at <=> b.created_at }
+    [ logs.first.original, logs.last.committed ]
+  end
+
   private
 
   def abort_if_useless
