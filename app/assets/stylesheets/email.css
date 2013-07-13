@@ -1,0 +1,15 @@
+/*
+ *= require_self
+*/
+
+table, table td, table th {
+    border: 1px solid #333;
+}
+table th {
+    background-color: #eee;
+}
+
+ul li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

@@ -1,7 +1,9 @@
 class InstructorMailer < ActionMailer::Base
   include GriffinMarkdown
 
-  default from: 'noreply@pennsicuniversity.org'
+  layout 'email'
+
+  default from: 'noreply@pennsicuniversity.org', css: 'email'
 
   #
   # Send mail to an instructor, with optional replacable tags for certain

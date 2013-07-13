@@ -88,3 +88,11 @@ gem 'active_model_serializers', '~> 0.7.0'
 gem 'hashie'
 gem 'diff-lcs'
 gem 'liquid'
+
+#
+# For HTML-format email that isn't so painful to format
+# This gem crashes Ruby on my mac...  both macs...  so, remove it from
+# test since we don't verify that the gem works, just that the email
+# renders.
+#
+gem 'roadie', :group => [ :development, :production ]

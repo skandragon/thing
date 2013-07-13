@@ -95,7 +95,7 @@ class Changelog < ActiveRecord::Base
     ret = { id: original.id }
 
     %w( location start_time end_time ).each do |field|
-      if original[field] != current[field]
+      if original[field].to_s.strip != current[field].to_s.strip
         ret[field] = [ original[field], current[field] ]
       end
     end
@@ -182,7 +182,7 @@ class Changelog < ActiveRecord::Base
     ret = { class_name: current.name }
 
     %w( name material_limit handout_limit description_web description_book handout_fee material_fee duration culture topic subtopic adult_only fee_itemization track ).each do |field|
-      if original[field] != current[field]
+      if original[field].to_s.strip != current[field].to_s.strip
         ret[field] = [ original[field], current[field] ]
       end
     end
