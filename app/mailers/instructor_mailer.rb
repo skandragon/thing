@@ -7,7 +7,7 @@ class InstructorMailer < ActionMailer::Base
   # Send mail to an instructor, with optional replacable tags for certain
   # functions.
   #
-  def send_message(user, subject, text)
+  def send_message(user, subject)
     @user = user
     ids = Instructable.where(user_id: @user.id).pluck(:id)
     @instances = Instance.where(instructable_id: ids).includes(:instructable)
