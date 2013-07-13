@@ -106,20 +106,22 @@ class Changelog < ActiveRecord::Base
   def self.changes_for_instances(original, current)
     original_ids = original.map(&:id)
     current_ids = current.map(&:id)
-    ret = {}
+    ret = []
 
     shared_ids = original_ids & current_ids
     deleted_ids = original_ids - shared_ids
     added_ids = current_ids - shared_ids
 
     deleted_ids.each do |id|
-      ret[:deleted] ||= []
-      ret[:deleted] << original.select { |x| x.id == id }.first
+      data = original.select { |x| x.id == id }.first
+      data[:action] = 'destroy'
+      ret << data
     end
 
     added_ids.each do |id|
-      ret[:added] ||= []
-      ret[:added] << current.select { |x| x.id == id }.first
+      data = current.select { |x| x.id == id }.first
+      data[:action] = 'create'
+      ret << data
     end
 
     shared_ids.each do |id|
@@ -127,16 +129,57 @@ class Changelog < ActiveRecord::Base
       ci = current.select { |x| x.id == id }.first
 
       delta = instance_changes(oi, ci)
-      ret[id] = delta unless delta.blank?
+      unless delta.blank?
+        delta[:times] = [ oi.start_time, ci.start_time ]
+        delta[:action] = 'update'
+        ret << delta
+      end
     end
 
     ret
   end
 
   def self.changes_for(list)
-    original = Hashie::Mash.new(list[0])
-    current = Hashie::Mash.new(list[1])
-    ret = { id: original.id }
+    action = list[0]
+    original = Hashie::Mash.new(list[1])
+    current = Hashie::Mash.new(list[2])
+
+    case action
+    when 'update'
+      ret = changes_for_update(original, current)
+    when 'destroy'
+      ret = changes_for_destroy(original)
+    when 'create'
+      ret = changes_for_create(current)
+    end
+
+    ret[:action] = action
+    ret[:id] = original.id
+    Hashie::Mash.new(ret)
+  end
+
+  def self.changes_for_destroy(original)
+    ret = { class_name: original.name }
+
+    if original.instances.present?
+      ret[:instances] = original.instances.map { |i| i.action = 'destroy' ; i }
+    end
+
+    ret
+  end
+
+  def self.changes_for_create(current)
+    ret = { class_name: current.name }
+
+    if current.instances.present?
+      ret[:instances] = current.instances.map { |i| i.action = 'create' ; i }
+    end
+
+    ret
+  end
+
+  def self.changes_for_update(original, current)
+    ret = { class_name: current.name }
 
     %w( name material_limit handout_limit description_web description_book handout_fee material_fee duration culture topic subtopic adult_only fee_itemization track ).each do |field|
       if original[field] != current[field]
@@ -146,15 +189,73 @@ class Changelog < ActiveRecord::Base
 
     ret[:instances] = changes_for_instances(original['instances'], current['instances'])
 
-    Hashie::Mash.new(ret)
+    ret
   end
 
-  def self.changes_since(date = Date.parse('20130511T075500Z'))
-    changes = Changelog.where(target_type: "Instructable").where('created_at >= ?', date).where('original is not null').order(:created_at).group_by(&:target_id)
+  def self.changes_since(date = nil)
+    date = Date.parse('20130511T075500Z') if date.blank?
+
+    changes = Changelog.where(target_type: "Instructable").where('created_at >= ?', date).order(:created_at).group_by(&:target_id)
 
     ret = []
     changes.each do |key, changelist|
-      ret << changes_for(split_by_date(changelist, date))
+      changelist_filtered = changelist.select { |c|
+        (c.action == 'update' and c.original.present?) or
+        (c.action == 'destroy' and c.original.present?) or
+        (c.action == 'create' and c.committed.present?)
+      }
+      next if changelist_filtered.empty?
+
+      data = split_by_date(changelist_filtered, date)
+      ret << changes_for(data) if data.present?
+    end
+
+    ret
+  end
+
+  def self.interesting_change(change, start_date, end_date)
+    action = change[:action]
+
+    ret = []
+
+    case action
+    when 'update'
+      if change[:instances].present?
+        interesting = change[:instances].select { |i|
+          (i.action == 'update' and
+            ((i.times[0] >= start_date and i.times[0] <= end_date) or
+             (i.times[1] >= start_date and i.times[1] <= end_date))) or
+          ((i.action == 'destroy' or i.action == 'create') and
+            (i.start_time >= start_date and i.start_time <= end_date))
+        }
+        ret = [ 'update', change.class_name, interesting ] if interesting.present?
+      end
+    when 'destroy'
+      interesting = change[:instances].select { |i|
+        i.start_time >= start_date and i.start_time <= end_date
+      }
+      ret = [ 'destroy', change.class_name, interesting ] if interesting.present?
+    when 'create'
+      if change[:instances].present?
+        interesting = change[:instances].select { |i|
+          i.start_time >= start_date and i.start_time <= end_date
+        }
+        ret = [ 'create', change.class_name, interesting ] if interesting.present?
+      end
+    end
+
+    ret
+  end
+
+  def self.changes_for_date(changes, date)
+    start_date = Time.parse(date).in_time_zone.beginning_of_day.iso8601
+    end_date = Time.parse(date).in_time_zone.end_of_day.iso8601
+
+    ret = []
+
+    changes.each do |change|
+      result = interesting_change(change, start_date, end_date)
+      ret << result if result.present?
     end
 
     ret
@@ -162,7 +263,22 @@ class Changelog < ActiveRecord::Base
 
   def self.split_by_date(logs, date)
     logs = logs.sort { |a, b| a.created_at <=> b.created_at }
-    [ logs.first.original, logs.last.committed ]
+
+    actions = logs.map { |l| l.action }.uniq
+
+    if actions.include?'destroy' and actions.include?'create'
+      ret = nil
+    elsif actions.include?'destroy'
+      ret = [ 'destroy', logs.first.original.present? ? logs.first.original : logs.first.committed ]
+    elsif actions.include?'create'
+      ret = [ 'create', logs.last.committed ]
+    elsif actions == ['update']
+      ret = [ 'update', logs.first.original, logs.last.committed ]
+    else
+      raise Exception.new("Unknown action: #{action}")
+    end
+
+    ret
   end
 
   private

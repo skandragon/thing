@@ -45,6 +45,7 @@ Thing::Application.routes.draw do
   end
 
   resources :calendars
+  resources :changelogs
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

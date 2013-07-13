@@ -44,7 +44,7 @@ class CalendarsController < ApplicationController
         end
         send_file(cache_filename, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
       }
-      
+
       format.csv {
         filename = "pennsic-#{Schedule::PENNSIC_YEAR}-all.csv"
         cache_filename = Rails.root.join('tmp', filename)

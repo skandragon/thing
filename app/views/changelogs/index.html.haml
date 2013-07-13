@@ -1,0 +1,22 @@
+- title 'Changes'
+
+%table
+  %thead
+    %tr
+      %th Change Type
+      %th Class Name
+      %th Changes
+  %tbody
+    - Changelog.changes_for_date(@changelog, '20130723').each do |change|
+      %tr
+        %td= change[0]
+        %td= change[1]
+        %td
+          - change[2].each do |item|
+            - case item.action
+              - when 'update'
+                = item.inspect
+              - when 'destroy'
+                = item.inspect
+              - when 'create'
+                = item.inspect
