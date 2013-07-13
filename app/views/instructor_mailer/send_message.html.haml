@@ -1,7 +1,7 @@
 %html
   %body
 
-    %p Greetings @name@:
+    %p Greetings #{@name}:
 
     %p
       Thank you for volunteering to teach at the Pennsic University.
@@ -11,13 +11,15 @@
 
     %ul
       %li
-        I know this looks like a tl/dnr block of text but please read the
+        I know this looks like a tl;dnr block of text but please read the
         following important points for all instructors:
 
       %li
         Let the University know, as soon as possible, if you must cancel
-        change the time or day of your class. E-mail the registrar at
-        Pennsic Registrar <pennsicuregistrar@gmail.com>. Changes will be made
+        or change the time or day of your class. E-mail the registrar at
+        Pennsic Registrar
+        #{link_to 'pennsicuregistrar@gmail.com', 'mailto:pennsicuregistrar@gmail.com'}.
+        Changes will be made
         in advance if they are received before 6 pm EDT on Friday, July 19th.
         After that, you may email and it will be handled on-site, or you may
         come to University Point and talk to any shift supervisor.
