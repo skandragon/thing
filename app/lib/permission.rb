@@ -11,6 +11,7 @@ class Permission
     allow 'users/registrations', :all
     allow :about, :all
     allow :calendars, :all
+    allow :changelogs, :all
 
     if user
       # All users can edit their own data
