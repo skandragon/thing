@@ -12,6 +12,6 @@
           = instance.start_time.strftime('%m-%d')
           %br
           = instance.start_time.strftime('%H:%M')
-        %td= instance.instructable.duration
+        %td= pluralize(instance.instructable.duration, 'hour')
         %td= instance.formatted_location
         %td= instance.instructable.name
