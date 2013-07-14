@@ -92,14 +92,24 @@ class Changelog < ActiveRecord::Base
   end
 
   def self.instance_changes(original, current)
-    ret = { id: original.id }
+    ret = { }
 
     %w( location start_time end_time ).each do |field|
-      if original[field].to_s.strip != current[field].to_s.strip
+      a = original[field].to_s.strip.downcase
+      b = current[field].to_s.strip.downcase
+      if field == 'location'
+        a.gsub!(/^camp: /, '')
+        b.gsub!(/^camp: /, '')
+      end
+
+      if a != b
         ret[field] = [ original[field], current[field] ]
       end
     end
 
+    unless ret.empty?
+      ret[:id] = original.id
+    end
     ret
   end
 
@@ -130,8 +140,9 @@ class Changelog < ActiveRecord::Base
 
       delta = instance_changes(oi, ci)
       unless delta.blank?
-        delta[:times] = [ oi.start_time, ci.start_time ]
         delta[:action] = 'update'
+        delta[:original] = oi
+        delta[:current] = ci
         ret << delta
       end
     end
@@ -153,9 +164,13 @@ class Changelog < ActiveRecord::Base
       ret = changes_for_create(current)
     end
 
-    ret[:action] = action
-    ret[:id] = original.id
-    Hashie::Mash.new(ret)
+    unless ret.nil?
+      ret[:action] = action
+      ret[:id] = original.id
+      Hashie::Mash.new(ret)
+    else
+      nil
+    end
   end
 
   def self.changes_for_destroy(original)
@@ -179,15 +194,22 @@ class Changelog < ActiveRecord::Base
   end
 
   def self.changes_for_update(original, current)
-    ret = { class_name: current.name }
+    ret = { }
 
-    %w( name material_limit handout_limit description_web description_book handout_fee material_fee duration culture topic subtopic adult_only fee_itemization track ).each do |field|
-      if original[field].to_s.strip != current[field].to_s.strip
+    %w( duration ).each do |field|
+      a = original[field].to_s.strip.downcase
+      b = current[field].to_s.strip.downcase
+      if a != b
         ret[field] = [ original[field], current[field] ]
       end
     end
 
-    ret[:instances] = changes_for_instances(original['instances'], current['instances'])
+    instances = changes_for_instances(original['instances'], current['instances'])
+    if ret.empty? and instances.empty?
+      return nil
+    end
+    ret[:instances] = instances
+    ret[:class_name] = current.name
 
     ret
   end
@@ -207,7 +229,10 @@ class Changelog < ActiveRecord::Base
       next if changelist_filtered.empty?
 
       data = split_by_date(changelist_filtered, date)
-      ret << changes_for(data) if data.present?
+      if data.present?
+        cf = changes_for(data)
+        ret << cf if cf.present?
+      end
     end
 
     ret
@@ -223,8 +248,8 @@ class Changelog < ActiveRecord::Base
       if change[:instances].present?
         interesting = change[:instances].select { |i|
           (i.action == 'update' and
-            ((i.times[0] >= start_date and i.times[0] <= end_date) or
-             (i.times[1] >= start_date and i.times[1] <= end_date))) or
+            ((i.current.start_time >= start_date and i.current.start_time <= end_date) or
+             (i.original.start_time >= start_date and i.original.start_time <= end_date))) or
           ((i.action == 'destroy' or i.action == 'create') and
             (i.start_time >= start_date and i.start_time <= end_date))
         }

@@ -1,5 +1,6 @@
 class ChangelogsController < ApplicationController
-  def index
+  def show
+    @date = Time.parse(params[:id]).in_time_zone
     @changelog = Changelog.changes_since
   end
 end

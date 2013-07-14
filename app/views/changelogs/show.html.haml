@@ -1,0 +1,115 @@
+- title 'Changes'
+
+- changes = Changelog.changes_for_date(@changelog, @date.iso8601)
+
+%h1 Changes for #{@date.strftime("%A, %B %d")}
+
+%h2 Cancellations
+
+- rows = []
+- changes.each do |change|
+  - if change[0] == 'destroy' or change[0] == 'update'
+    - change[2].each do |item|
+      - if item.action == 'destroy'
+        - rows << [ change[1], Time.parse(item.start_time).in_time_zone.strftime("%A, %B %d %H:%M"), item.location ]
+
+- if rows.empty?
+  There are no cancellations for this date.
+- else
+  %table.table
+    %thead
+      %tr
+        %th Cancelled Class Name
+        %th Class Time
+        %th Location
+    %tbody
+      - rows.each do |row|
+        %tr
+          - row.each do |r|
+            %td= r
+
+%h2 Additions
+
+- rows = []
+- changes.each do |change|
+  - if change[0] == 'update' or change[0] == 'create'
+    - change[2].each do |item|
+      - if item.action == 'create'
+        - row = []
+        - row << change[1]
+        - row << Time.parse(item.start_time).in_time_zone.strftime("%A, %B %d %H:%M")
+        - row << Time.parse(item.end_time).in_time_zone.strftime("%H:%M")
+        - row << item.location
+        - rows << row
+
+- if rows.empty?
+  There are no cancellations for this date.
+- else
+  %table.table
+    %thead
+      %tr
+        %th Added Class Name
+        %th Start Time
+        %th End Time
+        %th Location
+    %tbody
+      - rows.each do |row|
+        %tr
+          - row.each do |r|
+            %td= r
+
+%h2 Changes
+
+- rows = []
+- changes.each do |change|
+  - if change[0] == 'update'
+    - change[2].each do |item|
+      - if item.action == 'update'
+        - row = []
+        - row << change[1]
+        - row << Time.parse(item.current.start_time).in_time_zone.strftime("%A, %B %d %H:%M")
+        - if item.current.start_time != item.original.start_time
+          - row << "(Was #{Time.parse(item.original.start_time).in_time_zone.strftime('%A, %B %d %H:%M')})"
+        - else
+          - row << nil
+        - row << Time.parse(item.current.end_time).in_time_zone.strftime("%H:%M")
+        - if item.current.end_time.split('T').last != item.original.end_time.split('T').last
+          - row << "(Was #{Time.parse(item.original.end_time).in_time_zone.strftime('%H:%M')})"
+        - else
+          - row << nil
+        - row << item.current.location
+        - if item.current.location != item.original.location
+          - row << "(Was #{item.original.location})"
+        - else
+          - row << nil
+        - rows << row
+
+- if rows.empty?
+  There are no changes for this date.
+- else
+  %table.table
+    %thead
+      %tr
+        %th Class Name
+        %th Start Time
+        %th End Time
+        %th Location
+    %tbody
+      - rows.each do |row|
+        %tr
+          %td= row[0]
+          %td
+            = row[1]
+            - if row[2]
+              %br
+              = row[2]
+          %td
+            = row[3]
+            - if row[4]
+              %br
+              = row[4]
+          %td
+            = row[5]
+            - if row[6]
+              %br
+              = row[6]
