@@ -11,7 +11,13 @@
   - if change[0] == 'destroy' or change[0] == 'update'
     - change[2].each do |item|
       - if item.action == 'destroy'
-        - rows << [ change[1], Time.parse(item.start_time).in_time_zone.strftime("%A, %B %d %H:%M"), item.location ]
+        - row = []
+        - row << change[1]
+        - row << Time.zone.parse(item.start_time).strftime("%A, %B %d %H:%M")
+        - row << item.location
+        - rows << row
+
+- rows.sort! { |a, b| ret = a[1] <=> b[1] ; ret = a[0].strip.downcase <=> b[0].strip.downcase if ret == 0 ; ret }
 
 - if rows.empty?
   There are no cancellations for this date.
@@ -37,10 +43,12 @@
       - if item.action == 'create'
         - row = []
         - row << change[1]
-        - row << Time.parse(item.start_time).in_time_zone.strftime("%A, %B %d %H:%M")
-        - row << Time.parse(item.end_time).in_time_zone.strftime("%H:%M")
+        - row << Time.zone.parse(item.start_time).in_time_zone.strftime("%A, %B %d %H:%M")
+        - row << Time.zone.parse(item.end_time).in_time_zone.strftime("%H:%M")
         - row << item.location
         - rows << row
+
+- rows.sort! { |a, b| ret = a[1] <=> b[1] ; ret = a[0].strip.downcase <=> b[0].strip.downcase if ret == 0 ; ret }
 
 - if rows.empty?
   There are no cancellations for this date.
@@ -67,14 +75,14 @@
       - if item.action == 'update'
         - row = []
         - row << change[1]
-        - row << Time.parse(item.current.start_time).in_time_zone.strftime("%A, %B %d %H:%M")
+        - row << Time.zone.parse(item.current.start_time).strftime("%A, %B %d %H:%M")
         - if item.current.start_time != item.original.start_time
-          - row << "(Was #{Time.parse(item.original.start_time).in_time_zone.strftime('%A, %B %d %H:%M')})"
+          - row << "(Was #{Time.zone.parse(item.original.start_time).strftime('%A, %B %d %H:%M')})"
         - else
           - row << nil
-        - row << Time.parse(item.current.end_time).in_time_zone.strftime("%H:%M")
+        - row << Time.zone.parse(item.current.end_time).strftime("%H:%M")
         - if item.current.end_time.split('T').last != item.original.end_time.split('T').last
-          - row << "(Was #{Time.parse(item.original.end_time).in_time_zone.strftime('%H:%M')})"
+          - row << "(Was #{Time.zone.parse(item.original.end_time).strftime('%H:%M')})"
         - else
           - row << nil
         - row << item.current.location
@@ -83,6 +91,8 @@
         - else
           - row << nil
         - rows << row
+
+- rows.sort! { |a, b| ret = a[1] <=> b[1] ; ret = a[0].strip.downcase <=> b[0].strip.downcase if ret == 0 ; ret }
 
 - if rows.empty?
   There are no changes for this date.
