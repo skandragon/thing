@@ -215,7 +215,7 @@ class Changelog < ActiveRecord::Base
   end
 
   def self.changes_since(date = nil)
-    date = Date.parse('20130511T075500Z') if date.blank?
+    date = Time.zone.parse('20130511T075500Z') if date.blank?
 
     changes = Changelog.where(target_type: "Instructable").where('created_at >= ?', date).order(:created_at).group_by(&:target_id)
 
@@ -273,8 +273,8 @@ class Changelog < ActiveRecord::Base
   end
 
   def self.changes_for_date(changes, date)
-    start_date = Time.parse(date).in_time_zone.beginning_of_day.iso8601
-    end_date = Time.parse(date).in_time_zone.end_of_day.iso8601
+    start_date = Time.zone.parse(date).beginning_of_day.iso8601
+    end_date = Time.zone.parse(date).end_of_day.iso8601
 
     ret = []
 
