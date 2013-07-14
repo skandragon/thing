@@ -36,7 +36,7 @@ def render_csv
   render_options = {}
 
   renderer = CalendarRenderer.new(@instances, @instructables)
-  data = renderer.render_csv(render_options, "pennsic-#{Schedule::PENNSIC_YEAR}-full.csv")
+  data = renderer.render_csv(render_options, "pennsic-#{Schedule::PENNSIC_YEAR}-all.csv")
   cache_in_file(cache_filename, data)
 end
 
@@ -47,7 +47,7 @@ def render_xlsx
   render_options = {}
 
   renderer = CalendarRenderer.new(@instances, @instructables)
-  data = renderer.render_xlsx(render_options, "pennsic-#{Schedule::PENNSIC_YEAR}-full.xlsx")
+  data = renderer.render_xlsx(render_options, "pennsic-#{Schedule::PENNSIC_YEAR}-all.xlsx")
   cache_in_file(cache_filename, data)
 end
 
@@ -67,20 +67,23 @@ def cache_in_file(cache_filename, data)
 end
 
 def get_updated_at
-  current_dates = []
-  current_dates << Instance.order('updated_at DESC').limit(1).pluck(:updated_at)
-  current_dates << Instructable.order('updated_at DESC').limit(1).pluck(:updated_at)
-  current_dates << User.order('updated_at DESC').limit(1).pluck(:updated_at)
+  sha1 = Digest::SHA1.new
 
-  current_dates.max
+  sha1 << Instance.order('updated_at DESC').limit(1).pluck(:updated_at).first.to_s
+  sha1 << Instructable.order('updated_at DESC').limit(1).pluck(:updated_at).first.to_s
+  sha1 << User.select('sca_name, sca_title').map { |a| a.titled_sca_name }.select(&:present?).sort.to_s
+
+  sha1.hexdigest
 end
 
 last_date = nil
 
 while true
   current_date = get_updated_at
-  if (last_date != current_date)
+  if (last_date != current_date) or !File.exists?("tmp/pennsic-#{Schedule::PENNSIC_YEAR}-all.csv")
     last_date = current_date
+
+    puts "#{Time.now} - Generating..."
 
     load_data
 
@@ -91,6 +94,8 @@ while true
     render_pdf(true, false)
     render_pdf(false, true)
     render_pdf(true, true)
+
+    puts "#{Time.now} - Done."
   end
 
   sleep 60
