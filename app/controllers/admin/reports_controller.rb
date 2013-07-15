@@ -77,8 +77,8 @@ class Admin::ReportsController < ApplicationController
 
     items = instances.map { |instance|
       [
-        { content: instance.start_time.strftime('%a %b %e %I:%M %p') },
-        { content: instance.end_time.strftime('%I:%M %p') },
+        { content: instance.start_time.present? ? instance.start_time.strftime('%a %b %e %I:%M %p') : "" },
+        { content: instance.end_time.present? ? instance.end_time.strftime('%I:%M %p') : "" },
         { content: instance.formatted_location },
         { content: markdown_html(instance.instructable.name), inline_format: true },
       ]
