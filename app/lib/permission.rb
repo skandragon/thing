@@ -12,6 +12,7 @@ class Permission
     allow :about, :all
     allow :calendars, :all
     allow :changelogs, :all
+    allow :howto, :all
 
     allow 'users/schedules', [ :show ] do |record|
       record.published?
