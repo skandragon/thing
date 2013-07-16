@@ -1,0 +1,2 @@
+class HowtoController < ApplicationController
+end

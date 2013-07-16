@@ -33,6 +33,8 @@ Thing::Application.routes.draw do
   match '/about' => 'about#about'
   root :to => 'about#index'
 
+  match 'howto/:action' => 'howto', as: :howto
+
   devise_for :users, path: 'sessions', controllers: {
     registrations: 'users/registrations',
     passwords: 'users/passwords'

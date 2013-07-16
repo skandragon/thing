@@ -7,7 +7,7 @@
     = link_to('Edit', edit_user_schedule_path(@user), class: 'btn')
     this schedule to add or remove classes.
 
-  %p.alert.alert-info
+  .alert.alert-info
     - if @user.schedule.published?
       Your schedule is accessible by others.  To disable this, click the
       edit button above and uncheck the "Publish Publicly" check box.
@@ -15,13 +15,34 @@
       To share your schedule with others, click the
       edit button above and check the "Publish Publicly" check box.
 
-%p.alert.alert-info
-  Other formats available:
-  = link_to('PDF', user_schedule_path(@user, format: :pdf), class: 'btn', target: '_blank')
-  = link_to('PDF (brief)', user_schedule_path(@user, format: :pdf, brief: true), class: 'btn', target: '_blank')
-  = link_to('Excel', user_schedule_path(@user, format: :xlsx), class: 'btn', target: '_blank')
-  = link_to('iCalendar', user_schedule_path(@user, format: :ics), class: 'btn', target: '_blank')
-  = link_to('CSV', user_schedule_path(@user, format: :csv), class: 'btn', target: '_blank')
+.alert.alert-info
+  .row
+    .span12
+      Other formats available!
+  .row
+    .span6
+      %dl.dl-horizontal
+        %dt= link_to('PDF', user_schedule_path(@user, format: :pdf), class: 'btn', target: '_blank')
+        %dd PDF file with class names, descriptions, times, and locations.
+      %dl.dl-horizontal
+        %dt= link_to('PDF (brief)', user_schedule_path(@user, format: :pdf, brief: true), class: 'btn', target: '_blank')
+        %dd PDF file with just the class names, times, and locations.
+      %dl.dl-horizontal
+        %dt= link_to('Excel', user_schedule_path(@user, format: :xlsx), class: 'btn', target: '_blank')
+        %dd A popular spreadsheet format.
+    .span6
+      %dl.dl-horizontal
+        %dt= link_to('iCalendar', user_schedule_path(@user, format: :ics), class: 'btn', target: '_blank')
+        %dd
+          A calendaring sharing format.  It's recommended you "subscribe" to this,
+          rather than just download it once.
+      %p
+        For instructions on how to add the calendar to an iPhone (and perhaps other devices
+        which work in a similar way), please check out the
+        = link_to 'iPhone Calendar How-To', howto_path(:ios)
+      %dl.dl-horizontal
+        %dt= link_to('CSV', user_schedule_path(@user, format: :csv), class: 'btn', target: '_blank')
+        %dd Comma separated values.  A very generic spreadsheet format compatible with most spreadsheet programs.
 
 %table.table.table-striped#schedule
   %thead

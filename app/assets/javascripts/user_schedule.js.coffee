@@ -23,7 +23,7 @@ jQuery ->
     else
       new_text = 'Add'
       data = { remove_instructable: id }
-      
+
     user_id = $(@).attr('data-user-id')
     jQuery.ajax({
       type: "PUT",

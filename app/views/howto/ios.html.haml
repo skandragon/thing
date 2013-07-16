@@ -1,0 +1,81 @@
+- title "Pennsic Calendar Import for iPhone"
+
+.row
+  .span12
+    %h1 Pennsic Calendar Import for iPhone
+
+    %p
+      Following these instructions will cause your iPhone, iPad, or other iOS
+      device to fetch the Pennsic
+      calendar, and periodically refresh it to keep it up to date.  This is quite
+      handy if you want to keep things current as Pennsic approaches and perhaps
+      even while at Pennsic.
+
+    %h2 Step 1: Find your settings button
+    = image_tag 'iphone/iphone-settings.png', width: 450, height: 520, alt: "iPhone configuration"
+
+    %h2 Step 2: Find the Calendars setting
+    = image_tag 'iphone/iphone-calendar-settings.png', width: 450, height: 520, alt: "iPhone configuration"
+
+    %h2 Step 3: Click on "Add Account..."
+    = image_tag 'iphone/iphone-add-account.png', width: 450, height: 520, alt: "iPhone configuration"
+
+    %h2 Step 4: Select "Other"
+    = image_tag 'iphone/iphone-account-other.png', width: 450, height: 520, alt: "iPhone configuration"
+
+    %h2 Step 5: Add Subscribed Calendar
+    = image_tag 'iphone/iphone-sub-calendar.png', width: 450, height: 520, alt: "iPhone configuration"
+
+    %h2 Step 6: Enter the calendar's address
+    = image_tag 'iphone/iphone-url.png', width: 450, height: 520, alt: "iPhone configuration"
+    %p
+      Add the calendar's address.  Your iPhone will fetch the calendar from here
+      and check back periodically when there are changes.
+    %p
+      This is where you need to make a decision.  You may either subscribe to
+      all classes, even if you have not selected them or not.  Or, you can subscribe
+      just to your own personal calendar for the classes you have selected.
+    - if user_signed_in?
+      %h3 For your personal class schedule
+      %p.bigurl
+        = "http://thing.pennsicuniversity.org/users/#{current_user.id}/schedule.ics"
+    - else
+      %p.alert.alert-block.alert-notice
+        To make your personal calendar, sign up, select a few classes, and return to this page.
+
+    %h3 For all classes
+    %p.bigurl
+      http://thing.pennsicuniversity.org/calendars.ics
+
+    %p.alert.alert-block.alert-info
+      %span.label.label-info Note
+      Each user of this site gets their own custom URL path.  Don't share it unless
+      they want to go to the same classes as you!
+
+    %p.alert.alert-block.alert-info
+      %span.label.label-info Note
+      You can subscribe to both calendars if you wish, and toggle one on and off.  This
+      lets you have a copy of the full schedule at all times, just in case you need it.
+
+    %p.alert.alert-block.alert-info
+      %span.label.label-info Note
+      You can subscribe to calendars on any number of devices.
+
+    %h2 Step 7: Save!
+    = image_tag 'iphone/iphone-save.png', width: 450, height: 520, alt: "iPhone configuration"
+    %p
+      After a few moments, you will see confirmation that the calendar location
+      is correct and your iPhone is happy.  If you do not see this, or get an
+      error instead, you likely typed the address incorrectly, or are not connected
+      to the network.  Try turning off WiFi and using the network to fetch it, or
+      turning WiFi on if it was off.  Or just try again later.
+
+    %h2 Step 8: Classes!
+    = image_tag 'iphone/iphone-classes.png', width: 450, height: 520, alt: "iPhone configuration"
+    %p
+      Press the home button and fire up the Calendar application.  Go to a day for
+      which there are Pennsic classes offered.
+      Click "list" view, and have a peek!
+    %p.alert.alert-block.alert-info
+      %span.label.label-info Note
+      It may take a few minutes for a large schedule to fully load.
