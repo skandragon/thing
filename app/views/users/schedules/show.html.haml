@@ -2,7 +2,7 @@
 
 %h3= "Custom Schedule for #{@user.best_name}"
 
-- if current_user and current_user.id == user.id
+- if current_user and current_user.id == @user.id
   %p
     = link_to('Edit', edit_user_schedule_path(@user), class: 'btn')
     this schedule to add or remove classes.
