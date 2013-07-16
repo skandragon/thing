@@ -13,6 +13,10 @@ class Permission
     allow :calendars, :all
     allow :changelogs, :all
 
+    allow 'users/schedules', [ :show ] do |record|
+      record.published?
+    end
+
     if user
       # All users can edit their own data
       allow :users, [:edit, :update, :show] do |record|

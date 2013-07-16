@@ -3,12 +3,11 @@ class Users::SchedulesController < ApplicationController
 
   def show
     if @user.schedule.nil? or @user.schedule.instructables.count == 0
-      if current_user.id == @user.id
-        redirect_to edit_user_schedule_path(@user)
+      if current_user and current_user.id == @user.id
+        redirect_to edit_user_schedule_path(@user) and return
       else
-        redirect_to root_path, alert: 'No such schedule'
+        redirect_to root_path, alert: 'No such schedule' and return
       end
-      return
     end
 
     @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
@@ -146,10 +145,6 @@ class Users::SchedulesController < ApplicationController
 
   def load_user
     @user ||= User.where(id: params[:user_id]).first
-    if @user.nil?
-      redirect_to root_path, alert: 'No such schedule' and return false
-    end
-    true
   end
 
   def cache_in_file(cache_filename, data)
@@ -159,6 +154,14 @@ class Users::SchedulesController < ApplicationController
         f.write data
       end
       File.rename(tmp_filename, cache_filename)
+    end
+  end
+
+  def current_resource
+    if load_user
+      @user.schedule
+    else
+      Schedule.new(published: false)
     end
   end
 

@@ -2,17 +2,18 @@
 
 %h3= "Custom Schedule for #{@user.best_name}"
 
-%p
-  = link_to('Edit', edit_user_schedule_path(@user), class: 'btn')
-  this schedule to add or remove classes.
+- if current_user and current_user.id == user.id
+  %p
+    = link_to('Edit', edit_user_schedule_path(@user), class: 'btn')
+    this schedule to add or remove classes.
 
-%p.alert.alert-info
-  - if @user.schedule.published?
-    Your schedule is accessible by others.  To disable this, click the
-    edit button above and uncheck the "Publish Publicly" check box.
-  - else
-    To share your schedule with others, click the
-    edit button above and check the "Publish Publicly" check box.
+  %p.alert.alert-info
+    - if @user.schedule.published?
+      Your schedule is accessible by others.  To disable this, click the
+      edit button above and uncheck the "Publish Publicly" check box.
+    - else
+      To share your schedule with others, click the
+      edit button above and check the "Publish Publicly" check box.
 
 %p.alert.alert-info
   Other formats available:

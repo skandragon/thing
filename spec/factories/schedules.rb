@@ -2,9 +2,7 @@
 
 FactoryGirl.define do
   factory :schedule do
-    user_id 1
-    instructables 1
-    watch_topics 'MyString'
-    watch_cultures 'MyString'
+    instructables []
+    published false
   end
 end
