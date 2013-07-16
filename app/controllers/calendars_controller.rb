@@ -57,6 +57,7 @@ class CalendarsController < ApplicationController
         end
         send_file(cache_filename, type: Mime::CSV, disposition: "filename=#{filename}", filename: filename)
       }
+
       format.xlsx {
         filename = "pennsic-#{Schedule::PENNSIC_YEAR}-all.xlsx"
         cache_filename = Rails.root.join('tmp', filename)

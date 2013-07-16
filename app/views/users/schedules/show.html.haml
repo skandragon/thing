@@ -15,7 +15,12 @@
     edit button above and check the "Publish Publicly" check box.
 
 %p.alert.alert-info
-  Coming soon: PDF, Excel, and iCalendar format.
+  Other formats available:
+  = link_to('PDF', user_schedule_path(@user, format: :pdf), class: 'btn', target: '_blank')
+  = link_to('PDF (brief)', user_schedule_path(@user, format: :pdf, brief: true), class: 'btn', target: '_blank')
+  = link_to('Excel', user_schedule_path(@user, format: :xlsx), class: 'btn', target: '_blank')
+  = link_to('iCalendar', user_schedule_path(@user, format: :ics), class: 'btn', target: '_blank')
+  = link_to('CSV', user_schedule_path(@user, format: :csv), class: 'btn', target: '_blank')
 
 %table.table.table-striped#schedule
   %thead

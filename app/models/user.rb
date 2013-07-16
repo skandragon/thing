@@ -134,7 +134,7 @@ class User < ActiveRecord::Base
   end
 
   def best_name
-    if instructor?
+    if sca_name.present?
       titled_sca_name
     else
       mundane_name

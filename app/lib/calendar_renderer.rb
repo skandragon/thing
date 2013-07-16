@@ -134,7 +134,7 @@ class CalendarRenderer
 
       maybe_newline = options[:omit_descriptions] ? ' - ' : "\n"
 
-      if options[:user].present?
+      unless options[:user].present?
         token = @instructable_magic_tokens[instance.instructable.id].to_s
       end
       new_items = [
@@ -162,26 +162,28 @@ class CalendarRenderer
 
     pdf_render_table(pdf, items, header, total_width, column_widths)
 
-    # Render class summary
-    pdf.start_new_page(layout: :portrait)
+    unless options[:user].present?
+      # Render class summary
+      pdf.start_new_page(layout: :portrait)
 
-    instructables = []
-    last_topic = nil
+      instructables = []
+      last_topic = nil
 
-    pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 10, width: pdf.bounds.width) do
-      @instructables.each do |instructable|
-        if last_topic != instructable.topic && !instructables.empty?
+      pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 10, width: pdf.bounds.width) do
+        @instructables.each do |instructable|
+          if last_topic != instructable.topic && !instructables.empty?
+            render_topic_list(pdf, instructables)
+            instructables = []
+          end
+
+          last_topic = instructable.topic
+          instructables << instructable
+        end
+
+        unless instructables.empty?
           render_topic_list(pdf, instructables)
           instructables = []
         end
-
-        last_topic = instructable.topic
-        instructables << instructable
-      end
-
-      unless instructables.empty?
-        render_topic_list(pdf, instructables)
-        instructables = []
       end
     end
 
@@ -192,9 +194,12 @@ class CalendarRenderer
                 :start_count_at => 1,
                 font_size: 6 }
 
+    for_user = ""
+    for_user = "-- for #{options[:user].best_name}" if options[:user]
+
     unless options[:no_page_numbers]
       now = Time.now.in_time_zone.strftime('%A, %B %d, %H:%M %p')
-      pdf.number_pages "Generated on #{now} -- page <page> of <total>", render_options
+      pdf.number_pages "Generated on #{now} #{for_user} -- page <page> of <total>", render_options
     end
 
     pdf.render
@@ -314,7 +319,10 @@ class CalendarRenderer
     instructables.each do |instructable|
       pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
       name = markdown_html(instructable.name, tags_remove: 'strong')
-      token = @instructable_magic_tokens[instructable.id]
+
+      if @instructable_megic_tokens
+        token = @instructable_magic_tokens[instructable.id]
+      end
 
       topic = "Topic: #{instructable.formatted_topic}"
       culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
