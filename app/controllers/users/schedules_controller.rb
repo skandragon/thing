@@ -9,6 +9,7 @@ class Users::SchedulesController < ApplicationController
         redirect_to root_path, alert: 'No such schedule'
       end
       return
+    end
 
     @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
 
