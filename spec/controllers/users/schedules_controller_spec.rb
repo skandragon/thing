@@ -3,11 +3,15 @@ require 'spec_helper'
 describe Users::SchedulesController do
   describe 'no-user' do
     describe '#show' do
-      it 'allows published schedules' do
-        user = create(:user, sca_title: "lord", sca_name: "Griffin")
+      let (:user) { user = create(:user, sca_title: "lord", sca_name: "Griffin") }
+      let (:instructable) {
         instructable = create(:scheduled_instructable, user_id: user)
         instructable.user_id = user.id
         instructable.save!
+        instructable
+      }
+
+      it 'allows published schedules' do
         create(:schedule, user_id: user.id, instructables: [instructable.id], published: true)
 
         visit user_schedule_path(user)
@@ -15,13 +19,21 @@ describe Users::SchedulesController do
       end
 
       it 'disallows unpublished schedules' do
-        user = create(:user, sca_title: "lord", sca_name: "Griffin")
-        instructable = create(:scheduled_instructable, user_id: user)
-        instructable.user_id = user.id
-        instructable.save!
         create(:schedule, user_id: user.id, instructables: [instructable.id], published: false)
 
         visit user_schedule_path(user)
+        page.should have_content 'Not authorized.'
+      end
+
+      it 'accepts access token' do
+        create(:schedule, user_id: user.id, instructables: [instructable.id], published: false)
+
+        visit user_schedule_path(user.access_token)
+        page.should have_content 'Custom Schedule for Lord Griffin'
+      end
+
+      it 'accepts access token' do
+        visit user_schedule_path('flarg')
         page.should have_content 'Not authorized.'
       end
     end

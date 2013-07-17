@@ -15,7 +15,11 @@ class Permission
     allow :howto, :all
 
     allow 'users/schedules', [ :show ] do |record|
-      record.published?
+      record.published? or record.token_access
+    end
+
+    allow 'users/schedules', [ :token ] do
+      true
     end
 
     if user

@@ -165,18 +165,30 @@ class User < ActiveRecord::Base
     roles
   end
 
-  private
-
-  def generate_access_token
-    return unless access_token.blank?
-
+  def regenerate_access_token
     possible_token = nil
     while possible_token.blank?
-      possible_token = SecureRandom.base64(24)
+      possible_token = make_token
       u = User.find_by_access_token(possible_token)
       possible_token = nil unless u.nil?
     end
     write_attribute(:access_token, possible_token)
+  end
+
+  private
+
+  def make_token
+    ret = ''
+    charset = 'abcdefghujklmnopqrstuvwxyz'
+    SecureRandom.random_bytes(10).each_byte do |value|
+      ret += charset[value % charset.length]
+    end
+    ret
+  end
+
+  def generate_access_token
+    return unless access_token.blank?
+    regenerate_access_token
   end
 
   def default_values

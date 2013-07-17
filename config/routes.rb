@@ -43,7 +43,11 @@ Thing::Application.routes.draw do
   resources :users do
     resource :instructor_profile
     resources :instructables
-    resource :schedule, controller: 'users/schedules'
+    resource :schedule, controller: 'users/schedules' do
+      collection do
+        get :token
+      end
+    end
   end
 
   resources :calendars

@@ -1,6 +1,10 @@
 class Users::SchedulesController < ApplicationController
   before_filter :load_user
 
+  def token
+    render action: show
+  end
+
   def show
     if @user.schedule.nil? or @user.schedule.instructables.count == 0
       if current_user and current_user.id == @user.id
@@ -144,7 +148,15 @@ class Users::SchedulesController < ApplicationController
   end
 
   def load_user
-    @user ||= User.where(id: params[:user_id]).first
+    user_id = params[:user_id]
+    if user_id =~ /[a-z]+/
+      @user ||= User.where(access_token: user_id).first
+      if @user and @user.schedule
+        @user.schedule.token_access = true
+      end
+    else
+      @user ||= User.where(id: user_id).first
+    end
   end
 
   def cache_in_file(cache_filename, data)

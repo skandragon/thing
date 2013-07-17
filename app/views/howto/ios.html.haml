@@ -38,7 +38,7 @@
     - if user_signed_in?
       %h3 For your personal class schedule
       %p.bigurl
-        = "http://thing.pennsicuniversity.org/users/#{current_user.id}/schedule.ics"
+        = "http://thing.pennsicuniversity.org/users/#{current_user.access_token}/schedule.ics"
     - else
       %p.alert.alert-block.alert-notice
         To make your personal calendar, sign up, select a few classes, and return to this page.
