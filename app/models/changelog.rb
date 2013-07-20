@@ -65,32 +65,6 @@ class Changelog < ActiveRecord::Base
     save
   end
 
-  def self.recursive_flarg(item)
-    item.each do |field, changes|
-      if changes.is_a?Array and changes[0].is_a?Hash
-        changes.each do |item|
-          puts "#{item}"
-          recursive_flarg(item, field)
-        end
-      else
-        puts "#{field}: #{changes[0]} -> #{changes[1]}"
-      end
-    end
-  end
-
-  def self.flarg(target_class, timestamp)
-    changelogs = Changelog.
-      where(target_type: target_class).
-      where('created_at >= ?', timestamp).
-      order(:created_at)
-
-    changelogs.each do |cl|
-      recursive_flarg(cl.changelog)
-    end
-
-    nil
-  end
-
   def self.instance_changes(original, current)
     ret = { }
 
