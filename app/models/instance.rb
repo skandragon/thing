@@ -86,17 +86,19 @@ class Instance < ActiveRecord::Base
     grid
   end
 
-  def update_end_time
+  def foo(data)
     if start_time.present?
       self.start_time -= start_time.sec  # remove any seconds
-      if instructable.present?
-        self.end_time = start_time + instructable.duration.hours
-      end
+      self.end_time = start_time + data.duration.hours
     end
 
-    if instructable.present? and instructable.location_nontrack?
-      self.location = instructable.formatted_nontrack_location
+    if data.location_nontrack?
+      self.location = data.formatted_nontrack_location
     end
+  end
+
+  def update_end_time
+    foo(instructable) if instructable.present?
     true
   end
 

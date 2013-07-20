@@ -185,7 +185,7 @@ describe Instructable do
       @instructable.should be_valid
     end
   end
-  
+
   describe 'fees are floating values' do
     it 'accepts 1.5 for handout_fee' do
       @instructable.handout_fee = '1.5'
@@ -345,5 +345,23 @@ describe Instructable do
       items.should include 'Pennsic University'
       items.size.should == 1
     end
+  end
+
+  it 'updates instances on duration change' do
+    instructable = create(:scheduled_instructable, duration: 4.0)
+    instructable.reload
+    instance = instructable.instances.first
+
+    (instance.end_time - instance.start_time).should == 4.0 * 3600
+
+    instructable.duration = 5.0
+    instructable.save!
+
+    instructable.reload
+    instance.reload
+
+    instructable.duration.should == 5.0
+
+    (instance.end_time - instance.start_time).should == 5.0 * 3600
   end
 end

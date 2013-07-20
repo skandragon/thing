@@ -209,7 +209,7 @@ class Instructable < ActiveRecord::Base
   before_validation :check_fees_for_zero
   before_validation :set_default_track, on: :create
   before_save :update_scheduled_flag
-  before_save :adjust_instances
+  after_save :adjust_instances
   after_save :check_for_proofread_changes
 
   def is_proofreader=(value)
@@ -303,7 +303,13 @@ class Instructable < ActiveRecord::Base
 
   def adjust_instances
     instances.each do |instance|
-      instance.update_end_time
+      if instance.start_time.present?
+        instance.end_time = instance.start_time + duration.hours
+      end
+      if location_nontrack?
+        instance.location = formatted_nontrack_location
+      end
+      instance.save(validate: false)
     end
   end
 
