@@ -135,7 +135,7 @@ class Changelog < ActiveRecord::Base
     when 'destroy'
       ret = changes_for_destroy(original)
     when 'create'
-      ret = changes_for_create(current)
+      ret = changes_for_create(original)
     end
 
     unless ret.nil?
