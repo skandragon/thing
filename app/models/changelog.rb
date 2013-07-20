@@ -222,8 +222,8 @@ class Changelog < ActiveRecord::Base
       if change[:instances].present?
         interesting = change[:instances].select { |i|
           (i.action == 'update'
-            ((i.current.start_time and i.current.start_time >= start_date and i.current.start_time <= end_date) or
-             (i.original.start_time and i.original.start_time >= start_date and i.original.start_time <= end_date))) or
+            ((i.current and i.current.start_time and i.current.start_time >= start_date and i.current.start_time <= end_date) or
+             (i.original and i.original.start_time and i.original.start_time >= start_date and i.original.start_time <= end_date))) or
           ((i.action == 'destroy' or i.action == 'create') and
             (i.start_time and i.start_time >= start_date and i.start_time <= end_date))
         }
