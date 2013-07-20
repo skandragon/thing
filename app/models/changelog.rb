@@ -237,7 +237,7 @@ class Changelog < ActiveRecord::Base
     when 'create'
       if change[:instances].present?
         interesting = change[:instances].select { |i|
-          i.start_time >= start_date and i.start_time <= end_date
+          (i.start_time) and (i.start_time >= start_date) and (i.start_time <= end_date)
         }
         ret = [ 'create', change.class_name, interesting ] if interesting.present?
       end
