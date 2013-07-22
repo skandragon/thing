@@ -2,6 +2,10 @@
 
 - changes = Changelog.changes_for_date(@changelog, @date.iso8601)
 
+= link_to 'Previous Day', changelog_path(@date.yesterday.strftime('%Y-%m-%d'))
+|
+= link_to 'Next Day', changelog_path(@date.tomorrow.strftime('%Y-%m-%d'))
+
 %h1 Changes for #{@date.strftime("%A, %B %d")}
 
 %h2 Cancellations
