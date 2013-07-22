@@ -1,4 +1,41 @@
 class CalendarsController < ApplicationController
+
+  def show
+    render_options = {}
+
+    date = params[:id]
+
+    respond_to do |format|
+      uncached = params[:uncached_for_tests].present?
+
+      format.html {
+        load_data_for_date(date)
+        render action: :index
+      }
+
+      format.pdf {
+        filename = [
+          "pennsic-#{Schedule::PENNSIC_YEAR}-#{date}",
+        ].compact.join('-') + '.pdf'
+        cache_filename = Rails.root.join('tmp', filename)
+
+        begin
+          File.unlink(cache_filename)
+        rescue
+        end
+
+        if uncached or !File.exists?(cache_filename)
+          render_options[:no_long_descriptions] = true
+          load_data_for_date(date)
+          renderer = CalendarRenderer.new(@instances, @instructables)
+          data = renderer.render_pdf(render_options, filename, cache_filename)
+          cache_in_file(cache_filename, data)
+        end
+        send_file(cache_filename, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
+      }
+    end
+  end
+
   def index
     render_options = {}
 
@@ -78,6 +115,13 @@ class CalendarsController < ApplicationController
   def load_data
     @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
     @instances = Instance.where(instructable_id: @instructables.map(&:id)).order('start_time, btrsort(location)').includes(instructable: [:user])
+  end
+
+  def load_data_for_date(date)
+    first_date = Time.zone.parse(date).beginning_of_day
+    last_date = first_date.end_of_day
+    @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).where(['start_time >= ? and start_time <= ?', first_date, last_date]).order('start_time, btrsort(location)').includes(instructable: [:user])
   end
 
   def cache_in_file(cache_filename, data)

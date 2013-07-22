@@ -52,6 +52,7 @@ class Users::SchedulesController < ApplicationController
         end
 
         render_options[:omit_descriptions] = omit_descriptions
+        render_options[:no_long_descriptions] = true
         renderer = CalendarRenderer.new(@instances, @instructables)
         data = renderer.render_pdf(render_options, filename)
         cache_in_file(cache_filename, data)

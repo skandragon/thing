@@ -64,7 +64,7 @@ class CalendarRenderer
       no_page_numbers: false,
     })
 
-    generate_magic_tokens unless options[:user].present?
+    generate_magic_tokens unless options[:no_long_descriptions].present?
 
     if options[:omit_descriptions]
       column_widths = { 0 => 200  }
@@ -134,14 +134,14 @@ class CalendarRenderer
 
       maybe_newline = options[:omit_descriptions] ? ' - ' : "\n"
 
-      unless options[:user].present?
+      unless options[:no_long_descriptions].present?
         token = @instructable_magic_tokens[instance.instructable.id].to_s
       end
       new_items = [
           {content: [times_content, location].join(maybe_newline)},
           {content: [
               markdown_html(instance.instructable.name),
-              options[:user].present? ? "" : " (#{token})",
+              options[:no_long_descriptions].present? ? "" : " (#{token})",
               "#{maybe_newline}#{instance.instructable.user.titled_sca_name}"
           ].join(' '), inline_format: true},
       ]
@@ -162,7 +162,7 @@ class CalendarRenderer
 
     pdf_render_table(pdf, items, header, total_width, column_widths)
 
-    unless options[:user].present?
+    unless options[:no_long_descriptions].present?
       # Render class summary
       pdf.start_new_page(layout: :portrait)
 
