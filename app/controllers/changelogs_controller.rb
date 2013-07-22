@@ -9,6 +9,6 @@ class ChangelogsController < ApplicationController
     else
       @date = Time.zone.now unless date
     end
-    @changelog = Changelog.changes_since(@date)
+    @changelog = Changelog.changes_since
   end
 end
