@@ -39,7 +39,9 @@ class Coordinator::LocationsController < ApplicationController
       return
     end
 
-    load_data(@date)
+    @locations = Instructable::TRACKS[@track]
+
+    load_data
 
     if @instances.count == 0
       redirect_to coordinator_locations_path, notice: 'There are no instances of classes for that track on those days'
@@ -56,6 +58,10 @@ class Coordinator::LocationsController < ApplicationController
   end
 
   private
+
+  def all_days?
+    @track == "Artisan's Row"
+  end
 
   def render_pdf(filename, cache_filename = nil, user = nil)
     pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :landscape,
@@ -81,7 +87,12 @@ class Coordinator::LocationsController < ApplicationController
     items = []
 
     @instances.each { |instance|
-      if last_selector != [instance.start_time.to_date, instance.formatted_location]
+      if all_days?
+        current_selector = [instance.formatted_location]
+      else
+        current_selector = [instance.start_time.to_date, instance.formatted_location]
+      end
+      if last_selector != current_selector
         if items.size > 0
           pdf_render_table(pdf, items, header, 720, {0 => 90, })
           items = []
@@ -90,26 +101,40 @@ class Coordinator::LocationsController < ApplicationController
         pdf.start_new_page unless first_page
 
         pdf.font_size 25
-        pdf.text_box instance.start_time.to_date.strftime('%A, %B %d, %Y'),
-                     at: [0, pdf.bounds.top], width: 360, height: 25
+
+        if all_days?
+          date_content = 'All Days'
+        else
+          date_content = instance.start_time.to_date.strftime('%A, %B %d, %Y')
+        end
+        pdf.text_box date_content, at: [0, pdf.bounds.top], width: 360, height: 25
+
         pdf.text_box instance.formatted_location,
                      align: :right,
                      at: [360, pdf.bounds.top], width: 360, height: 25
 
         pdf.font_size 10
         pdf.move_down 30
-        last_selector = [instance.start_time.to_date, instance.formatted_location]
-
+        if all_days?
+          last_selector = [instance.formatted_location]
+        else
+          last_selector = [instance.start_time.to_date, instance.formatted_location]
+        end
         first_page = false
       end
 
       times = []
+      times << instance.start_time.strftime('%a, %b %d') if all_days?
       times << instance.start_time.strftime('%I:%M %p') + ' - ' + instance.end_time.strftime('%I:%M')
       times_content = times.join("\n")
 
+      instructor_content = []
+      instructor_content << markdown_html(instance.instructable.name)
+      instructor_content << instance.instructable.user.titled_sca_name unless all_days?
+
       new_items = [
           {content: times_content},
-          {content: [instance.instructable.name, instance.instructable.user.titled_sca_name].join("\n")},
+          {inline_format: true, content: instructor_content.join("\n")},
           {inline_format: true, content: markdown_html(instance.instructable.description_book)}
       ]
       items << new_items
@@ -134,8 +159,13 @@ class Coordinator::LocationsController < ApplicationController
     send_data(data, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
   end
 
-  def load_data(date)
-    @instances = Instance.for_date(date)
+  def load_data
+    @instances = Instance.where(location: @locations)
+    if all_days?
+      @instances = @instances.order(:location, :start_time)
+    else
+      @instances = @instances.for_date(@date)
+    end
   end
 
 end

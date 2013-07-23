@@ -12,8 +12,9 @@ class CalendarRenderer
   end
 
   def render_ics(options, filename, cache_filename = nil)
-    options = {} if options.nil?
-    options.reverse_merge!({
+    @options = options
+    @options = {} if options.nil?
+    @options.reverse_merge!({
       calendar_name: "Pennsic #{Schedule::PENNSIC_YEAR} Class Schedule",
       calendar_id: 'all',
     })
@@ -23,8 +24,8 @@ class CalendarRenderer
     calendar = RiCal.Calendar do |cal|
       cal.default_tzid = 'America/New_York'
       cal.prodid = '//flame.org//PennsicU Converter.0//EN'
-      cal.add_x_property('X-WR-CALNAME', options[:calendar_name])
-      cal.add_x_property('X-WR-RELCALID', make_uid(options)) # should be static per calendar
+      cal.add_x_property('X-WR-CALNAME', @options[:calendar_name])
+      cal.add_x_property('X-WR-RELCALID', make_uid) # should be static per calendar
       cal.add_x_property('X-WR-CALDESC', "PennsicU #{Schedule::PENNSIC_YEAR} Class Schedule")
       cal.add_x_property('X-PUBLISHED-TTL', '3600')
 
@@ -45,7 +46,7 @@ class CalendarRenderer
           event.summary = instructable.name
           event.description = [prefix.join("\n"), '', instructable.description_web].join("\n")
           event.location = instance.formatted_location
-          event.uid = make_uid(options, instance.to_s)
+          event.uid = make_uid(instance.to_s)
           event.transp = 'OPAQUE'
           event.status = 'CONFIRMED'
           event.sequence = instructable.updated_at.to_i
@@ -57,16 +58,18 @@ class CalendarRenderer
   end
 
   def render_pdf(options, filename, cache_filename = nil, user = nil)
-    options = {} if options.nil?
-    options.reverse_merge!({
+    @options = options
+    @options = {} if @options.nil?
+    @options.reverse_merge!({
       user: nil,
       omit_descriptions: false,
       no_page_numbers: false,
+      no_long_descriptions: true,
     })
 
-    generate_magic_tokens unless options[:no_long_descriptions].present?
+    generate_magic_tokens unless @options[:no_long_descriptions].present?
 
-    if options[:omit_descriptions]
+    if @options[:omit_descriptions]
       column_widths = { 0 => 200  }
     else
       column_widths = { 0 => 95, 1 => 170 }
@@ -90,7 +93,7 @@ class CalendarRenderer
       { content: 'Title and Instructor', background_color: 'eeeeee' }
     ]
 
-    unless options[:omit_descriptions]
+    unless @options[:omit_descriptions]
       header << { content: 'Description', background_color: 'eeeeee' }
     end
 
@@ -117,7 +120,7 @@ class CalendarRenderer
         first_page = false
       end
 
-      if !options[:omit_descriptions] and instance.formatted_location =~ /A\&S /
+      if !@options[:omit_descriptions] and instance.formatted_location =~ /A\&S /
         times = []
         times << "#{instance.start_time.strftime('%a %b %e')} - #{instance.formatted_location}"
         times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
@@ -128,24 +131,24 @@ class CalendarRenderer
         times = []
         times << instance.start_time.strftime('%a %b %e')
         times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
-        times_content = times.join(options[:omit_descriptions] ? ' ' : "\n")
+        times_content = times.join(@options[:omit_descriptions] ? ' ' : "\n")
         location = instance.formatted_location
       end
 
-      maybe_newline = options[:omit_descriptions] ? ' - ' : "\n"
+      maybe_newline = @options[:omit_descriptions] ? ' - ' : "\n"
 
-      unless options[:no_long_descriptions].present?
+      unless @options[:no_long_descriptions].present?
         token = @instructable_magic_tokens[instance.instructable.id].to_s
       end
       new_items = [
           {content: [times_content, location].join(maybe_newline)},
           {content: [
               markdown_html(instance.instructable.name),
-              options[:no_long_descriptions].present? ? "" : " (#{token})",
+              @options[:no_long_descriptions].present? ? "" : " (#{token})",
               "#{maybe_newline}#{instance.instructable.user.titled_sca_name}"
           ].join(' '), inline_format: true},
       ]
-      unless options[:omit_descriptions]
+      unless @options[:omit_descriptions]
         taught_message = nil
         taught_message = "Taught #{ActionController::Base.helpers.pluralize(instance.instructable.repeat_count, 'time')}." if instance.instructable.repeat_count > 1
         new_items << {
@@ -162,7 +165,7 @@ class CalendarRenderer
 
     pdf_render_table(pdf, items, header, total_width, column_widths)
 
-    unless options[:no_long_descriptions].present?
+    unless @options[:no_long_descriptions].present?
       # Render class summary
       pdf.start_new_page(layout: :portrait)
 
@@ -195,9 +198,9 @@ class CalendarRenderer
                 font_size: 6 }
 
     for_user = ""
-    for_user = "-- for #{options[:user].best_name}" if options[:user]
+    for_user = "-- for #{@options[:user].best_name}" if @options[:user]
 
-    unless options[:no_page_numbers]
+    unless @options[:no_page_numbers]
       now = Time.now.in_time_zone.strftime('%A, %B %d, %H:%M %p')
       pdf.number_pages "Generated on #{now} #{for_user} -- page <page> of <total>", render_options
     end
@@ -206,7 +209,8 @@ class CalendarRenderer
   end
 
   def render_csv(options, filename)
-    options = {} if options.nil?
+    @options = options
+    @options = {} if @options.nil?
 
     column_names = %w(
       name track culture topic_and_subtopic
@@ -230,7 +234,8 @@ class CalendarRenderer
   end
 
   def render_xlsx(options, filename)
-    options = {} if options.nil?
+    @options = options
+    @options = {} if @options.nil?
 
     p = Axlsx::Package.new
     p.use_shared_strings = true
@@ -356,8 +361,8 @@ class CalendarRenderer
     end
   end
 
-  def make_uid(options, *items)
-    items << options[:calendar_id] or 'all'
+  def make_uid(*items)
+    items << @options[:calendar_id] or 'all'
     d = Digest::SHA1.new
     d << items.join('/')
     d.hexdigest + '@pennsic.flame.org'
