@@ -117,7 +117,6 @@
         %th End Time
         %th Location
     %tbody
-      - pp @changes.changed_instances_for_date
       - @changes.changed_instances_for_date.each do |instance|
         %tr
           %td= markdown_html(instance[:name])
