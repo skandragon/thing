@@ -150,7 +150,11 @@ class CalendarRenderer
       ]
       unless @options[:omit_descriptions]
         taught_message = nil
-        taught_message = "Taught #{ActionController::Base.helpers.pluralize(instance.instructable.repeat_count, 'time')}." if instance.instructable.repeat_count > 1
+        if instance.instructable.repeat_count > 1
+          times = instance.instructable.instances.pluck(:start_time)
+          formatted_times = times.select { |t| t != instance.start_time }.map { |t| t.strftime('%m/%d') }.join(", ")
+          taught_message = "Also taught #{formatted_times}"
+        end
         new_items << {
           inline_format: true,
           content: markdown_html([
