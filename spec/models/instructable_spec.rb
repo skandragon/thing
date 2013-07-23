@@ -364,4 +364,30 @@ describe Instructable do
 
     (instance.end_time - instance.start_time).should == 5.0 * 3600
   end
+
+  it 'updates instances on location change' do
+    pending
+
+    instructable = create(:scheduled_instructable, camp_name: 'Flarg', location_type: 'private-camp')
+    instructable.reload
+    instance = instructable.instances.first
+
+    instance.location.should == 'Flarg'
+
+    instructable.location_type = 'track'
+    instructable.save!
+
+    instance.reload
+    instance.location.should be_blank
+
+    instance.location
+
+    instructable.reload
+    instance.reload
+
+    instructable.duration.should == 5.0
+
+    (instance.end_time - instance.start_time).should == 5.0 * 3600
+  end
+
 end

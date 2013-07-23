@@ -1,0 +1,3 @@
+Private camp locations, 2 per page, with lines to write on
+
+Class attendance count entry, pull-down for date and time, per location

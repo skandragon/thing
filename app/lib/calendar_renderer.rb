@@ -216,10 +216,10 @@ class CalendarRenderer
       material_limit repeat_count updated_at
     )
     data = CSV.generate do |csv|
-      names = ['id', 'location', 'start_time', 'end_time', 'instructor' ] + column_names
+      names = ['id', 'location', 'start_time', 'end_time', 'instructor', 'instance_id' ] + column_names
       csv << names
       @instances.each do |instance|
-        data = [instance.instructable.id, instance.formatted_location, instance.start_time, instance.end_time, instance.instructable.user.titled_sca_name ]
+        data = [instance.instructable.id, instance.formatted_location, instance.start_time, instance.end_time, instance.instructable.user.titled_sca_name, instance.id ]
         data += instance.instructable.attributes.values_at(*column_names)
         csv << data
       end
