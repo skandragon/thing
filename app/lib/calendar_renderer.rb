@@ -219,6 +219,7 @@ class CalendarRenderer
       names = ['id', 'location', 'start_time', 'end_time', 'instructor', 'instance_id' ] + column_names
       csv << names
       @instances.each do |instance|
+        next unless instance.scheduled?
         data = [instance.instructable.id, instance.formatted_location, instance.start_time, instance.end_time, instance.instructable.user.titled_sca_name, instance.id ]
         data += instance.instructable.attributes.values_at(*column_names)
         csv << data
