@@ -284,7 +284,7 @@ class Instructable < ActiveRecord::Base
     overage = instances.count - repeat_count
     return if overage <= 0
 
-    # First, find one or more instances where the start_time is nil
+    # First, find one or more instances where the start_time and location is nil
     unused_entries = instances.where("start_time IS NULL AND (location IS NULL OR location='')").limit(overage)
     overage -= unused_entries.size
     unused_entries.destroy_all
