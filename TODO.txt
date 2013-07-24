@@ -28,3 +28,5 @@
 * Bug: database summary show classes which had N instances, but had some
   removed and the count lowered, as needing to be scheduled.  This is
   probably a flagging issue with the scheduled flag.
+
+* Show duration, do not show end time, for users / instructors / etc.
