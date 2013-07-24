@@ -24,3 +24,7 @@
   losing track coordinators.
 
 * Email to instructors when instructor-visible changes occur to a class.
+
+* Bug: database summary show classes which had N instances, but had some
+  removed and the count lowered, as needing to be scheduled.  This is
+  probably a flagging issue with the scheduled flag.
