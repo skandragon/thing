@@ -1,22 +1,34 @@
 class Coordinator::InstructablesController < ApplicationController
   def index
     @allowed_tracks = current_user.allowed_tracks
-    @track = params[:track]
 
     @approved = params[:approved]
+    @date = params[:date]
     @scheduled = params[:scheduled]
-    @topic = params[:topic]
     @search = params[:search]
+    @track = params[:track]
+    @topic = params[:topic]
 
     if params[:commit] == 'Clear'
+      @approved = nil
+      @date = nil
+      @scheduled = nil
       @search = nil
       @track = nil
-      @approved = nil
-      @scheduled = nil
       @topic = nil
     end
 
-    @instructables = Instructable.includes(:user, :instances).order(:name)
+    if @date.present?
+      first_date = Time.zone.parse(@date).beginning_of_day
+      last_date = Time.zone.parse(@date).end_of_day
+
+      ids = Instance.where("start_time >= ? AND start_time <= ?", first_date, last_date).pluck(:instructable_id).uniq
+      @instructables = Instructable.where(id: ids)
+    else
+      @instructables = Instructable
+    end
+
+    @instructables = @instructables.includes(:user, :instances).order(:name)
 
     if @search.present?
       @instructables = @instructables.where('name ILIKE ?', "%#{@search.strip}%")
