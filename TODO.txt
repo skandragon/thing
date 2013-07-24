@@ -32,3 +32,6 @@
 * Show duration, do not show end time, for users / instructors / etc.
 
 * Don't use military time when possible.
+
+* Allow admin to switch users (probably one direction only, into another
+  non-admin user)
