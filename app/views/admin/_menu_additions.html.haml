@@ -17,7 +17,7 @@
         = link_to 'Per-day schedules', '#'
         %ul.dropdown-menu
           - Instructable::CLASS_DATES.each do |date|
-            %li= link_to date, calendar_path(date, format: :pdf, target: '_blank')
+            %li= link_to "#{date} onward", calendar_path(date, format: :pdf, target: '_blank')
 
     %li.dropdown-submenu
       = link_to 'Email Addresses', '#'

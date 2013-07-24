@@ -21,6 +21,7 @@ def render_pdf(omit_descriptions, no_page_numbers)
 
   render_options = {}
   render_options[:omit_descriptions] = omit_descriptions
+  render_options[:no_long_descriptions] = true
   render_options[:no_page_numbers] = no_page_numbers
 
   renderer = CalendarRenderer.new(@instances, @instructables)

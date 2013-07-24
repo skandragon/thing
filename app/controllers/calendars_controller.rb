@@ -119,9 +119,8 @@ class CalendarsController < ApplicationController
 
   def load_data_for_date(date)
     first_date = Time.zone.parse(date).beginning_of_day
-    last_date = first_date.end_of_day
     @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
-    @instances = Instance.where(instructable_id: @instructables.map(&:id)).where(['start_time >= ? and start_time <= ?', first_date, last_date]).order('start_time, btrsort(location)').includes(instructable: [:user])
+    @instances = Instance.where(instructable_id: @instructables.map(&:id)).where(['start_time >= ?', first_date]).order('start_time, btrsort(location)').includes(instructable: [:user])
   end
 
   def cache_in_file(cache_filename, data)
