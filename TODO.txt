@@ -1,3 +1,26 @@
-Private camp locations, 2 per page, with lines to write on
+* Private camp locations, 2 per page, with lines to write on
 
-Class attendance count entry, pull-down for date and time, per location
+* Class attendance count entry, pull-down for date and time, per location
+
+* Filter classes displayed in track listing (for coordinators) and for
+  users making a custom schdedule by date.
+
+* Sort classes displayed in track listing and for users by date, rather than
+  class name.
+
+* Allow users to block out time they will NOT want to see any potential
+  classes for.
+
+* Allow track coordinators to create some sort of placeholder user, which
+  can be used for scheduling.  Also, overridding instances per-instructor
+  would be good. These classes might not count against the would-be
+  user, and act more like "additional instructors" do now.
+
+* Revamp the topic/culture listings we use.
+
+* Email when a class is added to a user's "watch list" of topics.
+
+* Email when a class is moved to a track, mailing both the winning and
+  losing track coordinators.
+
+* Email to instructors when instructor-visible changes occur to a class.
