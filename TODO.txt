@@ -35,3 +35,16 @@
 
 * Allow admin to switch users (probably one direction only, into another
   non-admin user)
+
+* On the free/busy list of rooms, clicking on a time and location should
+  pop up a list of classes which are pending schedule for that track,
+  with a search field for name and track.  Selecting a class from this
+  list should populate an empty instance with that class.  If there are
+  suddennly no free instances (someone else did it already) open up
+  the normal scheduling page with a flash indicating what happened, and
+  let the user fix it.
+
+* Be more web 2.0, and use more ajax calls as appropriate.  Ideally, a
+  javascript framework would be awesome.
+
+* Per-instance user schedules
