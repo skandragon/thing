@@ -22,6 +22,11 @@
                   %li= link_to 'iCalendar', calendars_path(format: :ics)
                   %li= link_to 'Excel (spreadsheet)', calendars_path(format: :xlsx)
                   %li= link_to 'CSV (spreadsheet)', calendars_path(format: :csv)
+              %li.dropdown-submenu
+                = link_to 'Changes from Book', '#'
+                %ul.dropdown-menu
+                  - Instructable::CLASS_DATES.each do |date|
+                    %li= link_to "#{date}", changelog_path(date, target: '_blank')
               - if user_signed_in?
                 %li= link_to 'Custom Schedule', user_schedule_path(current_user)
               - else
