@@ -26,7 +26,7 @@
                 = link_to 'Changes from Book', '#'
                 %ul.dropdown-menu
                   - Instructable::CLASS_DATES.each do |date|
-                    %li= link_to "#{date}", changelog_path(date, target: '_blank')
+                    %li= link_to "#{date}", changelog_path(date)
               - if user_signed_in?
                 %li= link_to 'Custom Schedule', user_schedule_path(current_user)
               - else
