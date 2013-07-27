@@ -6,6 +6,9 @@ class Users::SchedulesController < ApplicationController
   end
 
   def show
+    unless @user
+      redirect_to(root_path, status: 301) and return
+    end
     if @user.schedule.nil? or @user.schedule.instructables.count == 0
       if current_user and current_user.id == @user.id
         redirect_to edit_user_schedule_path(@user) and return
