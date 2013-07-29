@@ -21,7 +21,7 @@
       - @changes.deleted_instances_for_date.each do |instance|
         %tr
           %td= markdown_html(instance[:name])
-          %td= Time.zone.parse(instance[:start_time]).strftime("%H:%M")
+          %td= Time.zone.parse(instance[:start_time]).strftime("%l:%M %p")
           %td= instance[:location]
 
 //- rows = []
@@ -31,7 +31,7 @@
 //      - if item.action == 'destroy'
 //        - row = []
 //        - row << markdown_html(change[1])
-//        - row << Time.zone.parse(item.start_time).strftime("%H:%M")
+//        - row << Time.zone.parse(item.start_time).strftime("%l:%M %p")
 //        - row << item.location
 //        - rows << row
 //
@@ -69,8 +69,8 @@
       - @changes.created_instances_for_date.each do |instance|
         %tr
           %td= markdown_html(instance[:name])
-          %td= Time.zone.parse(instance[:start_time]).strftime("%H:%M")
-          %td= Time.zone.parse(instance[:end_time]).strftime("%H:%M")
+          %td= Time.zone.parse(instance[:start_time]).strftime("%l:%M %p")
+          %td= Time.zone.parse(instance[:end_time]).strftime("%l:%M %p")
           %td= instance[:location]
 
 //- rows = []
@@ -80,8 +80,8 @@
 //      - if item.action == 'create'
 //        - row = []
 //        - row << markdown_html(change[1])
-//        - row << Time.zone.parse(item.start_time).in_time_zone.strftime("%H:%M")
-//        - row << Time.zone.parse(item.end_time).in_time_zone.strftime("%H:%M")
+//        - row << Time.zone.parse(item.start_time).in_time_zone.strftime("%l:%M %p")
+//        - row << Time.zone.parse(item.end_time).in_time_zone.strftime("%l:%M %p")
 //        - row << item.location
 //        - rows << row
 //
@@ -121,15 +121,15 @@
         %tr
           %td= markdown_html(instance[:name])
           %td
-            = Time.zone.parse(instance[:start_time].last).strftime("%A, %B %d %H:%M")
+            = Time.zone.parse(instance[:start_time].last).strftime("%A, %B %d %l:%M %p")
             - if instance[:start_time].first != instance[:start_time].last
               %br
-              (was #{Time.zone.parse(instance[:start_time].first).strftime("%A, %B %d %H:%M")})
+              (was #{Time.zone.parse(instance[:start_time].first).strftime("%A, %B %d %l:%M %p")})
           %td
-            = Time.zone.parse(instance[:end_time].last).strftime("%H:%M")
+            = Time.zone.parse(instance[:end_time].last).strftime("%l:%M %p")
             - if instance[:end_time].first != instance[:end_time].last
               %br
-              (was #{Time.zone.parse(instance[:end_time].first).strftime("%H:%M")})
+              (was #{Time.zone.parse(instance[:end_time].first).strftime("%l:%M %p")})
           %td
             = instance[:location].last
             - if instance[:location].first != instance[:location].last
@@ -144,14 +144,14 @@
 //      - if item.action == 'update'
 //        - row = []
 //        - row << markdown_html(change[1])
-//        - row << Time.zone.parse(item.current.start_time).strftime("%A, %B %d %H:%M")
+//        - row << Time.zone.parse(item.current.start_time).strftime("%A, %B %d %l:%M %p")
 //        - if item.current.start_time != item.original.start_time
-//          - row << "(Was #{Time.zone.parse(item.original.start_time).strftime('%A, %B %d %H:%M')})"
+//          - row << "(Was #{Time.zone.parse(item.original.start_time).strftime('%A, %B %d %l:%M %p')})"
 //        - else
 //          - row << nil
-//        - row << Time.zone.parse(item.current.end_time).strftime("%H:%M")
+//        - row << Time.zone.parse(item.current.end_time).strftime("%l:%M %p")
 //        - if item.current.end_time.split('T').last != item.original.end_time.split('T').last
-//          - row << "(Was #{Time.zone.parse(item.original.end_time).strftime('%H:%M')})"
+//          - row << "(Was #{Time.zone.parse(item.original.end_time).strftime('%l:%M %p')})"
 //        - else
 //          - row << nil
 //        - row << item.current.location
