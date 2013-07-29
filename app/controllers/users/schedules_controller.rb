@@ -7,7 +7,7 @@ class Users::SchedulesController < ApplicationController
 
   def show
     unless @user
-      redirect_to(root_path, status: 301) and return
+      render text: 'No such schedule', status: 404 and return
     end
     if @user.schedule.nil? or @user.schedule.instructables.count == 0
       if current_user and current_user.id == @user.id
