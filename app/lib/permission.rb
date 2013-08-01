@@ -13,6 +13,7 @@ class Permission
     allow :calendars, :all
     allow :changelogs, :all
     allow :howto, :all
+    allow :instructors, :all
 
     allow 'users/schedules', [ :show ] do |record|
       record.published? or record.token_access
