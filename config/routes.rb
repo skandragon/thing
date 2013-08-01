@@ -52,6 +52,7 @@ Thing::Application.routes.draw do
 
   resources :calendars
   resources :changelogs
+  resources :instructors
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

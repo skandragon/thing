@@ -1,0 +1,20 @@
+- title 'Instructors by First Name'
+
+%p
+  - if @order == 'kingdom'
+    = link_to 'By first name', instructors_path
+  - else
+    = link_to 'By kingdom', instructors_path(order: 'kingdom')
+
+- letter = '*'
+
+- @instructors.each do |i|
+  - if @order == 'kingdom'
+    - order_text = i.kingdom.present? ? i.kingdom.titleize : 'Unknown'
+  - else
+    - order_text = i.sca_name[0].upcase
+  - if letter != order_text
+    - letter = order_text
+    %h3 -- #{letter} --
+  = i.best_name
+  %br
