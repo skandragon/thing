@@ -161,6 +161,7 @@ class Users::SchedulesController < ApplicationController
     else
       @user ||= User.where(id: user_id).first
     end
+    @user
   end
 
   def cache_in_file(cache_filename, data)
