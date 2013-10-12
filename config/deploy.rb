@@ -1,5 +1,10 @@
 load 'deploy/assets'
 require 'bundler/capistrano'
+require 'capistrano/'
+require 'capistrano/ext/multistage'
+
+set :stages, %w(pennsic gulfwars)
+set :default_stage, "pennsic"
 
 set :application, 'thing'
 set :repository,  "git://github.com/skandragon/#{application}.git"
@@ -11,11 +16,6 @@ set :deploy_via, :remote_cache
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
-
-role :web, 'explorer@sca1.flame.org'
-role :app, 'explorer@sca1.flame.org'
-role :db,  'explorer@sca1.flame.org', :primary => true # This is where Rails migrations will run
-#role :db,  "your slave db-server here"
 
 namespace :deploy do
   #noinspection RubyUnnecessarySemicolon
