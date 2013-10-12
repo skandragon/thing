@@ -1,10 +1,9 @@
 load 'deploy/assets'
 require 'bundler/capistrano'
-require 'capistrano/'
-require 'capistrano/ext/multistage'
 
 set :stages, %w(pennsic gulfwars)
 set :default_stage, "pennsic"
+require 'capistrano/ext/multistage'
 
 set :application, 'thing'
 set :repository,  "git://github.com/skandragon/#{application}.git"
@@ -13,6 +12,8 @@ set :use_sudo, false
 set :scm, :git
 set :branch, 'master'
 set :deploy_via, :remote_cache
+
+set :rails_env, 'production'
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
@@ -66,6 +67,19 @@ namespace :deploy do
     run "cd #{release_path} && git show --format='%H %ai' | head -1 > #{release_path}/hash.txt"
   end
   after 'deploy:update_code', 'deploy:git_log'
+
+  task :build_configs, roles: :app do
+    ['config/unicorn_init.sh', 'config/unicorn.rb', 'config/nginx.conf'].each do |filename|
+      puts "Building #{filename}"...
+      data = File.read("#{release_path}/#{filename}.in")
+      data.gsub!('@app@', server_socket)
+      data.gsub!('@servername@', server_hostname)
+      File.open("#{release_path}/#{filename}", "w") do |file|
+        file.puts data
+      end
+    end
+    exit
+  end
 
   task :setup_config, roles: :app do
     run "rm -f /etc/nginx/sites-enabled/#{application}"

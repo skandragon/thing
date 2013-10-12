@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          unicorn_thing
+# Provides:          unicorn_@app@
 # Required-Start:    $network $syslog
 # Required-Stop:     $network $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: unicorn: thing.pennsicuniversity.org
-# Description:       Start the Unicorn server for thing.pennsicuniversity.org
+# Short-Description: unicorn: @servername@
+# Description:       Start the Unicorn server for @servername@
 ### END INIT INFO
 
 set -e
@@ -16,7 +16,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # Feel free to change any of the following variables for your app:
 TIMEOUT=${TIMEOUT-60}
-APP_ROOT=/www/thing/current
+APP_ROOT=/www/@app@/current
 PID=$APP_ROOT/tmp/pids/unicorn.pid
 CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E production"
 AS_USER=explorer

@@ -1,4 +1,4 @@
-app_name = 'thing'
+app_name = '@app@'
 
 root = "/www/#{app_name}/current"
 working_directory root
@@ -7,7 +7,7 @@ stderr_path "#{root}/log/unicorn.log"
 stdout_path "#{root}/log/unicorn.log"
 
 listen "/tmp/unicorn.#{app_name}.sock"
-worker_processes 4
+worker_processes 2
 timeout 120
 
 # combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
