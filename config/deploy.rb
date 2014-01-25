@@ -70,7 +70,7 @@ namespace :deploy do
 
   task :build_configs, roles: :app, except: {no_release: true} do
     ['config/unicorn_init.sh', 'config/unicorn.rb', 'config/nginx.conf'].each do |filename|
-      run "ls -l #{release_path}/#{filename}"
+      run "ls -l #{release_path}/#{filename}.in"
       puts "Building #{filename}"...
       data = File.read("#{release_path}/#{filename}.in")
       data.gsub!('@app@', server_socket)
