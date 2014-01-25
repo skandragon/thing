@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec::Matchers.define :allow do |*args|
+RSpec::Matchers.define :permit do |*args|
   match do |permission|
     permission.allow?(*args).should be_true
   end
@@ -10,14 +10,14 @@ describe Permission do
   describe 'as guest' do
     subject { Permission.new(nil) }
 
-    it { should allow(:about, :anything) }
+    it { should permit(:about, :anything) }
 
-    it { should allow('devise/sessions', :anything) }
-    it { should allow('users/passwords', :anything) }
-    it { should allow('users/registrations', :anything) }
+    it { should permit('devise/sessions', :anything) }
+    it { should permit('users/passwords', :anything) }
+    it { should permit('users/registrations', :anything) }
 
-    it { should_not allow('admin/users', :show) }
-    it { should_not allow(:users, :show) }
+    it { should_not permit('admin/users', :show) }
+    it { should_not permit(:users, :show) }
   end
 
   describe 'as user' do
@@ -30,28 +30,28 @@ describe Permission do
     subject { Permission.new(user) }
 
     it {
-      should allow(:about, :anything)
+      should permit(:about, :anything)
     }
 
     it {
-      should allow('devise/sessions', :anything)
-      should allow('users/passwords', :anything)
-      should allow('users/registrations', :anything)
+      should permit('devise/sessions', :anything)
+      should permit('users/passwords', :anything)
+      should permit('users/registrations', :anything)
     }
 
     it {
-      should allow(:users, :edit, user)
-      should allow(:users, :show, user)
-      should_not allow(:users, :edit, other_user)
-      should_not allow(:users, :show, other_user)
+      should permit(:users, :edit, user)
+      should permit(:users, :show, user)
+      should_not permit(:users, :edit, other_user)
+      should_not permit(:users, :show, other_user)
     }
 
     it {
-      should allow(:instructables, :new, instructable)
-      should allow(:instructables, :edit, instructable)
-      should_not allow(:instructables, :new, other_instructable)
-      should_not allow(:instructables, :edit, other_instructable)
-      should_not allow(:proofreader, :edit)
+      should permit(:instructables, :new, instructable)
+      should permit(:instructables, :edit, instructable)
+      should_not permit(:instructables, :new, other_instructable)
+      should_not permit(:instructables, :edit, other_instructable)
+      should_not permit(:proofreader, :edit)
     }
   end
 
@@ -65,9 +65,9 @@ describe Permission do
     subject { Permission.new(user) }
 
     it {
-      should allow('proofreader/instructables', :index)
-      should allow('proofreader/instructables', :edit)
-      should allow('proofreader/instructables', :update)
+      should permit('proofreader/instructables', :index)
+      should permit('proofreader/instructables', :edit)
+      should permit('proofreader/instructables', :update)
     }
   end
 
@@ -85,12 +85,12 @@ describe Permission do
     subject { Permission.new(user) }
 
     it {
-      should allow(:instructables, :edit, instructable)
-      should allow(:instructables, :edit, other_track_instructable)
-      should allow('coordinator/conflicts', :index)
-      should allow('coordinator/locations', :anything)
-      should_not allow(:instructables, :edit, other_nontrack_instructable)
-      should_not allow(:proofreader, :edit)
+      should permit(:instructables, :edit, instructable)
+      should permit(:instructables, :edit, other_track_instructable)
+      should permit('coordinator/conflicts', :index)
+      should permit('coordinator/locations', :anything)
+      should_not permit(:instructables, :edit, other_nontrack_instructable)
+      should_not permit(:proofreader, :edit)
     }
   end
 
@@ -99,6 +99,6 @@ describe Permission do
     let(:other_user) { create(:user) }
     subject { Permission.new(user) }
 
-    it { should allow(:anything, :here) }
+    it { should permit(:anything, :here) }
   end
 end

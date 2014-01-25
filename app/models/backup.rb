@@ -1,5 +1,3 @@
-require 'zip/zip'
-
 class Backup
   def zip_filename
     @zip_filename ||= "#{base}.zip"
@@ -40,7 +38,7 @@ class Backup
       end
     end
 
-    Zip::ZipFile.open(zip_filename, Zip::ZipFile::CREATE) do |zip|
+    Zip::File.open(zip_filename, Zip::File::CREATE) do |zip|
       @filenames.each do |filename|
         zip.add("#{now_filename}/#{filename}", "#{base}/#{filename}")
       end
