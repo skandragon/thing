@@ -16,6 +16,8 @@ describe Permission do
     it { should permit('users/passwords', :anything) }
     it { should permit('users/registrations', :anything) }
 
+    it { should permit('users/schedules', :token) }
+
     it { should_not permit('admin/users', :show) }
     it { should_not permit(:users, :show) }
   end
