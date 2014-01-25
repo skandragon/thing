@@ -80,9 +80,9 @@ namespace :deploy do
     end
     exit
   end
-  after 'deploy:update_code', 'deploy:build_config'
+  after 'deploy:update_code', 'deploy:build_configs'
 
-  task :setup_config, roles: :app do
+  task :setup_configs, roles: :app do
     run "rm -f /etc/nginx/sites-enabled/#{application}"
     run "rm -f /etc/unicorn/unicorn_#{application}"
     run "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
