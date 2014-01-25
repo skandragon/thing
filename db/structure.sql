@@ -117,7 +117,8 @@ CREATE TABLE changelogs (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     original text,
-    committed text
+    committed text,
+    year integer
 );
 
 
@@ -152,7 +153,8 @@ CREATE TABLE instances (
     location character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    override_location boolean
+    override_location boolean,
+    year integer
 );
 
 
@@ -216,7 +218,8 @@ CREATE TABLE instructables (
     location_type character varying(255) DEFAULT 'track'::character varying,
     proofread boolean DEFAULT false,
     proofread_by integer[] DEFAULT '{}'::integer[],
-    proofreader_comments text
+    proofreader_comments text,
+    year integer
 );
 
 
@@ -282,7 +285,8 @@ CREATE TABLE schedules (
     instructables integer[] DEFAULT '{}'::integer[],
     published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    year integer
 );
 
 
@@ -653,3 +657,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130430220849');
 INSERT INTO schema_migrations (version) VALUES ('20130712182934');
 
 INSERT INTO schema_migrations (version) VALUES ('20130717162854');
+
+INSERT INTO schema_migrations (version) VALUES ('20140125181600');

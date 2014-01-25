@@ -48,6 +48,8 @@ class Instructable < ActiveRecord::Base
   has_many :changelogs, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
+  default_scope :conditions => { year: 2014 }
+
   has_paper_trail
 
   delegate :titled_sca_name, to: :user

@@ -20,6 +20,8 @@ class Changelog < ActiveRecord::Base
   belongs_to :user
   belongs_to :target, polymorphic: true
 
+  default_scope :conditions => { year: 2014 }
+
   before_save :abort_if_useless
 
   serialize :changelog, JSON

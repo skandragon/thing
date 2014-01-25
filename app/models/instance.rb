@@ -18,6 +18,8 @@ class Instance < ActiveRecord::Base
 
   has_paper_trail
 
+  default_scope :conditions => { year: 2014 }
+
   after_save :update_instructable
   before_validation :update_end_time
 
