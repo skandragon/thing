@@ -19,7 +19,7 @@ group :assets do
   gem 'less-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer', '~> 0.10.1', platform: :ruby, require: 'v8'
+  gem 'therubyracer', platform: :ruby, require: 'v8'
 
   gem 'uglifier', '>= 1.0.3'
 
