@@ -68,7 +68,7 @@ namespace :deploy do
   end
   after 'deploy:update_code', 'deploy:git_log'
 
-  task :build_configs, roles: :app do
+  task :build_configs, roles: :app, except: {no_release: true} do
     run "ls -l #{release_path}/config"
     ['config/unicorn_init.sh', 'config/unicorn.rb', 'config/nginx.conf'].each do |filename|
       puts "Building #{filename}"...
@@ -81,7 +81,7 @@ namespace :deploy do
     end
     exit
   end
-  after 'deploy:update_code', 'deploy:build_configs'
+  after 'deploy:git_log', 'deploy:build_configs'
 
   task :setup_configs, roles: :app do
     run "rm -f /etc/nginx/sites-enabled/#{application}"
