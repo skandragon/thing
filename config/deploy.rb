@@ -69,6 +69,7 @@ namespace :deploy do
   after 'deploy:update_code', 'deploy:git_log'
 
   task :build_configs, roles: :app do
+    run "ls -l #{release_path}"
     ['config/unicorn_init.sh', 'config/unicorn.rb', 'config/nginx.conf'].each do |filename|
       puts "Building #{filename}"...
       data = File.read("#{release_path}/#{filename}.in")
