@@ -80,6 +80,7 @@ namespace :deploy do
     end
     exit
   end
+  after 'deploy:update_code', 'deploy:build_config'
 
   task :setup_config, roles: :app do
     run "rm -f /etc/nginx/sites-enabled/#{application}"
