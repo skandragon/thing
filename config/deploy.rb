@@ -69,8 +69,8 @@ namespace :deploy do
   after 'deploy:update_code', 'deploy:git_log'
 
   task :build_configs, roles: :app, except: {no_release: true} do
-    run "ls -l #{release_path}/config"
     ['config/unicorn_init.sh', 'config/unicorn.rb', 'config/nginx.conf'].each do |filename|
+      run "ls -l #{release_path}/#{filename}"
       puts "Building #{filename}"...
       data = File.read("#{release_path}/#{filename}.in")
       data.gsub!('@app@', server_socket)
