@@ -32,11 +32,13 @@
       %thead
         %tr
           %th Request
+          %th From Year
           %th Title
       %tbody
         - @previous_year_classes.each do |aclass|
           %tr
             %td= link_to 'Request for This Year', new_user_instructable_path(@target_user, clone_from: aclass.id), :class => 'btn'
+            %td= aclass.year
             %td= markdown_html(aclass.name)
 
 = page_navigation_links @instructables
