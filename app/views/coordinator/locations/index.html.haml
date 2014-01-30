@@ -9,7 +9,7 @@
 
   = form_for :filter, method: :get, url: timesheets_coordinator_locations_path, html: { class: 'form-inline' } do
     - if current_user.allowed_tracks.count > 1
-      = select_tag :track, options_for_select([''] + current_user.allowed_tracks, @track), class: 'input-medium'
+      = select_tag :track, options_for_select([''] + current_user.allowed_tracks - ['No Track'], @track), class: 'input-medium'
     - else
       = hidden_field_tag(:track, current_user.allowed_tracks.first)
     = select_tag :date, options_for_select([''] + Instructable::CLASS_DATES, @date), class: 'input-medium'
@@ -25,7 +25,7 @@
 
   = form_for :filter, method: :get, url: freebusy_coordinator_locations_path, html: { class: 'form-inline' } do
     - if current_user.allowed_tracks.count > 1
-      = select_tag :track, options_for_select([''] + current_user.allowed_tracks, @track), class: 'input-medium'
+      = select_tag :track, options_for_select([''] + current_user.allowed_tracks - ['No Track'], @track), class: 'input-medium'
     - else
       = hidden_field_tag(:track, current_user.allowed_tracks.first)
     = submit_tag 'Go', :class => 'btn'

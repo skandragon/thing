@@ -16,21 +16,30 @@
           AKA #{@instructable.user.mundane_name}
           = mailto_link_for_instructable(@instructable)
       - location_was_overridden = false
-      = f.simple_fields_for :instances do |i|
-        - if i.object.override_location
-          - disabled = admin? ? false : true
-          - locations = [i.object.location.to_s]
-        - else
-          - locations = Instructable::TRACKS[@instructable.track]
-          - locations = [''] if locations.blank? or locations.empty?
-          - disabled = false
-        .skan-form-inline
-          = i.input :start_time, as: :string, input_html: { class: 'input-medium', value: i.object.start_time.present? ? i.object.start_time.to_s(:pennsic) : '' }, disabled: disabled
-          - unless @instructable.location_nontrack?
-            = i.input :location, label: disabled ? 'Location' : 'Location', as: :select, collection: locations, input_html: { class: 'input-medium' }, disabled: disabled
-            - location_was_overridden ||= disabled
+
+      %table
+        %thead
+          %tr
             - if admin?
-              = i.input :override_location, label: 'Override'
+              %th Override
+            %th Start Time
+            %th Location
+        %tbody
+          = f.simple_fields_for :instances do |i|
+            %tr
+              - if i.object.override_location
+                - disabled = admin? ? false : true
+                - locations = [i.object.location.to_s]
+              - else
+                - locations = Instructable::TRACKS[@instructable.track]
+                - locations = [''] if locations.blank? or locations.empty?
+                - disabled = false
+              - if admin?
+                %td= i.input :override_location, label: false, input_html: { class: '' }
+              %td= i.input :start_time, label: false, as: :string, input_html: { data: { startdatetime: Instructable::CLASS_DATES.first + ' 00:00', enddatetime: Instructable::CLASS_DATES.last + ' 17:00' }, class: 'input-medium datetimepicker', value: i.object.start_time.present? ? i.object.start_time.strftime('%Y-%m-%d %H:%M') : '' }, disabled: disabled
+              - unless @instructable.location_nontrack?
+                %td= i.input :location, label: false, as: :select, collection: locations, input_html: { class: 'input-medium' }, disabled: disabled
+                - location_was_overridden ||= disabled
       - if location_was_overridden and !admin?
         %p.alert.alert-warning At least one time and location is overridden by an administrator, and cannot be changed.
       - if @instructable.location_nontrack?

@@ -16,4 +16,5 @@
 //= require bootstrap-editable
 //= require bootstrap-editable-rails
 //= require_tree ./lib
+//= require_tree ./datetimepicker
 //= require_tree .
