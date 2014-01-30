@@ -54,8 +54,9 @@ class Instructable < ActiveRecord::Base
 
   delegate :titled_sca_name, to: :user
 
-  PENNSIC_DATES = (Date.parse('2014-07-25')..Date.parse('2014-08-10')).to_a.map(&:to_s)
-  CLASS_DATES = (Date.parse('2014-07-25') .. Date.parse('2014-08-09')).to_a.map(&:to_s)
+  PENNSIC_DATES_RAW = (Date.parse('2014-07-25')..Date.parse('2014-08-10')).to_a
+  PENNSIC_DATES = PENNSIC_DATES_RAW.map(&:to_s)
+  CLASS_DATES = (Date.parse('2014-07-29') .. Date.parse('2014-08-08')).to_a.map(&:to_s)
   CLASS_TIMES = [ '9am to Noon', 'Noon to 3pm', '3pm to 6pm', 'After 6pm' ]
 
   CULTURES = [

@@ -175,7 +175,29 @@ class User < ActiveRecord::Base
     write_attribute(:access_token, possible_token)
   end
 
+  def needs_profile?
+    coordinator? or instructor? or admin?
+  end
+
+  def needs_profile_update?
+    return false unless needs_profile?
+    return true if profile_missing_or_old?
+    return true if profile_has_old_dates?
+    false
+  end
+
   private
+
+  def profile_missing_or_old?
+    profile_updated_at.blank? or (profile_updated_at < 90.days.ago)
+  end
+
+  def profile_has_old_dates?
+    return false unless available_days.present?
+    profile_years = available_days.map(&:year).uniq
+    current_year = Instructable::PENNSIC_DATES_RAW.first.year
+    profile_years.sort.last != current_year
+  end
 
   def make_token
     ret = ''

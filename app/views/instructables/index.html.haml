@@ -26,5 +26,17 @@
       Pennsic University staff to discuss your desire to teach more sessions
       or classes.
   .add-button= link_to 'Request a class', new_user_instructable_path(@target_user), :class => 'btn btn-primary'
+  - if @previous_year_classes.count > 0
+    %h2 Previous Year's Classes
+    %table.table
+      %thead
+        %tr
+          %th Request
+          %th Title
+      %tbody
+        - @previous_year_classes.each do |aclass|
+          %tr
+            %td= link_to 'Request for This Year', new_user_instructable_path(@target_user, clone_from: aclass.id), :class => 'btn'
+            %td= markdown_html(aclass.name)
 
 = page_navigation_links @instructables

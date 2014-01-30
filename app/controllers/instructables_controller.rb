@@ -5,10 +5,22 @@ class InstructablesController < ApplicationController
   def index
     @instructables = @target_user.instructables.order(:name).paginate(:page => params[:page], per_page: 10)
     session[:instructable_back] = request.fullpath
+
+    @previous_year_classes = @target_user.instructables.unscoped.where(user_id: @target_user.id).where("year < #{Time.now.year}").order(:year, :name)
   end
 
   def new
-    @instructable = Instructable.new
+    if params[:clone_from]
+      clone_id = params[:clone_from].to_i
+      clone_from = Instructable.unscoped.where(user_id: @current_user.id, id: clone_id)
+      @instructable = clone_from.first
+      if @instructable
+        @instructable = @instructable.dup  # clone all fields, make new record
+        @instructable.requested_days = []
+        flash[:alert] = "Most data has been copied from your previous year's class.  Please check each item carefully and update it as necessary.  Requested class dates are not copied, for the obvious reason."
+      end
+    end
+    @instructable ||= Instructable.new
     render action: :edit
   end
 

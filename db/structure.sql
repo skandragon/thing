@@ -351,7 +351,8 @@ CREATE TABLE users (
     no_contact boolean DEFAULT false,
     available_days date[],
     instructor boolean DEFAULT false,
-    proofreader boolean DEFAULT false
+    proofreader boolean DEFAULT false,
+    profile_updated_at timestamp without time zone
 );
 
 
@@ -659,3 +660,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130712182934');
 INSERT INTO schema_migrations (version) VALUES ('20130717162854');
 
 INSERT INTO schema_migrations (version) VALUES ('20140125181600');
+
+INSERT INTO schema_migrations (version) VALUES ('20140130005107');

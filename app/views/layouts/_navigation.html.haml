@@ -40,7 +40,6 @@
                 %b.caret
               %ul.dropdown-menu
                 %li= link_to 'Your classes', user_instructables_path(current_user)
-                %li= link_to 'Update instructor profile', edit_user_instructor_profile_path(current_user)
           - if coordinator?
             = render :partial => 'coordinator/menu_additions'
           - if proofreader?
@@ -52,7 +51,9 @@
                 %b.caret
               %ul.dropdown-menu
                 %li= link_to 'Change password', edit_user_registration_path
-                - unless instructor?
+                - if current_user.needs_profile?
+                  %li= link_to 'Update instructor profile', edit_user_instructor_profile_path(current_user)
+                - else
                   %li= link_to 'Request to be an instructor', new_user_instructor_profile_path(current_user)
             %li= link_to 'Sign out', destroy_user_session_path, :method => :delete
           - else

@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :authorize
   before_filter :miniprofiler
+  before_filter :check_profile
 
   delegate :allow?, to: :current_permission
   helper_method :allow?
@@ -17,6 +18,15 @@ class ApplicationController < ActionController::Base
   helper_method :json_for
 
   private
+
+  def check_profile
+    if current_user and current_user.needs_profile_update?
+      msg = "Please review your instructor profile before continuing."
+      redirect_to(edit_user_instructor_profile_path(current_user), alert: msg)
+      return true
+    end
+    false
+  end
 
   def helpers
     @helper ||= Helper.instance

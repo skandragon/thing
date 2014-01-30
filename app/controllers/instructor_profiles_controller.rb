@@ -1,4 +1,6 @@
 class InstructorProfilesController < ApplicationController
+  skip_before_filter :check_profile
+
   def new
     @user.add_missing_contacts
     render action: :edit
@@ -15,6 +17,7 @@ class InstructorProfilesController < ApplicationController
       notice = 'Instructor profile created.'
     end
     @user.instructor = true
+    @user.profile_updated_at = Time.now
     if @user.update_attributes(permitted_params)
       redirect_to root_path, notice: notice
     else
