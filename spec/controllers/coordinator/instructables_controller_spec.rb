@@ -8,14 +8,14 @@ describe Coordinator::InstructablesController do
     create(:instructable, user_id: user.id, track: 'Middle Eastern',
            topic: 'Dance', name: 'MEDanceUnscheduledApproved',
            approved: true)
-    i = create(:instructable, user_id: user.id, track: 'Middle Eastern',
+    @meclass = create(:instructable, user_id: user.id, track: 'Middle Eastern',
                topic: 'History', name: 'MEHistoryScheduledApproved',
                approved: true)
-    i.instances.create(start_time: get_date(0), location: 'Foo')
-    i = create(:instructable, user_id: user.id, track: 'Performing Arts',
+    @meclass.instances.create!(start_time: get_date(0), location: 'Foo')
+    @paclass = create(:instructable, user_id: user.id, track: 'Performing Arts',
                topic: 'History', name: 'PAHistoryScheduledApproved',
                approved: true)
-    i.instances.create(start_time: get_date(1), location: 'Foo')
+    @paclass.instances.create!(start_time: get_date(1), location: 'Foo')
     create(:instructable, user_id: user.id, track: 'Archery',
            topic: 'Martial', name: 'ArcheryUnscheduledUnapproved')
     create(:instructable, user_id: user.id, track: '',
@@ -128,6 +128,7 @@ describe Coordinator::InstructablesController do
       page.should_not have_content 'MEMusicUnscheduledUnapproved'
       page.should_not have_content 'MEDanceUnscheduledApproved'
       page.should have_content 'MEHistoryScheduledApproved'
+      page.should have_content 'MEHistoryScheduledApproved'
     end
 
     it 'filters based on scheduled = 0' do
@@ -152,6 +153,16 @@ describe Coordinator::InstructablesController do
       page.should have_content 'MEMusicUnscheduledUnapproved'
       page.should have_content 'MEDanceUnscheduledApproved'
       page.should_not have_content 'MEHistoryScheduledApproved'
+    end
+
+    it 'filters based on start date' do
+      target = @meclass.instances.first.start_time.strftime("%Y-%m-%d")
+      select target, from: 'date'
+      click_on 'Filter'
+      page.should_not have_content 'MEMusicUnscheduledUnapproved'
+      page.should_not have_content 'MEDanceUnscheduledApproved'
+      page.should_not have_content 'PAHistoryScheduledApproved'
+      page.should have_content 'MEHistoryScheduledApproved'
     end
 
     it 'clears the form' do
