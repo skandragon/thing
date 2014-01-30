@@ -13,8 +13,8 @@ describe Permission do
     it { should permit(:about, :anything) }
 
     it { should permit('devise/sessions', :anything) }
-    it { should permit('users/passwords', :anything) }
-    it { should permit('users/registrations', :anything) }
+    it { should permit('devise/passwords', :anything) }
+    it { should permit('devise/registrations', :anything) }
 
     it { should permit('users/schedules', :token) }
 
@@ -37,8 +37,8 @@ describe Permission do
 
     it {
       should permit('devise/sessions', :anything)
-      should permit('users/passwords', :anything)
-      should permit('users/registrations', :anything)
+      should permit('devise/passwords', :anything)
+      should permit('devise/registrations', :anything)
     }
 
     it {

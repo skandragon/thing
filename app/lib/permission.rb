@@ -7,8 +7,8 @@ class Permission
 
     allow 'devise/sessions', :all
     allow 'sessions', :all
-    allow 'users/passwords', :all
-    allow 'users/registrations', :all
+    allow 'devise/passwords', :all
+    allow 'devise/registrations', :all
     allow :about, :all
     allow :calendars, :all
     allow :changelogs, :all

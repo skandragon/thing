@@ -8,12 +8,20 @@ def attempt_sign_up(args)
   click_button 'Sign up'
 end
 
-describe Users::RegistrationsController do
+describe Devise::RegistrationsController do
   describe 'sign up' do
     it 'works with email, password, and password confirmation' do
       attempt_sign_up email: 'example@example.com', password: 'secret123', password_confirmation: 'secret123'
       page.should have_content 'Welcome! You have signed up successfully.'
       page.should have_content 'Become an instructor'
+    end
+
+    it 'works and populates user record properly' do
+      attempt_sign_up email: 'example@example.com', password: 'secret123', password_confirmation: 'secret123', mundane_name: 'Mundane Dude'
+      page.should have_content 'Welcome! You have signed up successfully.'
+      user1 = User.where(email: 'example@example.com').first
+      user1.should_not be_nil
+      user1.mundane_name.should == 'Mundane Dude'
     end
 
     it 'fails without email' do

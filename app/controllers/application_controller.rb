@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_filter :authorize
   before_filter :miniprofiler
   before_filter :check_profile
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   delegate :allow?, to: :current_permission
   helper_method :allow?
@@ -103,6 +104,10 @@ class ApplicationController < ActionController::Base
     end
     @target_user ||= User.find(params[:user_id])
     @target_user.id == current_user.id or current_user.admin?
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << :mundane_name
   end
 
 end

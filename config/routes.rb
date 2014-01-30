@@ -35,10 +35,7 @@ Thing::Application.routes.draw do
 
   match 'howto/:action' => 'howto', as: :howto
 
-  devise_for :users, path: 'sessions', controllers: {
-    registrations: 'users/registrations',
-    passwords: 'users/passwords'
-  }
+  devise_for :users, path: 'sessions'
 
   resources :users do
     resource :instructor_profile
