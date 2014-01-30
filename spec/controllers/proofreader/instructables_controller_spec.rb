@@ -4,7 +4,7 @@ describe Proofreader::InstructablesController do
   def setup_data
     user = create(:user)
     create(:instructable, user_id: user.id, track: 'Middle Eastern',
-           topic: 'Music', name: 'MEMusicUnscheduledUnproofed')
+           topic: 'Performing Arts and Music', name: 'MEMusicUnscheduledUnproofed')
     create(:instructable, user_id: user.id, track: 'Middle Eastern',
            topic: 'Dance', name: 'MEDanceUnscheduledProofed',
            proofread: true, proofread_by: [user, 123], is_proofreader: :no_really)
@@ -21,7 +21,7 @@ describe Proofreader::InstructablesController do
     create(:instructable, user_id: user.id, track: '',
            topic: 'Martial', name: 'TracklessArchery')
     create(:instructable, user_id: user.id, track: '',
-           topic: 'Music', name: 'TracklessMusic')
+           topic: 'Performing Arts and Music', name: 'TracklessMusic')
   end
 
   it 'requires permission' do

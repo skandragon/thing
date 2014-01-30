@@ -4,7 +4,7 @@ describe Coordinator::InstructablesController do
   def setup_data
     user = create(:user)
     create(:instructable, user_id: user.id, track: 'Middle Eastern',
-           topic: 'Music', name: 'MEMusicUnscheduledUnapproved')
+           topic: 'Performing Arts and Music', name: 'MEMusicUnscheduledUnapproved')
     create(:instructable, user_id: user.id, track: 'Middle Eastern',
            topic: 'Dance', name: 'MEDanceUnscheduledApproved',
            approved: true)
@@ -21,7 +21,7 @@ describe Coordinator::InstructablesController do
     create(:instructable, user_id: user.id, track: '',
            topic: 'Martial', name: 'TracklessArchery')
     create(:instructable, user_id: user.id, track: '',
-           topic: 'Music', name: 'TracklessMusic')
+           topic: 'Performing Arts and Music', name: 'TracklessMusic')
   end
 
   describe 'search (admin)' do
