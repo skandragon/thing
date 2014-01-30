@@ -73,6 +73,14 @@ describe Users::RegistrationsController do
       page.should have_content 'Invalid email or password.'
     end
 
+    it 'redirects instructors to update profile if too old' do
+      user = create(:instructor, password: 'secret123', profile_updated_at: 120.days.ago)
+      visit new_user_session_path
+      fill_in 'Email', with: user.email
+      fill_in 'Password', with: 'secret123'
+      click_button 'Sign in'
+      page.should have_content 'Please review your instructor profile'
+    end
   end
 
   describe 'sign out' do
