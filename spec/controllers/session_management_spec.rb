@@ -81,6 +81,16 @@ describe Users::RegistrationsController do
       click_button 'Sign in'
       page.should have_content 'Please review your instructor profile'
     end
+
+    it 'redirects instructors to update profile if available days are old' do
+      user = create(:instructor, password: 'secret123', profile_updated_at: 1.days.ago, available_days: [ Date.today - 2.years ])
+      visit new_user_session_path
+      fill_in 'Email', with: user.email
+      fill_in 'Password', with: 'secret123'
+      click_button 'Sign in'
+      page.should have_content 'Please review your instructor profile'
+    end
+
   end
 
   describe 'sign out' do
