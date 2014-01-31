@@ -3,7 +3,7 @@ require 'csv'
 class Admin::ReportsController < ApplicationController
   include GriffinPdf
 
-  PENNSIC_YEAR = 42
+  PENNSIC_YEAR = 43
 
   def instructor_signin
     @instructors = User.where(:instructor => true).order("UPPER(sca_name) ASC")

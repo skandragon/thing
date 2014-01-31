@@ -1,7 +1,7 @@
 class Coordinator::LocationsController < ApplicationController
   include GriffinPdf
 
-  PENNSIC_YEAR = 42
+  PENNSIC_YEAR = 43
 
   def index
   end

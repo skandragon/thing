@@ -11,7 +11,7 @@
 #
 
 class Schedule < ActiveRecord::Base
-  PENNSIC_YEAR = 42
+  PENNSIC_YEAR = 43
 
   belongs_to :user
 
