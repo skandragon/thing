@@ -17,6 +17,8 @@ class Users::SchedulesController < ApplicationController
 
     render_options = { user: @user }
 
+    uncached = params[:uncached_for_tests].present?
+
     respond_to do |format|
       format.html
 
@@ -33,6 +35,7 @@ class Users::SchedulesController < ApplicationController
         data = renderer.render_ics(render_options, filename, cache_filename)
         cache_in_file(cache_filename, data)
         send_file(cache_filename, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
+#        File.unlink(cache_filename) if uncached
       }
 
       format.pdf {
@@ -56,6 +59,7 @@ class Users::SchedulesController < ApplicationController
         data = renderer.render_pdf(render_options, filename)
         cache_in_file(cache_filename, data)
         send_file(cache_filename, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
+#        File.unlink(cache_filename) if uncached
       }
 
       format.csv {
@@ -84,6 +88,7 @@ class Users::SchedulesController < ApplicationController
         data = renderer.render_xlsx(render_options, "pennsic-#{Schedule::PENNSIC_YEAR}-user#{@user.id}.xlsx")
         cache_in_file(cache_filename, data)
         send_file(cache_filename, type: Mime::XLSX, disposition: "filename=#{filename}", filename: filename)
+#        File.unlink(cache_filename) if uncached
       }
 
     end
@@ -149,7 +154,7 @@ class Users::SchedulesController < ApplicationController
 
   def load_user
     user_id = params[:user_id]
-    if user_id =~ /[a-z]+/
+    if user_id =~ /^[a-zA-Z]+/
       @user ||= User.where(access_token: user_id).first
       if @user and @user.schedule
         @user.schedule.token_access = true

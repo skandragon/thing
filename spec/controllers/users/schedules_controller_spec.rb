@@ -3,7 +3,10 @@ require 'spec_helper'
 describe Users::SchedulesController do
   describe 'no-user' do
     describe '#show' do
-      let (:user) { user = create(:user, sca_title: "lord", sca_name: "Griffin") }
+      let (:user) {
+        create(:user, sca_title: "lord", sca_name: "Griffin")
+      }
+
       let (:instructable) {
         instructable = create(:scheduled_instructable, user_id: user)
         instructable.user_id = user.id
@@ -47,12 +50,17 @@ describe Users::SchedulesController do
 
       let (:user) { create(:user) }
 
-      it 'redirects to #new when current_user has no profile' do
+      it 'redirects to #new when current_user has no schedule' do
         visit user_schedule_path(current_user)
+        current_path.should == edit_user_schedule_path(current_user, format: :html)
+      end
+
+      it 'redirects to #new when current_user has no schedule, format csv' do
+        visit user_schedule_path(current_user, format: :csv)
         current_path.should == edit_user_schedule_path(current_user)
       end
 
-      it 'redirects to / with notice when some other user has no profile' do
+      it 'redirects to / with notice when some other user has no schedule' do
         visit user_schedule_path(user)
         current_path.should == root_path
         page.should have_content 'No such schedule'
@@ -95,6 +103,51 @@ describe Users::SchedulesController do
         sleep(0.5)
         current_user.reload
         current_user.schedule.published.should be_false
+      end
+    end
+
+    describe '#show with formats' do
+      before :each do
+        log_in
+
+        @instructable = create(:scheduled_instructable, user_id: current_user.id)
+        @instructable.user_id = current_user.id
+        @instructable.save!
+
+        create(:schedule, user_id: current_user.id, instructables: [@instructable.id], published: false)
+      end
+
+      it 'renders xlsx' do
+        visit user_schedule_path(current_user, format: :xlsx, uncached_for_tests: true)
+        page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      end
+
+      it 'renders pdf brief' do
+        visit user_schedule_path(current_user, brief: true, format: :pdf, uncached_for_tests: true)
+        page.response_headers['Content-Type'].should == 'application/pdf'
+        page.body.should_not be_blank
+        page.body[0..3].should == '%PDF'
+      end
+
+      it 'renders pdf long' do
+        visit user_schedule_path(current_user, format: :pdf, uncached_for_tests: true)
+        page.response_headers['Content-Type'].should == 'application/pdf'
+        page.body.should_not be_blank
+        page.body[0..3].should == '%PDF'
+      end
+
+      it 'renders csv' do
+        visit user_schedule_path(current_user, format: :csv, uncached_for_tests: true)
+        page.response_headers['Content-Type'].should == 'text/csv'
+        page.should have_content @instructable.name
+      end
+
+      it 'renders ics' do
+        visit user_schedule_path(current_user, format: :ics, uncached_for_tests: true)
+        page.response_headers['Content-Type'].should == 'text/calendar'
+        page.body.should_not be_blank
+        page.body[0..14].should == 'BEGIN:VCALENDAR'
+        page.body.should match @instructable.name
       end
     end
   end
