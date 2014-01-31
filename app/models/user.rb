@@ -200,8 +200,8 @@ class User < ActiveRecord::Base
   end
 
   def make_token
-    ret = ''
-    charset = 'abcdefghujklmnopqrstuvwxyz'
+    ret = 'T'
+    charset = 'abcdefghujklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     SecureRandom.random_bytes(10).each_byte do |value|
       ret += charset[value % charset.length]
     end
