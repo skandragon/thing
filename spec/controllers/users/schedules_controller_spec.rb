@@ -78,6 +78,11 @@ describe Users::SchedulesController do
         log_in
       end
 
+      def make_instructables
+        @instructable1 = create(:scheduled_instructable, user_id: current_user.id)
+        @instructable2 = create(:scheduled_instructable, user_id: current_user.id)
+      end
+
       it 'creates new schedule on initial edit' do
         visit edit_user_schedule_path(current_user)
         current_user.schedule.should_not be_nil
@@ -103,6 +108,33 @@ describe Users::SchedulesController do
         sleep(0.5)
         current_user.reload
         current_user.schedule.published.should be_false
+      end
+
+      it 'add and remove buttons work', js: true do
+        make_instructables
+        button1 = "#button-#{@instructable1.id}"
+        button2 = "#button-#{@instructable2.id}"
+
+        visit edit_user_schedule_path(current_user)
+
+        find(button1).should have_text 'Add'
+        find(button1).click
+        sleep(0.5)
+        find(button1).should have_text 'Remove'
+        current_user.reload
+        current_user.schedule.instructables.should == [@instructable1.id]
+
+        find(button2).should have_text 'Add'
+        find(button2).click
+        sleep(0.5)
+        find(button2).should have_text 'Remove'
+        current_user.reload
+        current_user.schedule.instructables.should == [@instructable1.id, @instructable2.id]
+
+        find(button1).click
+        sleep(0.5)
+        current_user.reload
+        current_user.schedule.instructables.should == [@instructable2.id]
       end
     end
 
