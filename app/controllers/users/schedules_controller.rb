@@ -1,10 +1,6 @@
 class Users::SchedulesController < ApplicationController
   before_filter :load_user
 
-  def token
-    render action: show
-  end
-
   def show
     unless @user
       render text: 'No such schedule', status: 404 and return
