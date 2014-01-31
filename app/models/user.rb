@@ -157,12 +157,16 @@ class User < ActiveRecord::Base
   #
   def display_roles
     roles = []
-    roles << 'Instructor' if instructor?
-    roles << 'Coordinator' if coordinator?
     roles << 'Admin' if admin?
-    roles << 'Proofreader' if proofreader?
+    roles << 'Coordinator' if coordinator?
+    roles << 'Instructor' if instructor?
     roles << 'PU Staff' if pu_staff?
+    roles << 'Proofreader' if proofreader?
     roles
+  end
+
+  def self.possible_roles
+    ['Admin', 'Coordinator', 'Instructor', 'PU Staff', 'Proofreader']
   end
 
   def regenerate_access_token

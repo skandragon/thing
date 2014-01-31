@@ -69,6 +69,11 @@ describe User do
       u.display_roles.should include'Admin'
     end
 
+    it 'instructor if instructor?' do
+      u = build(:instructor)
+      u.display_roles.should include'Instructor'
+    end
+
     it 'coordinator if tracks' do
       u = build(:user, tracks: ['Middle Eastern'])
       u.display_roles.should include'Coordinator'
@@ -85,8 +90,9 @@ describe User do
     end
 
     it 'returns them all' do
-      u = build(:user, admin: true, proofreader: true, pu_staff: true, tracks: ['Middle Eastern'])
+      u = build(:instructor, admin: true, proofreader: true, pu_staff: true, tracks: ['Middle Eastern'])
       u.display_roles.should include'Admin'
+      u.display_roles.should include'Instructor'
       u.display_roles.should include'Coordinator'
       u.display_roles.should include'Proofreader'
       u.display_roles.should include'PU Staff'

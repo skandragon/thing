@@ -91,9 +91,24 @@ describe Admin::UsersController do
 
   describe 'search' do
     before :each do
-      log_in admin: true
-      @u1 = create(:instructor, sca_name: 'scaflarg', mundane_name: 'mundaneflarg', email: 'flargemail@example.com')
-      @u2 = create(:instructor, sca_name: 'scabaz', mundane_name: 'mundanebaz', email: 'bazemail@example.com')
+      @users = []
+      @users << log_in(admin: true, sca_name: 'adminofdoom')
+      @users << create(:instructor, sca_name: 'scaflarg', mundane_name: 'mundaneflarg', email: 'flargemail@example.com')
+      @users << create(:instructor, sca_name: 'scabaz', mundane_name: 'mundanebaz', email: 'bazemail@example.com')
+      @users << create(:user, mundane_name: 'notateacher')
+      @users << create(:user, mundane_name: 'proofer', proofreader: true)
+      @users << create(:user, mundane_name: 'tracker', tracks: ['Middle Eastern'])
+      @users << create(:user, mundane_name: 'pu-staffer', pu_staff: true)
+    end
+
+    def check_users(role)
+      @users.each do |user|
+        if user.send(role)
+          page.should have_content user.mundane_name
+        else
+          page.should_not have_content user.mundane_name
+        end
+      end
     end
 
     it 'searches on email' do
@@ -110,6 +125,7 @@ describe Admin::UsersController do
       click_on 'Filter'
       page.should have_content 'scaflarg'
       page.should_not have_content 'scabaz'
+      page.should_not have_content 'notateacher'
     end
 
     it 'searches on sca_name' do
@@ -118,6 +134,42 @@ describe Admin::UsersController do
       click_on 'Filter'
       page.should have_content 'mundaneflarg'
       page.should_not have_content 'scabaz'
+      page.should_not have_content 'notateacher'
+    end
+
+    it 'searches by role admin' do
+      visit admin_users_path
+      select 'Admin', from: 'role'
+      click_on 'Filter'
+      check_users(:admin?)
+    end
+
+    it 'searches by role coordinator' do
+      visit admin_users_path
+      select 'Coordinator', from: 'role'
+      click_on 'Filter'
+      check_users(:coordinator?)
+    end
+
+    it 'searches by role instructor' do
+      visit admin_users_path
+      select 'Instructor', from: 'role'
+      click_on 'Filter'
+      check_users(:instructor?)
+    end
+
+    it 'searches by role pu staff' do
+      visit admin_users_path
+      select 'PU Staff', from: 'role'
+      click_on 'Filter'
+      check_users(:pu_staff?)
+    end
+
+    it 'searches by role proofreader' do
+      visit admin_users_path
+      select 'Proofreader', from: 'role'
+      click_on 'Filter'
+      check_users(:proofreader?)
     end
 
     it 'clears' do

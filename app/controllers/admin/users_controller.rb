@@ -1,12 +1,26 @@
 class Admin::UsersController < ApplicationController
   def index
     @search = params[:search]
-
+    @role = params[:role]
     if params[:commit] == 'Clear'
       @search = nil
+      @role = nil
     end
 
     @users = User.order(:mundane_name, :email)
+
+    case @role
+    when 'Admin'
+      @users = @users.where(admin: true)
+    when 'Coordinator'
+      @users = @users.where("tracks <> '{}'")
+    when 'Instructor'
+      @users = @users.where(instructor: true)
+    when 'PU Staff'
+      @users = @users.where(pu_staff: true)
+    when 'Proofreader'
+      @users = @users.where(proofreader: true)
+    end
 
     if @search.present?
       @users = @users.where('mundane_name ILIKE ? OR sca_name ILIKE ? OR email ILIKE ?',
