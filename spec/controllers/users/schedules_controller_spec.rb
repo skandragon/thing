@@ -52,7 +52,7 @@ describe Users::SchedulesController do
 
       it 'redirects to #new when current_user has no schedule' do
         visit user_schedule_path(current_user)
-        current_path.should == edit_user_schedule_path(current_user, format: :html)
+        current_path.should == edit_user_schedule_path(current_user)
       end
 
       it 'redirects to #new when current_user has no schedule, format csv' do
