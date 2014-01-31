@@ -21,6 +21,8 @@ module AuthMacros
     fill_in 'Password', with: @_current_user.password
     click_button 'Sign in'
     page.should have_content 'Signed in successfully'
+
+    @_current_user
   end
 
   def current_user
