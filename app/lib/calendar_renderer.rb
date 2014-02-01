@@ -64,7 +64,7 @@ class CalendarRenderer
       user: nil,
       omit_descriptions: false,
       no_page_numbers: false,
-      no_long_descriptions: true,
+      no_long_descriptions: false,
     })
 
     generate_magic_tokens unless @options[:no_long_descriptions].present?
