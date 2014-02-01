@@ -79,13 +79,58 @@ describe Users::SchedulesController do
       end
 
       def make_instructables
-        @instructable1 = create(:scheduled_instructable, user_id: current_user.id)
-        @instructable2 = create(:scheduled_instructable, user_id: current_user.id)
+        @instructable1 = create(:scheduled_instructable, user_id: current_user.id, topic: 'Martial', name: 'InstructableOne')
+        @instructable2 = create(:scheduled_instructable, user_id: current_user.id, culture: 'Middle Eastern', name: 'InstructableTwo')
+        @instructable3 = create(:scheduled_instructable, user_id: current_user.id, name: 'ClassThree')
       end
 
       it 'creates new schedule on initial edit' do
         visit edit_user_schedule_path(current_user)
         current_user.schedule.should_not be_nil
+      end
+
+      it 'clear filter button works' do
+        make_instructables
+        visit edit_user_schedule_path(current_user)
+        fill_in 'search', with: 'XxxXXxxxXxxXXXXxxX'
+        click_on 'Filter'
+        page.should_not have_content @instructable1.name
+        page.should_not have_content @instructable2.name
+        page.should_not have_content @instructable3.name
+        click_on 'Clear'
+        page.should have_content @instructable1.name
+        page.should have_content @instructable2.name
+        page.should have_content @instructable3.name
+      end
+
+      it 'searches by partial title' do
+        make_instructables
+        visit edit_user_schedule_path(current_user)
+        fill_in 'search', with: 'Instructable'
+        click_on 'Filter'
+        page.should have_content @instructable1.name
+        page.should have_content @instructable2.name
+        page.should_not have_content @instructable3.name
+      end
+
+      it 'searches by topic' do
+        make_instructables
+        visit edit_user_schedule_path(current_user)
+        select 'Martial', from: 'topic'
+        click_on 'Filter'
+        page.should have_content @instructable1.name
+        page.should_not have_content @instructable2.name
+        page.should_not have_content @instructable3.name
+      end
+
+      it 'searches by culture' do
+        make_instructables
+        visit edit_user_schedule_path(current_user)
+        select 'Middle Eastern', from: 'culture'
+        click_on 'Filter'
+        page.should_not have_content @instructable1.name
+        page.should have_content @instructable2.name
+        page.should_not have_content @instructable3.name
       end
 
       it 'shows public checkbox' do
