@@ -14,14 +14,14 @@ gem 'postgres_ext'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails'
+  gem 'coffee-rails'
   gem 'less-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', platform: :ruby, require: 'v8'
 
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier'
 
   gem 'twitter-bootstrap-rails'
   gem 'bootstrap-editable-rails'
@@ -40,7 +40,7 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'simplecov', platform: :ruby, require: false, group: :test
-  gem 'rspec-rails', '>= 2.12'
+  gem 'rspec-rails'
   gem 'thin'
   gem 'factory_girl_rails'
   gem 'capybara'
@@ -78,15 +78,14 @@ gem 'dalli'
 gem 'redis'
 gem 'resque', require: 'resque/server'
 gem 'multa_arcana'
-gem 'rubyzip', '>= 1.0.0'
-gem 'zip-zip'
+gem 'rubyzip'
 gem 'prawn', '>= 1.0.0.rc2'
 gem 'ri_cal'
-gem 'axlsx'
+gem 'axlsx', '~> 2'
 gem 'redcarpet'
 gem 'htmlentities'
 gem 'paper_trail', '~> 2'
-gem 'active_model_serializers', '~> 0.7.0'
+gem 'active_model_serializers'
 gem 'hashie'
 gem 'diff-lcs'
 gem 'liquid'
