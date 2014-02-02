@@ -10,7 +10,7 @@ describe Coordinator::LocationsController do
   end
 
   def setup_data
-    log_in tracks: ['Middle Eastern', 'Pennsic University', 'Games']
+    log_in tracks: ["Artisan's Row", 'Middle Eastern', 'Pennsic University', 'Games']
 
     @user = create(:instructor)
     @instructables = []
@@ -109,6 +109,20 @@ describe Coordinator::LocationsController do
     it 'redirects on blank date' do
       visit timesheets_coordinator_locations_path(format: :pdf, track: 'Pennsic University')
       page.should have_content 'Select both'
+    end
+
+    it 'renders pdf' do
+      visit timesheets_coordinator_locations_path(format: :pdf, track: 'Pennsic University', date: Instructable::CLASS_DATES[1])
+      page.response_headers['Content-Type'].should == 'application/pdf'
+      page.body.should_not be_blank
+      page.body[0..3].should == '%PDF'
+    end
+
+    it "renders all days for Artisan's Row" do
+      visit timesheets_coordinator_locations_path(format: :pdf, track: "Artisan's Row", date: Instructable::CLASS_DATES[1])
+      page.response_headers['Content-Type'].should == 'application/pdf'
+      page.body.should_not be_blank
+      page.body[0..3].should == '%PDF'
     end
   end
 
