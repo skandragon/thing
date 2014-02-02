@@ -10,7 +10,7 @@ describe Coordinator::LocationsController do
   end
 
   def setup_data
-    log_in tracks: ['Middle Eastern', 'Pennsic University']
+    log_in tracks: ['Middle Eastern', 'Pennsic University', 'Games']
 
     @user = create(:instructor)
     @instructables = []
@@ -48,15 +48,35 @@ describe Coordinator::LocationsController do
       page.should have_content 'Select both a date and a track'
     end
 
+    it "should require a date to be selected for location" do
+      visit coordinator_locations_path
+      within '#location-form' do
+        select 'Pennsic University', from: 'track'
+        click_on 'Go'
+      end
+      page.should have_content 'Select both a date and a track'
+    end
+
     it "should require a track they are coordinator for location", js: true do
       visit coordinator_locations_path
       click_on 'HACKIT'
       sleep(0.25)
       within '#location-form' do
+        select Instructable::CLASS_DATES.first, from: 'date'
         select 'BadBogusValue', from: 'track'
         click_on 'Go'
       end
-      page.should have_content 'Select both a date and a track'
+      page.should have_content 'Select a valid date and track you are'
+    end
+
+    it "should say if there are no classes for that track" do
+      visit coordinator_locations_path
+      within '#location-form' do
+        select Instructable::CLASS_DATES.first, from: 'date'
+        select 'Games', from: 'track'
+        click_on 'Go'
+      end
+      page.should have_content 'There are no instances of'
     end
 
     it "should require a track to be selected for free/busy" do
