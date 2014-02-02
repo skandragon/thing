@@ -7,7 +7,7 @@
     Generate a set of printable sheets that can be placed at locations,
     listing all of today's events.
 
-  = form_for :filter, method: :get, url: timesheets_coordinator_locations_path, html: { class: 'form-inline' } do
+  = form_for :filter, method: :get, url: timesheets_coordinator_locations_path, html: { class: 'form-inline', id: 'location-form' } do
     - if current_user.allowed_tracks.count > 1
       = select_tag :track, options_for_select([''] + current_user.allowed_tracks - ['No Track'], @track), class: 'input-medium'
     - else
@@ -23,9 +23,12 @@
     if the location is shared with more than one track.  Only track locations
     are included; private camps and merchant areas are not.
 
-  = form_for :filter, method: :get, url: freebusy_coordinator_locations_path, html: { class: 'form-inline' } do
+  = form_for :filter, method: :get, url: freebusy_coordinator_locations_path, html: { class: 'form-inline', id: 'freebusy-form' } do
     - if current_user.allowed_tracks.count > 1
       = select_tag :track, options_for_select([''] + current_user.allowed_tracks - ['No Track'], @track), class: 'input-medium'
     - else
       = hidden_field_tag(:track, current_user.allowed_tracks.first)
     = submit_tag 'Go', :class => 'btn'
+
+- if  Rails.env == 'test'
+  %a{onclick: 'test_locations_controller_hack_hack_hack()', href: '#'}HACKIT

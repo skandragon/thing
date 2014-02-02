@@ -38,6 +38,46 @@ describe Coordinator::LocationsController do
         page.should have_content date
       end
     end
+
+    it "should require a track to be selected for location" do
+      visit coordinator_locations_path
+      within '#location-form' do
+        select Instructable::CLASS_DATES.first, from: 'date'
+        click_on 'Go'
+      end
+      page.should have_content 'Select both a date and a track'
+    end
+
+    it "should require a track they are coordinator for location", js: true do
+      visit coordinator_locations_path
+      click_on 'HACKIT'
+      sleep(0.25)
+      within '#location-form' do
+        select 'BadBogusValue', from: 'track'
+        click_on 'Go'
+      end
+      page.should have_content 'Select both a date and a track'
+    end
+
+    it "should require a track to be selected for free/busy" do
+      visit coordinator_locations_path
+      within '#freebusy-form' do
+        click_on 'Go'
+      end
+      page.should have_content 'Select a track'
+    end
+
+    it "should require a track they are coordinator for free/busy", js: true do
+      visit coordinator_locations_path
+      click_on 'HACKIT'
+      sleep(0.25)
+      within '#freebusy-form' do
+        select 'BadBogusValue', from: 'track'
+        click_on 'Go'
+      end
+      page.should have_content 'Select a track you are coordinator for'
+    end
+
   end
 
   describe '#timesheets' do
