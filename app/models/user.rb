@@ -99,6 +99,27 @@ class User < ActiveRecord::Base
 
   scope :for_track, lambda { |track| where('tracks && ?', "{#{track}}") }
 
+  scope :search_name, ->(target) {
+    target = target.strip
+    where('mundane_name ILIKE ? OR sca_name ILIKE ? OR email ILIKE ?',
+          "%#{target}%", "%#{target}%", "%#{target}%")
+  }
+
+  scope :by_role, ->(role) {
+    case role
+    when 'Admin'
+      where(admin: true)
+    when 'Coordinator'
+      where("tracks <> '{}'")
+    when 'Instructor'
+      where(instructor: true)
+    when 'PU Staff'
+      where(pu_staff: true)
+    when 'Proofreader'
+      where(proofreader: true)
+    end
+  }
+
   def coordinator?
     tracks.count > 0
   end

@@ -9,23 +9,9 @@ class Admin::UsersController < ApplicationController
 
     @users = User.order(:mundane_name, :email)
 
-    case @role
-    when 'Admin'
-      @users = @users.where(admin: true)
-    when 'Coordinator'
-      @users = @users.where("tracks <> '{}'")
-    when 'Instructor'
-      @users = @users.where(instructor: true)
-    when 'PU Staff'
-      @users = @users.where(pu_staff: true)
-    when 'Proofreader'
-      @users = @users.where(proofreader: true)
-    end
+    @users = @users.by_role(@role) if @role
 
-    if @search.present?
-      @users = @users.where('mundane_name ILIKE ? OR sca_name ILIKE ? OR email ILIKE ?',
-                            "%#{@search.strip}%", "%#{@search.strip}%", "%#{@search.strip}%")
-    end
+    @users = @users.search_name(@search) if @search.present?
 
     @users = @users.paginate(page: params[:page], per_page: 10)
   end
