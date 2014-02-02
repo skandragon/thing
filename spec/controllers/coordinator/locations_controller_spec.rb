@@ -16,6 +16,7 @@ describe Coordinator::LocationsController do
     @instructables = []
     create_instructables(10, track: 'Middle Eastern', user_id: @user.id)
     create_instructables(10, track: 'Pennsic University', user_id: @user.id)
+    create_instructables(10, track: "Artisan's Row", user_id: @user.id, repeat_count: rand(2) + 1)
 
     @scheduled = create(:instructable, track: 'Middle Eastern', name: 'Flarg', user_id: @user.id)
     @scheduled_instance = create(:instance, instructable_id: @scheduled.id, start_time: get_date(0) + 21.hours, location: 'A&S 6')
@@ -118,8 +119,9 @@ describe Coordinator::LocationsController do
       page.body[0..3].should == '%PDF'
     end
 
-    it "renders all days for Artisan's Row" do
+    it "renders all days for Artisan's Row", pending: true do
       visit timesheets_coordinator_locations_path(format: :pdf, track: "Artisan's Row", date: Instructable::CLASS_DATES[1])
+      puts page.body
       page.response_headers['Content-Type'].should == 'application/pdf'
       page.body.should_not be_blank
       page.body[0..3].should == '%PDF'
