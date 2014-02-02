@@ -3,8 +3,6 @@ require 'csv'
 class Admin::ReportsController < ApplicationController
   include GriffinPdf
 
-  PENNSIC_YEAR = 43
-
   def instructor_signin
     @instructors = User.where(:instructor => true).order("UPPER(sca_name) ASC")
     @instructables = Instructable.all.group_by(&:user_id)
@@ -26,9 +24,9 @@ class Admin::ReportsController < ApplicationController
     @pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
       :compress => true, :optimize_objects => true,
       :info => {
-        :Title => "Pennsic University #{PENNSIC_YEAR} Instructor Signup",
+        :Title => "Pennsic University #{Pennsic.year} Instructor Signup",
         :Author => 'Pennsic University',
-        :Subject => "Pennsic University #{PENNSIC_YEAR}",
+        :Subject => "Pennsic University #{Pennsic.year}",
         :Keywords => 'pennsic university',
         :Creator => 'Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/',
         :Producer => 'Pennsic Univeristy Class Maker',

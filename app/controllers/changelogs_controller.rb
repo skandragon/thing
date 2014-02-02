@@ -10,12 +10,12 @@ class ChangelogsController < ApplicationController
       @date = Time.zone.now unless date
     end
 
-    filename = "pennsic-#{Schedule::PENNSIC_YEAR}-all.csv"
+    filename = "pennsic-#{Pennsic.year}-all.csv"
     cache_filename = Rails.root.join('tmp', filename)
 
     load_data
     renderer = CalendarRenderer.new(@instances, nil)
-    data = renderer.render_csv({}, "pennsic-#{Schedule::PENNSIC_YEAR}-full.csv")
+    data = renderer.render_csv({}, "pennsic-#{Pennsic.year}-full.csv")
     cache_in_file(cache_filename, data)
 
     @changes = CsvCompare.new(cache_filename)

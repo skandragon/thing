@@ -15,7 +15,7 @@ class CalendarRenderer
     @options = options
     @options = {} if options.nil?
     @options.reverse_merge!({
-      calendar_name: "Pennsic #{Schedule::PENNSIC_YEAR} Class Schedule",
+      calendar_name: "Pennsic #{Pennsic.year} Class Schedule",
       calendar_id: 'all',
     })
 
@@ -26,7 +26,7 @@ class CalendarRenderer
       cal.prodid = '//flame.org//PennsicU Converter.0//EN'
       cal.add_x_property('X-WR-CALNAME', @options[:calendar_name])
       cal.add_x_property('X-WR-RELCALID', make_uid) # should be static per calendar
-      cal.add_x_property('X-WR-CALDESC', "PennsicU #{Schedule::PENNSIC_YEAR} Class Schedule")
+      cal.add_x_property('X-WR-CALDESC', "PennsicU #{Pennsic.year} Class Schedule")
       cal.add_x_property('X-PUBLISHED-TTL', '3600')
 
       @instances.each { |instance|
@@ -79,9 +79,9 @@ class CalendarRenderer
     pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
       :compress => true, :optimize_objects => true,
       :info => {
-        :Title => "Pennsic University #{Schedule::PENNSIC_YEAR} Class Schedule",
+        :Title => "Pennsic University #{Pennsic.year} Class Schedule",
         :Author => 'Pennsic University',
-        :Subject => "Pennsic University #{Schedule::PENNSIC_YEAR} Classes",
+        :Subject => "Pennsic University #{Pennsic.year} Classes",
         :Keywords => 'pennsic university classes',
         :Creator => 'Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/',
         :Producer => 'Pennsic Univeristy Class Maker',
@@ -259,7 +259,7 @@ class CalendarRenderer
       )
       header = ['id', 'location', 'start_time', 'end_time', 'instructor' ] + column_names
 
-      wb.add_worksheet(name: "Pennsic #{Schedule::PENNSIC_YEAR}") do |sheet|
+      wb.add_worksheet(name: "Pennsic #{Pennsic.year}") do |sheet|
         sheet.add_row header
 
         @instances.each { |instance|

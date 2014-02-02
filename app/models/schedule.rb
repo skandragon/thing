@@ -11,8 +11,6 @@
 #
 
 class Schedule < ActiveRecord::Base
-  PENNSIC_YEAR = 43
-
   belongs_to :user
 
   default_scope :conditions => { year: 2014 }

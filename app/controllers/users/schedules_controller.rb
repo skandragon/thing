@@ -23,14 +23,14 @@ class Users::SchedulesController < ApplicationController
       format.html
 
       format.ics {
-        filename = "pennsic-#{Schedule::PENNSIC_YEAR}-user#{@user.id}.ics"
+        filename = "pennsic-#{Pennsic.year}-user#{@user.id}.ics"
         cache_filename = Rails.root.join('tmp', filename)
 
         if File.exist?(cache_filename)
           File.unlink(cache_filename)
         end
 
-        render_options[:calendar_name] = "PennsicU #{Schedule::PENNSIC_YEAR}"
+        render_options[:calendar_name] = "PennsicU #{Pennsic.year}"
         renderer = CalendarRenderer.new(@instances, @instructables)
         data = renderer.render_ics(render_options, filename, cache_filename)
         cache_in_file(cache_filename, data)
@@ -44,7 +44,7 @@ class Users::SchedulesController < ApplicationController
         @instructables = Instructable.where(id: @instances.map(&:instructable_id))
 
         filename = [
-          "pennsic-#{Schedule::PENNSIC_YEAR}-#{@user.id}",
+          "pennsic-#{Pennsic.year}-#{@user.id}",
           omit_descriptions ? 'brief' : nil,
         ].compact.join('-') + '.pdf'
         cache_filename = Rails.root.join('tmp', filename)
@@ -63,7 +63,7 @@ class Users::SchedulesController < ApplicationController
       }
 
       format.csv {
-        filename = "pennsic-#{Schedule::PENNSIC_YEAR}-user#{@user.id}.csv"
+        filename = "pennsic-#{Pennsic.year}-user#{@user.id}.csv"
         cache_filename = Rails.root.join('tmp', filename)
 
         if File.exist?(cache_filename)
@@ -71,13 +71,13 @@ class Users::SchedulesController < ApplicationController
         end
 
         renderer = CalendarRenderer.new(@instances, @instructables)
-        data = renderer.render_csv(render_options, "pennsic-#{Schedule::PENNSIC_YEAR}-user#{@user.id}.csv")
+        data = renderer.render_csv(render_options, "pennsic-#{Pennsic.year}-user#{@user.id}.csv")
         cache_in_file(cache_filename, data)
         send_file(cache_filename, type: Mime::CSV, disposition: "filename=#{filename}", filename: filename)
       }
 
       format.xlsx {
-        filename = "pennsic-#{Schedule::PENNSIC_YEAR}-#{@user.id}.xlsx"
+        filename = "pennsic-#{Pennsic.year}-#{@user.id}.xlsx"
         cache_filename = Rails.root.join('tmp', filename)
 
         if File.exist?(cache_filename)
@@ -85,7 +85,7 @@ class Users::SchedulesController < ApplicationController
         end
 
         renderer = CalendarRenderer.new(@instances, @instructables)
-        data = renderer.render_xlsx(render_options, "pennsic-#{Schedule::PENNSIC_YEAR}-user#{@user.id}.xlsx")
+        data = renderer.render_xlsx(render_options, "pennsic-#{Pennsic.year}-user#{@user.id}.xlsx")
         cache_in_file(cache_filename, data)
         send_file(cache_filename, type: Mime::XLSX, disposition: "filename=#{filename}", filename: filename)
 #        File.unlink(cache_filename) if uncached

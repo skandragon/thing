@@ -1,8 +1,6 @@
 class Coordinator::LocationsController < ApplicationController
   include GriffinPdf
 
-  PENNSIC_YEAR = 43
-
   def index
   end
 
@@ -67,9 +65,9 @@ class Coordinator::LocationsController < ApplicationController
     pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :landscape,
       :compress => true, :optimize_objects => true,
       :info => {
-        :Title => "Pennsic University #{PENNSIC_YEAR} Timesheet for #{@date}, track #{@track}",
+        :Title => "Pennsic University #{Pennsic.year} Timesheet for #{@date}, track #{@track}",
         :Author => 'Pennsic University',
-        :Subject => "Pennsic University #{PENNSIC_YEAR} Timesheet for #{@date}, track #{@track}",
+        :Subject => "Pennsic University #{Pennsic.year} Timesheet for #{@date}, track #{@track}",
         :Keywords => "pennsic university Timesheet #{@date} #{@track}",
         :Creator => 'Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/',
         :Producer => 'Pennsic Univeristy Class Maker',
