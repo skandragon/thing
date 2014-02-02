@@ -12,6 +12,9 @@ class Admin::ReportsController < ApplicationController
       format.pdf {
         render_pdf
       }
+      format.html {
+        redirect_to :root, alert: "Only PDF format for instructor sign-in is supported."
+      }
     end
   end
 
@@ -20,10 +23,7 @@ class Admin::ReportsController < ApplicationController
   PDF_FONT_SIZE = 7.5
 
   def render_pdf
-    column_widths = { 0 => 95, 1 => 170 }
-    total_width = 540
-
-    pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
+    @pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
       :compress => true, :optimize_objects => true,
       :info => {
         :Title => "Pennsic University #{PENNSIC_YEAR} Instructor Signup",
@@ -35,44 +35,44 @@ class Admin::ReportsController < ApplicationController
         :CreationDate => Time.now,
     })
 
-    pdf.font_size PDF_FONT_SIZE
+    @pdf.font_size PDF_FONT_SIZE
 
-    last_letter = nil
-    first_name = true
+    @last_letter = nil
+    @first_name = true
 
     @instructors.each do |instructor|
       instructables = @instructables[instructor.id]
       next if instructables.blank?
 
-      if (last_letter != instructor.sca_name[0].upcase)
-        pdf.start_new_page(layout: :portrait) unless last_letter.nil?
-        last_letter = instructor.sca_name[0].upcase
-        first_name = true
+      if (@last_letter != instructor.sca_name[0].upcase)
+        @pdf.start_new_page(layout: :portrait) unless @last_letter.nil?
+        @last_letter = instructor.sca_name[0].upcase
+        @first_name = true
       end
 
-      unless first_name
-        pdf.move_down PDF_FONT_SIZE
+      unless @first_name
+        @pdf.move_down PDF_FONT_SIZE
         # pdf.stroke_horizontal_rule
-        pdf.move_down PDF_FONT_SIZE
+        @pdf.move_down PDF_FONT_SIZE
       end
-      first_name = false
-      render_instructor(pdf, instructor, instructables)
+      @first_name = false
+      render_instructor(instructor, instructables)
     end
 
-    data = pdf.render
+    data = @pdf.render
     send_data(data, type: Mime::PDF, disposition: "inline; filename=instructor-signup.pdf", filename: "instructor-signup.pdf")
   end
 
-  def render_instructor(pdf, instructor, instructables)
-    pdf.formatted_text [ { text: instructor.sca_name, size: 14, styles: [:bold] } ]
-    pdf.move_down 10
-    pdf.text "Signature: ______________________________________________    Camp Name: ______________________________________________________"
-    pdf.move_down 10
+  def render_instructor(instructor, instructables)
+    @pdf.formatted_text [ { text: instructor.sca_name, size: 14, styles: [:bold] } ]
+    @pdf.move_down 10
+    @pdf.text "Signature: ______________________________________________    Camp Name: ______________________________________________________"
+    @pdf.move_down 10
 
-    render_instructables(pdf, instructables)
+    render_instructables(instructables)
   end
 
-  def render_instructables(pdf, instructables)
+  def render_instructables(instructables)
     instances = Instance.where(instructable_id: instructables.map(&:id)).order(:start_time).includes(:instructable)
 
     items = instances.map { |instance|
@@ -86,8 +86,8 @@ class Admin::ReportsController < ApplicationController
 
     column_widths = { 0 => 80, 1 => 50, 2 => 91 }
     total_width = column_widths.values.inject(:+)
-    column_widths[3] = pdf.bounds.width - total_width
-    total_width = pdf.bounds.width
+    column_widths[3] = @pdf.bounds.width - total_width
+    total_width = @pdf.bounds.width
 
     header = [
       { content: "Starts", background_color: 'eeeeee' },
@@ -96,6 +96,6 @@ class Admin::ReportsController < ApplicationController
       { content: "Title", background_color: 'eeeeee' },
     ]
 
-    pdf_render_table(pdf, items, header, total_width, column_widths)
+    pdf_render_table(@pdf, items, header, total_width, column_widths)
   end
 end

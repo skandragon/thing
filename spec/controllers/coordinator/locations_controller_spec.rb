@@ -121,7 +121,6 @@ describe Coordinator::LocationsController do
 
     it "renders all days for Artisan's Row", pending: true do
       visit timesheets_coordinator_locations_path(format: :pdf, track: "Artisan's Row", date: Instructable::CLASS_DATES[1])
-      puts page.body
       page.response_headers['Content-Type'].should == 'application/pdf'
       page.body.should_not be_blank
       page.body[0..3].should == '%PDF'
