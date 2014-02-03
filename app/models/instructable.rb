@@ -215,6 +215,10 @@ class Instructable < ActiveRecord::Base
   after_save :adjust_instances
   after_save :check_for_proofread_changes
 
+  scope :search_by_name, ->(target) {
+    where('name ILIKE ?', "%#{target.strip}%")
+  }
+
   def is_proofreader=(value)
     @is_proofreader = value
   end

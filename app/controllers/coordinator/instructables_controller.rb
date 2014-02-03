@@ -30,9 +30,7 @@ class Coordinator::InstructablesController < ApplicationController
 
     @instructables = @instructables.includes(:user, :instances).order(:name)
 
-    if @search.present?
-      @instructables = @instructables.where('name ILIKE ?', "%#{@search.strip}%")
-    end
+    @instructables = @instructables.search_by_name(@search) if @search.present?
 
     #
     # if coordinator? filter only those they can see.  @track.blank? for

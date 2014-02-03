@@ -8,11 +8,8 @@ class Admin::UsersController < ApplicationController
     end
 
     @users = User.order(:mundane_name, :email)
-
     @users = @users.by_role(@role) if @role
-
     @users = @users.search_name(@search) if @search.present?
-
     @users = @users.paginate(page: params[:page], per_page: 10)
   end
 
