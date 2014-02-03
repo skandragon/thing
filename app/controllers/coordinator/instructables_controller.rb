@@ -53,17 +53,9 @@ class Coordinator::InstructablesController < ApplicationController
       end
     end
 
-    if @approved.present?
-      @instructables = @instructables.where(approved: @approved)
-    end
-
-    if @scheduled.present?
-      @instructables = @instructables.where(scheduled: @scheduled)
-    end
-
-    if @topic.present?
-      @instructables = @instructables.where(topic: @topic)
-    end
+    @instructables = @instructables.where(approved: @approved) if @approved.present?
+    @instructables = @instructables.where(scheduled: @scheduled) if @scheduled.present?
+    @instructables = @instructables.where(topic: @topic) if @topic.present?
 
     @instructables = @instructables.paginate(page: params[:page], per_page: 20)
 
