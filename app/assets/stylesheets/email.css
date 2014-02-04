@@ -6,7 +6,7 @@ table, table td, table th {
     border: 1px solid #333;
 }
 table {
-    padding: 0px;
+    padding: 0;
     border-collapse: collapse;
 }
 table td, table th {

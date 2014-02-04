@@ -7,7 +7,7 @@ module AuthMacros
     end
 
     if @_current_user.needs_profile?
-      unless (attributes.include?:profile_updated_at)
+      unless (attributes.include?(:profile_updated_at))
         @_current_user.profile_updated_at = Time.now
       end
     end

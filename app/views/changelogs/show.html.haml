@@ -4,7 +4,7 @@
 |
 = link_to 'Next Day', changelog_path(@date.tomorrow.strftime('%Y-%m-%d'))
 
-%h1 Changes for #{@date.strftime("%A, %B %d")}
+%h1 Changes for #{@date.strftime('%A, %B %d')}
 
 %h2 Cancellations
 
@@ -21,7 +21,7 @@
       - @changes.deleted_instances_for_date.each do |instance|
         %tr
           %td= markdown_html(instance[:name])
-          %td= Time.zone.parse(instance[:start_time]).strftime("%l:%M %p")
+          %td= Time.zone.parse(instance[:start_time]).strftime('%l:%M %p')
           %td= instance[:location]
 
 //- rows = []
@@ -69,8 +69,8 @@
       - @changes.created_instances_for_date.each do |instance|
         %tr
           %td= markdown_html(instance[:name])
-          %td= Time.zone.parse(instance[:start_time]).strftime("%l:%M %p")
-          %td= Time.zone.parse(instance[:end_time]).strftime("%l:%M %p")
+          %td= Time.zone.parse(instance[:start_time]).strftime('%l:%M %p')
+          %td= Time.zone.parse(instance[:end_time]).strftime('%l:%M %p')
           %td= instance[:location]
 
 //- rows = []
@@ -121,15 +121,15 @@
         %tr
           %td= markdown_html(instance[:name])
           %td
-            = Time.zone.parse(instance[:start_time].last).strftime("%A, %B %d %l:%M %p")
+            = Time.zone.parse(instance[:start_time].last).strftime('%A, %B %d %l:%M %p')
             - if instance[:start_time].first != instance[:start_time].last
               %br
-              (was #{Time.zone.parse(instance[:start_time].first).strftime("%A, %B %d %l:%M %p")})
+              (was #{Time.zone.parse(instance[:start_time].first).strftime('%A, %B %d %l:%M %p')})
           %td
-            = Time.zone.parse(instance[:end_time].last).strftime("%l:%M %p")
+            = Time.zone.parse(instance[:end_time].last).strftime('%l:%M %p')
             - if instance[:end_time].first != instance[:end_time].last
               %br
-              (was #{Time.zone.parse(instance[:end_time].first).strftime("%l:%M %p")})
+              (was #{Time.zone.parse(instance[:end_time].first).strftime('%l:%M %p')})
           %td
             = instance[:location].last
             - if instance[:location].first != instance[:location].last

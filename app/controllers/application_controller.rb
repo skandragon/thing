@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   def check_profile
     if current_user and current_user.needs_profile_update?
-      msg = "Please review your instructor profile before continuing."
+      msg = 'Please review your instructor profile before continuing.'
       redirect_to(edit_user_instructor_profile_path(current_user), alert: msg)
       return true
     end

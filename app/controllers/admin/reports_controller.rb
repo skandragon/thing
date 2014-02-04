@@ -4,14 +4,14 @@ class Admin::ReportsController < ApplicationController
   include GriffinPdf
 
   def instructor_signin
-    @instructors = User.where(:instructor => true).order("UPPER(sca_name) ASC")
+    @instructors = User.where(:instructor => true).order('UPPER(sca_name) ASC')
     @instructables = Instructable.all.group_by(&:user_id)
     respond_to do |format|
       format.pdf {
         render_pdf
       }
       format.html {
-        redirect_to :root, alert: "Only PDF format for instructor sign-in is supported."
+        redirect_to :root, alert: 'Only PDF format for instructor sign-in is supported.'
       }
     end
   end
@@ -42,7 +42,7 @@ class Admin::ReportsController < ApplicationController
       instructables = @instructables[instructor.id]
       next if instructables.blank?
 
-      if (@last_letter != instructor.sca_name[0].upcase)
+      if @last_letter != instructor.sca_name[0].upcase
         @pdf.start_new_page(layout: :portrait) unless @last_letter.nil?
         @last_letter = instructor.sca_name[0].upcase
         @first_name = true
@@ -58,13 +58,13 @@ class Admin::ReportsController < ApplicationController
     end
 
     data = @pdf.render
-    send_data(data, type: Mime::PDF, disposition: "inline; filename=instructor-signup.pdf", filename: "instructor-signup.pdf")
+    send_data(data, type: Mime::PDF, disposition: 'inline; filename=instructor-signup.pdf', filename: 'instructor-signup.pdf')
   end
 
   def render_instructor(instructor, instructables)
     @pdf.formatted_text [ { text: instructor.sca_name, size: 14, styles: [:bold] } ]
     @pdf.move_down 10
-    @pdf.text "Signature: ______________________________________________    Camp Name: ______________________________________________________"
+    @pdf.text 'Signature: ______________________________________________    Camp Name: ______________________________________________________'
     @pdf.move_down 10
 
     render_instructables(instructables)
@@ -75,8 +75,8 @@ class Admin::ReportsController < ApplicationController
 
     items = instances.map { |instance|
       [
-        { content: instance.start_time.present? ? instance.start_time.strftime('%a %b %e %I:%M %p') : "" },
-        { content: instance.end_time.present? ? instance.end_time.strftime('%I:%M %p') : "" },
+        { content: instance.start_time.present? ? instance.start_time.strftime('%a %b %e %I:%M %p') : ''},
+        { content: instance.end_time.present? ? instance.end_time.strftime('%I:%M %p') : ''},
         { content: instance.formatted_location },
         { content: markdown_html(instance.instructable.name), inline_format: true },
       ]
@@ -88,10 +88,10 @@ class Admin::ReportsController < ApplicationController
     total_width = @pdf.bounds.width
 
     header = [
-      { content: "Starts", background_color: 'eeeeee' },
-      { content: "Ends", background_color: 'eeeeee' },
-      { content: "Where", background_color: 'eeeeee' },
-      { content: "Title", background_color: 'eeeeee' },
+      { content: 'Starts', background_color: 'eeeeee' },
+      { content: 'Ends', background_color: 'eeeeee' },
+      { content: 'Where', background_color: 'eeeeee' },
+      { content: 'Title', background_color: 'eeeeee' },
     ]
 
     pdf_render_table(@pdf, items, header, total_width, column_widths)

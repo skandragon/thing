@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Pennsic do
-  it "returns the current year" do
+  it 'returns the current year' do
     Pennsic.year.should >= 43
   end
 

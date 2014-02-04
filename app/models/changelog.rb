@@ -193,7 +193,7 @@ class Changelog < ActiveRecord::Base
   def self.changes_since(date = nil)
     date = Time.zone.parse('20130511T075500Z') if date.blank?
 
-    changes = Changelog.where(target_type: "Instructable").where('created_at >= ?', date).order(:created_at).group_by(&:target_id)
+    changes = Changelog.where(target_type: 'Instructable').where('created_at >= ?', date).order(:created_at).group_by(&:target_id)
 
     ret = []
     changes.each do |key, changelist|
@@ -298,7 +298,7 @@ class Changelog < ActiveRecord::Base
 
       if v.is_a?(Hash)
         unless b[k].is_a?(Hash)
-          differences[k] = "Different types"
+          differences[k] = 'Different types'
           next
         end
         diff = different?(a[k], b[k])
@@ -306,7 +306,7 @@ class Changelog < ActiveRecord::Base
 
       elsif v.is_a?(Array)
         unless b[k].is_a?(Array)
-          differences[k] = "Different types"
+          differences[k] = 'Different types'
           next
         end
 

@@ -144,7 +144,7 @@ class CalendarRenderer
           {content: [times_content, location].join(maybe_newline)},
           {content: [
               markdown_html(instance.instructable.name),
-              @options[:no_long_descriptions].present? ? "" : " (#{token})",
+              @options[:no_long_descriptions].present? ? '' : " (#{token})",
               "#{maybe_newline}#{instance.instructable.user.titled_sca_name}"
           ].join(' '), inline_format: true},
       ]
@@ -152,7 +152,7 @@ class CalendarRenderer
         taught_message = nil
         if instance.instructable.repeat_count > 1
           times = instance.instructable.instances.pluck(:start_time)
-          formatted_times = times.select { |t| t != instance.start_time }.map { |t| t.strftime('%m/%d') }.join(", ")
+          formatted_times = times.select { |t| t != instance.start_time }.map { |t| t.strftime('%m/%d') }.join(', ')
           taught_message = "Also taught #{formatted_times}"
         end
         new_items << {
@@ -201,7 +201,7 @@ class CalendarRenderer
                 :start_count_at => 1,
                 font_size: 6 }
 
-    for_user = ""
+    for_user = ''
     for_user = "-- for #{@options[:user].best_name}" if @options[:user]
 
     unless @options[:no_page_numbers]
@@ -223,7 +223,7 @@ class CalendarRenderer
       duration fee_itemization handout_fee handout_limit material_fee
       material_limit repeat_count updated_at
     )
-    data = CSV.generate do |csv|
+    CSV.generate do |csv|
       names = ['id', 'location', 'start_time', 'end_time', 'instructor', 'instance_id' ] + column_names
       csv << names
       @instances.each do |instance|
@@ -233,8 +233,6 @@ class CalendarRenderer
         csv << data
       end
     end
-
-    data
   end
 
   def render_xlsx(options, filename)

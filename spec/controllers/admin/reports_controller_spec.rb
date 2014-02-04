@@ -17,12 +17,12 @@ describe Admin::ReportsController do
     create_instructables(10, track: 'Middle Eastern', user_id: @user.id)
   end
 
-  it "shows a flash message for html" do
+  it 'shows a flash message for html' do
     visit instructor_signin_admin_reports_path
     page.should have_content 'Only PDF format for instructor sign-in is supported.'
   end
 
-  it "renders pdf" do
+  it 'renders pdf' do
     visit instructor_signin_admin_reports_path(format: :pdf)
     page.response_headers['Content-Type'].should == 'application/pdf'
     page.body.should_not be_blank

@@ -46,13 +46,13 @@ describe InstructablesController do
              approved: true, year: 1899)
     end
 
-    it "should offer to copy from previous year class" do
+    it 'should offer to copy from previous year class' do
       visit user_instructables_path(current_user)
       page.should have_content 'MEHistoryScheduledApproved'
       page.should have_content '1899'
     end
 
-    it "should clone for new entry" do
+    it 'should clone for new entry' do
       visit user_instructables_path(current_user)
       click_on 'Request for This Year'
       page.should have_content @class.description_book

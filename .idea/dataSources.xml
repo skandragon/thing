@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" hash="2069122138">
-    <data-source source="LOCAL" name="Rails thing: test" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="3acd301f-caa0-4eb9-bef0-dd3e17accc0a">
+    <data-source source="LOCAL" name="Rails thing: test" uuid="3acd301f-caa0-4eb9-bef0-dd3e17accc0a">
+      <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:thing_test</jdbc-url>
       <user-name>thing</user-name>
@@ -14,7 +15,8 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="Rails thing: development" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="03902fdb-eaa3-4a8d-bb33-ff528156a5fc">
+    <data-source source="LOCAL" name="Rails thing: development" uuid="03902fdb-eaa3-4a8d-bb33-ff528156a5fc">
+      <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:thing_development</jdbc-url>
       <user-name>thing</user-name>
@@ -27,7 +29,8 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="Rails thing: production" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="95e620c3-573f-40b0-974d-557da4d3e977">
+    <data-source source="LOCAL" name="Rails thing: production" uuid="95e620c3-573f-40b0-974d-557da4d3e977">
+      <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://127.0.0.1/thing_production</jdbc-url>
       <user-name>&lt;%= MultaArcana::secret_for(:db_username) %&gt;</user-name>

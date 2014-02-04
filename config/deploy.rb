@@ -2,7 +2,7 @@ load 'deploy/assets'
 require 'bundler/capistrano'
 
 set :stages, %w(pennsic gulfwars)
-set :default_stage, "pennsic"
+set :default_stage, 'pennsic'
 require 'capistrano/ext/multistage'
 
 set :application, 'thing'
@@ -70,11 +70,11 @@ namespace :deploy do
 
   task :build_configs, roles: :app, except: {no_release: true} do
     ['config/unicorn_init.sh', 'config/unicorn.rb', 'config/nginx.conf'].each do |filename|
-      puts "Building #{filename}"...
+      puts "Building #{filename}..."
       data = File.read("#{release_path}/#{filename}.in")
       data.gsub!('@app@', server_socket)
       data.gsub!('@servername@', server_hostname)
-      File.open("#{release_path}/#{filename}", "w") do |file|
+      File.open("#{release_path}/#{filename}", 'w') do |file|
         file.puts data
       end
     end
