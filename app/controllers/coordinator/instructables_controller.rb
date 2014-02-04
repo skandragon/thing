@@ -18,17 +18,10 @@ class Coordinator::InstructablesController < ApplicationController
       @topic = nil
     end
 
-    if @date.present?
-      first_date = Time.zone.parse(@date).beginning_of_day
-      last_date = Time.zone.parse(@date).end_of_day
+    @instructables = Instructable
+    @instructables = @instructables.for_date(@date) if @date.present?
 
-      ids = Instance.where('start_time >= ? AND start_time <= ?', first_date, last_date).pluck(:instructable_id).uniq
-      @instructables = Instructable.where(id: ids)
-    else
-      @instructables = Instructable
-    end
-
-    @instructables = @instructables.includes(:user, :instances).order(:name)
+    @instructables = @instructables.includes(:user, :instances).order("name")
 
     @instructables = @instructables.search_by_name(@search) if @search.present?
 
@@ -60,5 +53,7 @@ class Coordinator::InstructablesController < ApplicationController
     @instructables = @instructables.paginate(page: params[:page], per_page: 20)
 
     session[:instructable_back] = request.fullpath
+
+    puts @instructables.to_sql
   end
 end

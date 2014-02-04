@@ -219,6 +219,13 @@ class Instructable < ActiveRecord::Base
     where('name ILIKE ?', "%#{target.strip}%")
   }
 
+  scope :for_date, -> (date) {
+    first_date = Time.zone.parse(date.to_s).beginning_of_day
+    last_date = Time.zone.parse(date.to_s).end_of_day
+
+    joins(:instances).where("instances.start_time >= ? and instances.start_time <= ?", first_date, last_date)
+  }
+
   def is_proofreader=(value)
     @is_proofreader = value
   end
