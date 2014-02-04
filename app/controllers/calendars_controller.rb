@@ -22,6 +22,7 @@ class CalendarsController < ApplicationController
         begin
           File.unlink(cache_filename)
         rescue
+          # ignored
         end
 
         if uncached or !File.exists?(cache_filename)

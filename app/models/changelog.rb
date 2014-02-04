@@ -330,7 +330,7 @@ class Changelog < ActiveRecord::Base
       end
     end
 
-    return differences if !differences.nil? && differences.count > 0
+    differences if !differences.nil? && differences.count > 0
   end
 
   private
