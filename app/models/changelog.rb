@@ -140,12 +140,12 @@ class Changelog < ActiveRecord::Base
       ret = changes_for_create(original)
     end
 
-    unless ret.nil?
+    if ret.nil?
+      nil
+    else
       ret[:action] = action
       ret[:id] = original.id
       Hashie::Mash.new(ret)
-    else
-      nil
     end
   end
 
@@ -282,7 +282,7 @@ class Changelog < ActiveRecord::Base
     ret
   end
 
-  def generate_differences(a = original, b = committed, bi_directional = true)
+  def generate_differences(a = original, b = committed)
     return [a.class.name, nil] if !a.nil? && b.nil?
     return [nil, b.class.name] if !b.nil? && a.nil?
 

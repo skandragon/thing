@@ -97,7 +97,7 @@ class Instructable < ActiveRecord::Base
     'Performing Arts and Music' => [ 'Bardic', 'Juggling', 'Theater', 'Storytelling', 'Vocal Music', 'Instrumental Music'],
     'SCA Life' => %W(Court Heraldry Meetings Newcomers Persona),
     'Sciences' => [ 'Astronomy', 'Animals', 'Black Powder', 'Equestrian', 'Gardens', 'Research' ],
-    'Scribal Arts' => [ 'Calligraphy', 'Illumination' ],
+    'Scribal Arts' => %w(Calligraphy Illumination),
     'Youth Combat' => [],
     'Other' => [],
   }
@@ -190,7 +190,7 @@ class Instructable < ActiveRecord::Base
 
   validates_presence_of :fee_itemization, :if => :fee_itemization_required?
 
-  validates_inclusion_of :location_type, :in => [ 'track', 'private-camp', 'merchant-booth' ]
+  validates_inclusion_of :location_type, :in => %w(track private-camp merchant-booth)
   validates_presence_of :camp_name, :if => :location_nontrack?
   validates_presence_of :camp_reason, :if => :location_nontrack?
 

@@ -22,7 +22,7 @@ class Coordinator::InstructablesController < ApplicationController
       first_date = Time.zone.parse(@date).beginning_of_day
       last_date = Time.zone.parse(@date).end_of_day
 
-      ids = Instance.where("start_time >= ? AND start_time <= ?", first_date, last_date).pluck(:instructable_id).uniq
+      ids = Instance.where('start_time >= ? AND start_time <= ?', first_date, last_date).pluck(:instructable_id).uniq
       @instructables = Instructable.where(id: ids)
     else
       @instructables = Instructable

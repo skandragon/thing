@@ -135,7 +135,6 @@ class User < ActiveRecord::Base
   def instructables_session_count
     total = instructables.where(location_type: 'track').pluck(:repeat_count).inject(:+)
     total ||= 0
-    total
   end
 
   def display_name

@@ -97,7 +97,6 @@ class CalendarRenderer
       header << { content: 'Description', background_color: 'eeeeee' }
     end
 
-    first_page = true
     last_date = nil
     items = []
 
@@ -116,8 +115,6 @@ class CalendarRenderer
         pdf.font_size PDF_FONT_SIZE
         pdf.move_down PDF_FONT_SIZE
         last_date = instance.start_time.to_date
-
-        first_page = false
       end
 
       if !@options[:omit_descriptions] and instance.formatted_location =~ /A\&S /
@@ -224,7 +221,7 @@ class CalendarRenderer
       material_limit repeat_count updated_at
     )
     CSV.generate do |csv|
-      names = ['id', 'location', 'start_time', 'end_time', 'instructor', 'instance_id' ] + column_names
+      names = %w(id location start_time end_time instructor instance_id) + column_names
       csv << names
       @instances.each do |instance|
         next unless instance.scheduled?
@@ -255,7 +252,7 @@ class CalendarRenderer
         duration fee_itemization handout_fee handout_limit material_fee
         material_limit
       )
-      header = ['id', 'location', 'start_time', 'end_time', 'instructor' ] + column_names
+      header = %w(id location start_time end_time instructor) + column_names
 
       wb.add_worksheet(name: "Pennsic #{Pennsic.year}") do |sheet|
         sheet.add_row header

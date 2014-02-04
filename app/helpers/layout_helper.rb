@@ -86,6 +86,7 @@ module LayoutHelper
       begin
         content_tag :span, read_revision, :class => 'revision'
       rescue
+        # ignored
       end
     else
       nil

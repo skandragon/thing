@@ -7,7 +7,7 @@ class ChangelogsController < ApplicationController
       end
       @date = Time.zone.parse(date)
     else
-      @date = Time.zone.now unless date
+      @date = Time.zone.now
     end
 
     filename = "pennsic-#{Pennsic.year}-all.csv"

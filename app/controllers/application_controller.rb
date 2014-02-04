@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
 
   def authorization_failure_message(controller, action, current_resource)
     message = 'Not authorized.'
-    if ['development', 'test'].include?Rails.env
+    if %w(development test).include?Rails.env
       message += " (controller: #{controller}, action: #{action}"
       if current_resource
         message += ", resource: #{current_resource.class} #{current_resource.id}"
