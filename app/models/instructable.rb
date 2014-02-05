@@ -220,10 +220,9 @@ class Instructable < ActiveRecord::Base
   }
 
   scope :for_date, -> (date) {
-    first_date = Time.zone.parse(date.to_s).beginning_of_day
-    last_date = Time.zone.parse(date.to_s).end_of_day
-
-    joins(:instances).where("instances.start_time >= ? and instances.start_time <= ?", first_date, last_date)
+    target_date = Time.zone.parse(date.to_s)
+    joins(:instances).where("instances.start_time >= ? and instances.start_time <= ?",
+                            target_date.beginning_of_day, target_date.end_of_day)
   }
 
   def is_proofreader=(value)

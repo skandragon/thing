@@ -32,18 +32,11 @@ class Coordinator::InstructablesController < ApplicationController
     #
     # If @track.present? ensure it is one that is allowed.
     #
-    if @track.blank? and coordinator?
-      unless admin?
-        @instructables = @instructables.where(track: @allowed_tracks)
-      end
+    if admin? and @track == 'No Track'
+      @instructables = @instructables.where("track IS NULL OR track=''")
     else
-      if admin? && @track == 'No Track'
-        @instructables = @instructables.where("track IS NULL OR track=''")
-      elsif coordinator_for?(@track)
-        @instructables = @instructables.where(track: @track)
-      else
-        @instructables = @instructables.where(track: @allowed_tracks)
-      end
+      tracks = current_user.filter_tracks(@track)
+      @instructables = @instructables.where(track: tracks) unless tracks.nil?
     end
 
     @instructables = @instructables.where(approved: @approved) if @approved.present?
@@ -53,7 +46,5 @@ class Coordinator::InstructablesController < ApplicationController
     @instructables = @instructables.paginate(page: params[:page], per_page: 20)
 
     session[:instructable_back] = request.fullpath
-
-    puts @instructables.to_sql
   end
 end

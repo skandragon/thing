@@ -132,6 +132,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  def filter_tracks(tracks)
+    if tracks.present?
+      tracks = Array(tracks)
+      allowed_tracks & tracks
+    else
+      if admin?
+        nil
+      else
+        allowed_tracks
+      end
+    end
+  end
+
   def instructables_session_count
     total = instructables.where(location_type: 'track').pluck(:repeat_count).inject(:+)
     total ||= 0

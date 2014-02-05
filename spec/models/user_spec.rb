@@ -123,4 +123,37 @@ describe User do
       u.instructables_session_count.should == 0
     end
   end
+
+  describe '#filter_tracks' do
+    it 'disallows a track if the user is not a coordinator at all' do
+      u = create(:user)
+      u.filter_tracks('Pennsic University').should == []
+    end
+
+    it 'allows a track if the user is a coordinator for it' do
+      u = create(:user, tracks: ['Pennsic University'])
+      u.filter_tracks('Pennsic University').should == ['Pennsic University']
+    end
+
+    it 'disallows a track if the user is not a coordinator for it' do
+      u = create(:user, tracks: ['Performing Arts'])
+      u.filter_tracks('Pennsic University').should == []
+    end
+
+    it 'allows a track if user is admin' do
+      u = create(:user, tracks: ['Pennsic University'], admin: true)
+      u.filter_tracks('Pennsic University').should == ['Pennsic University']
+    end
+
+    it 'returns the allowed tracks when the input list is empty and not admin' do
+      u = create(:user, tracks: ['Pennsic University'])
+      u.filter_tracks(nil).should == ['Pennsic University']
+    end
+
+    it 'returns nil when given an empty list and admin' do
+      u = create(:user, tracks: ['Pennsic University'], admin: true)
+      u.filter_tracks(nil).should be_nil
+    end
+
+  end
 end
