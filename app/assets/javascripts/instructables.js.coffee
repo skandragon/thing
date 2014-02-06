@@ -85,7 +85,7 @@ jQuery ->
     update_select = ->
       track = $('#instructable_track')[0].value
       options = window.thing_tracks[track]
-      if track and options.length > 0
+      if track
         repopulate_targets(options)
       else
         hide_targets()
