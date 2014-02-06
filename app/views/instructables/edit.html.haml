@@ -148,7 +148,7 @@
 
   %fieldset
     %legend Special Needs
-    = f.input :special_needs, as: :check_boxes, checked: @instructable.special_needs, collection: [ 'Electricity', 'Whiteboard and Markers', 'LOUD class', 'Running water', 'Messy class area', 'Instrumental or Vocal Performance' ]
+    = f.input :special_needs, as: :check_boxes, checked: @instructable.special_needs, collection: [ 'Electricity', 'Whiteboard and Markers', 'LOUD class', 'Running water', 'Messy class area', 'In Persona', 'Instrumental or Vocal Performance' ]
     = f.input :special_needs_description, placeholder: 'Sanitary disposal, excess or hazardous waste removal, etc', input_html: { rows: 3, class: 'input-xxlarge' }
     = f.input :heat_source, inline_label: 'Are you using a source of heat of any type?'
     #heat-source

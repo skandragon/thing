@@ -106,12 +106,12 @@ class Instructable < ActiveRecord::Base
     'Pennsic University' => [
       'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
       'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
-      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'Battlefield'
+      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'Battlefield'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
-    'Performing Arts' => [ 'Amphitheater', 'Great Hall', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent', 'Rune Stone Park' ],
+    'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent', 'A&S 9' ],
     'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
@@ -124,12 +124,10 @@ class Instructable < ActiveRecord::Base
       'General Archery',
       'Novelty Range'
     ],
-    'Parent/Child' => ['A&S 8'],
+    'Parent/Child' => ['A&S 6'],
     'First Aid' => ['A&S 1'],
-    'Bardic' => ['A&S 9'],
-    'Music' => ['A&S 9'],
     'Youth Combat' => [ 'Youth Combat List' ],
-    'In Persona' => [ 'A&S 15' ],
+    'In Persona' => [ 'A&S 8' ],
     'Martial Activities' => [
       'Battlefield List',
       'Blue List',
@@ -144,9 +142,9 @@ class Instructable < ActiveRecord::Base
       'West Battlefield',
       'White List',
     ],
-    'Party' => [],
-    'Court' => [],
-    'Event' => [],
+    'Party' => ['Battlefield', 'Great Hall', 'Rune Stone Park'],
+    'Court' => ['Great Hall'],
+    'Event' => ['Great Hall', 'Rune Stone Park'],
     "Artisan's Row" => [
       "Artisan's Row A",
       "Artisan's Row B",
