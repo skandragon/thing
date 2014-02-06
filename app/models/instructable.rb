@@ -217,7 +217,7 @@ class Instructable < ActiveRecord::Base
     where('name ILIKE ?', "%#{target.strip}%")
   }
 
-  scope :for_date, -> (date) {
+  scope :for_date, ->(date) {
     target_date = Time.zone.parse(date.to_s)
     joins(:instances).where("instances.start_time >= ? and instances.start_time <= ?",
                             target_date.beginning_of_day, target_date.end_of_day)
