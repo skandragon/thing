@@ -136,7 +136,7 @@ describe User do
     end
 
     it 'disallows a track if the user is not a coordinator for it' do
-      u = create(:user, tracks: ['Performing Arts'])
+      u = create(:user, tracks: ['Performing Arts and Music'])
       u.filter_tracks('Pennsic University').should == []
     end
 

@@ -12,7 +12,7 @@ describe Coordinator::InstructablesController do
                topic: 'History', name: 'MEHistoryScheduledApproved',
                approved: true)
     @meclass.instances.create!(start_time: get_date(0), location: 'Foo')
-    @paclass = create(:instructable, user_id: user.id, track: 'Performing Arts',
+    @paclass = create(:instructable, user_id: user.id, track: 'Performing Arts and Music',
                topic: 'History', name: 'PAHistoryScheduledApproved',
                approved: true)
     @paclass.instances.create!(start_time: get_date(1), location: 'Foo')
@@ -41,7 +41,7 @@ describe Coordinator::InstructablesController do
     end
 
     it 'renders as admin for other tracks' do
-      select 'Performing Arts', from: 'track'
+      select 'Performing Arts and Music', from: 'track'
       click_on 'Filter'
       page.should_not have_content 'MEMusicUnscheduledUnapproved'
       page.should_not have_content 'MEDanceUnscheduledApproved'
@@ -70,7 +70,7 @@ describe Coordinator::InstructablesController do
   describe 'search (multi-track coordinator)' do
     before :each do
       setup_data
-      log_in tracks: ['Middle Eastern', 'Performing Arts']
+      log_in tracks: ['Middle Eastern', 'Performing Arts and Music']
       visit coordinator_instructables_path
     end
 

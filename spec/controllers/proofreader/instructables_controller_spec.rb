@@ -12,7 +12,7 @@ describe Proofreader::InstructablesController do
                topic: 'History', name: 'MEHistoryScheduledProofed',
                proofread: true, proofread_by: [user, 123], is_proofreader: :no_really)
     i.instances.create(start_time: get_date(0), location: 'Foo')
-    i = create(:instructable, user_id: user.id, track: 'Performing Arts',
+    i = create(:instructable, user_id: user.id, track: 'Performing Arts and Music',
                topic: 'History', name: 'PAHistoryScheduledProofed',
                proofread: true, proofread_by: [user, 123], is_proofreader: :no_really)
     i.instances.create(start_time: get_date(1), location: 'Foo')

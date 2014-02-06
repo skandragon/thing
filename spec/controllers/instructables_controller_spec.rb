@@ -359,11 +359,11 @@ describe InstructablesController do
 
     it 'allows :track' do
       visit edit_user_instructable_path(@other_user, @other_instructable)
-      find('#instructable_track').select 'Performing Arts'
+      find('#instructable_track').select 'Performing Arts and Music'
       first('.submit-button').click
       page.should have_content 'Class updated.'
       @other_instructable.reload
-      @other_instructable.track.should == 'Performing Arts'
+      @other_instructable.track.should == 'Performing Arts and Music'
       Changelog.count.should == 1
     end
 
@@ -379,8 +379,8 @@ describe InstructablesController do
     it 'populates location when track changes', js: true do
       @other_instructable.instances.create!(start_time: get_date(0))
       visit edit_user_instructable_path(@other_user, @other_instructable)
-      find('#instructable_track').select 'Performing Arts'
-      find('#instructable_instances_attributes_0_location').select Instructable::TRACKS['Performing Arts'].first
+      find('#instructable_track').select 'Performing Arts and Music'
+      find('#instructable_instances_attributes_0_location').select Instructable::TRACKS['Performing Arts and Music'].first
     end
 
     it 'populates location for PU space when overridden on load', js: true do
