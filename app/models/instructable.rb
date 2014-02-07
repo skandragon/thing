@@ -115,7 +115,7 @@ class Instructable < ActiveRecord::Base
     'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
-    'Glass' => ['A&S 5'],
+    'Glass' => ['A&S 4'],
     'Thrown Weapons' => [ 'Thrown Weapons Range', 'Thrown Weapons Tent' ],
     'Archery' => [
       'Archery',
@@ -125,7 +125,7 @@ class Instructable < ActiveRecord::Base
       'Novelty Range'
     ],
     'Parent/Child' => ['A&S 6'],
-    'First Aid' => ['A&S 1'],
+    'First Aid' => ['A&S 14'],
     'Youth Combat' => [ 'Youth Combat List' ],
     'In Persona' => [ 'A&S 8' ],
     'Martial Activities' => [
