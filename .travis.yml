@@ -10,7 +10,7 @@ before_install:
   - rvm rubygems current
   - gem --version
   - rvm list known
-  - gem install brakeman
+  - travis_retry gem install brakeman
 
 before_script:
   - cp config/database-travis.yml config/database.yml
