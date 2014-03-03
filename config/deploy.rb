@@ -73,6 +73,13 @@ namespace :deploy do
   end
   before "deploy", "deploy:check_revision"
 
+  task :copy_secrets do
+    on roles(:app) do
+      run "cp #{deploy_to}/private/secrets.yml #{release_path}/config/secrets.yml"
+    end
+  end
+  after 'deploy:updated', 'deploy:copy_secrets'
+
   task :copy_system_files do
     on roles(:app) do
       %w{shared}.each do |share|
@@ -81,6 +88,5 @@ namespace :deploy do
       end
     end
   end
-
   after 'deploy:updated', 'deploy:copy_system_files'
 end
