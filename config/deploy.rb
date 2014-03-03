@@ -21,6 +21,8 @@ set :deploy_via, :remote_cache
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 set :keep_releases, 5
 
+set :linked_files, %w{config/secrets.yml}
+
 namespace :deploy do
   desc 'Restart application'
   task :restart do
@@ -72,11 +74,6 @@ namespace :deploy do
     end
   end
   before "deploy", "deploy:check_revision"
-
-  task :copy_secrets do
-    run "cp #{deploy_to}/private/secrets.yml #{release_path}/config/secrets.yml"
-  end
-  after 'deploy:migrate', 'deploy:copy_secrets'
 
   task :copy_system_files do
     on roles(:app) do
