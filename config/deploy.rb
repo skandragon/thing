@@ -74,14 +74,4 @@ namespace :deploy do
     end
   end
   before "deploy", "deploy:check_revision"
-
-  task :copy_system_files do
-    on roles(:app) do
-      %w{shared}.each do |share|
-        execute "cp #{release_path}/#{share}/* #{shared_path}/system/"
-        execute "chmod a+rX #{shared_path}/system/*.exe"
-      end
-    end
-  end
-  after 'deploy:updated', 'deploy:copy_system_files'
 end
