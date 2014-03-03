@@ -78,7 +78,7 @@ namespace :deploy do
       run "cp #{deploy_to}/private/secrets.yml #{release_path}/config/secrets.yml"
     end
   end
-  after 'deploy:updated', 'deploy:copy_secrets'
+  after 'deploy:migrate', 'deploy:copy_secrets'
 
   task :copy_system_files do
     on roles(:app) do
