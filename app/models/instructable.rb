@@ -94,7 +94,7 @@ class Instructable < ActiveRecord::Base
     'Parent/Child' => [],
     'Party' => [],
     'Performance' => %w(Bardic Commedia Music Storytelling Theater),
-    'Performing Arts and Music' => [ 'Bardic', 'Juggling', 'Theater', 'Storytelling', 'Vocal Music', 'Instrumental Music'],
+    'Performing Arts and Music' => [ 'Bardic', 'Commedia', 'Instrumental Music', 'Juggling', 'Storytelling', 'Theater', 'Vocal Music' ],
     'SCA Life' => %W(Court Heraldry Meetings Newcomers Persona),
     'Sciences' => [ 'Astronomy', 'Animals', 'Black Powder', 'Equestrian', 'Gardens', 'Research' ],
     'Scribal Arts' => %w(Calligraphy Illumination),
