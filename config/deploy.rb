@@ -74,9 +74,7 @@ namespace :deploy do
   before "deploy", "deploy:check_revision"
 
   task :copy_secrets do
-    on roles(:app) do
-      run "cp #{deploy_to}/private/secrets.yml #{release_path}/config/secrets.yml"
-    end
+    run "cp #{deploy_to}/private/secrets.yml #{release_path}/config/secrets.yml"
   end
   after 'deploy:migrate', 'deploy:copy_secrets'
 
