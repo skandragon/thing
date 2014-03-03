@@ -69,7 +69,8 @@ end
 
 gem 'rack-mini-profiler'
 gem 'strong_parameters'
-gem 'capistrano', '~> 2'
+gem 'capistrano'
+gem 'capistrano-rails'
 gem 'haml-rails'
 gem 'simple_form'
 gem 'will_paginate'

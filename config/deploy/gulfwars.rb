@@ -1,3 +1,5 @@
+set :rails_env, 'production'
+
 role :web, 'explorer@moghedien.flame.org'
 role :app, 'explorer@moghedien.flame.org'
 role :db,  'explorer@moghedien.flame.org', :primary => true
