@@ -3,7 +3,7 @@ set :repo_url, 'git://github.com/skandragon/thing.git'
 
 set :deploy_to, '/www/thing'
 set :scm, :git
-set :branch, "master"
+set :branch, 'master'
 set :deploy_via, :remote_cache
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
@@ -26,7 +26,7 @@ set :linked_files, %w{config/secrets.yml}
 namespace :deploy do
   desc 'Restart application'
   task :restart do
-    desc "restart unicorn server"
+    desc 'restart unicorn server'
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       execute "/etc/unicorn/unicorn_#{fetch :application} restart"
@@ -51,7 +51,7 @@ namespace :deploy do
       execute "cd #{repo_path} && git show --format='%H %ai' | head -1 > #{release_path}/hash.txt"
     end
   end
-  after "deploy:updated", "deploy:git_log"
+  after 'deploy:updated', 'deploy:git_log'
 
 #  task :setup_config do
 #    on roles(:app), in: sequence do
@@ -63,15 +63,15 @@ namespace :deploy do
 #  end
 #  after "deploy:setup", "deploy:setup_config"
 
-  desc "Make sure local git is in sync with remote."
+  desc 'Make sure local git is in sync with remote.'
   task :check_revision do
     on roles(:app), in: :sequence do
       unless `git rev-parse HEAD` == `git rev-parse origin/master`
-        puts "WARNING: HEAD is not the same as origin/master"
-        puts "Run `git push` to sync changes."
+        puts 'WARNING: HEAD is not the same as origin/master'
+        puts 'Run `git push` to sync changes.'
         exit
       end
     end
   end
-  before "deploy", "deploy:check_revision"
+  before 'deploy', 'deploy:check_revision'
 end
