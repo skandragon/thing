@@ -95,7 +95,7 @@
     = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
     = f.input :duration, label: 'Duration (hours)', input_html: { step: 0.25, class: 'input-mini', min: '0.25', max: 4 }
     = f.input :additional_instructors_expanded, label: 'Additional instructors', hint: 'Enter the SCA names of other instructors, separated by commas, of any additional instructors.  Leave it blank if none.'
-    = f.input :repeat_count, label: 'Sessions', as: :select, input_html: { class: 'input-mini' }, collection: 1..10, default: 1, hint: 'Number of times this class will be taught.'
+    = f.input :repeat_count, label: 'Sessions', as: :select, input_html: { class: 'input-mini' }, collection: 1..11, default: 1, hint: 'Number of times this class will be taught.'
     = f.input :culture, collection: Instructable::CULTURES, hint: 'If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus.'
     = f.input :topic, collection: Instructable::TOPICS.keys, hint: 'Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies.'
     #subtopic
