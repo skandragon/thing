@@ -156,7 +156,7 @@ describe Coordinator::InstructablesController do
     end
 
     it 'filters based on start date' do
-      target = @meclass.instances.first.start_time.strftime("%Y-%m-%d")
+      target = @meclass.instances.first.start_time.strftime('%Y-%m-%d')
       select target, from: 'date'
       click_on 'Filter'
       page.should_not have_content 'MEMusicUnscheduledUnapproved'

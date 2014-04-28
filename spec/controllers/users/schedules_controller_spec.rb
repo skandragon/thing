@@ -4,7 +4,8 @@ describe Users::SchedulesController do
   describe 'no-user' do
     describe '#show' do
       let (:user) {
-        create(:user, sca_title: "lord", sca_name: "Griffin")
+        # noinspection RubyQuotedStringsInspection
+        create(:user, sca_title: "lord", sca_name: 'Griffin')
       }
 
       let (:instructable) {

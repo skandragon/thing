@@ -21,7 +21,7 @@ class Coordinator::InstructablesController < ApplicationController
     @instructables = Instructable
     @instructables = @instructables.for_date(@date) if @date.present?
 
-    @instructables = @instructables.includes(:user, :instances).order("name")
+    @instructables = @instructables.includes(:user, :instances).order('name')
 
     @instructables = @instructables.search_by_name(@search) if @search.present?
 

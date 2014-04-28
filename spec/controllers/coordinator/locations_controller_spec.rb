@@ -40,7 +40,7 @@ describe Coordinator::LocationsController do
       end
     end
 
-    it "should require a track to be selected for location" do
+    it 'should require a track to be selected for location' do
       visit coordinator_locations_path
       within '#location-form' do
         select Instructable::CLASS_DATES.first, from: 'date'
@@ -49,7 +49,7 @@ describe Coordinator::LocationsController do
       page.should have_content 'Select both a date and a track'
     end
 
-    it "should require a date to be selected for location" do
+    it 'should require a date to be selected for location' do
       visit coordinator_locations_path
       within '#location-form' do
         select 'Pennsic University', from: 'track'
@@ -58,7 +58,7 @@ describe Coordinator::LocationsController do
       page.should have_content 'Select both a date and a track'
     end
 
-    it "should require a track they are coordinator for location", js: true do
+    it 'should require a track they are coordinator for location', js: true do
       visit coordinator_locations_path
       click_on 'HACKIT'
       sleep(0.25)
@@ -70,7 +70,7 @@ describe Coordinator::LocationsController do
       page.should have_content 'Select a valid date and track you are'
     end
 
-    it "should say if there are no classes for that track" do
+    it 'should say if there are no classes for that track' do
       visit coordinator_locations_path
       within '#location-form' do
         select Instructable::CLASS_DATES.first, from: 'date'
@@ -80,7 +80,7 @@ describe Coordinator::LocationsController do
       page.should have_content 'There are no instances of'
     end
 
-    it "should require a track to be selected for free/busy" do
+    it 'should require a track to be selected for free/busy' do
       visit coordinator_locations_path
       within '#freebusy-form' do
         click_on 'Go'
@@ -88,7 +88,7 @@ describe Coordinator::LocationsController do
       page.should have_content 'Select a track'
     end
 
-    it "should require a track they are coordinator for free/busy", js: true do
+    it 'should require a track they are coordinator for free/busy', js: true do
       visit coordinator_locations_path
       click_on 'HACKIT'
       sleep(0.25)
