@@ -1,3 +1,5 @@
+require 'csv'
+
 class Coordinator::InstructablesController < ApplicationController
   def index
     @allowed_tracks = current_user.allowed_tracks
@@ -43,8 +45,31 @@ class Coordinator::InstructablesController < ApplicationController
     @instructables = @instructables.where(scheduled: @scheduled) if @scheduled.present?
     @instructables = @instructables.where(topic: @topic) if @topic.present?
 
-    @instructables = @instructables.paginate(page: params[:page], per_page: 20)
+    respond_to do |format|
+      format.html {
+        @instructables = @instructables.paginate(page: params[:page], per_page: 20)
+        session[:instructable_back] = request.fullpath
+      }
 
-    session[:instructable_back] = request.fullpath
+      format.csv {
+        filename = 'instructables.csv'
+
+        column_names = %w(
+          name track culture topic_and_subtopic
+          adult_only duration repeat_count
+        )
+        csv_data = CSV.generate do |csv|
+          names = %w(id scheduled?) + column_names
+          csv << names
+          @instructables.each do |instructable|
+            data = [instructable.id, instructable.status_message ]
+            data += instructable.attributes.values_at(*column_names)
+            csv << data
+          end
+        end
+
+        send_data(csv_data, type: Mime::CSV, disposition: "attachment", filename: filename)
+      }
+    end
   end
 end

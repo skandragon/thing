@@ -11,6 +11,8 @@
   = submit_tag 'Filter', :class => 'btn'
   = submit_tag 'Clear', :class => 'btn'
 
+.btn= link_to "Download as CSV", request.query_parameters.merge({format: :csv})
+
 %table.table
   %thead
     %tr
