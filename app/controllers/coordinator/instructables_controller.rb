@@ -7,12 +7,14 @@ class Coordinator::InstructablesController < ApplicationController
     @approved = params[:approved]
     @date = params[:date]
     @scheduled = params[:scheduled]
+    @schedule = params[:schedule]
     @search = params[:search]
     @track = params[:track]
     @topic = params[:topic]
 
     if params[:commit] == 'Clear'
       @approved = nil
+      @schedule = nil
       @date = nil
       @scheduled = nil
       @search = nil
@@ -43,6 +45,7 @@ class Coordinator::InstructablesController < ApplicationController
 
     @instructables = @instructables.where(approved: @approved) if @approved.present?
     @instructables = @instructables.where(scheduled: @scheduled) if @scheduled.present?
+    @instructables = @instructables.where(schedule: @schedule) if @schedule.present?
     @instructables = @instructables.where(topic: @topic) if @topic.present?
 
     respond_to do |format|
@@ -55,7 +58,7 @@ class Coordinator::InstructablesController < ApplicationController
         filename = 'instructables.csv'
 
         column_names = %w(
-          name track culture topic_and_subtopic
+          name schedule track culture topic_and_subtopic
           adult_only duration repeat_count
         )
         csv_data = CSV.generate do |csv|

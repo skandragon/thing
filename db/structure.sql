@@ -219,7 +219,8 @@ CREATE TABLE instructables (
     proofread boolean DEFAULT false,
     proofread_by integer[] DEFAULT '{}'::integer[],
     proofreader_comments text,
-    year integer
+    year integer,
+    schedule character varying(255)
 );
 
 
@@ -662,3 +663,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130717162854');
 INSERT INTO schema_migrations (version) VALUES ('20140125181600');
 
 INSERT INTO schema_migrations (version) VALUES ('20140130005107');
+
+INSERT INTO schema_migrations (version) VALUES ('20140517150842');

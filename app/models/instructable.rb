@@ -156,6 +156,15 @@ class Instructable < ActiveRecord::Base
     'Youth Point' => [ 'Youth Point' ],
   }
 
+  SCHEDULES = [
+      'Pennsic University',
+      'War Point',
+      "Artisan's Row",
+      'Court',
+      'Event',
+      'Party',
+  ]
+
   def self.all_locations
     TRACKS.values.flatten.uniq
   end

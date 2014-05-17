@@ -4,7 +4,7 @@
   = text_field_tag :search, @search, class: 'input-medium search-query', placeholder: 'Search'
   - if @allowed_tracks.count > 1
     = select_tag :track, options_for_select([''] + @allowed_tracks, @track), class: 'input-medium'
-  = select_tag :approved, options_for_select({'Any' => '', 'Approved' => '1', 'Not Approved' => 0}, @approved), class: 'input-medium'
+  = select_tag :schedule, options_for_select([''] + Instructable::SCHEDULES.sort, @schedule), class: 'input-medium'
   = select_tag :scheduled, options_for_select({'Any' => '', 'Scheduled' => '1', 'Not Scheduled' => 0}, @scheduled), class: 'input-medium'
   = select_tag :topic, options_for_select([''] + Instructable::TOPICS.keys.sort, @topic), class: 'input-medium'
   = select_tag :date, options_for_select([''] + Instructable::CLASS_DATES, @date), class: 'input-medium'
@@ -21,7 +21,7 @@
         %br
         Track
       %th Culture and Topic
-      %th Approved?
+      %th Schedule
       %th Scheduled Date(s)
   %tbody
     = render :partial => @instructables

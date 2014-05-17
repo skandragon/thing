@@ -52,22 +52,23 @@ class Instance < ActiveRecord::Base
     end
   end
 
-  def formatted_start_time
-    start_time.present? ? start_time.to_s(:pennsic_short) : nil
+  def formatted_start_time(format = :pennsic_short)
+    start_time.present? ? start_time.to_s(format) : nil
   end
 
-  def formatted_location_and_time
+  def formatted_location_and_time(format = :pennsic_short)
+    phrase = format == :pennsic_time_only ? 'at' : 'on'
     loc = formatted_location
     if start_time.present? and loc.present?
-      ret = [loc, formatted_start_time].join(' on ')
+      ret = [loc, formatted_start_time(format)].join(" #{phrase} ")
     elsif start_time.present? and loc.blank?
-      ret = "Location pending, #{formatted_start_time}"
+      ret = "Location pending, #{formatted_start_time(format)}"
     elsif start_time.blank? and loc.present?
       ret = "#{loc}, time pending"
     else
       ret = 'Location and time pending'
     end
-    ret
+    ret.gsub(/[\ ]+/, ' ')
   end
 
   def self.free_busy_report_for(date, track)
