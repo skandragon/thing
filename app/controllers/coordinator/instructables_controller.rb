@@ -4,22 +4,22 @@ class Coordinator::InstructablesController < ApplicationController
   def index
     @allowed_tracks = current_user.allowed_tracks
 
-    @approved = params[:approved]
-    @date = params[:date]
-    @scheduled = params[:scheduled]
-    @schedule = params[:schedule]
+    @approved = get_param(:approved)
+    @date = get_param(:date)
+    @scheduled = get_param(:scheduled)
+    @schedule = get_param(:schedule)
+    @track = get_param(:track)
+    @topic = get_param(:topic)
     @search = params[:search]
-    @track = params[:track]
-    @topic = params[:topic]
 
     if params[:commit] == 'Clear'
       @approved = nil
       @schedule = nil
       @date = nil
       @scheduled = nil
-      @search = nil
       @track = nil
       @topic = nil
+      @search = nil
     end
 
     @instructables = Instructable
@@ -43,9 +43,14 @@ class Coordinator::InstructablesController < ApplicationController
       @instructables = @instructables.where(track: tracks) unless tracks.nil?
     end
 
+    if @schedule == 'No Schedule'
+      @instructables = @instructables.where("schedule IS NULL OR schedule=''")
+    else
+      @instructables = @instructables.where(schedule: @schedule) unless @schedule.nil?
+    end
+
     @instructables = @instructables.where(approved: @approved) if @approved.present?
     @instructables = @instructables.where(scheduled: @scheduled) if @scheduled.present?
-    @instructables = @instructables.where(schedule: @schedule) if @schedule.present?
     @instructables = @instructables.where(topic: @topic) if @topic.present?
 
     respond_to do |format|
@@ -74,5 +79,15 @@ class Coordinator::InstructablesController < ApplicationController
         send_data(csv_data, type: Mime::CSV, disposition: "attachment", filename: filename)
       }
     end
+  end
+
+  private
+
+  def get_param(field)
+    ret = params[field]
+    if ret =~ /^\(/
+      ret = nil
+    end
+    ret
   end
 end
