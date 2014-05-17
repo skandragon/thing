@@ -4,6 +4,8 @@ require 'prawn'
 require 'json'
 require 'pp'
 
+include GriffinMarkdown
+
 @titles = Instructable.pluck(:name)
 
 entries = {}
@@ -49,7 +51,7 @@ def wanted(instance)
   true
 end
 
-Instance.all.each do |instance|
+Instance.includes(:instructable).each do |instance|
   if instance.start_time.nil?
     pp instance
     next
@@ -70,7 +72,7 @@ Instance.all.each do |instance|
   hour = instance.start_time.strftime("%l%p").strip.downcase
   morning_check = @morning_hours.index(hour)
   afternoon_check = @afternoon_hours.index(hour)
-  loc = instance.formatted_location.gsub(/ Tent/, '')
+  loc = instance.formatted_location.gsub(/ Tent$/, '')
   loc1_check = @locs1.index(loc)
   loc2_check = @locs2.index(loc)
 
@@ -89,20 +91,75 @@ Instance.all.each do |instance|
     section = :other
   end
 
-  spot = subsection ? entries[date][section][subsection] : entries[date][section]
-  spot << {
-    name: instance.instructable.name,
+  locindex = (loc1_check || loc2_check)
+  hourindex = (morning_check || afternoon_check)
+
+  duration = instance.instructable.duration
+  minute = instance.start_time.strftime('%M').to_i
+
+  if hourindex
+    hourindex += (minute / 60.0)
+    if (hourindex + duration) > 5
+      display_duration = 5 - hourindex
+      extended_right = true
+    else
+      display_duration = duration
+      extended_right = false
+    end
+  else
+    display_duration = duration
+    extended_right = false
+  end
+
+  extended_left = false
+
+  data = {
+    name: markdown_html(instance.instructable.name),
+    start_time: instance.start_time,
     hour: hour,
-    hourindex: morning_check || afternoon_check,
+    hourindex: hourindex,
     loc: loc,
-    locindex: loc1_check || loc2_check,
-    minute: instance.start_time.strftime('%M').to_i,
-    duration: instance.instructable.duration,
+    locindex: locindex,
+    duration: duration,
+    display_duration: display_duration,
+    id: instance.instructable.id,
+    extended_right: extended_right,
+    extended_left: extended_left,
   }
+
+  spot = subsection ? entries[date][section][subsection] : entries[date][section]
+  spot << data
+
+  if extended_right and section == :morning
+
+    display_duration = duration - display_duration
+    if display_duration > 5
+      display_duration = 5
+      extended_right = true
+    else
+      extended_right = false
+    end
+
+    data = {
+      name: markdown_html(instance.instructable.name),
+      start_time: instance.start_time,
+      hour: hour,
+      hourindex: 0,
+      loc: loc,
+      locindex: locindex,
+      duration: duration,
+      display_duration: display_duration,
+      id: instance.instructable.id,
+      extended_right: extended_right,
+      extended_left: true,
+    }
+    spot = entries[date][:afternoon][subsection]
+    spot << data
+  end
 end
 
 def render(pdf, opts)
-  debug = false
+  debug = true
 
   font_path = "EagleLake-Regular.ttf"
   pdf.font_families["TitleFont"] = {
@@ -126,8 +183,8 @@ def render(pdf, opts)
     (pdf.grid.rows - 1).times do |row|
       (pdf.grid.columns - 1).times do |column|
         pdf.grid([row, column], [row + 1, column + 1]).bounding_box do
-          stroke_color 'eeeeee'
-          stroke_bounds
+          pdf.stroke_color 'eeeeee'
+          pdf.stroke_bounds
         end
       end
     end
@@ -251,29 +308,67 @@ def render(pdf, opts)
   opts[:entries].each do |data|
     locindex = data[:locindex]
     timeindex = data[:hourindex]
-    timeoffset = data[:minute] / 60.0
+    display_duration = data[:display_duration]
+    duration = data[:duration]
+
+    extended_right = data[:extended_right]
+    extended_left = data[:extended_left]
+
     y1 = opts[:rowoffset] + locindex * opts[:rowsize]
-    x1 = opts[:columnoffset] + timeindex * opts[:columnsize] + opts[:columnsize] * timeoffset
+    x1 = opts[:columnoffset] + timeindex * opts[:columnsize]
     y2 = y1 + opts[:rowsize] - 1
-    x2 = x1 - 1 + data[:duration] * opts[:columnsize]
+    x2 = x1 - 1 + display_duration * opts[:columnsize]
     box = pdf.grid([y1, x1], [y2, x2])
+
+    if extended_left
+      at = [box.top_left[0] + 6, box.top_left[1] - 2]
+    else
+      at = [box.top_left[0] + 2, box.top_left[1] - 2]
+    end
+
+    box_opts = {
+      at: at,
+      width: box.width - 4,
+      height: box.height - 4,
+      size: 9,
+      overflow: :shrink_to_fit,
+      min_font_size: 5,
+      leading: 0,
+      inline_format: true,
+    }
+
     box.bounding_box {
       pdf.fill_color 'ffffff'
       pdf.fill {
         pdf.rectangle [0, box.height], box.width, box.height
       }
       pdf.fill_color '000000'
+      pdf.stroke_bounds
     }
-    box_opts = {
-        at: [box.top_left[0] + 2, box.top_left[1] - 2],
-        width: box.width - 4,
-        height: box.height - 4,
-        size: 9,
-        overflow: :shrink_to_fit,
-        min_font_size: 6,
-    }
-    pdf.text_box data[:name], box_opts
-    box.bounding_box { pdf.stroke_bounds }
+    msg = "#{data[:name]} <i>(#{data[:id]})</i>"
+    if duration != display_duration
+      msg += "<br/><b>(#{duration} hours)</b>"
+    end
+    pdf.text_box msg, box_opts
+
+    if extended_right
+      coords = [
+        [box.top_right[0], box.top_right[1]],
+        [box.top_right[0] + 5, (box.top_right[1] + box.bottom_right[1]) / 2],
+        [box.bottom_right[0], box.bottom_right[1]]
+      ]
+      pdf.fill_polygon *coords
+    end
+
+    if extended_left
+      coords = [
+          [box.top_left[0], box.top_left[1]],
+          [box.top_left[0] + 5, (box.top_left[1] + box.bottom_left[1]) / 2],
+          [box.bottom_left[0], box.bottom_left[1]]
+      ]
+      pdf.fill_polygon *coords
+    end
+
   end
 end
 
