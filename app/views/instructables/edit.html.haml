@@ -7,7 +7,7 @@
       %legend Scheduling
       - if admin?
         = f.input :track, collection: Instructable::TRACKS.keys.sort, include_blank: (@instructable.track.blank? or !Instructable::TRACKS.keys.include?(@instructable.track))
-        = f.input :schedule, collection: Instructable::SCHEDULES.sort, include_blank: (@instructable.schedule.blank? or !Instructable::SCHEDULES.keys.include?(@instructable.schedule))
+        = f.input :schedule, collection: Instructable::SCHEDULES.sort, include_blank: (@instructable.schedule.blank? or !Instructable::SCHEDULES.include?(@instructable.schedule))
       = f.input :approved, as: :select, collection: { 'Yes' => true, 'No' => false }, include_blank: false, input_html: { class: 'input-mini' }
       %p.alert.alert-info
         #{pluralize @instructable.repeat_count, 'session'} requested.
