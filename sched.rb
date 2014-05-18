@@ -22,41 +22,22 @@ include GriffinMarkdown
 
 entries = {}
 
-@morning_hours = [
-  '9am', '10am', '11am', '12pm', '1pm'
-]
+# 24-hour times to display
+@morning_hours =   [  9, 10, 11, 12, 13 ]
+@afternoon_hours = [ 14, 15, 16, 17, 18 ]
 
-@afternoon_hours = [
-  '2pm', '3pm', '4pm', '5pm', '6pm'
-]
+@locs1 = (1..16).map { |x| "A&S #{x}" }
+@locs1 << 'Battlefield'
+@locs1 << 'Games'
 
-@locs1 = (1..17).map { |x| "A&S #{x}" }
-@locs1 << "Games"
+@locs2 = ['Performing Arts', 'Amphitheater', 'Middle Eastern', 'Dance',
+  'Æthelmearc 1', 'Æthelmearc 2',
+  'Thrown Weapons Range', 'Touch The Earth', 'Performing Arts Rehearsal',
+].sort
 
-@locs2 = ["Battlefield", 'Performing Arts', 'Amphitheater', 'Middle Eastern', 'Dance',
-  'Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3', 'Æthelmearc Cooking Lab',
-  'Thrown Weapons Range', 'Touch The Earth'
-]
-
-@wanted_tracks = [
-  'Pennsic University',
-  'Archery',  # should remove war points, etc
-  'Cooking Lab',
-  'European Dance',
-  'First Aid',
-  'Games',
-  'Glass',
-  'Heraldry',
-  'In Persona',
-  'Martial',
-  'Middle Eastern',
-  'Parent/Child',
-  'Performing Arts and Music',
-  'Rapier',
-  'Thrown Weapons',
-  'Youth Point',
-  'Æthelmearc Scribal',
-]
+@loc_count = {}
+@locs1.each { |loc| @loc_count[loc] = 0 }
+@locs2.each { |loc| @loc_count[loc] = 0 }
 
 def wanted(instance)
   instructable = instance.instructable
@@ -72,8 +53,6 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
     next
   end
 
-  next unless wanted(instance)
-
   date = instance.start_time.to_date
 
   entries[date] ||= {
@@ -84,18 +63,25 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
     other: [],
   }
 
-  hour = instance.start_time.strftime("%l%p").strip.downcase
+  hour = instance.start_time.hour
   morning_check = @morning_hours.index(hour)
   afternoon_check = @afternoon_hours.index(hour)
-  loc = instance.formatted_location.gsub(/ Tent$/, '')
-  loc1_check = @locs1.index(loc)
-  loc2_check = @locs2.index(loc)
+  actual_loc = instance.location.gsub(/ Tent$/, '')
+  loc = instance.instructable.location_nontrack? ? instance.instructable.camp_name : actual_loc
+  loc.gsub!(/ Tent$/, '')
+  loc1_check = @locs1.index(loc) || @locs1.index(actual_loc)
+  loc2_check = @locs2.index(loc) || @locs2.index(actual_loc)
+
+  @loc_count[loc] ||= 0
+  @loc_count[loc] += 1
 
   subsection = nil
-  if (morning_check or afternoon_check) and not (loc1_check or loc2_check)
-    section = :other_location
-  elsif (loc1_check or loc2_check) and not (morning_check or afternoon_check)
-    section = :other_time
+  in_loc = false
+  if not (morning_check or afternoon_check) or not (loc1_check or loc2_check)
+    section = :other
+    if (loc1_check or loc2_check) and hour < @morning_hours.first
+      in_loc = true
+    end
   elsif (loc1_check or loc2_check) and (morning_check)
     section = :morning
     subsection = loc1_check ? :loc1 : :loc2
@@ -103,9 +89,9 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
     section = :afternoon
     subsection = loc1_check ? :loc1 : :loc2
   else
-    section = :other
     puts "OTHER:"
     pp instance
+    section = :other
   end
 
   locindex = (loc1_check || loc2_check)
@@ -130,12 +116,18 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
 
   extended_left = false
 
+  if instance.instructable.name == 'Bellatrix: Individual Session'
+    start_time = "By appointment"
+    section = :other
+    subsection = nil
+  else
+    start_time = instance.start_time
+  end
+
   data = {
-    name: markdown_html(instance.instructable.name),
-    start_time: instance.start_time,
-    hour: hour,
+    name: instance.instructable.name,
+    start_time: start_time,
     hourindex: hourindex,
-    loc: loc,
     locindex: locindex,
     duration: duration,
     display_duration: display_duration,
@@ -148,8 +140,28 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
   spot = subsection ? entries[date][section][subsection] : entries[date][section]
   spot << data
 
-  if extended_right and section == :morning
+  if in_loc and (hour + minute / 60.0 + duration > @morning_hours.first)
+    display_duration = duration - (@morning_hours.first - (hour + minute / 60.0))
+    name = instance.instructable.name
+    name = 'Yoga' if name =~ /^Yoga/
+    data = {
+        name: name,
+        start_time: start_time,
+        hourindex: 0,
+        locindex: locindex,
+        duration: duration,
+        display_duration: display_duration,
+        id: instance.instructable.id,
+        extended_right: extended_right,
+        extended_left: true,
+        instance: instance,
+    }
 
+    spot = entries[date][:morning][loc1_check ? :loc1 : :loc2]
+    spot << data
+  end
+
+  if extended_right and section == :morning
     display_duration = duration - display_duration
     if display_duration > 5
       display_duration = 5
@@ -159,11 +171,9 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
     end
 
     data = {
-      name: markdown_html(instance.instructable.name),
+      name: instance.instructable.name,
       start_time: instance.start_time,
-      hour: hour,
       hourindex: 0,
-      loc: loc,
       locindex: locindex,
       duration: duration,
       display_duration: display_duration,
@@ -174,6 +184,100 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
     }
     spot = entries[date][:afternoon][subsection]
     spot << data
+  end
+end
+
+def draw_hour_labels(pdf, opts)
+  opts[:hour_labels].count.times do |timeindex|
+    opts[:location_labels].count.times do |locindex|
+      y1 = @header_height + locindex * @row_height
+      x1 = @location_label_width + timeindex * @column_width
+      y2 = y1 + @row_height - 1
+      x2 = x1 - 1 + @column_width
+      box = pdf.grid([y1, x1], [y2, x2])
+      box.bounding_box {
+        pdf.stroke_color @grey_dark
+        pdf.fill_color @grey
+        pdf.fill {
+          pdf.rectangle [0, box.height], box.width, box.height
+        }
+        pdf.stroke_bounds
+        pdf.stroke_color @black
+        pdf.fill_color @black
+      }
+    end
+  end
+
+  opts[:hour_labels].each_with_index do |label, labelindex|
+    y1 = @header_height - 1
+    x1 = @location_label_width + labelindex * @column_width
+    y2 = y1
+    x2 = x1 + @column_width - 1
+    box = pdf.grid([y1, x1], [y2, x2])
+
+    box.bounding_box {
+      pdf.fill_color @grey
+      pdf.fill {
+        pdf.rectangle [0, box.height], box.width, box.height
+      }
+      pdf.fill_color @black
+      pdf.stroke {
+        #pdf.line [box.width, 0], box.width, box.height
+        pdf.line [0, 0], 0, box.height
+        pdf.line [0, 0], box.width, 0
+      }
+    }
+    box_opts = {
+        at: [box.top_left[0] + 2, box.top_left[1] - 2],
+        width: box.width - 4,
+        height: box.height - 4,
+        size: 10,
+        overflow: :shrink_to_fit,
+        min_font_size: 6,
+        align: :center,
+        valign: :center,
+        style: :bold,
+    }
+    if label < 12
+      pdf.text_box "#{label}am", box_opts
+    else
+      pm = label > 12 ? label - 12 : 12
+      pdf.text_box "#{pm}pm", box_opts
+    end
+  end
+end
+
+def draw_location_labels(pdf, opts)
+  opts[:location_labels].each_with_index do |label, labelindex|
+    y1 = @header_height + labelindex * @row_height
+    x1 = 0
+    y2 = y1 + @row_height - 1
+    x2 = @location_label_width - 1
+    box = pdf.grid([y1, x1], [y2, x2])
+    box.bounding_box {
+      pdf.fill_color @grey
+      pdf.fill {
+        pdf.rectangle [0, box.height], box.width, box.height
+      }
+      pdf.fill_color @black
+      pdf.stroke {
+        pdf.line [0, box.height], box.width, box.height
+        pdf.line [0, 0], box.width, 0
+        pdf.line [box.width, 0], box.width, box.height
+      }
+    }
+    box_opts = {
+        at: [box.top_left[0] + 2, box.top_left[1] - 2],
+        width: box.width - 4,
+        height: box.height - 4,
+        size: 10,
+        overflow: :shrink_to_fit,
+        min_font_size: 6,
+        align: :center,
+        valign: :center,
+        style: :bold,
+    }
+    pdf.text_box label, box_opts
   end
 end
 
@@ -239,94 +343,13 @@ def render(pdf, opts)
   pdf.fill_color @black
   pdf.stroke_color @black
 
-  opts[:hour_labels].count.times do |timeindex|
-    opts[:location_labels].count.times do |locindex|
-      y1 = @header_height + locindex * @row_height
-      x1 = @location_label_width + timeindex * @column_width
-      y2 = y1 + @row_height - 1
-      x2 = x1 - 1 + @column_width
-      box = pdf.grid([y1, x1], [y2, x2])
-      box.bounding_box {
-        pdf.stroke_color @grey_dark
-        pdf.fill_color @grey
-        pdf.fill {
-          pdf.rectangle [0, box.height], box.width, box.height
-        }
-        pdf.stroke_bounds
-        pdf.stroke_color @black
-        pdf.fill_color @black
-      }
-    end
-  end
-
-  opts[:hour_labels].each_with_index do |label, labelindex|
-    y1 = @header_height - 1
-    x1 = @location_label_width + labelindex * @column_width
-    y2 = y1
-    x2 = x1 + @column_width - 1
-    box = pdf.grid([y1, x1], [y2, x2])
-    box.bounding_box {
-      pdf.fill_color @grey
-      pdf.fill {
-        pdf.rectangle [0, box.height], box.width, box.height
-      }
-      pdf.fill_color @black
-      pdf.stroke {
-        #pdf.line [box.width, 0], box.width, box.height
-        pdf.line [0, 0], 0, box.height
-        pdf.line [0, 0], box.width, 0
-      }
-    }
-    box_opts = {
-        at: [box.top_left[0] + 2, box.top_left[1] - 2],
-        width: box.width - 4,
-        height: box.height - 4,
-        size: 10,
-        overflow: :shrink_to_fit,
-        min_font_size: 6,
-        align: :center,
-        valign: :center,
-        style: :bold,
-    }
-    pdf.text_box label, box_opts
-  end
-
-  opts[:location_labels].each_with_index do |label, labelindex|
-    y1 = @header_height + labelindex * @row_height
-    x1 = 0
-    y2 = y1 + @row_height - 1
-    x2 = @location_label_width - 1
-    box = pdf.grid([y1, x1], [y2, x2])
-    box.bounding_box {
-      pdf.fill_color @grey
-      pdf.fill {
-        pdf.rectangle [0, box.height], box.width, box.height
-      }
-      pdf.fill_color @black
-      pdf.stroke {
-        pdf.line [0, box.height], box.width, box.height
-        pdf.line [0, 0], box.width, 0
-        pdf.line [box.width, 0], box.width, box.height
-      }
-    }
-    box_opts = {
-      at: [box.top_left[0] + 2, box.top_left[1] - 2],
-      width: box.width - 4,
-      height: box.height - 4,
-      size: 10,
-      overflow: :shrink_to_fit,
-      min_font_size: 6,
-      align: :center,
-      valign: :center,
-      style: :bold,
-    }
-    pdf.text_box label, box_opts
-  end
+  draw_hour_labels(pdf, opts)
+  draw_location_labels(pdf, opts)
 
   pdf.font_size 12
   opts[:entries].each do |data|
     locindex = data[:locindex]
-    timeindex = data[:hourindex]
+    hourindex = data[:hourindex]
     display_duration = data[:display_duration]
     duration = data[:duration]
 
@@ -334,7 +357,7 @@ def render(pdf, opts)
     extended_left = data[:extended_left]
 
     y1 = @header_height + locindex * @row_height
-    x1 = @location_label_width + timeindex * @column_width
+    x1 = @location_label_width + hourindex.to_f * @column_width
     y2 = y1 + @row_height - 1
     x2 = x1 - 1 + display_duration * @column_width
     box = pdf.grid([y1, x1], [y2, x2])
@@ -364,7 +387,7 @@ def render(pdf, opts)
       pdf.fill_color @black
       pdf.stroke_bounds
     }
-    msg = "#{data[:name]} <i>(#{data[:id]})</i>"
+    msg = "#{markdown_html data[:name]} <i>(#{data[:id]})</i>"
     if duration != display_duration
       msg += "<br/><b>(#{duration} hours)</b>"
     end
@@ -423,7 +446,15 @@ def render_extra(pdf, opts)
   pdf.fill_color @black
   rowoffset += 2
 
-  columns = opts[:entries].count <= 21 ? 1 : 2
+  entries_count = opts[:entries].count
+  if entries_count < 25
+    font_size = 7.8 + (25 - entries_count) / 10.0
+    columns = 1
+  else
+    font_size = 8.5 - (entries_count / 30.0)
+    puts font_size
+    columns = 2
+  end
 
   first = true
   box = pdf.grid([rowoffset, 0], [pdf.grid.rows - 1, pdf.grid.columns - 1])
@@ -431,13 +462,18 @@ def render_extra(pdf, opts)
     opts[:entries].each do |entry|
       pdf.move_down 2 unless first
       first = false
-      msg = "#{markdown_html(entry[:name])}, #{entry[:instance].formatted_location_and_time(:pennsic_time_only)}"
-      puts msg
+      if entry[:start_time].is_a?(String)
+        start_time = entry[:instance].formatted_location
+        start_time += " (#{entry[:start_time]})"
+      else
+        start_time = entry[:instance].formatted_location_and_time(:pennsic_time_only)
+      end
+      msg = "#{entry[:id]}: #{markdown_html(entry[:name])}, #{start_time}"
       duration = entry[:duration]
       if duration != 1
         msg += ", #{duration} hours"
       end
-      pdf.text msg, size: 6.5, inline_format: true
+      pdf.text msg, size: font_size, inline_format: true
     end
   end
 
@@ -480,10 +516,14 @@ entries.keys.sort.each do |key|
          entries: entries[key][:morning][:loc2],
          title: "#{date} ~ Morning")
 
-  render_extra(pdf,
-               entries: entries[key][:other_location],
-               title: "#{date} ~ Branch Campuses",
-               rowoffset: @locs2.count * @row_height + @header_height + 1)
+  subentries = entries[key][:other]
+  if subentries.count > 0
+    subentries.sort! { |a, b| a[:name].gsub('*', '') <=> b[:name].gsub('*', '') }
+    render_extra(pdf,
+                 entries: subentries,
+                 title: "#{date} ~ Additional Classes",
+                 rowoffset: @locs2.count * @row_height + @header_height + 1)
+  end
 
   draftit(pdf)
   pdf.start_new_page
@@ -502,14 +542,12 @@ entries.keys.sort.each do |key|
          entries: entries[key][:afternoon][:loc2],
          title: "#{date} ~ Afternoon")
   draftit(pdf)
-
-  render_extra(pdf,
-               entries: entries[key][:other_time],
-               title: "#{date} ~ Early or Late",
-               rowoffset: @locs2.count * @row_height + @header_height + 1)
-
   pdf.start_new_page
 
 end
 
 pdf.render_file 'prawn-0005.pdf'
+
+@loc_count.keys.sort.each { |x|
+  puts (' %2d %s' % [@loc_count[x], x])
+}
