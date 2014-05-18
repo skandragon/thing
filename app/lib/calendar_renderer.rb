@@ -325,7 +325,7 @@ class CalendarRenderer
       pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
       name = markdown_html(instructable.name, tags_remove: 'strong')
 
-      if @instructable_megic_tokens
+      if @instructable_magic_tokens
         token = @instructable_magic_tokens[instructable.id]
       end
 
