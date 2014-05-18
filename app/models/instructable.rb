@@ -164,6 +164,7 @@ class Instructable < ActiveRecord::Base
       'Event',
       'Party',
       'Battlefield',
+      'Performances',
   ]
 
   def self.all_locations
