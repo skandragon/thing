@@ -55,6 +55,7 @@ class ConflictCheck
 
   # return true only if the topic (topic) is equal
   def self.instance_topic_overlap?(a, b)
+    return false
     a.instructable.topic == b.instructable.topic
   end
 
