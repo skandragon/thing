@@ -39,15 +39,30 @@ entries = {}
 @locs1.each { |loc| @loc_count[loc] = 0 }
 @locs2.each { |loc| @loc_count[loc] = 0 }
 
-def wanted(instance)
-  instructable = instance.instructable
-  return false unless @wanted_tracks.include?(instructable.track)
-  true
+def generate_magic_tokens(instructables)
+  items = instructables.map { |x| [x.topic, x.name.gsub('*', ''), x.id] }.sort
+
+  last_topic = nil
+  magic_token = 0
+
+  @instructable_magic_tokens = {}
+  items.each do |item|
+    if last_topic != item[0]
+      magic_token += 100 - (magic_token % 100)
+      last_topic = item[0]
+    end
+    @instructable_magic_tokens[item[2]] = magic_token
+    magic_token += 1
+  end
 end
 
-ids = Instructable.where(schedule: 'Pennsic University').pluck(:id)
+instructables = Instructable.where(schedule: 'Pennsic University')
+generate_magic_tokens(instructables)
 
-Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
+ids = instructables.map { |x| x.id }
+instances = Instance.where(instructable_id: ids).includes(:instructable).select { |x| x.scheduled? }
+
+instances.each do |instance|
   if instance.start_time.nil?
     pp instance
     next
@@ -131,7 +146,7 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
     locindex: locindex,
     duration: duration,
     display_duration: display_duration,
-    id: instance.instructable.id,
+    id: @instructable_magic_tokens[instance.instructable.id],
     extended_right: extended_right,
     extended_left: extended_left,
     instance: instance,
@@ -151,7 +166,7 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
         locindex: locindex,
         duration: duration,
         display_duration: display_duration,
-        id: instance.instructable.id,
+        id: @instructable_magic_tokens[instance.instructable.id],
         extended_right: extended_right,
         extended_left: true,
         instance: instance,
@@ -177,7 +192,7 @@ Instance.where(instructable_id: ids).includes(:instructable).each do |instance|
       locindex: locindex,
       duration: duration,
       display_duration: display_duration,
-      id: instance.instructable.id,
+      id: @instructable_magic_tokens[instance.instructable.id],
       extended_right: extended_right,
       extended_left: true,
       instance: instance,
@@ -283,11 +298,6 @@ end
 
 def render(pdf, opts)
   debug = false
-
-  font_path = "EagleLake-Regular.ttf"
-  pdf.font_families["TitleFont"] = {
-    normal: { file: font_path, font: 'TitleFont' },
-  }
 
   if debug
     pdf.stroke_axis
@@ -452,7 +462,6 @@ def render_extra(pdf, opts)
     columns = 1
   else
     font_size = 8.5 - (entries_count / 30.0)
-    puts font_size
     columns = 2
   end
 
@@ -497,7 +506,83 @@ def draftit(pdf)
   end
 end
 
+def materials_and_handout_content(instructable)
+  materials = []
+  handout = []
+  handout << "limit: #{instructable.handout_limit}" if instructable.handout_limit
+  materials << "limit: #{instructable.material_limit}" if instructable.material_limit
+
+  handout << "fee: $#{'%.2f' % instructable.handout_fee}" if instructable.handout_fee
+  materials << "fee: $#{'%.2f' % instructable.material_fee}" if instructable.material_fee
+
+  handout_content = nil
+  handout_content = 'Handout ' + handout.join(', ') + '. ' if handout.size > 0
+
+  materials_content = nil
+  materials_content = 'Materials ' + materials.join(', ') + '. ' if materials.size > 0
+
+  [ handout_content, materials_content ].compact
+end
+
+def render_topic_list(pdf, instructables)
+  previous_topic = ''
+
+  instructables.sort { |a, b|
+    [a.topic, a.name.gsub('*', '')] <=> [b.topic, b.name.gsub('*', '')]
+  }.each do |instructable|
+    if instructable.topic != previous_topic
+      pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
+      pdf.font_size 16
+      pdf.text_rendering_mode(:fill_stroke) do
+        pdf.fill_color @grey_50
+        pdf.stroke_color @grey_40
+        pdf.font("TitleFont") do
+          pdf.text instructable.topic
+        end
+      end
+
+      pdf.font_size 7.5
+      pdf.fill_color @black
+      pdf.stroke_color @black
+    end
+    previous_topic = instructable.topic
+
+    pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
+    name = markdown_html(instructable.name, tags_remove: 'strong')
+    token = @instructable_magic_tokens[instructable.id]
+    topic = "Topic: #{instructable.formatted_topic}"
+    culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
+
+    heading = "<strong>#{token}</strong>: <strong>#{name}</strong>"
+
+    lines = [
+        heading,
+        [topic, culture].compact.join(', '),
+        "Instructor: #{instructable.user.titled_sca_name}",
+    ]
+
+    if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
+      lines << 'Taught: ' + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
+      lines << 'Location: ' + instructable.instances.first.formatted_location
+    else
+      lines << 'Taught: ' + instructable.instances.map { |x| x.scheduled? ? "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" : nil }.compact.join(', ')
+    end
+
+    lines << materials_and_handout_content(instructable).join(' ')
+
+    pdf.text lines.join("\n"), inline_format: true
+
+    pdf.move_down 2 unless pdf.cursor == pdf.bounds.top
+    pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
+  end
+end
+
 pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait)
+
+font_path = "EagleLake-Regular.ttf"
+pdf.font_families["TitleFont"] = {
+    normal: { file: font_path, font: 'TitleFont' },
+}
 
 entries.keys.sort.each do |key|
   day = key.strftime("%d").to_i
@@ -518,7 +603,7 @@ entries.keys.sort.each do |key|
 
   subentries = entries[key][:other]
   if subentries.count > 0
-    subentries.sort! { |a, b| a[:name].gsub('*', '') <=> b[:name].gsub('*', '') }
+    subentries.sort! { |a, b| a[:start_time].to_i <=> b[:start_time].to_i }
     render_extra(pdf,
                  entries: subentries,
                  title: "#{date} ~ Additional Classes",
@@ -543,7 +628,10 @@ entries.keys.sort.each do |key|
          title: "#{date} ~ Afternoon")
   draftit(pdf)
   pdf.start_new_page
+end
 
+pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 10, width: pdf.bounds.width) do
+  render_topic_list(pdf, instructables)
 end
 
 pdf.render_file 'prawn-0005.pdf'
