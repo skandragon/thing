@@ -17,6 +17,7 @@ include GriffinMarkdown
 @grey_dark = 'dddddd'
 @grey_50 = '888888'
 @grey_40 = '444444'
+@grey_20 = '222222'
 @black = '000000'
 @white = 'ffffff'
 
@@ -485,7 +486,67 @@ def render_extra(pdf, opts)
       pdf.text msg, size: font_size, inline_format: true
     end
   end
+end
 
+def render_notes(pdf, opts)
+  rowoffset = opts[:rowoffset]
+  draw_lines = opts[:mode] == :notes
+  draw_box = opts[:mode] == :doodles
+
+  line_box = pdf.grid([rowoffset + 2, 0], [pdf.grid.rows - 1, pdf.grid.columns - 1])
+
+  if draw_box
+    line_box.bounding_box do
+      pdf.stroke_color @grey_20
+      pdf.fill_color @grey_20
+      pdf.stroke_bounds
+    end
+  end
+
+  box = pdf.grid([rowoffset, 0], [rowoffset + 1, pdf.grid.columns - 1])
+  box.bounding_box do
+    pdf.fill_color @grey
+    pdf.stroke_color @grey
+    pdf.fill { pdf.rectangle [0, box.height], box.width, box.height }
+    pdf.stroke_bounds
+  end
+
+  msg = opts[:title]
+  box_opts = {
+      align: :center,
+      valign: :center,
+      size: @title_font_size,
+      at: [box.top_left[0], box.top_left[1] - 2],
+      width: box.width,
+      height: box.height,
+  }
+  pdf.text_rendering_mode(:fill_stroke) do
+    pdf.fill_color @grey_50
+    pdf.stroke_color @grey_40
+    pdf.font("TitleFont") do
+      pdf.text_box msg, box_opts
+    end
+  end
+
+  if draw_lines
+    rowoffset += 2
+
+    pdf.stroke_color @grey_20
+    pdf.fill_color @grey_20
+
+    spacing = 25
+    y = spacing
+    pdf.move_down spacing
+
+    while y < line_box.height
+      pdf.stroke_horizontal_rule
+      pdf.move_down spacing
+      y += spacing
+    end
+  end
+
+  pdf.stroke_color @black
+  pdf.fill_color @black
 end
 
 def draftit(pdf)
@@ -584,6 +645,13 @@ pdf.font_families["TitleFont"] = {
     normal: { file: font_path, font: 'TitleFont' },
 }
 
+@note_counter = 0
+def next_note_type
+  ret = [:notes, :doodles][@note_counter % 2]
+  @note_counter += 1
+  ret
+end
+
 entries.keys.sort.each do |key|
   day = key.strftime("%d").to_i
   date = key.strftime("%A, %B #{day.ordinalize}, A.S. XLIX")
@@ -608,6 +676,11 @@ entries.keys.sort.each do |key|
                  entries: subentries,
                  title: "#{date} ~ Additional Classes",
                  rowoffset: @locs2.count * @row_height + @header_height + 1)
+  else
+    render_notes(pdf,
+                 mode: :notes,
+                 title: "Notes",
+                 rowoffset: @locs2.count * @row_height + @header_height + 1)
   end
 
   draftit(pdf)
@@ -626,6 +699,11 @@ entries.keys.sort.each do |key|
          hour_labels: @afternoon_hours,
          entries: entries[key][:afternoon][:loc2],
          title: "#{date} ~ Afternoon")
+  note_type = next_note_type
+  render_notes(pdf,
+               mode: note_type,
+               title: (note_type == :notes ? 'Notes' : 'Notes and Doodles'),
+               rowoffset: @locs2.count * @row_height + @header_height + 1)
   draftit(pdf)
   pdf.start_new_page
 end
