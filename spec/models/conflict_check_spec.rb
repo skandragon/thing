@@ -174,6 +174,7 @@ describe ConflictCheck do
     end
 
     it 'returns [:topic] if time overlaps and topic conflicts' do
+      pending
       @ia = create(:instructable, user_id: 1, topic: Instructable::TOPICS.keys[1])
       @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
       @ib = create(:instructable, user_id: 2, topic: Instructable::TOPICS.keys[1])

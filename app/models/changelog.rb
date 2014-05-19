@@ -14,6 +14,7 @@
 #  updated_at  :datetime         not null
 #  original    :text
 #  committed   :text
+#  year        :integer
 #
 
 class Changelog < ActiveRecord::Base

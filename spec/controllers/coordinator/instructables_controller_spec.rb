@@ -32,7 +32,7 @@ describe Coordinator::InstructablesController do
     end
 
     it 'renders as admin' do
-      select '', from: 'track'
+      select '(track)', from: 'track'
       click_on 'Filter'
       page.should have_content 'MEMusicUnscheduledUnapproved'
       page.should have_content 'MEDanceUnscheduledApproved'
@@ -104,22 +104,6 @@ describe Coordinator::InstructablesController do
 
     it 'allows selection of track' do
       page.should_not have_select('track')
-    end
-
-    it 'filters based on approved = 1' do
-      select 'Approved', from: 'approved'
-      click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnapproved'
-      page.should have_content 'MEDanceUnscheduledApproved'
-      page.should have_content 'MEHistoryScheduledApproved'
-    end
-
-    it 'filters based on approved = 0' do
-      select 'Not Approved', from: 'approved'
-      click_on 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnapproved'
-      page.should_not have_content 'MEDanceUnscheduledApproved'
-      page.should_not have_content 'MEHistoryScheduledApproved'
     end
 
     it 'filters based on scheduled = 1' do

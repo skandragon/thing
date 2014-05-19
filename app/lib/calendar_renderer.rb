@@ -286,6 +286,8 @@ class CalendarRenderer
     last_topic = nil
     magic_token = 0
 
+    @instructables.each
+
     @instructable_magic_tokens = {}
     @instructables.each do |instructable|
       if last_topic != instructable.topic

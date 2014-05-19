@@ -10,6 +10,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  override_location :boolean
+#  year              :integer
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

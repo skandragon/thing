@@ -19,7 +19,7 @@
 #  access_token           :string(255)
 #  admin                  :boolean          default(FALSE)
 #  pu_staff               :boolean
-#  tracks                 :string(255)      default([])
+#  tracks                 :string(255)      default([]), is an Array
 #  sca_name               :string(255)
 #  sca_title              :string(255)
 #  phone_number           :string(255)
@@ -28,9 +28,10 @@
 #  phone_number_onsite    :string(255)
 #  contact_via            :text
 #  no_contact             :boolean          default(FALSE)
-#  available_days         :date
+#  available_days         :date             is an Array
 #  instructor             :boolean          default(FALSE)
 #  proofreader            :boolean          default(FALSE)
+#  profile_updated_at     :datetime
 #
 
 require 'spec_helper'

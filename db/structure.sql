@@ -220,7 +220,8 @@ CREATE TABLE instructables (
     proofread_by integer[] DEFAULT '{}'::integer[],
     proofreader_comments text,
     year integer,
-    schedule character varying(255)
+    schedule character varying(255),
+    info_tag character varying(255)
 );
 
 
@@ -665,3 +666,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140125181600');
 INSERT INTO schema_migrations (version) VALUES ('20140130005107');
 
 INSERT INTO schema_migrations (version) VALUES ('20140517150842');
+
+INSERT INTO schema_migrations (version) VALUES ('20140519050525');

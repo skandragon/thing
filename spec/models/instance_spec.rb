@@ -10,6 +10,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  override_location :boolean
+#  year              :integer
 #
 
 require 'spec_helper'
@@ -82,7 +83,7 @@ describe Instance do
     it 'Renders times' do
       instructable = create(:instructable, location_type: 'track')
       instance = instructable.instances.create(start_time: @time)
-      instance.formatted_location_and_time.should include("#{@time.to_s(:pennsic_short)}")
+      instance.formatted_location_and_time.should include("#{@time.to_s(:pennsic_short).gsub('  ', ' ')}")
       instance.formatted_location_and_time.should include('Location pending')
     end
 
