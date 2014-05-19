@@ -11,7 +11,7 @@ include GriffinMarkdown
 @row_height = 2
 @column_width = 8
 
-@title_font_size = 17
+@title_font_size = 19
 
 @grey = 'eeeeee'
 @grey_dark = 'dddddd'
@@ -532,7 +532,7 @@ def render_topic_list(pdf, instructables)
   }.each do |instructable|
     if instructable.topic != previous_topic
       pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
-      pdf.font_size 16
+      pdf.font_size @title_font_size
       pdf.text_rendering_mode(:fill_stroke) do
         pdf.fill_color @grey_50
         pdf.stroke_color @grey_40
@@ -579,7 +579,7 @@ end
 
 pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait)
 
-font_path = "EagleLake-Regular.ttf"
+font_path = "Copperplate.ttf"
 pdf.font_families["TitleFont"] = {
     normal: { file: font_path, font: 'TitleFont' },
 }
