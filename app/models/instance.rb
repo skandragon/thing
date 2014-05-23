@@ -78,10 +78,6 @@ class Instance < ActiveRecord::Base
     grid = make_grid(locations)
 
     instances.each do |instance|
-      if instance.instructable.name =~ /ASHI/
-        pp instance.instructable
-        pp instance
-      end
       x = grid[:xlabels].index(instance.location)
       hour_start = instance.start_time.hour
       hour_end = (instance.end_time - 1).hour
