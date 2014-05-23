@@ -645,7 +645,7 @@ pdf.font_families["TitleFont"] = {
     normal: { file: font_path, font: 'TitleFont' },
 }
 
-@note_counter = 0
+@note_counter = 1
 def next_note_type
   ret = [:notes, :doodles][@note_counter % 2]
   @note_counter += 1
