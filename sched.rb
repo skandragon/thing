@@ -550,6 +550,7 @@ def render_notes(pdf, opts)
 end
 
 def draftit(pdf)
+  return
   pdf.save_graphics_state do
     pdf.soft_mask do
       pdf.rotate(45, origin: [0, 0]) do
