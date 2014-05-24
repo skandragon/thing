@@ -709,7 +709,7 @@ entries.keys.sort.each do |key|
   pdf.start_new_page
 end
 
-pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 10, width: pdf.bounds.width) do
+pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 9, width: pdf.bounds.width) do
   render_topic_list(pdf, instructables)
 end
 
