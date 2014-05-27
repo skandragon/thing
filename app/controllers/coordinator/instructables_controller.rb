@@ -77,8 +77,13 @@ class Coordinator::InstructablesController < ApplicationController
             end
             instances = instructable.instances
             instances.each do |instance|
-              start_date = instance.start_time.strftime('%A, %B %e, %Y')
-              start_time = instance.start_time.strftime('%I:%M %p')
+              if instance.start_time.present?
+                start_date = instance.start_time.strftime('%A, %B %e, %Y')
+                start_time = instance.start_time.strftime('%I:%M %p')
+              else
+                start_date = ''
+                start_time = ''
+              end
               location = instance.formatted_location
               instance_data = [start_date, start_time, location]
               csv << data + instance_data
