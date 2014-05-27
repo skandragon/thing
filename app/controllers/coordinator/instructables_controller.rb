@@ -67,12 +67,22 @@ class Coordinator::InstructablesController < ApplicationController
           adult_only duration repeat_count
         )
         csv_data = CSV.generate do |csv|
-          names = %w(id scheduled?) + column_names
-          csv << names
+          names = %w(id) + column_names
+          instance_names = %w(start_date start_time location)
+          csv << names + instance_names
           @instructables.each do |instructable|
-            data = [instructable.id, instructable.status_message ]
-            data += instructable.attributes.values_at(*column_names)
-            csv << data
+            data = [instructable.id]
+            column_names.each do |column_name|
+              data << instructable.send(column_name)
+            end
+            instances = instructable.instances
+            instances.each do |instance|
+              start_date = instance.start_time.strftime('%A, %B %e, %Y')
+              start_time = instance.start_time.strftime('%I:%M %p')
+              location = instance.formatted_location
+              instance_data = [start_date, start_time, location]
+              csv << data + instance_data
+            end
           end
         end
 

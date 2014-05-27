@@ -274,6 +274,12 @@ class Instructable < ActiveRecord::Base
     'Approved and Scheduled'
   end
 
+  def topic_and_subtopic
+    ret = [ topic ]
+    ret << subtopic if subtopic.present?
+    ret.join(' : ')
+  end
+
   def additional_instructors_expanded
     self.additional_instructors ||= []
     additional_instructors.join(', ')
