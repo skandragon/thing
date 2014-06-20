@@ -639,7 +639,7 @@ def render_topic_list(pdf, instructables)
   end
 end
 
-pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait)
+pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait, compress: true, optimize_objects: true, info: { CreationDate: Time.now })
 
 font_path = "Copperplate.ttf"
 pdf.font_families["TitleFont"] = {
