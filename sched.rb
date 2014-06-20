@@ -48,9 +48,9 @@ def generate_magic_tokens(instructables)
 
   @instructable_magic_tokens = {}
   items.each do |item|
-    if last_topic != item[0]
+    if last_topic != item[0].split(':').first.strip
       magic_token += 100 - (magic_token % 100)
-      last_topic = item[0]
+      last_topic = item[0].split(':').first.strip
     end
     @instructable_magic_tokens[item[2]] = magic_token
     magic_token += 1
