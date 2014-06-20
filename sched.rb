@@ -497,8 +497,8 @@ def render_notes(pdf, opts)
 
   if draw_box
     line_box.bounding_box do
-      pdf.stroke_color @grey_20
-      pdf.fill_color @grey_20
+      pdf.stroke_color @grey_40
+      pdf.fill_color @grey_40
       pdf.stroke_bounds
     end
   end
@@ -531,8 +531,8 @@ def render_notes(pdf, opts)
   if draw_lines
     rowoffset += 2
 
-    pdf.stroke_color @grey_20
-    pdf.fill_color @grey_20
+    pdf.stroke_color @grey_40
+    pdf.fill_color @grey_40
 
     spacing = 25
     y = spacing
