@@ -41,7 +41,7 @@ entries = {}
 @locs2.each { |loc| @loc_count[loc] = 0 }
 
 def generate_magic_tokens(instructables)
-  items = instructables.map { |x| [x.topic, x.name.gsub('*', ''), x.id] }.sort
+  items = instructables.map { |x| [x.formatted_topic, x.name.gsub('*', ''), x.id] }.sort
 
   last_topic = nil
   magic_token = 0
@@ -590,7 +590,7 @@ def render_topic_list(pdf, instructables)
   previous_topic = ''
 
   instructables.sort { |a, b|
-    [a.topic, a.name.gsub('*', '')] <=> [b.topic, b.name.gsub('*', '')]
+    [a.formatted_topic, a.name.gsub('*', '')] <=> [b.formatted_topic, b.name.gsub('*', '')]
   }.each do |instructable|
     if instructable.topic != previous_topic
       pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
