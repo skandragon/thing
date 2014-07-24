@@ -2,6 +2,10 @@
 
 %h1 Custom Schedule
 
+.alert.alert-info
+  Once you are done adding classes you are interested in, you may
+  = link_to('view, download, or add it to your calendar', user_schedule_path(@user)) + '.'
+
 = simple_form_for :options, url: user_schedule_path(@user), method: :put, html: { class: 'form-horizontal', id: 'publish_form' } do |f|
   = f.input :publish, as: :boolean, label: 'Publish publicly?', input_html: { data: { 'user-id' => @user.id }, checked: @user.schedule.published }
 
