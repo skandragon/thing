@@ -9,6 +9,8 @@
       %a.btn.btn-primary{:href => new_user_session_path } Sign in
       or
       %a.btn.btn-primary{:href => new_user_registration_path } Sign up
+    %p
+      You only need to log in if you wish to make a customized schedule, or teach a class.
   - else
     %p
       Welcome, #{current_user.best_name}.
