@@ -52,8 +52,6 @@ class CalendarRenderer
           event.created = instance.instructable.created_at
           if instance.start_time
             event.dtstart = instance.start_time
-          end
-          if event.end_time
             event.dtend = instance.end_time
           end
           event.summary = instructable.name
