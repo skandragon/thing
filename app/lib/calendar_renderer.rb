@@ -112,7 +112,7 @@ class CalendarRenderer
     items = []
 
     @instances.each { |instance|
-      if last_date != instance.start_time.to_date
+      if instance.start_time and last_date != instance.start_time.to_date
         if items.size > 0
           pdf_render_table(pdf, items, header, total_width, column_widths)
           items = []
