@@ -52,7 +52,7 @@ class CalendarRenderer
           event.created = instance.instructable.created_at
           if instance.start_time
             event.dtstart = instance.start_time
-            event.dtend = instance.end_time
+            event.dtend = instance.end_time if instance.duration
           end
           event.summary = instructable.name
           event.description = [prefix.join("\n"), '', instructable.description_web, '', suffix.join("\n")].join("\n")
@@ -122,7 +122,7 @@ class CalendarRenderer
           pdf.move_down 12
         end
         pdf.font_size 14
-        pdf.text instance.start_time.to_date.strftime('%A, %B %e')
+        pdf.text instance.start_time.to_date.strftime('%A, %B %e') if instance.start_time
         pdf.font_size PDF_FONT_SIZE
         pdf.move_down PDF_FONT_SIZE
         last_date = instance.start_time.to_date
@@ -130,16 +130,24 @@ class CalendarRenderer
 
       if !@options[:omit_descriptions] and instance.formatted_location =~ /A\&S /
         times = []
-        times << "#{instance.start_time.strftime('%a %b %e')} - #{instance.formatted_location}"
-        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
-        times_content = times.join("\n")
+        if instance.start_time
+          times << "#{instance.start_time.strftime('%a %b %e')} - #{instance.formatted_location}"
+          times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
+          times_content = times.join("\n")
+        else
+          times_content = ''
+        end
 
         location = nil
       else
         times = []
-        times << instance.start_time.strftime('%a %b %e')
-        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
-        times_content = times.join(@options[:omit_descriptions] ? ' ' : "\n")
+        if instance.start_time
+          times << instance.start_time.strftime('%a %b %e')
+          times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
+          times_content = times.join(@options[:omit_descriptions] ? ' ' : "\n")
+        else
+          times_content = ''
+        end
         location = instance.formatted_location
       end
 
@@ -160,7 +168,7 @@ class CalendarRenderer
         taught_message = nil
         if instance.instructable.repeat_count > 1
           times = instance.instructable.instances.pluck(:start_time)
-          formatted_times = times.select { |t| t != instance.start_time }.map { |t| t.strftime('%m/%d') }.join(', ')
+          formatted_times = times.select { |t| t != instance.start_time and instance.start_time }.map { |t| t.strftime('%m/%d') }.join(', ')
           taught_message = "Also taught #{formatted_times}"
         end
         new_items << {
@@ -356,10 +364,10 @@ class CalendarRenderer
       ]
 
       if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
-        lines << 'Taught: ' + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
+        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
         lines << 'Location: ' + instructable.instances.first.formatted_location
       else
-        lines << 'Taught: ' + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(', ')
+        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(', ')
       end
 
       lines << materials_and_handout_content(instructable).join(' ')
