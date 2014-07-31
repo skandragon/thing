@@ -112,7 +112,8 @@ class CalendarRenderer
     items = []
 
     @instances.each { |instance|
-      if instance.start_time and last_date != instance.start_time.to_date
+      next unless instance.start_time
+      if last_date != instance.start_time.to_date
         if items.size > 0
           pdf_render_table(pdf, items, header, total_width, column_widths)
           items = []
@@ -122,7 +123,7 @@ class CalendarRenderer
           pdf.move_down 12
         end
         pdf.font_size 14
-        pdf.text instance.start_time.to_date.strftime('%A, %B %e') if instance.start_time
+        pdf.text instance.start_time.to_date.strftime('%A, %B %e')
         pdf.font_size PDF_FONT_SIZE
         pdf.move_down PDF_FONT_SIZE
         last_date = instance.start_time.to_date
@@ -130,24 +131,16 @@ class CalendarRenderer
 
       if !@options[:omit_descriptions] and instance.formatted_location =~ /A\&S /
         times = []
-        if instance.start_time
-          times << "#{instance.start_time.strftime('%a %b %e')} - #{instance.formatted_location}"
-          times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
-          times_content = times.join("\n")
-        else
-          times_content = ''
-        end
+        times << "#{instance.start_time.strftime('%a %b %e')} - #{instance.formatted_location}"
+        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
+        times_content = times.join("\n")
 
         location = nil
       else
         times = []
-        if instance.start_time
-          times << instance.start_time.strftime('%a %b %e')
-          times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
-          times_content = times.join(@options[:omit_descriptions] ? ' ' : "\n")
-        else
-          times_content = ''
-        end
+        times << instance.start_time.strftime('%a %b %e')
+        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
+        times_content = times.join(@options[:omit_descriptions] ? ' ' : "\n")
         location = instance.formatted_location
       end
 
