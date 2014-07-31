@@ -52,7 +52,7 @@ class CalendarRenderer
           event.created = instance.instructable.created_at
           if instance.start_time
             event.dtstart = instance.start_time
-            event.dtend = instance.end_time if instance.duration
+            event.dtend = instance.end_time
           end
           event.summary = instructable.name
           event.description = [prefix.join("\n"), '', instructable.description_web, '', suffix.join("\n")].join("\n")
