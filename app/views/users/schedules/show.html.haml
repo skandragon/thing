@@ -55,10 +55,11 @@
     - @instances.each do |instance|
       %tr
         %td
-          = instance.start_time.strftime('%m-%d')
-          %br
-          = instance.start_time.strftime('%H:%M')
-          %br
+          - if instance.start_time
+            = instance.start_time.strftime('%m-%d')
+            %br
+            = instance.start_time.strftime('%H:%M')
+            %br
           = "#{instance.instructable.duration}&nbsp;hr".html_safe
           %br
           = instance.formatted_location
