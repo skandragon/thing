@@ -167,8 +167,8 @@ class CalendarRenderer
       unless @options[:omit_descriptions]
         taught_message = nil
         if instance.instructable.repeat_count > 1
-          times = instance.instructable.instances.pluck(:start_time)
-          formatted_times = times.select { |t| t != instance.start_time and instance.start_time }.map { |t| t.strftime('%m/%d') }.join(', ')
+          times = instance.instructable.instances.pluck(:start_time).compact
+          formatted_times = times.select { |t| t != instance.start_time }.map { |t| t.strftime('%m/%d') }.join(', ')
           taught_message = "Also taught #{formatted_times}"
         end
         new_items << {
