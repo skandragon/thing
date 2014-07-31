@@ -39,12 +39,21 @@ class CalendarRenderer
           prefix << "Material limit: #{instructable.material_limit}" if instructable.material_limit
           prefix << "Handout limit: #{instructable.handout_limit}" if instructable.handout_limit
 
+          suffix = []
+          if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
+            dates = []
+            instructable.instances.each do |inst|
+              dates << inst.start_time.strftime('%a %b %e %I:%M %p') if inst != instance
+            end
+            suffix << 'Also Taught: ' + dates.join(', ')
+          end
+
           event.dtstamp = now
           event.created = instance.instructable.created_at
           event.dtstart = instance.start_time
           event.dtend = instance.end_time
           event.summary = instructable.name
-          event.description = [prefix.join("\n"), '', instructable.description_web].join("\n")
+          event.description = [prefix.join("\n"), '', instructable.description_web, '', suffix.join("\n")].join("\n")
           event.location = instance.formatted_location
           event.uid = make_uid(instance.to_s)
           event.transp = 'OPAQUE'
