@@ -21,6 +21,7 @@ group :assets do
 #  gem 'therubyracer', platform: :ruby, require: 'v8'
 #  gem 'less-rails'
 
+  gem 'less'
   gem 'less-js'
 
   gem 'uglifier'
