@@ -43,7 +43,7 @@ class CalendarRenderer
           if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
             dates = []
             instructable.instances.each do |inst|
-              dates << inst.start_time.strftime('%a %b %e %I:%M %p') if inst != instance
+              dates << inst.start_time.strftime('%a %b %e %I:%M %p') if inst != instance and inst.start_time
             end
             suffix << 'Also Taught: ' + dates.join(', ')
           end
