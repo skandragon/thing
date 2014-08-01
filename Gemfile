@@ -16,15 +16,14 @@ gem 'postgres_ext'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
-  gem 'less-rails'
+  gem 'less-js'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer', platform: :ruby, require: 'v8'
+#  gem 'therubyracer', platform: :ruby, require: 'v8'
 
   gem 'uglifier'
 
-  gem 'twitter-bootstrap-rails'
-  gem 'bootstrap-editable-rails'
+  gem 'twitter-bootstrap-rails', git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git', branch: 'bootstrap3'
 end
 
 gem 'jquery-rails'
@@ -97,4 +96,4 @@ gem 'liquid'
 # test since we don't verify that the gem works, just that the email
 # renders.
 #
-gem 'roadie', :group => [ :development, :production ]
+gem 'roadie', '~> 2.4', :group => [ :development, :production ]
