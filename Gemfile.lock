@@ -146,10 +146,10 @@ GEM
       addressable (~> 2.3)
     less (2.5.1)
       commonjs (~> 0.2.7)
-    less-js (0.1.1)
-      execjs
-      less-js-source
-    less-js-source (1.3.0)
+    less-rails (2.5.0)
+      actionpack (>= 3.1)
+      less (~> 2.5.0)
+    libv8 (3.16.14.3)
     liquid (2.6.1)
     listen (2.7.9)
       celluloid (>= 0.15.2)
@@ -234,6 +234,7 @@ GEM
     redis (3.1.0)
     redis-namespace (1.5.0)
       redis (~> 3.0, >= 3.0.4)
+    ref (1.0.5)
     resque (1.25.2)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
@@ -304,6 +305,9 @@ GEM
       railties (~> 3.0)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
+    therubyracer (0.12.1)
+      libv8 (~> 3.16.14.0)
+      ref
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -360,8 +364,7 @@ DEPENDENCIES
   htmlentities
   jquery-rails
   launchy
-  less
-  less-js
+  less-rails
   liquid
   multa_arcana
   paper_trail (~> 2)
@@ -386,6 +389,7 @@ DEPENDENCIES
   simple_form
   simplecov
   strong_parameters
+  therubyracer
   thin
   twitter-bootstrap-rails!
   uglifier
