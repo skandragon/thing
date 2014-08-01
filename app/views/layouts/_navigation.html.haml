@@ -1,64 +1,65 @@
-.navbar.navbar-fixed-top
-  .navbar-inner
-    .container-fluid
+.navbar.navbar-fixed-top{role: 'navigation'}
+  .container-fluid
+    .navbar-header
       %a.btn.btn-navbar{:data => { :toggle => 'collapse', :target => '.nav-collapse'} }
+        %span.sr-only Toggle Navigation
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
       %a.brand{:href => root_path}= application_name
-      .nav-collapse
-        %ul.nav
+    .nav-collapse
+      %ul.nav.navbar-nav
+        %li.dropdown
+          %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
+            Schedules
+            %b.caret
+          %ul.dropdown-menu
+            %li.dropdown-submenu
+              = link_to 'All Classes', '#'
+              %ul.dropdown-menu
+                %li= link_to 'Text', calendars_path
+                %li= link_to 'PDF', calendars_path(format: :pdf), target: '_blank'
+                %li= link_to 'PDF (brief)', calendars_path(format: :pdf, brief: true), target: '_blank'
+                %li= link_to 'iCalendar', calendars_path(format: :ics)
+                %li= link_to 'Excel (spreadsheet)', calendars_path(format: :xlsx)
+                %li= link_to 'CSV (spreadsheet)', calendars_path(format: :csv)
+            %li.dropdown-submenu
+              = link_to 'Changes from Book', '#'
+              %ul.dropdown-menu
+                - Instructable::CLASS_DATES.each do |date|
+                  %li= link_to "#{date}", changelog_path(date)
+            - if user_signed_in?
+              %li= link_to 'Custom Schedule', user_schedule_path(current_user)
+            - else
+              %li= link_to 'Sign in to customize', new_user_session_path
+            %li= link_to 'Instructor List', instructors_path
+
+        - if instructor?
           %li.dropdown
             %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
-              Schedules
+              Instructor
               %b.caret
             %ul.dropdown-menu
-              %li.dropdown-submenu
-                = link_to 'All Classes', '#'
-                %ul.dropdown-menu
-                  %li= link_to 'Text', calendars_path
-                  %li= link_to 'PDF', calendars_path(format: :pdf), target: '_blank'
-                  %li= link_to 'PDF (brief)', calendars_path(format: :pdf, brief: true), target: '_blank'
-                  %li= link_to 'iCalendar', calendars_path(format: :ics)
-                  %li= link_to 'Excel (spreadsheet)', calendars_path(format: :xlsx)
-                  %li= link_to 'CSV (spreadsheet)', calendars_path(format: :csv)
-              %li.dropdown-submenu
-                = link_to 'Changes from Book', '#'
-                %ul.dropdown-menu
-                  - Instructable::CLASS_DATES.each do |date|
-                    %li= link_to "#{date}", changelog_path(date)
-              - if user_signed_in?
-                %li= link_to 'Custom Schedule', user_schedule_path(current_user)
+              %li= link_to 'Your classes', user_instructables_path(current_user)
+        - if coordinator?
+          = render :partial => 'coordinator/menu_additions'
+        - if proofreader?
+          = render :partial => 'proofreader/menu_additions'
+        - if user_signed_in?
+          %li.dropdown
+            %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
+              Account
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to 'Change password', edit_user_registration_path
+              - if current_user.needs_profile?
+                %li= link_to 'Update instructor profile', edit_user_instructor_profile_path(current_user)
               - else
-                %li= link_to 'Sign in to customize', new_user_session_path
-              %li= link_to 'Instructor List', instructors_path
-
-          - if instructor?
-            %li.dropdown
-              %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
-                Instructor
-                %b.caret
-              %ul.dropdown-menu
-                %li= link_to 'Your classes', user_instructables_path(current_user)
-          - if coordinator?
-            = render :partial => 'coordinator/menu_additions'
-          - if proofreader?
-            = render :partial => 'proofreader/menu_additions'
-          - if user_signed_in?
-            %li.dropdown
-              %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
-                Account
-                %b.caret
-              %ul.dropdown-menu
-                %li= link_to 'Change password', edit_user_registration_path
-                - if current_user.needs_profile?
-                  %li= link_to 'Update instructor profile', edit_user_instructor_profile_path(current_user)
-                - else
-                  %li= link_to 'Request to be an instructor', new_user_instructor_profile_path(current_user)
-            %li= link_to 'Sign out', destroy_user_session_path, :method => :delete
-          - else
-            %li= link_to 'Sign in or Sign up', new_user_session_path
-          - if admin?
-            = render :partial => 'admin/menu_additions'
-          %li.divider-vertical
-          %li= link_to 'About', '/about'
+                %li= link_to 'Request to be an instructor', new_user_instructor_profile_path(current_user)
+          %li= link_to 'Sign out', destroy_user_session_path, :method => :delete
+        - else
+          %li= link_to 'Sign in or Sign up', new_user_session_path
+        - if admin?
+          = render :partial => 'admin/menu_additions'
+        %li.divider-vertical
+        %li= link_to 'About', '/about'
