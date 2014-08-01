@@ -16,10 +16,12 @@ gem 'postgres_ext'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
-  gem 'less-js'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-#  gem 'therubyracer', platform: :ruby, require: 'v8'
+  gem 'therubyracer', platform: :ruby, require: 'v8'
+  gem 'less-rails'
+
+#  gem 'less-js'
 
   gem 'uglifier'
 
