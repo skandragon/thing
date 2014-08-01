@@ -2,12 +2,12 @@
   .container-fluid
     .navbar-header
       %a.btn.btn-navbar{:data => { :toggle => 'collapse', :target => '.nav-collapse'} }
-        %span.sr-only Toggle Navigation
+        %span.sr-only Menu
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
       %a.brand{:href => root_path}= application_name
-    .nav-collapse
+    .navbar-collapse.collapse
       %ul.nav.navbar-nav
         %li.dropdown
           %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
