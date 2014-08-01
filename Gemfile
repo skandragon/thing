@@ -18,13 +18,8 @@ group :assets do
   gem 'coffee-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  if true
-    gem 'therubyracer', platform: :ruby, require: 'v8'
-    gem 'less-rails'
-  else
-    gem 'less'
-    gem 'less-js'
-  end
+  gem 'therubyracer', platform: :ruby, require: 'v8'
+  gem 'less-rails'
 
   gem 'uglifier'
 
