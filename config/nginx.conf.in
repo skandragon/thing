@@ -6,6 +6,11 @@ upstream @app@ {
   # for UNIX domain socket setups:
   server unix:/tmp/unicorn.@app@.sock fail_timeout=0;
 }
+server {
+	listen [::]:80;
+	server_name www.thing.pennsicuniversity.org;
+	return 301 $scheme://thing.pennsicuniversity.org$request_uri;
+}
 
 server {
   listen [::]:80;
