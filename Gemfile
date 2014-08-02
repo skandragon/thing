@@ -17,7 +17,10 @@ group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
 
-  gem 'less-js'
+  gem 'less-rails'
+  gem 'therubyracer', platform: :ruby, require: 'v8'
+
+#  gem 'less-js'
 
   gem 'uglifier'
 
