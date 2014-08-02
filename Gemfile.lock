@@ -187,9 +187,9 @@ GEM
     postgres_ext (1.0.0)
       activerecord (~> 3.2.0)
       pg_array_parser (~> 0.0.9)
-    prawn (1.2.1)
-      pdf-core (~> 0.2.5)
-      ttfunk (~> 1.2.0)
+    prawn (1.0.0)
+      pdf-core (~> 0.2.2)
+      ttfunk (~> 1.1.1)
     pry (0.10.0)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -320,7 +320,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    ttfunk (1.2.0)
+    ttfunk (1.1.1)
     tzinfo (0.3.40)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
@@ -371,7 +371,7 @@ DEPENDENCIES
   pg
   poltergeist
   postgres_ext
-  prawn
+  prawn (~> 1.0.0)
   rack-mini-profiler
   railroady
   rails (= 3.2.17)
