@@ -13,20 +13,16 @@
             Schedules
             %b.caret
           %ul.dropdown-menu
-            %li.dropdown-submenu
-              = link_to 'All Classes', '#'
-              %ul.dropdown-menu
-                %li= link_to 'Text', calendars_path
-                %li= link_to 'PDF', calendars_path(format: :pdf), target: '_blank'
-                %li= link_to 'PDF (brief)', calendars_path(format: :pdf, brief: true), target: '_blank'
-                %li= link_to 'iCalendar', calendars_path(format: :ics)
-                %li= link_to 'Excel (spreadsheet)', calendars_path(format: :xlsx)
-                %li= link_to 'CSV (spreadsheet)', calendars_path(format: :csv)
-            %li.dropdown-submenu
-              = link_to 'Changes from Book', '#'
-              %ul.dropdown-menu
-                - Instructable::CLASS_DATES.each do |date|
-                  %li= link_to "#{date}", changelog_path(date)
+            %li= link_to 'All: Text', calendars_path
+            %li= link_to 'All: PDF', calendars_path(format: :pdf), target: '_blank'
+            %li= link_to 'All: PDF (brief)', calendars_path(format: :pdf, brief: true), target: '_blank'
+            %li= link_to 'All: iCalendar', calendars_path(format: :ics)
+            %li= link_to 'All: Excel (spreadsheet)', calendars_path(format: :xlsx)
+            %li= link_to 'All: CSV (spreadsheet)', calendars_path(format: :csv)
+            %li.divider
+            - Instructable::CLASS_DATES.each do |date|
+              %li= link_to "Changes: #{date}", changelog_path(date)
+            %li.divider
             - if user_signed_in?
               %li= link_to 'Custom Schedule', user_schedule_path(current_user)
             - else

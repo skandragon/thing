@@ -23,3 +23,8 @@ jQuery ->
 
   $(window).scroll ->
     processScroll()
+
+jQuery ->
+  $('a.dropdown-toggle, .dropdown-menu a, .dropdown-submenu > a').on('touchstart', (e) ->
+    e.stopPropagation()
+  )
