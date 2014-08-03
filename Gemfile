@@ -17,10 +17,10 @@ group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
 
-  gem 'less-rails'
-  gem 'therubyracer', platform: :ruby, require: 'v8'
+#  gem 'less-rails'
+#  gem 'therubyracer', platform: :ruby, require: 'v8'
 
-#  gem 'less-js'
+  gem 'less-js'
 
   gem 'uglifier'
 
@@ -81,7 +81,8 @@ gem 'redis'
 gem 'resque', require: 'resque/server'
 gem 'multa_arcana'
 gem 'rubyzip'
-gem 'prawn', '~> 1.0'
+gem 'prawn'
+gem 'prawn-table'
 gem 'ri_cal'
 gem 'axlsx', '~> 2'
 gem 'redcarpet'
