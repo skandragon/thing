@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 def attempt_sign_up(args)
   visit new_user_registration_path

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe GoogleHelper do
   describe '#google_analytics' do

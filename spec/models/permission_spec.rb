@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec::Matchers.define :permit do |*args|
   match do |permission|

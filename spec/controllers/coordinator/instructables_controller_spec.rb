@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Coordinator::InstructablesController do
   def setup_data

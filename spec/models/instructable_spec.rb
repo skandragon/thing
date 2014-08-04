@@ -44,7 +44,7 @@
 #  info_tag                  :string(255)
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Instructable do
   before :each do

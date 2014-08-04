@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Coordinator::LocationsController do
   def create_instructables(count, *args)

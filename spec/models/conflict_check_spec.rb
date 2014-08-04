@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ConflictCheck do
   describe 'instance_time_overlap?' do

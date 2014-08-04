@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Admin::InstructorEmailListController do
   it 'requires admin' do

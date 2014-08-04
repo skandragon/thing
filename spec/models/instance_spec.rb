@@ -13,7 +13,7 @@
 #  year              :integer
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Instance do
   describe 'updates end time' do

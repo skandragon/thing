@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Proofreader::InstructablesController do
   def setup_data
