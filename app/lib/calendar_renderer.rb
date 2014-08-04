@@ -233,7 +233,7 @@ class CalendarRenderer
       material_limit repeat_count updated_at
     )
     CSV.generate do |csv|
-      names = %w(id location start_time end_time instructor instance_id) + column_names
+      names = %w(id location start_time end_time instructor instructor_kingdom instance_id) + column_names
       csv << names
       @instances.each do |instance|
         next unless instance.scheduled?
@@ -264,7 +264,7 @@ class CalendarRenderer
         duration fee_itemization handout_fee handout_limit material_fee
         material_limit
       )
-      header = %w(id location start_time end_time instructor) + column_names
+      header = %w(id location start_time end_time instructor instructor_kingdom) + column_names
 
       wb.add_worksheet(name: "Pennsic #{Pennsic.year}") do |sheet|
         sheet.add_row header

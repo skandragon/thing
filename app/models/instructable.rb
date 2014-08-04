@@ -245,6 +245,10 @@ class Instructable < ActiveRecord::Base
                             target_date.beginning_of_day, target_date.end_of_day)
   }
 
+  def instructor_kingdom
+    user.kingdom
+  end
+
   def is_proofreader=(value)
     @is_proofreader = value
   end
