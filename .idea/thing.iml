@@ -269,7 +269,6 @@
     <orderEntry type="library" scope="PROVIDED" name="cliver (v0.3.2, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coderay (v1.1.0, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coffee-rails (v3.2.2, rbenv: 2.1.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="commonjs (v0.2.7, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coveralls (v0.7.0, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="css_parser (v1.3.5, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="daemons (v1.1.9, rbenv: 2.1.0) [gem]" level="application" />
@@ -289,8 +288,6 @@
     <orderEntry type="library" scope="PROVIDED" name="journey (v1.0.4, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="kgio (v2.9.2, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="launchy (v2.4.2, rbenv: 2.1.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="less-rails (v2.5.0, rbenv: 2.1.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="libv8 (v3.16.14.3, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="liquid (v2.6.1, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mail (v2.5.4, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="method_source (v0.8.2, rbenv: 2.1.0) [gem]" level="application" />
@@ -306,6 +303,7 @@
     <orderEntry type="library" scope="PROVIDED" name="pg (v0.17.1, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pg_array_parser (v0.0.9, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="postgres_ext (v1.0.0, rbenv: 2.1.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="prawn (v1.0.0, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pry (v0.10.0, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack (v1.4.5, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack-cache (v1.2, rbenv: 2.1.0) [gem]" level="application" />
@@ -321,7 +319,6 @@
     <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.9.4, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.9.5, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rdoc (v3.12.2, rbenv: 2.1.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="ref (v1.0.5, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="resque (v1.25.2, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ri_cal (v0.8.8, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="roadie (v2.4.3, rbenv: 2.1.0) [gem]" level="application" />
@@ -333,12 +330,12 @@
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v2.2.2, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="strong_parameters (v0.2.3, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="term-ansicolor (v1.3.0, rbenv: 2.1.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="therubyracer (v0.12.1, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thin (v1.6.2, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v0.19.1, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tilt (v1.4.1, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="timers (v1.1.0, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="treetop (v1.4.15, rbenv: 2.1.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ttfunk (v1.1.1, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="vegas (v0.1.11, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="warden (v1.2.3, rbenv: 2.1.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="xpath (v2.0.0, rbenv: 2.1.0) [gem]" level="application" />

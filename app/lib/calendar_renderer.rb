@@ -237,7 +237,15 @@ class CalendarRenderer
       csv << names
       @instances.each do |instance|
         next unless instance.scheduled?
-        data = [instance.instructable.id, instance.formatted_location, instance.start_time, instance.end_time, instance.instructable.user.titled_sca_name, instance.id ]
+        data = [
+            instance.instructable.id,
+            instance.formatted_location,
+            instance.start_time,
+            instance.end_time,
+            instance.instructable.user.titled_sca_name,
+            instance.instructable.user.kingdom,
+            instance.id
+        ]
         data += instance.instructable.attributes.values_at(*column_names)
         csv << data
       end
@@ -273,7 +281,14 @@ class CalendarRenderer
           instructable = instance.instructable
           start_time = Time.at(instance.start_time.to_f + instance.start_time.utc_offset.to_f)
           end_time = Time.at(instance.end_time.to_f + instance.end_time.utc_offset.to_f)
-          data = [instructable.id, instance.formatted_location, start_time, end_time, instructable.titled_sca_name]
+          data = [
+              instructable.id,
+              instance.formatted_location,
+              start_time,
+              end_time,
+              instructable.titled_sca_name,
+              instance.instructable.user.kingdom,
+          ]
           column_names.each do |column_name|
             data += [instructable.send(column_name)]
           end
