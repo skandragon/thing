@@ -57,6 +57,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.include Devise::TestHelpers, :type => :controller
+  config.include Rails.application.routes.url_helpers
 
   config.before :suite do
     DatabaseCleaner.strategy = :truncation

@@ -8,6 +8,7 @@ Thing::Application.routes.draw do
     resources :reports do
       collection do
         get :instructor_signin
+        get :kingdom_war_points
       end
     end
   end
