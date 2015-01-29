@@ -403,7 +403,6 @@ DEPENDENCIES
   rubyzip
   sass-rails
   simple_form
-  simplecov
   strong_parameters
   therubyracer
   thin

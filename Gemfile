@@ -40,7 +40,7 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 group :development, :test do
-  gem 'simplecov', platform: :ruby, require: false, group: :test
+#  gem 'simplecov', platform: :ruby, require: false, group: :test
   gem 'rspec-rails'
   gem 'thin'
   gem 'factory_girl_rails'
