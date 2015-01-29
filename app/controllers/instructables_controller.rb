@@ -6,7 +6,7 @@ class InstructablesController < ApplicationController
     @instructables = @target_user.instructables.order(:name).paginate(:page => params[:page], per_page: 10)
     session[:instructable_back] = request.fullpath
 
-    @previous_year_classes = @target_user.instructables.unscoped.where(user_id: @target_user.id).where("year < #{Time.now.year}").order(:year, :name)
+    @previous_year_classes = @target_user.instructables.unscoped.where(user_id: @target_user.id).where("year < #{Time.now.year}").order('year desc', :name)
   end
 
   def new
