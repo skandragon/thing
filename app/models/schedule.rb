@@ -14,7 +14,7 @@
 class Schedule < ActiveRecord::Base
   belongs_to :user
 
-  default_scope :conditions => { year: 2014 }
+  default_scope :conditions => { year: 2015 }
 
   attr_accessor :token_access
 end

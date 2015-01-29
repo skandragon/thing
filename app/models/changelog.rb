@@ -21,7 +21,7 @@ class Changelog < ActiveRecord::Base
   belongs_to :user
   belongs_to :target, polymorphic: true
 
-  default_scope :conditions => { year: 2014 }
+  default_scope :conditions => { year: 2015 }
 
   before_save :abort_if_useless
 
