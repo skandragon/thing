@@ -37,7 +37,7 @@
                 - disabled = false
               - if admin?
                 %td= i.input :override_location, label: false, input_html: { class: '' }
-              %td= i.input :start_time, label: false, as: :string, input_html: { data: { startdatetime: Instructable::CLASS_DATES.first + ' 12:00am', enddatetime: Instructable::CLASS_DATES.last + ' 05:00pm' }, class: 'input-medium datetimepicker', value: i.object.start_time.present? ? i.object.start_time.strftime('%Y-%m-%d %H:%M') : '' }, disabled: disabled
+              %td= i.input :start_time, label: false, as: :string, input_html: { data: { startdatetime: Instructable::CLASS_DATES.first + ' 12:00am', enddatetime: Instructable::CLASS_DATES.last + ' 06:00pm' }, class: 'input-medium datetimepicker', value: i.object.start_time.present? ? i.object.start_time.strftime('%Y-%m-%d %H:%M') : '' }, disabled: disabled
               - unless @instructable.location_nontrack?
                 %td= i.input :location, label: false, as: :select, collection: locations, input_html: { class: 'input-medium' }, disabled: disabled
                 - location_was_overridden ||= disabled
