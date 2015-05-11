@@ -49,6 +49,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'coveralls', require: false
+  gem 'test-unit'
 end
 
 group :development do
