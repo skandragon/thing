@@ -99,6 +99,12 @@ class CalendarRenderer
         :CreationDate => Time.now,
     })
 
+    pdf.font_families["Ariel"] = {
+        normal: { file: 'fonts/Ariel.ttf', font: 'Ariel' },
+    }
+
+    pdf.font 'Ariel'
+
     header = [
       { content: 'When and Where', background_color: 'eeeeee' },
       { content: 'Title and Instructor', background_color: 'eeeeee' }
