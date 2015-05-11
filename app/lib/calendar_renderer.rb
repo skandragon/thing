@@ -100,7 +100,7 @@ class CalendarRenderer
     })
 
     pdf.font_families["Ariel"] = {
-        normal: { file: 'fonts/Ariel.ttf', font: 'Ariel' },
+        normal: { file: Rails.root.join('fonts', 'Ariel.ttf'), font: 'Ariel' },
     }
 
     pdf.font 'Ariel'
