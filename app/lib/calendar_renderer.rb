@@ -99,11 +99,11 @@ class CalendarRenderer
         :CreationDate => Time.now,
     })
 
-    pdf.font_families["Ariel"] = {
-        normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Ariel.ttf'), font: 'Ariel' },
+    pdf.font_families["Arial"] = {
+        normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'), font: 'Arial' },
     }
 
-    pdf.font 'Ariel'
+    pdf.font 'Arial'
 
     header = [
       { content: 'When and Where', background_color: 'eeeeee' },
