@@ -99,9 +99,14 @@ class CalendarRenderer
         :CreationDate => Time.now,
     })
 
-    pdf.font_families["Arial"] = {
-        normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'), font: 'Arial' },
-    }
+    pdf.font_families.update(
+        'Arial' => {
+          normal: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'),
+          bold: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold.ttf'),
+          italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Italic.ttf'),
+          bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold Italic.ttf'),
+        },
+    )
 
     pdf.font 'Arial'
 

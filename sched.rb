@@ -641,7 +641,7 @@ end
 
 pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait, compress: true, optimize_objects: true, info: { CreationDate: Time.now })
 
-font_path = "Copperplate.ttf"
+font_path = "EagleLake-Regular.ttf"
 pdf.font_families["TitleFont"] = {
     normal: { file: font_path, font: 'TitleFont' },
 }
@@ -655,7 +655,7 @@ end
 
 entries.keys.sort.each do |key|
   day = key.strftime("%d").to_i
-  date = key.strftime("%A, %B #{day.ordinalize}, A.S. XLIX")
+  date = key.strftime("%A, %B #{day.ordinalize}, A.S. L")
   render(pdf,
          location_labels: @locs1,
          hour_labels: @morning_hours,
@@ -713,7 +713,7 @@ pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 9, width: pdf.bounds.width)
   render_topic_list(pdf, instructables)
 end
 
-pdf.render_file 'prawn-0005.pdf'
+pdf.render_file 'sched.pdf'
 
 @loc_count.keys.sort.each { |x|
   puts (' %2d %s' % [@loc_count[x], x])
