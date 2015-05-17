@@ -5,45 +5,19 @@
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:thing_test</jdbc-url>
-      <user-name>thing</user-name>
-      <libraries>
-        <library>
-          <url>file://$USER_HOME$/Library/Preferences/RubyMine50/jdbc-drivers/postgresql-driver-license.txt</url>
-        </library>
-        <library>
-          <url>jar://$USER_HOME$/Library/Preferences/RubyMine50/jdbc-drivers/postgresql-9.1-901.jdbc3.jar!/</url>
-        </library>
-      </libraries>
+      <libraries />
     </data-source>
     <data-source source="LOCAL" name="Rails thing: development" uuid="03902fdb-eaa3-4a8d-bb33-ff528156a5fc">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:thing_development</jdbc-url>
-      <user-name>thing</user-name>
-      <libraries>
-        <library>
-          <url>file://$USER_HOME$/Library/Preferences/RubyMine50/jdbc-drivers/postgresql-driver-license.txt</url>
-        </library>
-        <library>
-          <url>jar://$USER_HOME$/Library/Preferences/RubyMine50/jdbc-drivers/postgresql-9.1-901.jdbc3.jar!/</url>
-        </library>
-      </libraries>
+      <libraries />
     </data-source>
     <data-source source="LOCAL" name="Rails thing: production" uuid="95e620c3-573f-40b0-974d-557da4d3e977">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://127.0.0.1/thing_production</jdbc-url>
-      <user-name>&lt;%= MultaArcana::secret_for(:db_username) %&gt;</user-name>
-      <user-password>df96df8fdf97df8adfe7dfdfdfc6dfdedfcbdfebdfd8dfc9dfcbdfc4dfcbdf90df90dfd9dfcfdfc9dfd8dfcfdfdedff5dfccdfc5dfd8df82df90dfcedfc8dff5dfdadfcbdfd9dfd9dfdddfc5dfd8dfcedf83df8adf8fdf94</user-password>
-      <libraries>
-        <library>
-          <url>file://$USER_HOME$/Library/Preferences/RubyMine50/jdbc-drivers/postgresql-driver-license.txt</url>
-        </library>
-        <library>
-          <url>jar://$USER_HOME$/Library/Preferences/RubyMine50/jdbc-drivers/postgresql-9.1-901.jdbc3.jar!/</url>
-        </library>
-      </libraries>
+      <libraries />
     </data-source>
   </component>
 </project>
-
