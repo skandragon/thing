@@ -136,6 +136,7 @@ class Instructable < ActiveRecord::Base
       'Blue List',
       'East Battlefield',
       'Fort',
+      'Green List',
       'Gunnery Point',
       'Inspection Point',
       'Main Battlefield',
