@@ -623,11 +623,12 @@ def render_topic_list(pdf, instructables)
         "Instructor: #{instructable.user.titled_sca_name}",
     ]
 
-    if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
-      lines << 'Taught: ' + instructable.instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
-      lines << 'Location: ' + instructable.instances.first.formatted_location
+    scheduled_instances = instructable.instances.select { |x| x.scheduled? }
+    if scheduled_instances.count > 1 and scheduled_instances.map(&:formatted_location).uniq.count == 1
+      lines << 'Taught: ' + scheduled_instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
+      lines << 'Location: ' + scheduled_instances.first.formatted_location
     else
-      lines << 'Taught: ' + instructable.instances.map { |x| x.scheduled? ? "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" : nil }.compact.join(', ')
+      lines << 'Taught: ' + scheduled_instances.map { |x| x.scheduled? ? "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" : nil }.compact.join(', ')
     end
 
     lines << materials_and_handout_content(instructable).join(' ')
@@ -641,10 +642,18 @@ end
 
 pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait, compress: true, optimize_objects: true, info: { CreationDate: Time.now })
 
-font_path = "EagleLake-Regular.ttf"
-pdf.font_families["TitleFont"] = {
-    normal: { file: font_path, font: 'TitleFont' },
-}
+pdf.font_families.update(
+  'TitleFont' => {
+    normal: { file: 'EagleLake-Regular.ttf', font: 'TitleFont' },
+  },
+  'Arial' => {
+    normal: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow.ttf'),
+    bold: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Bold.ttf'),
+    italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Italic.ttf'),
+    bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Bold Italic.ttf'),
+  },
+)
+pdf.font 'Arial'
 
 @note_counter = 1
 def next_note_type
@@ -709,7 +718,7 @@ entries.keys.sort.each do |key|
   pdf.start_new_page
 end
 
-pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 9, width: pdf.bounds.width) do
+pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
   render_topic_list(pdf, instructables)
 end
 
