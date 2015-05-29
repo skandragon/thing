@@ -660,6 +660,12 @@ pdf.font_families.update(
     italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Italic.ttf'),
     bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Bold Italic.ttf'),
   },
+  'Gill Sans' => {
+    normal: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT.ttf'),
+    bold: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT Bold.ttf'),
+    italic: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT Italic.ttf'),
+    bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT Bold Italic.ttf'),
+  },
 )
 pdf.font 'Arial'
 pdf.text "Spacer page"
@@ -727,6 +733,8 @@ entries.keys.sort.each do |key|
   draftit(pdf)
   pdf.start_new_page
 end
+
+pdf.font 'Gill Sans'
 
 pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
   render_topic_list(pdf, instructables)
