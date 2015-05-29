@@ -27,13 +27,21 @@ entries = {}
 @morning_hours =   [  9, 10, 11, 12, 13 ]
 @afternoon_hours = [ 14, 15, 16, 17, 18 ]
 
-@locs1 = (1..16).map { |x| "A&S #{x}" }
+@locs1 = (1..15).map { |x| "A&S #{x}" }
 @locs1 << 'Battlefield'
+@locs1 << 'Dance'
 @locs1 << 'Games'
 
-@locs2 = ['Performing Arts', 'Amphitheater', 'Middle Eastern', 'Dance',
-  'Æthelmearc 1', 'Æthelmearc 2',
-  'Thrown Weapons Range', 'Touch The Earth', 'Performing Arts Rehearsal',
+@locs2 = [
+  'Performing Arts',
+  'Amphitheater',
+  'Middle Eastern',
+  'Æthelmearc 1',
+  'Æthelmearc 2',
+  'Touch The Earth',
+  'Performing Arts Rehearsal',
+  'Livonia Smithery',
+  'Pine Box Traders',
 ].sort
 
 @loc_count = {}
@@ -654,6 +662,8 @@ pdf.font_families.update(
   },
 )
 pdf.font 'Arial'
+pdf.text "Spacer page"
+pdf.start_new_page
 
 @note_counter = 1
 def next_note_type
