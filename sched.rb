@@ -726,15 +726,18 @@ entries.keys.sort.each do |key|
          entries: entries[key][:afternoon][:loc2],
          title: "#{date} ~ Afternoon")
   note_type = next_note_type
-  render_notes(pdf,
-               mode: note_type,
-               title: (note_type == :notes ? 'Notes' : 'Notes and Doodles'),
-               rowoffset: @locs2.count * @row_height + @header_height + 1)
+  if (@render_notes_and_doodles)
+    render_notes(pdf,
+                 mode: note_type,
+                 title: (note_type == :notes ? 'Notes' : 'Notes and Doodles'),
+                 rowoffset: @locs2.count * @row_height + @header_height + 1)
+  end
   draftit(pdf)
   pdf.start_new_page
 end
 
-pdf.font 'Gill Sans'
+#pdf.font 'Gill Sans'
+pdf.font 'Arial'
 
 pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
   render_topic_list(pdf, instructables)
