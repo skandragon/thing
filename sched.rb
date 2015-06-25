@@ -652,22 +652,16 @@ pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait, compress:
 
 pdf.font_families.update(
   'TitleFont' => {
-    normal: { file: 'EagleLake-Regular.ttf', font: 'TitleFont' },
+    normal: { file: 'Monotype Corsiva.ttf', font: 'TitleFont' },
   },
-  'Arial' => {
-    normal: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow.ttf'),
-    bold: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Bold.ttf'),
-    italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Italic.ttf'),
-    bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Narrow Bold Italic.ttf'),
-  },
-  'Gill Sans' => {
-    normal: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT.ttf'),
-    bold: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT Bold.ttf'),
-    italic: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT Italic.ttf'),
-    bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Gill Sans MT Bold Italic.ttf'),
+  'BodyFont' => {
+    normal: Rails.root.join('app', 'assets', 'fonts', 'Tahoma.ttf'),
+    bold: Rails.root.join('app', 'assets', 'fonts', 'Tahoma Bold.ttf'),
+    italic: Rails.root.join('app', 'assets', 'fonts', 'Tahoma Italic.ttf'),
+    bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Tahoma Bold Italic.ttf'),
   },
 )
-pdf.font 'Arial'
+pdf.font 'BodyFont'
 pdf.text "Spacer page"
 pdf.start_new_page
 
@@ -736,8 +730,7 @@ entries.keys.sort.each do |key|
   pdf.start_new_page
 end
 
-#pdf.font 'Gill Sans'
-pdf.font 'Arial'
+pdf.font 'BodyFont'
 
 pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
   render_topic_list(pdf, instructables)
