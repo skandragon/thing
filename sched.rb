@@ -294,9 +294,9 @@ def draw_location_labels(pdf, opts)
         at: [box.top_left[0] + 2, box.top_left[1] - 2],
         width: box.width - 4,
         height: box.height - 4,
-        size: 10,
+        size: 9,
         overflow: :shrink_to_fit,
-        min_font_size: 6,
+        min_font_size: 5,
         align: :center,
         valign: :center,
         style: :bold,
@@ -601,7 +601,7 @@ def render_topic_list(pdf, instructables)
     [a.formatted_topic, a.name.gsub('*', '')] <=> [b.formatted_topic, b.name.gsub('*', '')]
   }.each do |instructable|
     if instructable.topic != previous_topic
-      pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
+      pdf.move_down 7 unless pdf.cursor == pdf.bounds.top
       pdf.font_size @title_font_size
       pdf.text_rendering_mode(:fill_stroke) do
         pdf.fill_color @grey_50
@@ -652,7 +652,7 @@ pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait, compress:
 
 pdf.font_families.update(
   'TitleFont' => {
-    normal: { file: 'Monotype Corsiva.ttf', font: 'TitleFont' },
+    normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Monotype Corsiva.ttf') },
   },
   'BodyFont' => {
     normal: Rails.root.join('app', 'assets', 'fonts', 'Tahoma.ttf'),
