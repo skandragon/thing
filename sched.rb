@@ -655,10 +655,10 @@ pdf.font_families.update(
     normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Monotype Corsiva.ttf') },
   },
   'BodyFont' => {
-    normal: Rails.root.join('app', 'assets', 'fonts', 'Tahoma.ttf'),
-    bold: Rails.root.join('app', 'assets', 'fonts', 'Tahoma Bold.ttf'),
-    italic: Rails.root.join('app', 'assets', 'fonts', 'Tahoma Italic.ttf'),
-    bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Tahoma Bold Italic.ttf'),
+    normal: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'),
+    bold: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold.ttf'),
+    italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Italic.ttf'),
+    bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold Italic.ttf'),
   },
 )
 pdf.font 'BodyFont'
