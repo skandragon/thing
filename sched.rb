@@ -648,7 +648,18 @@ def render_topic_list(pdf, instructables)
   end
 end
 
-pdf = Prawn::Document.new(page_size: "LETTER", page_layout: :portrait, compress: true, optimize_objects: true, info: { CreationDate: Time.now })
+pdf = Prawn::Document.new(page_size: "LETTER",
+                          page_layout: :portrait,
+                          compress: true,
+                          optimize_objects: true,
+                          info: {
+                            Title: "Pennsic Schedule",
+                            Author: "thing.pennsicuniversity.org",
+                            Subject: "Pennsic Schedule",
+                            Keywords: "Pennsic Schedule",
+                            Creator: "sched.rb",
+                            CreationDate: Time.now
+                          })
 
 pdf.font_families.update(
   'TitleFont' => {
