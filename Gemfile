@@ -42,6 +42,7 @@ gem 'jquery-rails'
 group :development, :test do
 #  gem 'simplecov', platform: :ruby, require: false, group: :test
   gem 'rspec-rails'
+  gem 'rspec-collection_matchers'
   gem 'thin'
   gem 'factory_girl_rails'
   gem 'capybara'
