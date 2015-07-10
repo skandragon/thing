@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Coordinator::LocationsController do
+describe Coordinator::LocationsController, type: :controller do
   def create_instructables(count, *args)
     count.times do
       instructable = create(:scheduled_instructable, *args)

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe InstructorsController do
+describe InstructorsController, type: :controller do
   before :each do
     @instructor1 = create(:instructor, kingdom: 'ansteorra')
     create(:instructable, user_id: @instructor1.id)

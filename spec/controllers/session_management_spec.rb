@@ -8,7 +8,7 @@ def attempt_sign_up(args)
   click_button 'Sign up'
 end
 
-describe Devise::RegistrationsController do
+describe Devise::RegistrationsController, type: :controller do
   describe 'sign up' do
     it 'works with email, password, and password confirmation' do
       attempt_sign_up email: 'example@example.com', password: 'secret123', password_confirmation: 'secret123'

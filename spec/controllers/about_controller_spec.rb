@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AboutController, type: :request do
+RSpec.describe AboutController, type: :controller do
   describe 'index' do
     describe 'when not logged in' do
       it 'shows a sign up link' do

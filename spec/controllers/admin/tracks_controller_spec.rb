@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Admin::TracksController do
+describe Admin::TracksController, type: :controller do
   it 'requires admin' do
     visit admin_tracks_path
     page.should have_content('Not authorized')

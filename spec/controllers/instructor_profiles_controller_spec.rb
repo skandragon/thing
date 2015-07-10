@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe InstructorProfilesController do
+describe InstructorProfilesController, type: :controller do
   it 'updates' do
     log_in instructor: true
 
@@ -91,7 +91,7 @@ describe InstructorProfilesController do
         page.should have_content 'Alternate Email'
       end
 
-      xit 'hides if initiailly shown' do
+      it 'hides if initiailly shown' do
         log_in instructor: true, no_contact: false
         visit edit_user_instructor_profile_path(current_user)
         page.should have_content 'Alternate Email'

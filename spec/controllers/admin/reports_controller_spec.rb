@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Admin::ReportsController do
+describe Admin::ReportsController, type: :controller do
   def create_instructables(count, *args)
     count.times do
       instructable = create(:scheduled_instructable, *args)

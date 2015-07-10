@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CalendarsController do
+describe CalendarsController, type: :controller do
   def create_instructables
     @user1 = create(:instructor)
     @user2 = create(:instructor)

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Admin::UsersController do
+describe Admin::UsersController, type: :controller do
   it 'requires admin' do
     visit admin_users_path
     page.should have_content('Not authorized')

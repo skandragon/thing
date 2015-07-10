@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe UsersController do
+describe UsersController, type: :controller do
   describe 'instructor status' do
     it 'displays "You are not an instructor" for normal users' do
       log_in

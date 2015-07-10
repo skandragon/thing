@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Proofreader::InstructablesController do
+describe Proofreader::InstructablesController, type: :controller do
   def setup_data
     user = create(:user)
     create(:instructable, user_id: user.id, track: 'Middle Eastern',

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Users::SchedulesController do
+describe Users::SchedulesController, type: :controller do
   describe 'no-user' do
     describe '#show' do
       let (:user) {

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Admin::BackupsController do
+describe Admin::BackupsController, type: :controller do
   before :each do
     log_in admin: true
   end

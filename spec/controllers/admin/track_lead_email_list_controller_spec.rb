@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Admin::TrackLeadEmailListController do
+describe Admin::TrackLeadEmailListController, type: :controller do
   it 'requires admin' do
     visit admin_track_lead_email_list_index_path
     page.should have_content('Not authorized')

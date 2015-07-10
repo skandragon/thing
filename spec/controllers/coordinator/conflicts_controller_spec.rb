@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Coordinator::ConflictsController do
+describe Coordinator::ConflictsController, type: :controller do
   before :each do
     log_in tracks: ['Middle Eastern']
     @user = create(:instructor)
