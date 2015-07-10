@@ -265,13 +265,13 @@ describe Instructable do
       end
 
       it 'on name change' do
-        @instructable.proofread.should_not be_true
+        @instructable.proofread.should_not be_truthy
         @instructable.proofread_by.should == [123]
         @instructable.name = 'Flarg'
         @instructable.is_proofreader = 123
         @instructable.save!
         @instructable.reload
-        @instructable.proofread.should_not be_true
+        @instructable.proofread.should_not be_truthy
         @instructable.proofread_by.should == [123]
       end
     end
@@ -289,40 +289,40 @@ describe Instructable do
       end
 
       it 'clears on name change' do
-        @instructable.proofread.should be_true
+        @instructable.proofread.should be_truthy
         @instructable.name = 'Flarg'
         @instructable.save!
         @instructable.reload
-        @instructable.proofread.should_not be_true
+        @instructable.proofread.should_not be_truthy
         @instructable.proofread_by.should be_empty
       end
 
       it 'unaffected on duration change' do
-        @instructable.proofread.should be_true
+        @instructable.proofread.should be_truthy
         @instructable.duration = @instructable.duration + 1
         @instructable.save!
         @instructable.reload
-        @instructable.proofread.should be_true
+        @instructable.proofread.should be_truthy
         @instructable.proofread_by.should_not be_empty
       end
 
       it 'clears on new proofreader, on name change' do
-        @instructable.proofread.should be_true
+        @instructable.proofread.should be_truthy
         @instructable.name = 'Flarg'
         @instructable.is_proofreader = 987
         @instructable.save!
         @instructable.reload
-        @instructable.proofread.should_not be_true
+        @instructable.proofread.should_not be_truthy
         @instructable.proofread_by.should == [ 987 ]
       end
 
       it 'does not clear on new proofreader, on uninteresting change' do
-        @instructable.proofread.should be_true
+        @instructable.proofread.should be_truthy
         @instructable.duration = @instructable.duration + 1
         @instructable.is_proofreader = 987
         @instructable.save!
         @instructable.reload
-        @instructable.proofread.should be_true
+        @instructable.proofread.should be_truthy
         @instructable.proofread_by.should include(987)
       end
     end

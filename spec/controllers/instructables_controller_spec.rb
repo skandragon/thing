@@ -288,7 +288,7 @@ describe InstructablesController do
       first('.submit-button').click
       page.should have_content 'Class updated.'
       @other_instructable.reload
-      @other_instructable.approved.should be_true
+      @other_instructable.approved.should be_truthy
       Changelog.count.should == 1
     end
 

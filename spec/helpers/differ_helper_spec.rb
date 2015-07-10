@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DifferHelper do
+describe DifferHelper, type: :helper do
   describe '#html_diff' do
     it 'renders for an example diff' do
       html = helper.html_diff('this is a test', 'this is testing')

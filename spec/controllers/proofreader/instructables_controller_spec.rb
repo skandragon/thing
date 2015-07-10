@@ -130,7 +130,7 @@ describe Proofreader::InstructablesController do
       click_on 'Save and Mark Proofread'
       @random_proofread.reload
       @random_proofread.name.should == 'Foo Class Name Here'
-      @random_proofread.proofread.should_not be_true
+      @random_proofread.proofread.should_not be_truthy
       @random_proofread.proofread_by.should == [current_user.id]
       Changelog.count.should == 1
       cl = Changelog.first
@@ -145,7 +145,7 @@ describe Proofreader::InstructablesController do
       @random_proofread.reload
       @random_proofread.proofread_by.should include(current_user.id)
       @random_proofread.proofread_by.size.should == 2
-      @random_proofread.proofread.should be_true
+      @random_proofread.proofread.should be_truthy
       Changelog.count.should == 0
     end
 
@@ -155,7 +155,7 @@ describe Proofreader::InstructablesController do
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
       @random_instructable.name.should == 'Foo Class Name Here'
-      @random_instructable.proofread.should_not be_true
+      @random_instructable.proofread.should_not be_truthy
       Changelog.count.should == 1
     end
 
@@ -263,7 +263,7 @@ describe Proofreader::InstructablesController do
       page.should have_content "can't be blank"
       @random_instructable.reload
       @random_instructable.name.should be_present
-      @random_instructable.proofread.should_not be_true
+      @random_instructable.proofread.should_not be_truthy
     end
 
     it 'does not create a changelog on badness' do

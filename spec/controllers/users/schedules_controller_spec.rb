@@ -144,7 +144,7 @@ describe Users::SchedulesController do
         find('#options_publish').click
         sleep(0.5)
         current_user.reload
-        current_user.schedule.published.should be_true
+        current_user.schedule.published.should be_truthy
       end
 
       it 'unpublishes when initially checked', js: true do
@@ -153,7 +153,7 @@ describe Users::SchedulesController do
         find('#options_publish').click
         sleep(0.5)
         current_user.reload
-        current_user.schedule.published.should be_false
+        current_user.schedule.published.should be_falsey
       end
 
       it 'add and remove buttons work', js: true do

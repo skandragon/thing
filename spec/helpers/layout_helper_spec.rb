@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe LayoutHelper do
+describe LayoutHelper, type: :helper do
   describe '#render_flashes' do
     it 'renders :notice' do
       flash[:notice] = 'FooBarTest'

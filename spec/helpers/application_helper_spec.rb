@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ApplicationHelper do
+describe ApplicationHelper, type: :helper do
   describe '#application_name' do
     it 'renders' do
       helper.application_name.should be_present

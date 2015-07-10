@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GoogleHelper do
+describe GoogleHelper, type: :helper do
   describe '#google_analytics' do
     it 'does not render analytics code if not production' do
       Rails.should_receive(:env).and_return('not production')

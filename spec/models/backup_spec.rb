@@ -24,7 +24,7 @@ describe Backup do
   it '#backup' do
     begin
       path = backup.backup
-      File.exists?(path).should be_true
+      File.exists?(path).should be_truthy
     ensure
       File.unlink(backup.zip_filename) if File.exist?(backup.zip_filename)
     end
