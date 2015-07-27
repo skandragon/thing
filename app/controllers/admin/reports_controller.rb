@@ -82,6 +82,16 @@ class Admin::ReportsController < ApplicationController
 
     @pdf.font_size PDF_FONT_SIZE
 
+    @pdf.font_families.update(
+      'BodyFont' => {
+        normal: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'),
+        bold: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold.ttf'),
+        italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Italic.ttf'),
+        bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold Italic.ttf'),
+      },
+    )
+    @pdf.font 'BodyFont'
+
     @last_letter = nil
     @first_name = true
 
