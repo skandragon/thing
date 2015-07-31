@@ -74,6 +74,17 @@ class Coordinator::LocationsController < ApplicationController
         :CreationDate => Time.now,
     })
 
+    pdf.font_families.update(
+      'BodyFont' => {
+        normal: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'),
+        bold: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold.ttf'),
+        italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Italic.ttf'),
+        bold_italic: Rails.root.join('app', 'assets', 'fonts', 'Arial Bold Italic.ttf'),
+      },
+    )
+    pdf.font 'BodyFont'
+
+
     header = [
       { content: 'When', background_color: 'ffffee' },
       { content: 'Title and Instructor', background_color: 'ffffee' },
