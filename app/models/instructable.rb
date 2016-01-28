@@ -51,16 +51,16 @@ class Instructable < ActiveRecord::Base
   has_many :changelogs, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
-  default_scope :conditions => { year: 2015 }
+  default_scope :conditions => { year: 2016 }
 
   has_paper_trail
 
   delegate :titled_sca_name, to: :user
 
-  PENNSIC_DATES_RAW = (Date.parse('2015-07-24')..Date.parse('2015-08-09')).to_a
+  PENNSIC_DATES_RAW = Pennsic.dates
   PENNSIC_DATES = PENNSIC_DATES_RAW.map(&:to_s)
-  CLASS_DATES = (Date.parse('2015-07-27')..Date.parse('2015-08-07')).to_a.map(&:to_s)
-  CLASS_TIMES = [ '9am to Noon', 'Noon to 3pm', '3pm to 6pm', 'After 6pm' ]
+  CLASS_DATES = Pennsic.class_dates
+  CLASS_TIMES = Pennsic.class_times
 
   CULTURES = [
     'Multiple Cultures',
@@ -160,6 +160,7 @@ class Instructable < ActiveRecord::Base
       "Artisan's Row C"
     ],
     'Youth Point' => [ 'Youth Point' ],
+    'Bog U' => [ 'Wild Rose Camp, E-24' ],
   }
 
   SCHEDULES = [
