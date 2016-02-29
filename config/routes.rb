@@ -1,6 +1,8 @@
 Thing::Application.routes.draw do
   namespace :admin do
-    resources :users
+    resources :users do
+      get :send_password_reset_email
+    end
     resources :tracks
     resources :instructor_email_list
     resources :track_lead_email_list

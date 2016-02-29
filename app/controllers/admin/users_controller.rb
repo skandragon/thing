@@ -26,6 +26,13 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def send_password_reset_email
+    user = User.find(params[:user_id])
+    Rails.logger.info "Changing password for #{user.email}"
+    user.send_reset_password_instructions
+    redirect_to admin_users_path, notice: "Password reset instructions sent to #{user.email}"
+  end
+
   private
 
   def current_resource
