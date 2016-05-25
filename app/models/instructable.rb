@@ -86,13 +86,10 @@ class Instructable < ActiveRecord::Base
     'Maritime' => [],
     'Martial' => [
       'Archery',
-      'Atl. Atl. Range',
       'Heavy Weapons',
       'Historic Combat',
       'Rapier',
       'SCA Combat',
-      'Thrown Weapons Populace Range',
-      'Thrown Weapons Training Range',
       'Thrown Weapons',
       'War Points',
     ],
@@ -122,7 +119,13 @@ class Instructable < ActiveRecord::Base
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 4'],
-    'Thrown Weapons' => [ 'Thrown Weapons Range', 'Thrown Weapons Tent' ],
+    'Thrown Weapons' => [
+      'Atl. Atl. Range',
+      'Thrown Weapons Populace Range',
+      'Thrown Weapons Range',
+      'Thrown Weapons Tent',
+      'Thrown Weapons Training Range',
+    ],
     'Archery' => [
       'Archery',
       'Archery Tent',
