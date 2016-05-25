@@ -1,4 +1,10 @@
 class ConflictCheck
+  IGNORED_INSTRUCTORS = [
+    'Pennsic Performing Arts',
+    'Artisans Row',
+    'Artimisia Lacebrayder',
+  ]
+
   def self.conflicts(options = {})
     #
     # If options[:track] then limit returned conflicts to instances
@@ -50,7 +56,7 @@ class ConflictCheck
 
   # return true only if user_id fields are equal
   def self.instance_instructor_overlap?(a, b)
-    a.instructable.user_id == b.instructable.user_id
+    !IGNORED_INSTRUCTORS.include?(a.instructable.user.sca_name) and a.instructable.user_id == b.instructable.user_id
   end
 
   # return true only if the topic (topic) is equal
