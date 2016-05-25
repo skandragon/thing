@@ -48,7 +48,7 @@ class CalendarsController < ApplicationController
       if schedule
         raise ActiveRecord::RecordNotFound unless Instructable::SCHEDULES.include?schedule
       end
-      schedule_filename_part = schedule ? schedule.downcase.gsub!(/[^0-9A-Za-z]+/, '_') : nil
+      schedule_filename_part = schedule ? schedule.downcase.gsub(/[^0-9A-Za-z]+/, '_') : nil
 
       format.html {
         load_data(schedule)
