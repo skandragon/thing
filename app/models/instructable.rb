@@ -99,7 +99,7 @@ class Instructable < ActiveRecord::Base
     'Meetings' => [],
     'Parent/Child' => [],
     'Party' => [],
-    'Performance' => %w(Bardic Commedia Music Storytelling Theater),
+    'Performance' => %w(Bardic Commedia Music Rehersal Storytelling Theater),
     'Performing Arts and Music' => [ 'Bardic', 'Commedia', 'Instrumental Music', 'Juggling', 'Rehersal', 'Storytelling', 'Theater', 'Vocal Music' ],
     'SCA Life' => %W(Court Heraldry Meetings Newcomers Persona),
     'Sciences' => [ 'Astronomy', 'Animals', 'Black Powder', 'Equestrian', 'Gardens', 'Research' ],
@@ -112,7 +112,7 @@ class Instructable < ActiveRecord::Base
     'Pennsic University' => [
       'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
       'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
-      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'Battlefield'
+      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'University-Battlefield'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],
@@ -151,7 +151,12 @@ class Instructable < ActiveRecord::Base
       'White List',
     ],
     'Rapier Activities' => [
-      'Rapier List 1', 'Rapier List 2', 'Rapier Field', 'Rapier Tent',
+      'Rapier List 1',
+      'Rapier List 2',
+      'Rapier List 3',
+      'Rapier List 4',
+      'Rapier Field',
+      'Rapier Tent',
       'Rapier Youth List',
     ],
     'Party' => ['Battlefield', 'Great Hall', 'Rune Stone Park'],
