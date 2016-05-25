@@ -15,7 +15,9 @@ class CalendarsController < ApplicationController
 
       format.pdf {
         filename = [
-          "pennsic-#{Pennsic.year}-#{date}",
+          'pennsic',
+          Pennsic.year,
+          date,
         ].compact.join('-') + '.pdf'
         cache_filename = Rails.root.join('tmp', filename)
 
@@ -42,18 +44,28 @@ class CalendarsController < ApplicationController
 
     respond_to do |format|
       uncached = params[:uncached_for_tests].present?
+      schedule = params[:schedule]
+      if schedule
+        raise ActiveRecord::RecordNotFound unless Instructable::SCHEDULES.include?schedule
+      end
+      schedule_filename_part = schedule ? schedule.downcase.gsub!(/[^0-9A-Za-z]+/, '_') : nil
 
       format.html {
-        load_data
+        load_data(schedule)
       }
 
       format.ics {
-        filename = "pennsic-#{Pennsic.year}-all.ics"
+        filename = [
+          'pennsic',
+          Pennsic.year,
+          'all',
+          schedule_filename_part,
+        ].compact.join('-') + '.ics'
         cache_filename = Rails.root.join('tmp', filename)
 
         if uncached or !File.exists?(cache_filename)
           render_options[:calendar_name] = "PennsicU #{Pennsic.year}"
-          load_data
+          load_data(schedule)
           renderer = CalendarRenderer.new(@instances, @instructables)
           data = renderer.render_ics(render_options, filename, cache_filename)
           cache_in_file(cache_filename, data)
@@ -66,16 +78,19 @@ class CalendarsController < ApplicationController
         no_page_numbers = params[:unnumbered].present?
 
         filename = [
-          "pennsic-#{Pennsic.year}-all",
+          'pennsic',
+          Pennsic.year,
+          'all',
           omit_descriptions ? 'brief' : nil,
           no_page_numbers ? 'unnumbered' : nil,
+          schedule_filename_part,
         ].compact.join('-') + '.pdf'
         cache_filename = Rails.root.join('tmp', filename)
 
         if uncached or !File.exists?(cache_filename)
           render_options[:omit_descriptions] = omit_descriptions
           render_options[:no_page_numbers] = no_page_numbers
-          load_data
+          load_data(schedule)
           renderer = CalendarRenderer.new(@instances, @instructables)
           data = renderer.render_pdf(render_options, filename, cache_filename)
           cache_in_file(cache_filename, data)
@@ -84,11 +99,16 @@ class CalendarsController < ApplicationController
       }
 
       format.csv {
-        filename = "pennsic-#{Pennsic.year}-all.csv"
+        filename = [
+          'pennsic',
+          Pennsic.year,
+          'all',
+          schedule_filename_part,
+        ].compact.join('-') + '.csv'
         cache_filename = Rails.root.join('tmp', filename)
 
         if uncached or !File.exists?(cache_filename)
-          load_data
+          load_data(track)
           renderer = CalendarRenderer.new(@instances, @instructables)
           data = renderer.render_csv(render_options, "pennsic-#{Pennsic.year}-full.csv")
           cache_in_file(cache_filename, data)
@@ -97,13 +117,18 @@ class CalendarsController < ApplicationController
       }
 
       format.xlsx {
-        filename = "pennsic-#{Pennsic.year}-all.xlsx"
+        filename = [
+          'pennsic',
+          Pennsic.year,
+          'all',
+          track_filename_part,
+        ].compact.join('-') + '.xlsx'
         cache_filename = Rails.root.join('tmp', filename)
 
         if uncached or !File.exists?(cache_filename)
-          load_data
+          load_data(track)
           renderer = CalendarRenderer.new(@instances, @instructables)
-          data = renderer.render_xlsx(render_options, "pennsic-#{Pennsic.year}-full.xlsx")
+          data = renderer.render_xlsx(render_options, filename)
           cache_in_file(cache_filename, data)
         end
         send_file(cache_filename, type: Mime::XLSX, disposition: "filename=#{filename}", filename: filename)
@@ -113,9 +138,13 @@ class CalendarsController < ApplicationController
 
   private
 
-  def load_data
+  def load_data(schedule)
     @instructables = Instructable.where(scheduled: true).order(:topic, :subtopic, :culture, :name).includes(:instances, :user)
     @instances = Instance.where(instructable_id: @instructables.map(&:id)).order('start_time, btrsort(location)').includes(instructable: [:user])
+    if schedule
+      @instructables = @instructables.where("schedule = ?", schedule)
+      @instances = @instances.where("instructables.schedule = ?", schedule)
+    end
   end
 
   def load_data_for_date(date, end_date = '3000-01-01')
