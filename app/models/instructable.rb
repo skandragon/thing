@@ -86,10 +86,13 @@ class Instructable < ActiveRecord::Base
     'Maritime' => [],
     'Martial' => [
       'Archery',
+      'Atl. Atl. Range',
       'Heavy Weapons',
       'Historic Combat',
       'Rapier',
       'SCA Combat',
+      'Thrown Weapons Populace Range',
+      'Thrown Weapons Training Range',
       'Thrown Weapons',
       'War Points',
     ],
