@@ -7,6 +7,7 @@ require 'pp'
 include GriffinMarkdown
 
 @render_notes_and_doodles = true
+@draftit = true
 
 @location_label_width = 6
 @header_height = 3
@@ -560,7 +561,7 @@ def render_notes(pdf, opts)
 end
 
 def draftit(pdf)
-  return
+  return unless @draftit
   pdf.save_graphics_state do
     pdf.soft_mask do
       pdf.rotate(45, origin: [0, 0]) do
@@ -650,7 +651,8 @@ def render_topic_list(pdf, instructables)
   end
 end
 
-pdf = Prawn::Document.new(page_size: "LETTER",
+pdf = Prawn::Document.new(page_size: [ 7.75 * 72, 10.25 * 72],
+                          margin: 0.125 * 72,
                           page_layout: :portrait,
                           compress: true,
                           optimize_objects: true,
@@ -676,6 +678,7 @@ pdf.font_families.update(
 )
 pdf.font 'BodyFont'
 pdf.text "Spacer page"
+draftit(pdf)
 pdf.start_new_page
 
 @note_counter = 1
