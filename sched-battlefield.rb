@@ -70,7 +70,7 @@ def generate_magic_tokens(instructables)
   end
 end
 
-instructables = Instructable.where(schedule: 'Battlefield')
+instructables = Instructable.where(schedule: @schedule)
 generate_magic_tokens(instructables)
 
 ids = instructables.map { |x| x.id }
@@ -700,7 +700,9 @@ entries.keys.sort.each do |key|
   draftit(pdf)
   pdf.start_new_page
 
+  need_new_page = false
   if @locs2.size > 0
+    need_new_page = true
     render(pdf,
            location_labels: @locs2,
            hour_labels: @morning_hours,
@@ -709,20 +711,24 @@ entries.keys.sort.each do |key|
   end
   subentries = entries[key][:other]
   if subentries.count > 0
+    need_new_page = true
     subentries.sort! { |a, b| a[:start_time].to_i <=> b[:start_time].to_i }
     render_extra(pdf,
                  entries: subentries,
                  title: "#{date} ~ Additional Classes",
                  rowoffset: @locs2.count * @row_height + @header_height + 1)
-  else
+  elsif @render_notes_and_doodles
+    need_new_page = true
     render_notes(pdf,
                  mode: :notes,
                  title: "Notes",
                  rowoffset: @locs2.count * @row_height + @header_height + 1)
   end
 
-  draftit(pdf)
-  pdf.start_new_page
+  if (need_new_page)
+    draftit(pdf)
+    pdf.start_new_page
+  end
 
   render(pdf,
          location_labels: @locs1,
@@ -732,7 +738,9 @@ entries.keys.sort.each do |key|
   draftit(pdf)
   pdf.start_new_page
 
+  need_new_page = false
   if @locs2.size > 0
+    need_new_page = true
     render(pdf,
            location_labels: @locs2,
            hour_labels: @afternoon_hours,
@@ -740,14 +748,17 @@ entries.keys.sort.each do |key|
            title: "#{date} ~ Afternoon")
   end
   note_type = next_note_type
-  if (@render_notes_and_doodles)
+  if @render_notes_and_doodles
+    need_new_page = true
     render_notes(pdf,
                  mode: note_type,
                  title: (note_type == :notes ? 'Notes' : 'Notes and Doodles'),
                  rowoffset: @locs2.count * @row_height + @header_height + 1)
   end
-  draftit(pdf)
-  pdf.start_new_page
+  if need_new_page
+    draftit(pdf)
+    pdf.start_new_page
+  end
 end
 
 pdf.font 'BodyFont'
