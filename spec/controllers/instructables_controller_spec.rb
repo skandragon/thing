@@ -334,7 +334,7 @@ describe InstructablesController, type: :controller do
       @other_instructable.save!
       visit edit_user_instructable_path(@other_user, @other_instructable)
       fill_in 'Class title', with: ''
-      find(:css, '#instructable_requested_days_2015-08-02').set(true)
+      find(:css, '#instructable_requested_days_2016-08-01').set(true)
       first('.submit-button').click
       page.should have_content "can't be blank"
     end
