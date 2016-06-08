@@ -371,7 +371,7 @@ describe Instructable do
   it 'updates instances on location change' do
     pending
 
-    instructable = create(:scheduled_instructable, camp_name: 'Flarg', location_type: 'private-camp')
+    instructable = create(:scheduled_instructable, camp_name: 'Flarg', location_type: 'private-camp', camp_reason: "Because")
     instructable.reload
     instance = instructable.instances.first
 
