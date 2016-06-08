@@ -6,6 +6,9 @@ require 'pp'
 
 include GriffinMarkdown
 
+@render_notes_and_doodles = false
+@draftit = true
+
 @location_label_width = 6
 @header_height = 3
 @row_height = 2
@@ -264,10 +267,10 @@ def draw_hour_labels(pdf, opts)
         style: :bold,
     }
     if label < 12
-      pdf.text_box "#{label}am", box_opts
+      pdf.text_box "#{label}:00 AM", box_opts
     else
       pm = label > 12 ? label - 12 : 12
-      pdf.text_box "#{pm}pm", box_opts
+      pdf.text_box "#{pm}:00 PM", box_opts
     end
   end
 end
@@ -297,7 +300,7 @@ def draw_location_labels(pdf, opts)
         height: box.height - 4,
         size: 9,
         overflow: :shrink_to_fit,
-        min_font_size: 5,
+        min_font_size: 8,
         align: :center,
         valign: :center,
         style: :bold,
@@ -394,7 +397,7 @@ def render(pdf, opts)
       height: box.height - 4,
       size: 9,
       overflow: :shrink_to_fit,
-      min_font_size: 5,
+      min_font_size: 8,
       leading: 0,
       inline_format: true,
     }
@@ -559,7 +562,7 @@ def render_notes(pdf, opts)
 end
 
 def draftit(pdf)
-  return
+  return unless @draftit
   pdf.save_graphics_state do
     pdf.soft_mask do
       pdf.rotate(45, origin: [0, 0]) do
@@ -649,7 +652,8 @@ def render_topic_list(pdf, instructables)
   end
 end
 
-pdf = Prawn::Document.new(page_size: "LETTER",
+pdf = Prawn::Document.new(page_size: [ 7.75 * 72, 10.25 * 72],
+                          margin: 0.125 * 72,
                           page_layout: :portrait,
                           compress: true,
                           optimize_objects: true,
@@ -664,7 +668,7 @@ pdf = Prawn::Document.new(page_size: "LETTER",
 
 pdf.font_families.update(
   'TitleFont' => {
-    normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Monotype Corsiva.ttf') },
+    normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf') },
   },
   'BodyFont' => {
     normal: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'),
@@ -675,6 +679,7 @@ pdf.font_families.update(
 )
 pdf.font 'BodyFont'
 pdf.text "Spacer page"
+draftit(pdf)
 pdf.start_new_page
 
 @note_counter = 1

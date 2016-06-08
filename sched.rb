@@ -699,12 +699,13 @@ entries.keys.sort.each do |key|
   draftit(pdf)
   pdf.start_new_page
 
- render(pdf,
-         location_labels: @locs2,
-         hour_labels: @morning_hours,
-         entries: entries[key][:morning][:loc2],
-         title: "#{date} ~ Morning")
-
+  if @locs2.size > 0
+    render(pdf,
+           location_labels: @locs2,
+           hour_labels: @morning_hours,
+           entries: entries[key][:morning][:loc2],
+           title: "#{date} ~ Morning")
+  end
   subentries = entries[key][:other]
   if subentries.count > 0
     subentries.sort! { |a, b| a[:start_time].to_i <=> b[:start_time].to_i }
@@ -730,11 +731,13 @@ entries.keys.sort.each do |key|
   draftit(pdf)
   pdf.start_new_page
 
-  render(pdf,
-         location_labels: @locs2,
-         hour_labels: @afternoon_hours,
-         entries: entries[key][:afternoon][:loc2],
-         title: "#{date} ~ Afternoon")
+  if @locs2.size > 0
+    render(pdf,
+           location_labels: @locs2,
+           hour_labels: @afternoon_hours,
+           entries: entries[key][:afternoon][:loc2],
+           title: "#{date} ~ Afternoon")
+  end
   note_type = next_note_type
   if (@render_notes_and_doodles)
     render_notes(pdf,
