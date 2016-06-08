@@ -794,7 +794,7 @@ pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width)
 end
 
 timestamp = Time.now.strftime("%y%m%d-%H%M%S")
-filename = @schedule.downcase.gsub(/[^a-z]/, '-') + "-#{timestamp}.pdf"
+filename = "sched-" + @schedule.downcase.gsub(/[^a-z]/, '-') + "-#{timestamp}.pdf"
 pdf.render_file filename
 
 @loc_count.keys.sort.each { |x|
