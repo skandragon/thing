@@ -112,16 +112,16 @@ class CalendarRenderer
     pdf.font 'Arial'
 
     header = [
-      { content: 'When', background_color: 'eeeeee' },
-      { content: 'Title', background_color: 'eeeeee' },
-      { content: 'Location', background_color: 'eeeeee' },
+      { content: 'WHEN', background_color: 'eeeeee', align: :center },
+      { content: 'TITLE', background_color: 'eeeeee', align: :center },
+      { content: 'LOCATION', background_color: 'eeeeee', align: :center },
     ]
     if @render_instructors
-      header << { content: 'Instructor', background_color: 'eeeeee' }
+      header << { content: 'INSTRUCTOR', background_color: 'eeeeee', align: :center }
     end
 
     unless @options[:omit_descriptions]
-      header << { content: 'Description', background_color: 'eeeeee' }
+      header << { content: 'DESCRIPTION', background_color: 'eeeeee', align: :center }
     end
 
     last_date = nil
@@ -147,15 +147,14 @@ class CalendarRenderer
 
       if !@options[:omit_descriptions] and instance.formatted_location =~ /A\&S /
         times = []
-        times << "#{instance.start_time.strftime('%a %b %e')} - #{instance.formatted_location}"
-        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
+        times << "#{instance.formatted_location}"
+        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M %p')}"
         times_content = times.join("\n")
 
         location = nil
       else
         times = []
-        times << instance.start_time.strftime('%a %b %e')
-        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M')}"
+        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M %p')}"
         times_content = times.join(@options[:omit_descriptions] ? ' ' : "\n")
         location = instance.formatted_location
       end
