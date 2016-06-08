@@ -123,7 +123,9 @@ instances.each do |instance|
     actual_loc = instance.location
   end
   loc = instance.instructable.location_nontrack? ? instance.instructable.camp_name : actual_loc
-  loc.gsub!(/ Tent$/, '')
+  if @schedule == "Pennsic University"
+    loc.gsub!(/ Tent$/, '')
+  end
   loc1_check = @locs1.index(loc) || @locs1.index(actual_loc)
   loc2_check = @locs2.index(loc) || @locs2.index(actual_loc)
 
