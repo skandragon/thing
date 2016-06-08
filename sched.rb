@@ -10,6 +10,7 @@ include GriffinMarkdown
 puts "Rendering schedule for #{@schedule}"
 
 @render_notes_and_doodles = @schedule == "Pennsic University"
+@render_topic_list = @schedule == "Pennsic University"
 @draftit = true
 
 @location_label_width = 6
@@ -792,8 +793,10 @@ end
 
 pdf.font 'BodyFont'
 
-pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
-  render_topic_list(pdf, instructables)
+if @render_topic_list
+  pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
+    render_topic_list(pdf, instructables)
+  end
 end
 
 timestamp = Time.now.strftime("%y%m%d-%H%M%S")
