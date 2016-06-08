@@ -121,7 +121,7 @@ class CalendarsController < ApplicationController
           'pennsic',
           Pennsic.year,
           'all',
-          track_filename_part,
+          schedule_filename_part,
         ].compact.join('-') + '.xlsx'
         cache_filename = Rails.root.join('tmp', filename)
 
