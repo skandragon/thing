@@ -77,6 +77,7 @@ class CalendarRenderer
       no_page_numbers: false,
       no_long_descriptions: false,
     })
+    @render_instructors = @options[:schedule] == 'Pennsic University'
 
     generate_magic_tokens unless @options[:no_long_descriptions].present?
 
@@ -111,9 +112,13 @@ class CalendarRenderer
     pdf.font 'Arial'
 
     header = [
-      { content: 'When and Where', background_color: 'eeeeee' },
-      { content: 'Title and Instructor', background_color: 'eeeeee' }
+      { content: 'When', background_color: 'eeeeee' },
+      { content: 'Title', background_color: 'eeeeee' },
+      { content: 'Location', background_color: 'eeeeee' },
     ]
+    if @render_instructors
+      header << { content: 'Instructor', background_color: 'eeeeee' }
+    end
 
     unless @options[:omit_descriptions]
       header << { content: 'Description', background_color: 'eeeeee' }
@@ -160,14 +165,20 @@ class CalendarRenderer
       unless @options[:no_long_descriptions].present?
         token = @instructable_magic_tokens[instance.instructable.id].to_s
       end
+
+      title = markdown_html(instance.instructable.name)
+      unless @options[:no_long_descriptions].present?
+        title += " (#{token})"
+      end
+
       new_items = [
-          {content: [times_content, location].join(maybe_newline)},
-          {content: [
-              markdown_html(instance.instructable.name),
-              @options[:no_long_descriptions].present? ? '' : " (#{token})",
-              "#{maybe_newline}#{instance.instructable.user.titled_sca_name}"
-          ].join(' '), inline_format: true},
+          {content: times_content},
+          {content: title, inline_format: true },
+          {content: location },
       ]
+      if (@render_instructors)
+        new_items << { content: instance.instructable.user.titled_sca_name }
+      end
       unless @options[:omit_descriptions]
         taught_message = nil
         if instance.instructable.repeat_count > 1

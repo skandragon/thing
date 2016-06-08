@@ -90,6 +90,8 @@ class CalendarsController < ApplicationController
         if uncached or !File.exists?(cache_filename)
           render_options[:omit_descriptions] = omit_descriptions
           render_options[:no_page_numbers] = no_page_numbers
+          render_options[:schedule] = schedule || 'All'
+          render_options[:no_long_descriptions] = params[:no_descriptions]
           load_data(schedule)
           renderer = CalendarRenderer.new(@instances, @instructables)
           data = renderer.render_pdf(render_options, filename, cache_filename)
