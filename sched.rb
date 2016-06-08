@@ -613,7 +613,7 @@ def render_topic_list(pdf, instructables)
         end
       end
 
-      pdf.font_size 8
+      pdf.font_size 7.5
       pdf.fill_color @black
       pdf.stroke_color @black
     end
