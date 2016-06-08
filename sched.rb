@@ -6,6 +6,8 @@ require 'pp'
 
 include GriffinMarkdown
 
+@render_notes_and_doodles = true
+
 @location_label_width = 6
 @header_height = 3
 @row_height = 2
@@ -28,7 +30,7 @@ entries = {}
 @afternoon_hours = [ 14, 15, 16, 17, 18 ]
 
 @locs1 = (1..15).map { |x| "A&S #{x}" }
-@locs1 << 'Battlefield'
+@locs1 << 'University-Battlefield'
 @locs1 << 'Dance'
 @locs1 << 'Games'
 
@@ -263,10 +265,10 @@ def draw_hour_labels(pdf, opts)
         style: :bold,
     }
     if label < 12
-      pdf.text_box "#{label}am", box_opts
+      pdf.text_box "#{label}:00 am", box_opts
     else
       pm = label > 12 ? label - 12 : 12
-      pdf.text_box "#{pm}pm", box_opts
+      pdf.text_box "#{pm}:00 pm", box_opts
     end
   end
 end
@@ -296,7 +298,7 @@ def draw_location_labels(pdf, opts)
         height: box.height - 4,
         size: 9,
         overflow: :shrink_to_fit,
-        min_font_size: 5,
+        min_font_size: 8,
         align: :center,
         valign: :center,
         style: :bold,
@@ -393,7 +395,7 @@ def render(pdf, opts)
       height: box.height - 4,
       size: 9,
       overflow: :shrink_to_fit,
-      min_font_size: 5,
+      min_font_size: 8,
       leading: 0,
       inline_format: true,
     }
@@ -611,7 +613,7 @@ def render_topic_list(pdf, instructables)
         end
       end
 
-      pdf.font_size 7.5
+      pdf.font_size 8
       pdf.fill_color @black
       pdf.stroke_color @black
     end
@@ -663,7 +665,7 @@ pdf = Prawn::Document.new(page_size: "LETTER",
 
 pdf.font_families.update(
   'TitleFont' => {
-    normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Monotype Corsiva.ttf') },
+    normal: { file: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf') },
   },
   'BodyFont' => {
     normal: Rails.root.join('app', 'assets', 'fonts', 'Arial.ttf'),
