@@ -56,7 +56,7 @@ class ConflictCheck
 
   # return true only if user_id fields are equal
   def self.instance_instructor_overlap?(a, b)
-    a.instructable.user and !IGNORED_INSTRUCTORS.include?(a.instructable.user.sca_name) and a.instructable.user_id == b.instructable.user_id
+    (!a.instructable.user or !IGNORED_INSTRUCTORS.include?(a.instructable.user.sca_name)) and a.instructable.user_id == b.instructable.user_id
   end
 
   # return true only if the topic (topic) is equal
