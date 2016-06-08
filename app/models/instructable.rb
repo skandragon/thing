@@ -171,7 +171,7 @@ class Instructable < ActiveRecord::Base
       "Artisan's Row C"
     ],
     'Youth Point' => [ 'Youth Point' ],
-    'Bog U' => [ 'Wild Rose Camp, E-24' ],
+    'Bog U' => [ 'Bog U (E24)' ],
   }
 
   SCHEDULES = [
