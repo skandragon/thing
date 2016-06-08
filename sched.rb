@@ -265,10 +265,10 @@ def draw_hour_labels(pdf, opts)
         style: :bold,
     }
     if label < 12
-      pdf.text_box "#{label}:00 am", box_opts
+      pdf.text_box "#{label}:00 AM", box_opts
     else
       pm = label > 12 ? label - 12 : 12
-      pdf.text_box "#{pm}:00 pm", box_opts
+      pdf.text_box "#{pm}:00 PM", box_opts
     end
   end
 end
