@@ -7,6 +7,7 @@ require 'pp'
 include GriffinMarkdown
 
 @schedule = ARGV[0] || "Pennsic University"
+puts "Rendering schedule for #{@schedule}"
 
 @render_notes_and_doodles = @schedule == "Pennsic University"
 @draftit = true
@@ -91,7 +92,7 @@ def generate_magic_tokens(instructables)
   end
 end
 
-instructables = Instructable.where(schedule: 'Pennsic University')
+instructables = Instructable.where(schedule: @schedule)
 generate_magic_tokens(instructables)
 
 ids = instructables.map { |x| x.id }
