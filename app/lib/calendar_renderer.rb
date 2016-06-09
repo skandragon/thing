@@ -82,11 +82,11 @@ class CalendarRenderer
     generate_magic_tokens unless @options[:no_long_descriptions].present?
 
     if @options[:omit_descriptions]
-      column_widths = { 0 => 200  }
+      column_widths = { 0 => 95, 1 => 200, 2 => 130  }
     else
       column_widths = { 0 => 95, 1 => 170, 2 => 170 }
     end
-    total_width = 540
+    total_width = column_widths.values.inject(:+)
 
     pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
       :compress => true, :optimize_objects => true,
