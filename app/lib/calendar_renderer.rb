@@ -213,7 +213,7 @@ class CalendarRenderer
       instructables = []
       last_topic = nil
 
-      pdf.column_box([0, pdf.cursor ], columns: 2, spacer: 10, width: pdf.bounds.width) do
+      pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
         @instructables.each do |instructable|
           if last_topic != instructable.topic && !instructables.empty?
             render_topic_list(pdf, instructables)
@@ -372,7 +372,7 @@ class CalendarRenderer
 
   def render_topic_list(pdf, instructables)
     pdf.move_down 8 unless pdf.cursor == pdf.bounds.top
-    pdf.font_size 16
+    pdf.font_size 14
     pdf.text instructables.first.topic
     pdf.font_size PDF_FONT_SIZE
 
