@@ -81,16 +81,19 @@ class CalendarRenderer
 
     generate_magic_tokens unless @options[:no_long_descriptions].present?
 
-    pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
-      :compress => true, :optimize_objects => true,
-      :info => {
-        :Title => "Pennsic #{Pennsic.year} Master Schedule",
-        :Author => 'Pennsic',
-        :Subject => "Pennsic #{Pennsic.year} Master Schedule",
-        :Keywords => 'pennsic university classes martial thrown weapons master schedule',
-        :Creator => 'Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/',
-        :Producer => 'Pennsic Univeristy Class Maker',
-        :CreationDate => Time.now,
+    pdf = Prawn::Document.new(page_size: [ 7.75 * 72, 10.25 * 72],
+      margin: 0.125 * 72,
+      page_layout: :portrait,
+      compress: true,
+      optimize_objects: true,
+      info: {
+        Title: "Pennsic #{Pennsic.year} Master Schedule",
+        Author: 'Pennsic',
+        Subject: "Pennsic #{Pennsic.year} Master Schedule",
+        Keywords: 'pennsic university classes martial thrown weapons master schedule',
+        Creator: 'Pennsic Univeristy Class Maker, http://thing.pennsicuniversity.org/',
+        Producer: 'Pennsic Univeristy Class Maker',
+        CreationDate: Time.now,
     })
 
     pdf.font_families.update(
