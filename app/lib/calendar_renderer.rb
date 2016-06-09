@@ -81,13 +81,6 @@ class CalendarRenderer
 
     generate_magic_tokens unless @options[:no_long_descriptions].present?
 
-    if @options[:omit_descriptions]
-      column_widths = { 0 => 95, 1 => 200, 2 => 130  }
-    else
-      column_widths = { 0 => 95, 1 => 170, 2 => 170 }
-    end
-    total_width = column_widths.values.inject(:+)
-
     pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :portrait,
       :compress => true, :optimize_objects => true,
       :info => {
@@ -116,13 +109,24 @@ class CalendarRenderer
       { content: 'EVENT', background_color: 'eeeeee', align: :center },
       { content: 'LOCATION', background_color: 'eeeeee', align: :center },
     ]
+    column_widths = [ 95, 180, 110 ]
+
     if @render_instructors
       header << { content: 'INSTRUCTOR', background_color: 'eeeeee', align: :center }
+      column_widths << 95
     end
 
     unless @options[:omit_descriptions]
       header << { content: 'DESCRIPTION', background_color: 'eeeeee', align: :center }
+      column_widths << 300
     end
+
+    desired_width = 540
+
+    total_width = column_widths.inject(:+)
+    adjustment = desired_width.to_f / total_width
+    column_widths = column_widths.map { |x| (x * adjustment).floor.to_i }
+    total_width = column_widths.inject(:+)
 
     last_date = nil
     items = []
