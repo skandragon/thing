@@ -255,7 +255,7 @@ class CalendarRenderer
       adult_only
       description_book description_web
       duration fee_itemization handout_fee handout_limit material_fee
-      material_limit repeat_count updated_at
+      material_limit repeat_count updated_at schedule
     )
     CSV.generate do |csv|
       names = %w(id location start_time end_time instructor instructor_kingdom instance_id) + column_names
