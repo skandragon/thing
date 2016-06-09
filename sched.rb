@@ -11,7 +11,7 @@ puts "Rendering schedule for #{@schedule}"
 
 @render_notes_and_doodles = @schedule == "Pennsic University"
 @render_topic_list = @schedule == "Pennsic University"
-@draftit = true
+@draftit = false
 
 @location_label_width = 6
 @header_height = 3
