@@ -84,7 +84,7 @@ class CalendarRenderer
     if @options[:omit_descriptions]
       column_widths = { 0 => 200  }
     else
-      column_widths = { 0 => 95, 1 => 170 }
+      column_widths = { 0 => 95, 1 => 170, 2 => 170 }
     end
     total_width = 540
 
@@ -112,8 +112,8 @@ class CalendarRenderer
     pdf.font 'Arial'
 
     header = [
-      { content: 'WHEN', background_color: 'eeeeee', align: :center },
-      { content: 'TITLE', background_color: 'eeeeee', align: :center },
+      { content: 'TIME', background_color: 'eeeeee', align: :center },
+      { content: 'EVENT', background_color: 'eeeeee', align: :center },
       { content: 'LOCATION', background_color: 'eeeeee', align: :center },
     ]
     if @render_instructors

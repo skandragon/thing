@@ -3,6 +3,10 @@ class Pennsic
     Time.now.year - 1972 + 1
   end
 
+  def self.as
+    'LI'
+  end
+
   def self.calendar_year
     Time.now.year
   end

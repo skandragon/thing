@@ -721,7 +721,7 @@ end
 
 entries.keys.sort.each do |key|
   day = key.strftime("%d").to_i
-  date = key.strftime("%A, %B #{day.ordinalize}, A.S. L")
+  date = key.strftime("%A, %B #{day.ordinalize}")
   render(pdf,
          location_labels: @locs1,
          hour_labels: @morning_hours,
