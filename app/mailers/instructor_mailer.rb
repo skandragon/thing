@@ -15,6 +15,8 @@ class InstructorMailer < ActionMailer::Base
     @instances = Instance.where(instructable_id: ids).includes(:instructable).order(:start_time)
     @name = @user.titled_sca_name
 
+    headers 'return-path' => 'registrar@pennsicwar.org'
+
     mail(to: user.email, subject: "Pennsic University: #{subject}")
   end
 end
