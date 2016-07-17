@@ -7,11 +7,12 @@
       %th Name
   %tbody
     - @instances.each do |instance|
+      - next unless instance.start_time
       %tr
         %td
-          = instance.start_time.strftime('%m-%d')
+          = instance.start_time.strftime('%a, %b %d')
           %br
-          = instance.start_time.strftime('%H:%M')
+          = instance.start_time.strftime('%I:%M %p')
         %td= pluralize(instance.instructable.duration, 'hour')
         %td= instance.formatted_location
         %td= instance.instructable.name

@@ -12,7 +12,7 @@ class InstructorMailer < ActionMailer::Base
   def send_message(user, subject)
     @user = user
     ids = Instructable.where(user_id: @user.id).pluck(:id)
-    @instances = Instance.where(instructable_id: ids).includes(:instructable)
+    @instances = Instance.where(instructable_id: ids).includes(:instructable).order(:start_time)
     @name = @user.titled_sca_name
 
     mail(to: user.email, subject: "Pennsic University: #{subject}")
