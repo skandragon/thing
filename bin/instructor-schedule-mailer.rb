@@ -8,8 +8,5 @@ instructors.each do |instructor|
     next
   end
 
-  mailer = InstructorMailer.send_message(instructor, 'Class List')
-  if instructor.email == 'explorer@flame.org'
-    mailer.deliver
-  end
+  InstructorMailer.send_message(instructor, 'Class List').deliver
 end
