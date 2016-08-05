@@ -81,8 +81,13 @@ class CalendarRenderer
 
     generate_magic_tokens unless @options[:no_long_descriptions].present?
 
-    pdf = Prawn::Document.new(page_size: [ 7.75 * 72, 10.25 * 72],
-      margin: 0.125 * 72,
+    margin_top = 0.125
+    margin_bottom = 0.5
+    margin_left = 0.5
+    margin_right = 0.125
+
+    pdf = Prawn::Document.new(page_size: [ 8.5, 11 ].map { |x| x * 72 },
+      margin: [margin_top, margin_right, margin_bottom, margin_left].map { |x| x * 72 },
       page_layout: :portrait,
       compress: true,
       optimize_objects: true,
