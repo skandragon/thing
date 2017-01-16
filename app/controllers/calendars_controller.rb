@@ -70,7 +70,7 @@ class CalendarsController < ApplicationController
           data = renderer.render_ics(render_options, filename, cache_filename)
           cache_in_file(cache_filename, data)
         end
-        send_file(cache_filename, type: Mime::ICS, disposition: "inline; filename=#{filename}", filename: filename)
+        send_file(cache_filename, type: Mime[:ics], disposition: "inline; filename=#{filename}", filename: filename)
       }
 
       format.pdf {
@@ -97,7 +97,7 @@ class CalendarsController < ApplicationController
           data = renderer.render_pdf(render_options, filename, cache_filename)
           cache_in_file(cache_filename, data)
         end
-        send_file(cache_filename, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
+        send_file(cache_filename, type: Mime[:pdf], disposition: "inline; filename=#{filename}", filename: filename)
       }
 
       format.csv {
@@ -115,7 +115,7 @@ class CalendarsController < ApplicationController
           data = renderer.render_csv(render_options, "pennsic-#{Pennsic.year}-full.csv")
           cache_in_file(cache_filename, data)
         end
-        send_file(cache_filename, type: Mime::CSV, disposition: "filename=#{filename}", filename: filename)
+        send_file(cache_filename, type: Mime[:csv], disposition: "filename=#{filename}", filename: filename)
       }
 
       format.xlsx {
@@ -133,7 +133,7 @@ class CalendarsController < ApplicationController
           data = renderer.render_xlsx(render_options, filename)
           cache_in_file(cache_filename, data)
         end
-        send_file(cache_filename, type: Mime::XLSX, disposition: "filename=#{filename}", filename: filename)
+        send_file(cache_filename, type: Mime[:slsx], disposition: "filename=#{filename}", filename: filename)
       }
     end
   end

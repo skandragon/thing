@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Thing::Application.config.secret_key_base = 'cde30adb16ee26d81ef7563722ea0b06d8d683398dc6e0fc1f29f1d9a19f76c285806878acc9e07ecdfc9a9faadbcc93fb71f0aafc32a4960f16326bb17fd160'
+Thing::Application.config.secret_key_base = MultaArcana::secret_for(:secret_token)

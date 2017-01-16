@@ -59,6 +59,7 @@ group :development do
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
+  gem 'rb-readline'
 end
 
 group :production do
