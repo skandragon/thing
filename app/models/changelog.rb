@@ -17,11 +17,11 @@
 #  year        :integer
 #
 
-class Changelog < ActiveRecord::Base
+class Changelog < ApplicationRecord
   belongs_to :user
   belongs_to :target, polymorphic: true
 
-  default_scope :conditions => { year: 2016 }
+  default_scope { where(year: 2017) }
 
   before_save :abort_if_useless
 

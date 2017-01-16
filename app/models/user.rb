@@ -35,7 +35,7 @@
 #  profile_updated_at     :datetime
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include ActiveModel::ForbiddenAttributesProtection
 
   has_paper_trail

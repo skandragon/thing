@@ -30,13 +30,13 @@ Thing::Application.routes.draw do
     resources :instructables
   end
 
-  match 'sitemap(.:format)' => 'sitemap#index'
+  get 'sitemap(.:format)' => 'sitemap#index'
 
-  match 'about/:action' => 'about'
-  match '/about' => 'about#about'
+  get 'about/:action' => 'about'
+  get '/about' => 'about#about'
   root :to => 'about#index'
 
-  match 'howto/:action' => 'howto', as: :howto
+  get 'howto/:action' => 'howto', as: :howto
 
   devise_for :users, path: 'sessions'
 

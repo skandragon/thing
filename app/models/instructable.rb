@@ -45,13 +45,13 @@
 #  info_tag                  :string(255)
 #
 
-class Instructable < ActiveRecord::Base
+class Instructable < ApplicationRecord
   belongs_to :user
-  has_many :instances, dependent: :destroy, order: 'start_time, location'
+  has_many :instances, -> { order('start_time, location') }, dependent: :destroy
   has_many :changelogs, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
-  default_scope :conditions => { year: 2016 }
+  default_scope { where(year: 2017) }
 
   has_paper_trail
 

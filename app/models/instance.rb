@@ -14,12 +14,12 @@
 #  year              :integer
 #
 
-class Instance < ActiveRecord::Base
+class Instance < ApplicationRecord
   belongs_to :instructable, touch: true
 
   has_paper_trail
 
-  default_scope :conditions => { year: 2016 }
+  default_scope { where(year: 2017) }
 
   after_save :update_instructable
   before_validation :update_end_time

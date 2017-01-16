@@ -1,1 +1,1 @@
-PaperTrail.serializer = PaperTrail::Serializers::Json
+PaperTrail.serializer = PaperTrail::Serializers::JSON
