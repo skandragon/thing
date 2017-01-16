@@ -18,6 +18,7 @@ class InstructorProfilesController < ApplicationController
     end
     @user.instructor = true
     @user.profile_updated_at = Time.now
+    puts permitted_params.to_json
     if @user.update_attributes(permitted_params)
       redirect_to root_path, notice: notice
     else
@@ -31,7 +32,7 @@ class InstructorProfilesController < ApplicationController
     params.require(:user).permit(
       :mundane_name, :phone_number, :sca_name, :sca_title, :phone_number_onsite,
       :kingdom, :no_contact,
-      { :instructor_profile_contacts_attributes => [ :address, :protocol, :id ] },
+      { :instructor_profile_contacts_attributes => [[ :address, :protocol, :id ]] },
       :available_days => []
      )
   end

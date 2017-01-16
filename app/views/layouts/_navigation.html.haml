@@ -11,7 +11,7 @@
       = drop_down "By Date" do
         - Instructable::CLASS_DATES.each do |date|
           = menu_item "Changes: #{date}", changelog_path(date)
-          = menu_divider
+        = drop_down_divider
       - if user_signed_in?
         = menu_item 'Custom Schedule', user_schedule_path(current_user)
       - else
@@ -20,10 +20,19 @@
   - if instructor?
     = drop_down "Instructor" do
       = menu_item 'Your classes', user_instructables_path(current_user)
-    - if coordinator?
-      = render :partial => 'coordinator/menu_additions'
-    - if proofreader?
-      = render :partial => 'proofreader/menu_additions'
+  - if coordinator?
+    = drop_down 'Track' do
+      = drop_down 'Classes in Track' do
+        = menu_item 'All classes in track', coordinator_instructables_path
+        = menu_item 'Pending Approval', coordinator_instructables_path(approved: 0)
+        = menu_item 'Approved', coordinator_instructables_path(approved: 1)
+        = menu_item 'Pending Schedule', coordinator_instructables_path(scheduled: 0)
+        = menu_item 'Scheduled', coordinator_instructables_path(scheduled: 1)
+      = menu_item 'Reports and Stuff', coordinator_locations_path
+      = drop_down_divider
+      = menu_item 'Scheduling Conflicts', coordinator_conflicts_path
+  - if proofreader?
+    = render :partial => 'proofreader/menu_additions'
   - if user_signed_in?
     = drop_down "Account" do
       = menu_item 'Change password', edit_user_registration_path
@@ -35,6 +44,21 @@
   - else
     = menu_item 'Sign in or Sign up', new_user_session_path
   - if admin?
-    = render :partial => 'admin/menu_additions'
-  %li.divider-vertical
+    = drop_down 'Admin' do
+      = drop_down 'Database' do
+        = menu_item 'Backups', admin_backups_path
+        = menu_item 'Database Summary', admin_tracks_path
+      = drop_down 'Reports and Forms' do
+        = menu_item 'Instructor Sign In', instructor_signin_admin_reports_path(format: :pdf)
+        = menu_item 'Kingdom War Points', kingdom_war_points_admin_reports_path(format: :csv)
+      = drop_down 'Per-day schedules' do
+        - Instructable::CLASS_DATES.each do |date|
+          = menu_item "#{date} onward", calendar_path(date, format: :pdf, target: '_blank')
+      = drop_down 'Email Addresses' do
+        = menu_item 'Instructors', admin_instructor_email_list_index_path
+        = menu_item 'Track Leads', admin_track_lead_email_list_index_path
+      = drop_down_divider
+      = menu_item 'Users', admin_users_path
+      = menu_item 'Trackless Classes', coordinator_instructables_path(track: 'No Track')
+  = menu_divider
   = menu_item 'About', '/about'
