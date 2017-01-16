@@ -15,12 +15,15 @@ module AuthMacros
     @_current_user.save!
 
     visit new_user_session_path
-    page.should have_content 'Remember me'
+    #puts page.html
+    expect(page).to have_link('Forgot your password?')
 
-    fill_in 'Email', with: @_current_user.email
-    fill_in 'Password', with: @_current_user.password
-    click_button 'Sign in'
-    page.should have_content 'Signed in successfully'
+    within '#new_user' do
+      fill_in 'Email', with: @_current_user.email
+      fill_in 'Password', with: @_current_user.password
+      click_button 'Sign in'
+    end
+    expect(page).to have_content('Signed in successfully')
 
     @_current_user
   end

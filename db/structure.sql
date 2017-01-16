@@ -2,12 +2,17 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.6.1
+-- Dumped by pg_dump version 9.6.1
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -68,7 +73,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: authentications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: authentications; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE authentications (
@@ -103,7 +108,7 @@ ALTER SEQUENCE authentications_id_seq OWNED BY authentications.id;
 
 
 --
--- Name: changelogs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: changelogs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE changelogs (
@@ -142,7 +147,7 @@ ALTER SEQUENCE changelogs_id_seq OWNED BY changelogs.id;
 
 
 --
--- Name: instances; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: instances; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE instances (
@@ -178,7 +183,7 @@ ALTER SEQUENCE instances_id_seq OWNED BY instances.id;
 
 
 --
--- Name: instructables; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: instructables; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE instructables (
@@ -245,7 +250,7 @@ ALTER SEQUENCE instructables_id_seq OWNED BY instructables.id;
 
 
 --
--- Name: instructor_profile_contacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: instructor_profile_contacts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE instructor_profile_contacts (
@@ -278,7 +283,7 @@ ALTER SEQUENCE instructor_profile_contacts_id_seq OWNED BY instructor_profile_co
 
 
 --
--- Name: schedules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schedules; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schedules (
@@ -312,7 +317,7 @@ ALTER SEQUENCE schedules_id_seq OWNED BY schedules.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schema_migrations (
@@ -321,7 +326,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE users (
@@ -378,7 +383,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: versions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE versions (
@@ -412,63 +417,63 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: authentications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY authentications ALTER COLUMN id SET DEFAULT nextval('authentications_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: changelogs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY changelogs ALTER COLUMN id SET DEFAULT nextval('changelogs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: instances id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY instances ALTER COLUMN id SET DEFAULT nextval('instances_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: instructables id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY instructables ALTER COLUMN id SET DEFAULT nextval('instructables_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: instructor_profile_contacts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY instructor_profile_contacts ALTER COLUMN id SET DEFAULT nextval('instructor_profile_contacts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: schedules id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schedules ALTER COLUMN id SET DEFAULT nextval('schedules_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
 
 
 --
--- Name: authentications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: authentications authentications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY authentications
@@ -476,7 +481,7 @@ ALTER TABLE ONLY authentications
 
 
 --
--- Name: changelogs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: changelogs changelogs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY changelogs
@@ -484,7 +489,7 @@ ALTER TABLE ONLY changelogs
 
 
 --
--- Name: instances_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: instances instances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY instances
@@ -492,7 +497,7 @@ ALTER TABLE ONLY instances
 
 
 --
--- Name: instructables_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: instructables instructables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY instructables
@@ -500,7 +505,7 @@ ALTER TABLE ONLY instructables
 
 
 --
--- Name: instructor_profile_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: instructor_profile_contacts instructor_profile_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY instructor_profile_contacts
@@ -508,7 +513,7 @@ ALTER TABLE ONLY instructor_profile_contacts
 
 
 --
--- Name: schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schedules schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schedules
@@ -516,7 +521,7 @@ ALTER TABLE ONLY schedules
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -524,7 +529,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY versions
@@ -532,42 +537,42 @@ ALTER TABLE ONLY versions
 
 
 --
--- Name: index_authentications_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_authentications_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_authentications_on_user_id ON authentications USING btree (user_id);
 
 
 --
--- Name: index_instances_on_instructable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_instances_on_instructable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_instances_on_instructable_id ON instances USING btree (instructable_id);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 
 
 --
--- Name: index_versions_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_versions_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING btree (item_type, item_id);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
@@ -577,7 +582,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('20121023155856');
 
