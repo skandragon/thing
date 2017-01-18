@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require twitter/bootstrap
+//= require bootstrap-sprockets
 //= require_tree ./lib
 //= require_tree ./datetimepicker
 //= require_tree .

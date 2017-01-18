@@ -51,6 +51,8 @@ GEM
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
     arel (7.1.4)
+    autoprefixer-rails (6.6.1)
+      execjs
     axlsx (2.0.1)
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
@@ -62,6 +64,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap (4.0.0.alpha6)
+      autoprefixer-rails (>= 6.0.3)
+      sass (>= 3.4.19)
     builder (3.2.3)
     capistrano (3.7.1)
       airbrussh (>= 1.0.0)
@@ -97,7 +102,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    commonjs (0.2.7)
     concurrent-ruby (1.0.4)
     coveralls (0.8.17)
       json (>= 1.8, < 3)
@@ -174,13 +178,6 @@ GEM
     kgio (2.11.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    less (2.6.0)
-      commonjs (~> 0.2.7)
-    less-rails (2.8.0)
-      actionpack (>= 4.0)
-      less (~> 2.6.0)
-      sprockets (> 2, < 4)
-      tilt
     libv8 (3.16.14.17)
     liquid (4.0.0)
     listen (3.1.5)
@@ -353,11 +350,6 @@ GEM
     tilt (2.0.5)
     tins (1.13.0)
     ttfunk (1.4.0)
-    twitter-bootstrap-rails (3.2.2)
-      actionpack (>= 3.1)
-      execjs (>= 2.2.2, >= 2.2)
-      less-rails (>= 2.5.0)
-      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.4)
@@ -383,6 +375,7 @@ DEPENDENCIES
   axlsx
   better_errors
   binding_of_caller
+  bootstrap (~> 4.0.0.alpha6)
   capistrano
   capistrano-rails
   capistrano-rbenv
@@ -401,7 +394,6 @@ DEPENDENCIES
   htmlentities
   jquery-rails
   launchy
-  less-rails
   liquid
   multa_arcana
   paper_trail
@@ -429,7 +421,6 @@ DEPENDENCIES
   test-unit
   therubyracer
   thin
-  twitter-bootstrap-rails
   uglifier
   unicorn
   will_paginate

@@ -14,14 +14,16 @@ gem 'postgres_ext'
 gem 'sass-rails'
 gem 'coffee-rails'
 
-gem 'less-rails'
+#gem 'less-rails'
 gem 'therubyracer', platform: :ruby, require: 'v8'
 
 #gem 'less-js'
 
 gem 'uglifier'
 
-gem 'twitter-bootstrap-rails' #, git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git', branch: 'master'
+gem 'bootstrap', '~> 4.0.0.alpha6'
+
+#gem 'twitter-bootstrap-rails' #, git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git', branch: 'master'
 
 gem 'jquery-rails'
 

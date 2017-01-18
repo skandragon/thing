@@ -14,7 +14,7 @@
     = yield(:head)
 
   %body{data: {spy: 'scroll', target: '.subnav', offset: 50}}
-    %div
+    %div.container-fluid
       = render :partial => 'layouts/navigation'
 
       %div.container-fluid
