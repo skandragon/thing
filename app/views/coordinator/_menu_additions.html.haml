@@ -1,16 +1,13 @@
-%li.dropdown
-  %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
-    Track
-    %b.caret
-  %ul.dropdown-menu
-    %li.dropdown-submenu
-      = link_to 'Classes in Track', '#'
-      %ul.dropdown-menu
-        %li= link_to 'All classes in track', coordinator_instructables_path
-        %li= link_to 'Pending Approval', coordinator_instructables_path(approved: 0)
-        %li= link_to 'Approved', coordinator_instructables_path(approved: 1)
-        %li= link_to 'Pending Schedule', coordinator_instructables_path(scheduled: 0)
-        %li= link_to 'Scheduled', coordinator_instructables_path(scheduled: 1)
-    %li= link_to 'Reports and Stuff', coordinator_locations_path
-    %li.divider
-    %li= link_to 'Scheduling Conflicts', coordinator_conflicts_path
+%li.nav-item.dropdown
+  %a.nav-link.dropdown-toggle#coordinatorDropdown{:href => '#', :data => {:toggle => 'dropdown'}, aria: {haspopup: "true", expanded: "false"}}
+    Coordinator
+  .dropdown-menu{aria: {labelledby: "coordinatorDropdown"}}
+    %h6.dropdown-header Classes in Track
+    = link_to 'All classes in track', coordinator_instructables_path, class: 'dropdown-item'
+    = link_to 'Pending Approval', coordinator_instructables_path(approved: 0), class: 'dropdown-item'
+    = link_to 'Approved', coordinator_instructables_path(approved: 1), class: 'dropdown-item'
+    = link_to 'Pending Schedule', coordinator_instructables_path(scheduled: 0), class: 'dropdown-item'
+    = link_to 'Scheduled', coordinator_instructables_path(scheduled: 1), class: 'dropdown-item'
+    .dropdown-divider
+    = link_to 'Reports and Stuff', coordinator_locations_path, class: 'dropdown-item'
+    = link_to 'Scheduling Conflicts', coordinator_conflicts_path, class: 'dropdown-item'

@@ -1,8 +1,7 @@
-%li.dropdown
-  %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
+%li.nav-item.dropdown
+  %a.nav-link.dropdown-toggle#proofreaderDropdown{:href => '#', :data => {:toggle => 'dropdown'}, aria: {haspopup: "true", expanded: "false"}}
     Proofreader
-    %b.caret
-  %ul.dropdown-menu
-    %li= link_to 'All', proofreader_instructables_path
-    %li= link_to 'Proofread', proofreader_instructables_path(proofread: 1)
-    %li= link_to 'Needs Proofread', proofreader_instructables_path(proofread: 0)
+  .dropdown-menu{aria: {labelledby: "proofreaderDropdown"}}
+    = link_to 'All', proofreader_instructables_path, class: 'dropdown-item'
+    = link_to 'Proofread', proofreader_instructables_path(proofread: 1), class: 'dropdown-item'
+    = link_to 'Needs Proofread', proofreader_instructables_path(proofread: 0), class: 'dropdown-item'
