@@ -1,64 +1,60 @@
-= nav_bar fixed: :top, brand: application_name, responsive: true do
-  = menu_group do
-    = drop_down "Schedules" do
-      = menu_item 'All: Text', calendars_path
-      = menu_item 'All: PDF', calendars_path(format: :pdf), target: '_blank'
-      = menu_item 'All: PDF (brief)', calendars_path(format: :pdf, brief: true), target: '_blank'
-      = menu_item 'All: iCalendar', calendars_path(format: :ics)
-      = menu_item 'All: Excel (spreadsheet)', calendars_path(format: :xlsx)
-      = menu_item 'All: CSV (spreadsheet)', calendars_path(format: :csv)
-      = menu_divider
-      = drop_down "By Date" do
-        - Instructable::CLASS_DATES.each do |date|
-          = menu_item "Changes: #{date}", changelog_path(date)
-        = drop_down_divider
-      - if user_signed_in?
-        = menu_item 'Custom Schedule', user_schedule_path(current_user)
-      - else
-        = menu_item 'Sign in to customize', new_user_session_path
-      = menu_item 'Instructor List', instructors_path
-  - if instructor?
-    = drop_down "Instructor" do
-      = menu_item 'Your classes', user_instructables_path(current_user)
-  - if coordinator?
-    = drop_down 'Track' do
-      = drop_down 'Classes in Track' do
-        = menu_item 'All classes in track', coordinator_instructables_path
-        = menu_item 'Pending Approval', coordinator_instructables_path(approved: 0)
-        = menu_item 'Approved', coordinator_instructables_path(approved: 1)
-        = menu_item 'Pending Schedule', coordinator_instructables_path(scheduled: 0)
-        = menu_item 'Scheduled', coordinator_instructables_path(scheduled: 1)
-      = menu_item 'Reports and Stuff', coordinator_locations_path
-      = drop_down_divider
-      = menu_item 'Scheduling Conflicts', coordinator_conflicts_path
-  - if proofreader?
-    = render :partial => 'proofreader/menu_additions'
-  - if user_signed_in?
-    = drop_down "Account" do
-      = menu_item 'Change password', edit_user_registration_path
-      - if current_user.needs_profile?
-        = menu_item 'Update instructor profile', edit_user_instructor_profile_path(current_user)
-      - else
-        = menu_item 'Request to be an instructor', new_user_instructor_profile_path(current_user)
-      = menu_item 'Sign out', destroy_user_session_path, :method => :delete
-  - else
-    = menu_item 'Sign in or Sign up', new_user_session_path
-  - if admin?
-    = drop_down 'Admin' do
-      = drop_down 'Database' do
-        = menu_item 'Backups', admin_backups_path
-        = menu_item 'Database Summary', admin_tracks_path
-      = drop_down 'Reports and Forms' do
-        = menu_item 'Instructor Sign In', instructor_signin_admin_reports_path(format: :pdf)
-        = menu_item 'Kingdom War Points', kingdom_war_points_admin_reports_path(format: :csv)
-      = drop_down 'Per-day schedules' do
-        - Instructable::CLASS_DATES.each do |date|
-          = menu_item "#{date} onward", calendar_path(date, format: :pdf, target: '_blank')
-      = drop_down 'Email Addresses' do
-        = menu_item 'Instructors', admin_instructor_email_list_index_path
-        = menu_item 'Track Leads', admin_track_lead_email_list_index_path
-      = drop_down_divider
-      = menu_item 'Users', admin_users_path
-      = menu_item 'Trackless Classes', coordinator_instructables_path(track: 'No Track')
-  = menu_divider
-  = menu_item 'About', '/about'
+%nav.navbar.navbar-default.navbar-fixed-top{role: 'navigation'}
+  .container-fluid
+    .navbar-header
+      %a.btn.btn-navbar{:data => { :toggle => 'collapse', :target => '#navbar-collapse-1'} }
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.brand{:href => root_path}= application_name
+    .navbar-collapse#navbar-collapse-1
+      %ul.nav.navbar-nav
+        %li.dropdown
+          %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
+            Schedules
+            %b.caret
+          %ul.dropdown-menu
+            %li= link_to 'All: Text', calendars_path
+            %li= link_to 'All: PDF', calendars_path(format: :pdf), target: '_blank'
+            %li= link_to 'All: PDF (brief)', calendars_path(format: :pdf, brief: true), target: '_blank'
+            %li= link_to 'All: iCalendar', calendars_path(format: :ics)
+            %li= link_to 'All: Excel (spreadsheet)', calendars_path(format: :xlsx)
+            %li= link_to 'All: CSV (spreadsheet)', calendars_path(format: :csv)
+            %li.divider
+            - Instructable::CLASS_DATES.each do |date|
+              %li= link_to "Changes: #{date}", changelog_path(date)
+            %li.divider
+            - if user_signed_in?
+              %li= link_to 'Custom Schedule', user_schedule_path(current_user)
+            - else
+              %li= link_to 'Sign in to customize', new_user_session_path
+            %li= link_to 'Instructor List', instructors_path
+
+        - if instructor?
+          %li.dropdown
+            %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
+              Instructor
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to 'Your classes', user_instructables_path(current_user)
+        - if coordinator?
+          = render :partial => 'coordinator/menu_additions'
+        - if proofreader?
+          = render :partial => 'proofreader/menu_additions'
+        - if user_signed_in?
+          %li.dropdown
+            %a.dropdown-toggle{:href => '#', :data => {:toggle => 'dropdown'}}
+              Account
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to 'Change password', edit_user_registration_path
+              - if current_user.needs_profile?
+                %li= link_to 'Update instructor profile', edit_user_instructor_profile_path(current_user)
+              - else
+                %li= link_to 'Request to be an instructor', new_user_instructor_profile_path(current_user)
+          %li= link_to 'Sign out', destroy_user_session_path, :method => :delete
+        - else
+          %li= link_to 'Sign in or Sign up', new_user_session_path
+        - if admin?
+          = render :partial => 'admin/menu_additions'
+        %li.divider-vertical
+        %li= link_to 'About', '/about'
