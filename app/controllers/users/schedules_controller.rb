@@ -1,5 +1,5 @@
 class Users::SchedulesController < ApplicationController
-  before_filter :load_user
+  before_action :load_user
 
   def show
     unless @user

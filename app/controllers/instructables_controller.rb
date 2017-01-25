@@ -1,6 +1,6 @@
 class InstructablesController < ApplicationController
-  before_filter :authorize, only: [ :edit, :update, :destroy ]
-  before_filter :authorize_user
+  before_action :authorize, only: [ :edit, :update, :destroy ]
+  before_action :authorize_user
 
   def index
     @instructables = @target_user.instructables.order(:name).paginate(:page => params[:page], per_page: 10)

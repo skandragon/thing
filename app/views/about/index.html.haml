@@ -1,13 +1,12 @@
 - title 'Introduction'
 
-%header#overview.jumbotron.subhead
-
-.hero-unit.opening-page
-  %h1 Pennsic University
-  %p Pennsic #{Pennsic.year}: #{Pennsic.dates.first} through #{Pennsic.dates.last}
+%header#overview.jumbotron
+  .hero-unit.opening-page
+    %h1 Pennsic University
+    %p Pennsic #{Pennsic.year}: #{Pennsic.dates.first} through #{Pennsic.dates.last}
 
 .row
-  .span8.offset2
+  .col-6.push-3
     .pretty-box
       - unless user_signed_in?
         %p
@@ -22,7 +21,7 @@
 
 %section.marketing
   .row
-    .span4.offset1
+    .col-4.push-1
       %h3 Instructors
       - if instructor?
         %p
@@ -48,7 +47,7 @@
           %p
             Sign in or sign up to request to teach a class at Pennsic,
             or to manage those you are already teaching.
-    .span4.offset1
+    .col-4.push-1
       %h3 Students
       - if user_signed_in?
         %p
