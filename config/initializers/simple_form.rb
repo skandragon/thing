@@ -11,7 +11,7 @@ SimpleForm.setup do |config|
     b.optional :pattern
     b.optional :min_max
     b.optional :readonly
-    b.use :label, class: 'control-label'
+    b.use :label, class: 'form-control-label'
 
     b.use :input, class: 'form-control'
     b.use :error, wrap_with: { tag: 'span', class: 'form-text text-muted' }
@@ -23,7 +23,7 @@ SimpleForm.setup do |config|
     b.use :placeholder
     b.optional :maxlength
     b.optional :readonly
-    b.use :label, class: 'control-label'
+    b.use :label, class: 'form-control-label'
 
     b.use :input
     b.use :error, wrap_with: { tag: 'span', class: 'form-text text-muted' }
@@ -34,7 +34,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.optional :readonly
 
-    b.wrapper tag: 'div', class: 'checkbox' do |ba|
+    b.wrapper tag: 'div', class: 'form-check-input' do |ba|
       ba.use :label_input
     end
 
@@ -45,7 +45,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_radio_and_checkboxes, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.optional :readonly
-    b.use :label, class: 'control-label'
+    b.use :label, class: 'form-control-label'
     b.use :input
     b.use :error, wrap_with: { tag: 'span', class: 'form-text text-muted' }
     b.use :hint,  wrap_with: { tag: 'small', class: 'form-text text-muted' }
@@ -58,7 +58,7 @@ SimpleForm.setup do |config|
     b.optional :pattern
     b.optional :min_max
     b.optional :readonly
-    b.use :label, class: 'col-sm-3 control-label'
+    b.use :label, class: 'col-sm-3 form-control-label'
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input, class: 'form-control'
@@ -72,7 +72,7 @@ SimpleForm.setup do |config|
     b.use :placeholder
     b.optional :maxlength
     b.optional :readonly
-    b.use :label, class: 'col-sm-3 control-label'
+    b.use :label, class: 'col-sm-3 form-control-label'
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input
@@ -85,9 +85,9 @@ SimpleForm.setup do |config|
     b.use :html5
     b.optional :readonly
 
-    b.wrapper tag: 'div', class: 'col-sm-offset-3 col-sm-9' do |wr|
-      wr.wrapper tag: 'div', class: 'checkbox' do |ba|
-        ba.use :label_input, class: 'col-sm-9'
+    b.wrapper tag: 'div', class: 'form-check form-check-inline' do |wr|
+      wr.wrapper tag: 'label', class: 'form-check-label' do |ba|
+        ba.use :input, class: 'form-check-input'
       end
 
       wr.use :error, wrap_with: { tag: 'span', class: 'form-text text-muted' }
@@ -99,7 +99,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.optional :readonly
 
-    b.use :label, class: 'col-sm-3 control-label'
+    b.use :label, class: 'col-sm-3 form-control-label'
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input

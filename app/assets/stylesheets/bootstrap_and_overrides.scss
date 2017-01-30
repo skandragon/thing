@@ -487,33 +487,40 @@ h3.event_day {
   }
 
   .instructable_instances_start_time {
-    .control-label {
+    .form-control-label {
       width: 65px;
     }
-    .controls {
-      margin-left: 70px;
-    }
+//    .controls {
+//      margin-left: 70px;
+//    }
   }
 
   .instructable_instances_location {
-    .control-label {
+    .form-control-label {
       width: 60px;
     }
-    .controls {
-      margin-left: 70px;
-    }
+//    .controls {
+//      margin-left: 70px;
+//    }
   }
 
   .instructable_instances_override_location {
-    .control-label {
+    .form-control-label {
       width: 115px;
     }
-    .controls {
-      margin-left: 125px;
-      width: 20px;
-    }
+//    .controls {
+//      margin-left: 125px;
+//      width: 20px;
+//    }
   }
 }
+
+.checkbox {
+  input { margin-right: 0.5em; }
+  label { margin-left: 0.5em; margin-right: 0.5em; }
+}
+
+.check_boxes.form-control-label { display: block; }
 
 @media (max-width: 980px) {
   .navbar.navbar-fixed-top {

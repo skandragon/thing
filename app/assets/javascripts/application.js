@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require tether
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require_tree ./lib

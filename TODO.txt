@@ -1,3 +1,12 @@
+2017 todo:
+
+TODO: change dl-horizontal CSS class to use .row and column sizing, as bootstrap 4 does not have dl-horizontal
+
+
+
+Older todo:
+
+
 * Private camp locations, 2 per page, with lines to write on
 
 * Class attendance count entry, pull-down for date and time, per location

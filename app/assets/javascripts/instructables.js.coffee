@@ -18,16 +18,16 @@ jQuery ->
 
   value = target.find('option:selected').val()
   if value == 'track'
-    $('#location-camp').hide()
+    hide_and_remove_required($('#location-camp'), false)
   else
-    $('#location-camp').show()
+    show_and_add_required($('#location-camp'), false)
 
   target.on 'change', ->
     value = target.find('option:selected').val()
     if value == 'track'
-      $('#location-camp').hide()
+      hide_and_remove_required($('#location-camp'), false)
     else
-      $('#location-camp').show()
+      show_and_add_required($('#location-camp'), false)
 
 jQuery ->
   if window.thing_topics
