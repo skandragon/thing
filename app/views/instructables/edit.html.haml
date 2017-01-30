@@ -54,40 +54,43 @@
     = render partial: 'instructables/changelog_modal', locals: { instructable: @instructable }
 
     %div#arrival-modal.modal.fade.hide
-      .modal-header
-        %button{ type: 'button', class: 'close', data: { dismiss: 'modal', 'aria-hidden' => 'true' }} &times;
-        %h3 Available Dates
-      .modal-body
-        %h5 Requested Days (this class)
-        - dates = @instructable.requested_days
-        - if dates.empty?
-          No specific days requested for this class.
-        - else
-          %ul
-            - for date in dates
-              %li= (date.is_a?(String) ? date : date.to_s(:pennsic))
-        %h5 Requested Times (this class)
-        - times = @instructable.requested_times
-        - if times.empty?
-          No specific times requested for this class.
-        - else
-          %ul
-            - for time in @instructable.requested_times
-              %li= time
-        %h5 Instructor Availability
-        - dates = @instructable.user.available_days
-        - if dates.empty?
-          No days provided in profile.
-        - else
-          %ul
-            - for date in dates
-              %li= date.to_s
-        %h5 Special Needs (this class)
-        - if @instructable.special_needs.count > 0
-          = @instructable.special_needs.join(', ')
-        = @instructable.special_needs_description
-      .modal-footer
-        %button{class: 'btn', data: { dismiss: 'modal', 'aria-hidden' => 'true'}} Close
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button{ type: 'button', class: 'close', data: { dismiss: 'modal', aria: {hidden: 'true', labeledby: 'arrivalModalLabel'}}}
+              %span{aria: {hidden: true}} &times;
+            %h5.modal-title#arrivalModalLabel Available Dates
+          .modal-body
+            %h5 Requested Days (this class)
+            - dates = @instructable.requested_days
+            - if dates.empty?
+              No specific days requested for this class.
+            - else
+              %ul
+                - for date in dates
+                  %li= (date.is_a?(String) ? date : date.to_s(:pennsic))
+            %h5 Requested Times (this class)
+            - times = @instructable.requested_times
+            - if times.empty?
+              No specific times requested for this class.
+            - else
+              %ul
+                - for time in @instructable.requested_times
+                  %li= time
+            %h5 Instructor Availability
+            - dates = @instructable.user.available_days
+            - if dates.empty?
+              No days provided in profile.
+            - else
+              %ul
+                - for date in dates
+                  %li= date.to_s
+            %h5 Special Needs (this class)
+            - if @instructable.special_needs.count > 0
+              = @instructable.special_needs.join(', ')
+            = @instructable.special_needs_description
+          .modal-footer
+            %button{class: 'btn', data: {dismiss: 'modal'}} Close
 
   %fieldset
     %legend Class Information
