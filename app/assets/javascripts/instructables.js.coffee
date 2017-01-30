@@ -83,12 +83,13 @@ jQuery ->
           target.enabled = false
 
     update_select = ->
-      track = $('#instructable_track')[0].value
-      options = window.thing_tracks[track]
-      if track
-        repopulate_targets(options)
-      else
-        hide_targets()
+      if (track_id = $ '#instructable_track').length
+        track = track_id[0].value
+        options = window.thing_tracks[track]
+        if track
+          repopulate_targets(options)
+        else
+          hide_targets()
 
     $('#instructable_track').on 'change', ->
       update_select()
