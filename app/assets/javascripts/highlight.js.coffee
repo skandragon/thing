@@ -8,7 +8,6 @@ window.hide_if_checked = (checkbox, target, immediate) ->
   true
 
 window.show_if_checked = (checkbox, target, immediate) ->
-  console.log "target: #{target.attr('id')}"
   return unless checkbox[0]
   immediate ||= false
   if checkbox[0].checked
