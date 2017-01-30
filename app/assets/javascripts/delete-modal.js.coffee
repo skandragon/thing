@@ -1,13 +1,16 @@
 # Override Rails handling of confirmation
 
-$.rails.allowAction = (element) ->
+$.rails.allowAction = (link) ->
+  console.log("FOO!")
   # The message is something like "Are you sure?"
-  message = element.data('confirm')
+  message = link.data('confirm')
   # If there's no message, there's no data-confirm attribute, 
   # which means there's nothing to confirm
+  console.log(link)
   return true unless message
+  console.log("BAR!")
   # Clone the clicked element (probably a delete link) so we can use it in the dialog box.
-  $link = element.clone()
+  $link = link.clone()
     # We don't necessarily want the same styling as the original link/button.
     .removeAttr('class')
     # We don't want to pop up another confirmation (recursion)
