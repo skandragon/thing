@@ -1,1 +1,2 @@
-%input.policy-accept-input.policy-not-accepted{type: 'checkbox', name: 'accepted[]', value: '1'} Agree
+- if current_user
+  %input.policy-accept-input.policy-not-accepted{type: 'checkbox', name: 'accepted[]', value: '1'} Agree

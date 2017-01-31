@@ -329,11 +329,13 @@
       for dropping the sides of the tent and closing it up against weather.
       Please remember to see to this task when you are leaving.
 
-.row
-  .col-2
-  .col-8
-    Click to indicate you have read, understand, and accept all Pennsic University
-    policies.
-    %br
-    %form
-      %button.btn#policy-accept-all-button{disabled: true} I agree to all policies
+- if current_user
+  .row
+    .col-2
+    .col-8
+      By clicking, you indicate you have read, understand, and accept all Pennsic University
+      policies.
+      A copy of these policies will be sent to your email address.
+      %br
+      %form
+        %button.btn#policy-accept-all-button{disabled: true} I agree to all policies
