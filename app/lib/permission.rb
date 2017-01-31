@@ -15,6 +15,8 @@ class Permission
     allow :howto, :all
     allow :instructors, :all
 
+    allow 'policies', :all
+
     allow 'users/schedules', [ :show ] do |record|
       record.published? or record.token_access
     end
