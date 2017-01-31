@@ -1,4 +1,5 @@
 Thing::Application.routes.draw do
+  resources :policies
   namespace :admin do
     resources :users do
       get :send_password_reset_email
