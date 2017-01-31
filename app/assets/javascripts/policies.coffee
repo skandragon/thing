@@ -6,10 +6,8 @@ jQuery ->
     event.preventDefault()
     target = $(event.target)
     if target.is(':checked')
-      console.log "marking as accepted"
       target.removeClass('policy-not-accepted')
     else
-      console.log "reversing acceptance"
       target.addClass('policy-not-accepted')
     enable_or_disable()
 
@@ -21,8 +19,6 @@ jQuery ->
   window.enable_or_disable = ->
     target = $('#policy-accept-all-button')
     if $('.policy-not-accepted').length > 0
-      console.log "not yet accepted all"
       target.attr('disabled', true).removeClass('btn-primary')
     else
-      console.log "All are accepted"
       target.attr('disabled', false).addClass('btn-primary')
