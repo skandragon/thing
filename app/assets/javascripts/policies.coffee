@@ -2,15 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ->
-  $('.policy-accept-button').on 'click', (event) ->
+  $('.policy-accept-input').on 'change', (event) ->
     event.preventDefault()
     target = $(event.target)
-    if target.hasClass('policy-not-accepted')
+    if target.is(':checked')
       console.log "marking as accepted"
-      target.removeClass('policy-not-accepted').addClass('btn-success')
+      target.removeClass('policy-not-accepted')
     else
       console.log "reversing acceptance"
-      target.removeClass('btn-success').addClass('policy-not-accepted')
+      target.addClass('policy-not-accepted')
     enable_or_disable()
 
   $('#policy-accept-all-button').on 'click', (event) ->
