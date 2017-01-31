@@ -1,12 +1,19 @@
 - title 'Pennnsic University Policies'
 
-%p
-  In order to teach a class for Pennsic Univerisy, you must read,
-  understand, and agree to the following policies.
-
 .row
-  .col-2 Tent Use
-  .col-10
+  .col-10.push-1
+    %p
+      In order to teach a class for Pennsic Univerisy, you must read,
+      understand, and agree to the following policies.
+    %p
+      If there are any questions about these policies, please contact the
+      University Chancellor.
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Tent Use Policy
+  .col-8.policy-body
     %p
       Pennsic University tents may only be used for activities approved by the
       University Chancellor or other member of the Pennsic senior staff as
@@ -21,18 +28,20 @@
     %p
       Instructors should leave tents as clean as possible at the end of
       each class. Be courteous to the instructors and students
-      following you and pick up after yourself!
+      following you and pick up after yourself.
     %p
       While most tents have power outlets, the total amount of electrical
       power available to the University is limited. To prevent blown fuses,
       electrical outlets in the tents should be used only for
-      class-related activities (i.e. running a computer or projector for a
+      class-related activities (i.e., running a computer or projector for a
       lecture). Use of any equipment requiring significant power draw or
       running for longer than a normal class time (120 minutes, maximum)
       must be approved by the University Chancellor.
-.row
-  .col-2 Attendance and Signup List
-  .col-10
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Attendance and Signup List Policy
+  .col-8.policy-body
     %p
       No Signup lists are be used for any Pennsic University classes.
       Pennsic University shall not be responsible for, not shall they
@@ -45,23 +54,25 @@
       encouraged to select recipients.
     %p
       Attendance in the main, numbered, University tents is tracked by the
-      Pennsic University Staff, Track Coordinators tracking Attendance in
-      outlying tents are responsible for counting and compiling attendance
-      figures if they want them.
-.row
-  .col-2 Heat Source Usage
-  .col-10
+      Pennsic University Staff.  Track Coordinators may choose to track
+      attendance in outlying tents.
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Heat Source Policy
+  .col-8.policy-body
     %p
       If your class requires use of a heat source (including, but not
       limited to: candles, camp stoves, hot plates, charcoal burners,
-      Sterno&tm; cans, propane torches), you must obtain prior approval
+      Sterno&trade;
+      cans, propane torches), you must obtain prior approval
       from the University Chancellor or designate. Failure to receive
       prior approval may result of the cancellation of your class.
     %p
       Classes using heat sources must move tables as far away from tent
       walls as possible to minimize the chance of damage to the canvas.
     %p
-      Small open flame sources such as candles or Sterno&tm; cans must
+      Small open flame sources such as candles or Sterno&trade; cans must
       be placed on a fireproof surface to prevent damage to tabletops.
     %p
       Larger flame sources such as camp stoves or charcoal burners must
@@ -86,3 +97,243 @@
       Pennsic University provides for heat sources used ONLY by
       preapproval in a very limited number of tents.  This restriction
       does not apply to classes held in private encampments.
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Tent Cleanup Policy
+  .col-8.policy-body
+    %p
+      Teachers are responsibile for the condition and cleanliness
+      of the tent when they have finished.
+      If your class includes a process that may produce sharp fragments,
+      splinters, or shards (including but not limited to woodworking or
+      metalworking), you must devise a way to collect any sharp fragments
+      from the tent at the end of your class to avoid the possibility of
+      injury to others.
+    %p
+      Glass related classes must devise a way of collecting any fragments
+      of broken glass from the tent interior to avoid the possibility of injury to others.
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Tent Vehicle Use Policy
+  .col-8.policy-body
+    %p
+      Privately-owned motorized vehicles may deliver goods such as class materials to
+      the perimeter of the University grounds but cannot remain there for the duration
+      of the class and must be removed immediately after delivery is made. There is
+      no parking on University grounds. You may not drive inside the perimeter
+      without prior approval from the Chancellor or designate.
+    %p
+      This does not apply to mobility aids or similar personal vehicles and handcarts.
+      Where such vehicles are not the primary seating for the occupant/user,
+      then they must be placed discretely out of main area of the tent to allow
+      others to sit comfortably
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Tent Furniture Policy
+  .col-8.policy-body
+    %p
+      All chairs and tables used in all classes are tagged with the tent of origin.
+      Tents and chairs may be borrowed to make up for higher than expected attendance,
+      but
+      %strong MUST BE RETURNED AT THE END OF THE CLASS TO THEIR TAGGED TENT.
+      Chairs in the Performing Arts Tents are
+      %strong OFF LIMITS.
+      If you see a student borrowing from the PA tent, you should ask them to put it back.
+    %p
+      %strong AT NO TIME
+      s it allowable for any tables or chairs to be removed from the central University Area,
+      nor may they be removed, even temporarily to any private camp, without FIRST
+      obtaining the direct and explicit permission and cooperation of the Chancellor.
+    %p
+      Tables and chairs are not provided to any outlying Univeristy tents (BattleField,
+      Kingdoms, Middle Eastern Dance, etc) or Private encampments, with the lone
+      exception of the Performing Arts Rehearsal Tent.
+      All classes in the outlying tents are expected that the students will provide
+      their own chairs. Class descriptions for such classes should have language
+      to that effect added.
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Publication Policy
+  .col-8.policy-body
+    %p
+      Pennsic University does not endorse or support any classes that are not
+      scheduled through Pennsic Universty and the "Thing". Pennsic University
+      does not assume any responsibility for any classes not registered through
+      it's official process. Any classes given by or through third parties or other
+      entities are NOT part of the University.
+    %p
+      Every reasonable attempt to publish additions, deletions, and changes to the
+      class list will be given, to the best of the Staff's abilities.
+      These attempts may not be perfectly adequate in all cases, especially for
+      last minute and on-site changes.
+    %p
+      In all cases, the definitive list and schedule of classes will be in Thing.
+      The On-site books, scheduled at University Point in binders, and the
+      Pennsic Independent are not authoritative. "Thing" is the authoritative
+      and up to date resource.
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Youth Policy
+  .col-8.policy-body
+    %p
+      Youth under 12 years of age must be accompanied at all times by a parent
+      or responsible adult or teenager in all University venues.
+      Unaccompanied minors 12 years or older may attend classes in University
+      venues so long as the classes are not registered as "adults only", and
+      behave in a respectful attentive manner.
+    %p
+      All minors (including 12 and over) MUST be accompanied at all times by a
+      parent or court appoint legal guardian in all University sponsored classes
+      that take place in private camps or merchant booths. This category includes
+      classes at "Touch the Earth" and Aethelmarc Royal.
+    %p
+      No minors will be permitted in "Adults only" classes, with the
+      exception of infants in arms at the Teacher's discretion.
+    %p
+      Pennsic University does not sponsor any "youth oriented" or "youth only"
+      classes. All such classes are scheduled and overseen through Youth Point.
+    %p
+      Any questions or situations outside of this policy will be decided on a
+      one by one basis as needed by University staff and/or the Mayor's Office.
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Participation Policy
+  .col-8.policy-body
+    %p
+      No class may be limited in participation and must accept all students
+      who choose to attend (per the Youth policy).
+      If there is a limit to the number of materials/Kits/handouts or whatever
+      physical resource, then any attendance over this supply shall be allowed
+      to sit in and observe and participate in any question and answer as the
+      students below the threshold.
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Merchant and Remuneration Policy
+  .col-8.policy-body
+    %p
+      Pennsic University is not a money-making endeavor, neither are Pennsic
+      University's "Thing" and other publications to be considered an advertising
+      resource.
+      Teachers should not expect to make money from Teaching classes.
+      Pennsic Univeristy classes are not booked and tracked for tax compliance,
+      or other such concerns generally under the aegis of the Merchants office.
+    %p
+      Pennsic Teachers shall not teach at Pennsic University classes (classes
+      registered and Published in the "Thing") and be paid or given any
+      compensation in exchange for doing so.
+      This includes providing materials or other remuneration.
+      Teachers may provide (at their cost) kits and materials for classes.
+      They may provide loaner tools (and shared/loaner tools for hands on
+      classes is strongly encouraged), or offer to provide tools and material
+      through their merchant booth, but at no time should the teachers expect
+      any students to pay to attend and reasonably participate in classes.
+    %p
+      Any materials or tools that must be purchased must be clearly published
+      in the description for the class, and the fee/costs clearly stated
+      in the "fees" section of the class registration.
+      Provision of such purchased tools/materials that is accomplished at
+      Pennsic itself must be done outside the University at a properly
+      registered Merchant booth, and taxes properly collected on the
+      transactions thereby.  There will be no exceptions.
+    %p
+      Failure to adhere to this policy will result in classes being
+      cancelled, and the teacher prevented form teaching again, and
+      reported to the Coopers for infraction of Merchant Rules.
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Professional Standards of Practice Policy
+  .col-8.policy-body
+    %p
+      No class can be offered that can be reasonably be construed
+      as taking the place of licensed or otherwise certified caregivers
+      or providers, whether it be as child care (in loco parentis), or
+      as a source of mundane legal, medical or psychological advice.
+      This policy is emplaced with the advice and consent of the Mayor's
+      office and exists due to ongoing liability concerns.
+    %p
+      While the University strongly encourages study and research of
+      Period medical practices, the line is drawn at anything that
+      seems to be advocating, in our classes, any such practices, offered
+      in any way, such that they may be reasonably considered as standing
+      in lieu of mundane medical or legal advice.
+      First-aid and other such classes offered by instructors shall have
+      and be expected to show authoritative mundane certification to give
+      such instruction.
+    %p
+      The University will not support or endorse any classes that may
+      be reasonably considered to be practicing medicine or advocating
+      the practice of medicine or giving medical treatment that is at
+      variance with the mundane standards of medical care.
+    %p
+      If you are providing such classes as a period treatment of such
+      practice within the historical context, then that is a great
+      thing and we so strongly encourage such instruction.
+    %p
+      Such classes are required to preface the class session with
+      a statement such as follows:
+      .boxed-text
+        "Pennsic University does not advocate the adoption of any diagnostic
+        method or course of treatment not performed by properly licensed
+        practitioners in accordance with the mundane medical (or legal)
+        standard of care. This class will present medically (or legally)
+        significant information for purely informational purposes only.
+        The University strongly recommends that you always inform, and
+        obtain advice from, mundane medical (or legal) professionals before
+        altering or starting any course of diagnosis or treatment (or
+        engaging in any legal practice) based on this class."
+
+.row.policy-row
+  .col-1= render partial: 'accept_button'
+  .col-2.policy-title
+    Pennsic University Tent Weather Policy
+  .col-8.policy-body
+    %p
+      Please do not unclip or undo the sides of the tent to open it up
+      for airflow or allow students to do it.
+    %p
+      Pennsic University provides "brailing" ropes on the sides of each
+      tent for use in raising the sides to allow airflow for hot weather.
+      If your tent does not have adequate tie points to allow airflow,
+      notify the University point and we will rectify the situation
+    %p
+      Pennsic Univeristy asks that you use the correct "slipped Half Hitch"
+      (similar to a bridle hitch knot) to tie up the sides.
+      If you are unfamiliar with the knot, we are happy to provide
+      instruction on accomplishing it.
+      We ask that you do not try to tie up the sides of the tent using
+      any other knot or lines, or undo any lines to the posts that secure
+      the tent to the ground.
+    %p
+      If you are unable to reach or do not know how to tie up the tent sides
+      using these lines, notify University Point so we can address it.
+
+      In the event of a sudden storm or high winds, it is necessary that the
+      tent sides be dropped to the ground to prevent the tents from blowing out
+      and tearing.
+    %p
+      The Teacher for the last class scheduled in any tent is responsible
+      for dropping the sides of the tent and closing it up against weather.
+      Please remember to see to this task when you are leaving.
+
+.row
+  .col-2
+  .col-8
+    Click to indicate you have read, understand, and accept all Pennsic University
+    policies.
+    %br
+    %form
+      %button.btn#policy-accept-all-button{disabled: true} I agree to all policies
