@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   private
 
   def check_profile
-    if current_user and current_user.needs_profile_update?
+    if current_user&.needs_profile_update?
       msg = 'Please review your instructor profile before continuing.'
       redirect_to(edit_user_instructor_profile_path(current_user), alert: msg)
       return true
@@ -50,15 +50,15 @@ class ApplicationController < ActionController::Base
   end
 
   def instructor?
-    current_user && current_user.instructor?
+    current_user&.instructor?
   end
 
   def admin?
-    current_user && current_user.admin?
+    current_user&.admin?
   end
 
   def coordinator?
-    admin? or (current_user && current_user.tracks.count > 0)
+    admin? or (current_user and current_user.tracks.count > 0)
   end
 
   def coordinator_for?(track)
@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
   end
 
   def proofreader?
-    admin? or (current_user && current_user.proofreader?)
+    admin? or (current_user&.proofreader?)
   end
 
   def current_permission
@@ -110,4 +110,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:mundane_name])
   end
 
+  def not_found(msg = 'Not Found')
+    raise ActionController::RoutingError.new(msg)
+  end
 end
