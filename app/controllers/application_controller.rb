@@ -18,6 +18,17 @@ class ApplicationController < ActionController::Base
   include GriffinJSON
   helper_method :json_for
 
+  protected
+
+  def check_university_policies
+    if instructor? and !Policy::has_current_policy?(current_user)
+      redirect_to '/policies/university'
+      true
+    else
+      false
+    end
+  end
+
   private
 
   def check_profile

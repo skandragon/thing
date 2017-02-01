@@ -1,5 +1,4 @@
 Thing::Application.routes.draw do
-  resources :policies
   namespace :admin do
     resources :users do
       get :send_password_reset_email
@@ -50,6 +49,12 @@ Thing::Application.routes.draw do
   resources :calendars
   resources :changelogs
   resources :instructors
+
+  resources :policies do
+    member do
+      post 'accept'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
