@@ -1,1 +1,2 @@
-PaperTrail.serializer = PaperTrail::Serializers::Json
+PaperTrail.serializer = PaperTrail::Serializers::JSON
+PaperTrail.config.track_associations = false

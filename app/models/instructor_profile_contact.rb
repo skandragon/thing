@@ -11,7 +11,7 @@
 #  user_id    :integer
 #
 
-class InstructorProfileContact < ActiveRecord::Base
+class InstructorProfileContact < ApplicationRecord
   belongs_to :user
 
   has_paper_trail

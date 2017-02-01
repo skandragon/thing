@@ -1,3 +1,30 @@
+2017 todo:
+
+CSS / HTML work:
+
+    TODO: change dl-horizontal CSS class to use .row and column sizing, as bootstrap 4 does not have dl-horizontal
+
+    TODO: Make forms not look like crap.
+
+    TODO: Make a list of all files which render HTML, and ensure they are using the proper classes.
+
+    TODO: Consider moving away from simple_form, or make it entirely sane with Bootstrap.
+
+    TODO: make required fields look like required fields.
+
+    TODO: Make modals work.
+
+    TODO: Make calendar date entry stuff work.
+
+Coding work:
+
+    TODO: Add click-accept pages for University requirements on the first class submission of the year.
+
+    TODO: Make the various schedules distinct, with distinct locations.  If locations are shared, manage conflicts globally.
+
+Older todo:
+
+
 * Private camp locations, 2 per page, with lines to write on
 
 * Class attendance count entry, pull-down for date and time, per location

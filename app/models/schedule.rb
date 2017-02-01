@@ -11,10 +11,10 @@
 #  year          :integer
 #
 
-class Schedule < ActiveRecord::Base
+class Schedule < ApplicationRecord
   belongs_to :user
 
-  default_scope :conditions => { year: 2015 }
+  default_scope { where(year: 2017) }
 
   attr_accessor :token_access
 end

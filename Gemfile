@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-gem 'rails', '3.2.22.5'
+gem 'rails', '5.0.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -11,22 +11,23 @@ gem 'rails', '3.2.22.5'
 gem 'pg'
 gem 'postgres_ext'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
+gem 'sass-rails'
+gem 'coffee-rails'
 
-  gem 'less-rails'
-  gem 'therubyracer', platform: :ruby, require: 'v8'
+#gem 'less-rails'
+gem 'therubyracer', platform: :ruby, require: 'v8'
 
-#  gem 'less-js'
+#gem 'less-js'
 
-  gem 'uglifier'
+gem 'uglifier'
 
+gem 'bootstrap', '~> 4.0.0.alpha6'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.1.0'
 end
 
-gem 'twitter-bootstrap-rails' #, git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git', branch: 'master'
+#gem 'twitter-bootstrap-rails' #, git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git', branch: 'master'
 
 gem 'jquery-rails'
 
@@ -64,6 +65,7 @@ group :development do
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
+  gem 'rb-readline'
 end
 
 group :production do
@@ -71,7 +73,6 @@ group :production do
 end
 
 gem 'rack-mini-profiler'
-gem 'strong_parameters'
 gem 'capistrano'
 gem 'capistrano-rails'
 gem 'capistrano-rbenv'
@@ -81,16 +82,15 @@ gem 'will_paginate'
 gem 'devise'
 gem 'dalli'
 gem 'redis'
-gem 'resque', require: 'resque/server'
 gem 'multa_arcana'
 gem 'rubyzip'
 gem 'prawn'
 gem 'prawn-table'
 gem 'ri_cal'
-gem 'axlsx', '~> 2'
+gem 'axlsx'
 gem 'redcarpet'
 gem 'htmlentities'
-gem 'paper_trail', '~> 2'
+gem 'paper_trail'
 gem 'active_model_serializers'
 gem 'hashie'
 gem 'diff-lcs'
@@ -102,4 +102,4 @@ gem 'liquid'
 # test since we don't verify that the gem works, just that the email
 # renders.
 #
-gem 'roadie', '~> 2.4', :group => [ :development, :production ]
+gem 'roadie', :group => [ :development, :production ]

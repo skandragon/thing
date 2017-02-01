@@ -15,7 +15,7 @@
       teach classes.  These will be used by default for classes you
       request, although you can override them on a per-class basis.
       Actual class days are more limited than the selection below.
-    = f.input :available_days, as: :check_boxes, checked: current_user.available_days, collection: Instructable::PENNSIC_DATES, label_method: :to_s
+    = f.input :available_days, as: :check_boxes, checked: current_user.available_days, collection: Instructable::PENNSIC_DATES, label_method: :to_s, wrapper: :horizontal_boolean
 
   %fieldset
     %legend After Pennsic Contact
@@ -24,13 +24,14 @@
       Select one or more methods below to allow this.
     = f.input :no_contact, label: 'No contact', as: :boolean
     #contact-fields
-      = f.simple_fields_for :instructor_profile_contacts, f.object.instructor_profile_contacts.sort do |ipc|
-        - protocol = ipc.object.protocol
-        - if protocol == 'profile email'
-          = ipc.input :address, inline_label: current_user.email, as: :boolean
-        - else
-          = ipc.input :address, placeholder: placeholder_for_protocol(protocol), as: as_for_protocol(protocol), label: ipc.object.protocol.titleize
-        = ipc.input :protocol, as: :hidden
+      - f.object.instructor_profile_contacts.sort.each do |ipc_fields|
+        = f.simple_fields_for 'instructor_profile_contacts[]', ipc_fields do |ipc|
+          - protocol = ipc.object.protocol
+          - if protocol == 'profile email'
+            = ipc.input :address, inline_label: current_user.email, as: :boolean
+          - else
+            = ipc.input :address, placeholder: placeholder_for_protocol(protocol), as: as_for_protocol(protocol), label: ipc.object.protocol.titleize
+          = ipc.input :protocol, as: :hidden
 
   = f.button :submit, "#{create_or_update} profile", :class => 'btn btn-primary'
   = link_to 'Cancel', :back, :class => 'btn'

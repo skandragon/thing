@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :authorize
-  before_filter :miniprofiler
-  before_filter :check_profile
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :authorize
+  before_action :miniprofiler
+  before_action :check_profile
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   delegate :allow?, to: :current_permission
   helper_method :allow?
@@ -18,10 +18,21 @@ class ApplicationController < ActionController::Base
   include GriffinJSON
   helper_method :json_for
 
+  protected
+
+  def check_university_policies
+    if instructor? and !Policy::has_current_policy?(current_user)
+      redirect_to '/policies/university'
+      true
+    else
+      false
+    end
+  end
+
   private
 
   def check_profile
-    if current_user and current_user.needs_profile_update?
+    if current_user&.needs_profile_update?
       msg = 'Please review your instructor profile before continuing.'
       redirect_to(edit_user_instructor_profile_path(current_user), alert: msg)
       return true
@@ -50,15 +61,15 @@ class ApplicationController < ActionController::Base
   end
 
   def instructor?
-    current_user && current_user.instructor?
+    current_user&.instructor?
   end
 
   def admin?
-    current_user && current_user.admin?
+    current_user&.admin?
   end
 
   def coordinator?
-    admin? or (current_user && current_user.tracks.count > 0)
+    admin? or (current_user and current_user.tracks.count > 0)
   end
 
   def coordinator_for?(track)
@@ -66,7 +77,7 @@ class ApplicationController < ActionController::Base
   end
 
   def proofreader?
-    admin? or (current_user && current_user.proofreader?)
+    admin? or (current_user&.proofreader?)
   end
 
   def current_permission
@@ -107,7 +118,10 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) << :mundane_name
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:mundane_name])
   end
 
+  def not_found(msg = 'Not Found')
+    raise ActionController::RoutingError.new(msg)
+  end
 end

@@ -1,27 +1,92 @@
-@import "twitter/bootstrap/bootstrap";
+@mixin no-box-shadow() {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $color;
+    -moz-box-shadow:inset $top $left $blur $color;
+    box-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+
+@mixin rounded($radius: 5px) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin gradient($from, $to) {
+  background: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+  background: -moz-linear-gradient(top,  $from, $to);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$from}', endColorstr='#{$to}');
+}
+
+/// Test if `$value` is a valid direction
+/// @param {*} $value - Value to test
+/// @return {Bool}
+@function is-direction($value) {
+  $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+  $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+
+  @return $is-keyword or $is-angle;
+}
+
+/// Convert a direction to legacy syntax
+/// @param {Keyword | Angle} $value - Value to convert
+/// @require {function} is-direction
+/// @require {function} convert-angle
+/// @throw Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.;
+@function legacy-direction($value) {
+  @if is-direction($value) == false {
+    @error "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.";
+  }
+
+  $conversion-map: (
+          to top          : bottom,
+          to top right    : bottom left,
+          to right top    : left bottom,
+          to right        : left,
+          to bottom right : top left,
+          to right bottom : left top,
+          to bottom       : top,
+          to bottom left  : top right,
+          to left bottom  : right top,
+          to left         : right,
+          to left top     : right bottom,
+          to top left     : bottom right
+  );
+
+  @if map-has-key($conversion-map, $value) {
+    @return map-get($conversion-map, $value);
+  }
+
+  @return 90deg - $value;
+}
+
+@mixin linear-gradient($direction, $color-stops...) {
+  // Direction has been omitted and happens to be a color-stop
+  @if is-direction($direction) == false {
+    $color-stops: $direction, $color-stops;
+    $direction: 180deg;
+  }
+
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
 
 body { padding: 60px 0 0 0; }
 
-@import "twitter/bootstrap/responsive";
-
-// Set the correct sprite paths
-@iconSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings.png');
-@iconWhiteSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings-white.png');
-
-// Your custom LESS stylesheets goes here
-//
-// Since bootstrap was imported above you have access to its mixins which
-// you may use and inherit here
-//
-// If you'd like to override bootstrap's own variables, you can do so here as well
-// See http://twitter.github.com/bootstrap/less.html for their names and documentation
-//
-// Example:
-// @linkColor: #ff0000;
-
 .pretty-box {
     border: 1px solid #bbb;
-    .border-radius(4px);
+    @include rounded(4px);
     padding: 10px;
     background-color: #eee;
 }
@@ -93,9 +158,9 @@ section {
 .subnav {
   width: 100%;
   height: 36px;
-  #gradient> .vertical(#f5f5f5, #eeeeee);
+  @include linear-gradient(#f5f5f5, #eeeeee);
   border: 1px solid #e5e5e5;
-  .border-radius(4px);
+  @include rounded(4px);
 }
 .subnav .nav {
   margin-bottom: 0;
@@ -106,7 +171,7 @@ section {
   padding-bottom: 11px;
   border-left: 1px solid #f5f5f5;
   border-right: 1px solid #e5e5e5;
-  .border-radius(0);
+  @include rounded(0);
 }
 .subnav .nav > .active > a,
 .subnav .nav > .active > a:hover {
@@ -115,7 +180,7 @@ section {
   background-color: #e9e9e9;
   border-right-color: #ddd;
   border-left: 0;
-  .box-shadow(inset 0 3px 5px rgba(0,0,0,.05));
+//  .box-shadow(inset 0 3px 5px rgba(0,0,0,.05));
 }
 .subnav .nav > .active > a .caret,
 .subnav .nav > .active > a:hover .caret {
@@ -125,13 +190,13 @@ section {
 .subnav .nav > li:first-child > a:hover {
   border-left: 0;
   padding-left: 12px;
-  .border-radius(4px 0 0 4px);
+  @include rounded(4px 0 0 4px);
 }
 .subnav .nav > li:last-child > a {
   border-right: 0;
 }
 .subnav .dropdown-menu {
-  .border-radius(0 0 4px 4px);
+  @include rounded(0 0 4px 4px);
 }
 
 .authentication {
@@ -214,9 +279,9 @@ table.table {
 //
 .footer {
   margin-top: 45px;
-  padding: 10px 0 10px 0;
+  padding: 10px;
   border-top: 1px solid #111;
-  #gradient> .vertical(#333, #000);
+  @include linear-gradient(#333, #000);
 
   h1 {
     color: #ddd;
@@ -241,7 +306,7 @@ table.table {
 
   .copyright {
     text-align: center;
-    color: #333;
+    color: #555;
   }
 }
 
@@ -302,7 +367,7 @@ div.error .help-inline {
     z-index: 1020; /* 10 less than .navbar-fixed to prevent any overlap */
     border-color: #d5d5d5;
     border-width: 0 0 1px; /* drop the border on the fixed edges */
-    .border-radius(0px);
+    @include rounded(0px);
     -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
        -moz-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
             box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
@@ -315,7 +380,7 @@ div.error .help-inline {
   }
   .subnav .nav > li:first-child > a,
   .subnav .nav > li:first-child > a:hover {
-    .border-radius(0);
+    @include rounded(0);
   }
 }
 
@@ -382,7 +447,7 @@ h3.event_day {
     width: auto;
     height: auto;
     background: #fff; /* whole background property since we use a background-image for gradient */
-    .box-shadow(none);
+    @include no-box-shadow();
   }
   .subnav .nav > li {
     float: none;
@@ -395,7 +460,7 @@ h3.event_day {
   }
   .subnav .nav > li:first-child > a,
   .subnav .nav > li:first-child > a:hover {
-    .border-radius(4px 4px 0 0);
+    @include rounded(4px 4px 0 0);
   }
 
   .popover-well .popover-wrapper {
@@ -422,33 +487,40 @@ h3.event_day {
   }
 
   .instructable_instances_start_time {
-    .control-label {
+    .form-control-label {
       width: 65px;
     }
-    .controls {
-      margin-left: 70px;
-    }
+//    .controls {
+//      margin-left: 70px;
+//    }
   }
 
   .instructable_instances_location {
-    .control-label {
+    .form-control-label {
       width: 60px;
     }
-    .controls {
-      margin-left: 70px;
-    }
+//    .controls {
+//      margin-left: 70px;
+//    }
   }
 
   .instructable_instances_override_location {
-    .control-label {
+    .form-control-label {
       width: 115px;
     }
-    .controls {
-      margin-left: 125px;
-      width: 20px;
-    }
+//    .controls {
+//      margin-left: 125px;
+//      width: 20px;
+//    }
   }
 }
+
+.checkbox {
+  input { margin-right: 0.5em; }
+  label { margin-left: 0.5em; margin-right: 0.5em; }
+}
+
+.check_boxes.form-control-label { display: block; }
 
 @media (max-width: 980px) {
   .navbar.navbar-fixed-top {

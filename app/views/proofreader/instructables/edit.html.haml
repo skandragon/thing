@@ -2,14 +2,14 @@
 
 %p.alert.alert-info Track: #{@instructable.track}
 
-= simple_form_for @instructable, url: proofreader_instructable_path(@instructable), html: { :class => 'form-horizontal' } do |f|
+= simple_form_for @instructable, url: proofreader_instructable_path(@instructable), html: { :class => 'form-group' } do |f|
   %fieldset
     %legend Class Information
-    = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'span5' }
-    = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: 'Book description limited to 150 characters'
-    = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
-    = f.input :culture, collection: Instructable::CULTURES, hint: 'If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus.'
-    = f.input :topic, collection: Instructable::TOPICS.keys, hint: 'Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies.'
+    = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'form-control' }
+    = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'form-control' }, hint: 'Book description limited to 150 characters'
+    = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'form-control' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
+    = f.input :culture, collection: Instructable::CULTURES, input_html: { class: 'form-control' }, hint: 'If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus.'
+    = f.input :topic, collection: Instructable::TOPICS.keys, input_html: { class: 'form-control' }, hint: 'Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies.'
     #subtopic
       = f.input :subtopic, collection: Instructable::TOPICS[@instructable.topic] || []
 

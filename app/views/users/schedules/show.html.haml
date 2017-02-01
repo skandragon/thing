@@ -17,10 +17,10 @@
 
 .alert.alert-info
   .row
-    .span12
+    .col
       Other formats available!
   .row
-    .span6
+    .col
       %dl.dl-horizontal
         %dt= link_to('PDF', user_schedule_path(@user, format: :pdf), class: 'btn', target: '_blank')
         %dd PDF file with class names, descriptions, times, and locations.
@@ -30,7 +30,7 @@
       %dl.dl-horizontal
         %dt= link_to('Excel', user_schedule_path(@user, format: :xlsx), class: 'btn', target: '_blank')
         %dd A popular spreadsheet format.
-    .span6
+    .col
       %dl.dl-horizontal
         %dt= link_to('iCalendar', user_schedule_path(@user, format: :ics), class: 'btn', target: '_blank')
         %dd
