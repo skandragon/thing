@@ -27,6 +27,8 @@ role :db,  'explorer@sca1.flame.org', :primary => true
 
 set :nginx_server_name, 'thing.pennsicuniversity.org'
 
+set :pty, true
+
 # Configuration
 # =============
 # You can set any configuration variable like in config/deploy.rb
