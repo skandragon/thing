@@ -21,7 +21,11 @@
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
+role :web, 'explorer@sca1.flame.org'
+role :app, 'explorer@sca1.flame.org'
+role :db,  'explorer@sca1.flame.org', :primary => true
 
+set :nginx_server_name, 'thing.pennsicuniversity.org'
 
 # Configuration
 # =============

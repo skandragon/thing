@@ -2,7 +2,6 @@ set :application, 'thing'
 set :repo_url, 'git://github.com/skandragon/thing.git'
 
 set :deploy_to, '/www/thing'
-set :scm, :git
 set :branch, 'master'
 set :deploy_via, :remote_cache
 
