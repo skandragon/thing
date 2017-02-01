@@ -21,13 +21,13 @@ window.hide_and_remove_required = (target, immediate) ->
     target.hide()
   else
     target.slideUp()
-  target.find("input").removeAttr("required")
-  target.find("textarea").removeAttr("required")
+  target.find("input.required").removeAttr("required")
+  target.find("textarea.required").removeAttr("required")
 
 window.show_and_add_required = (target, immediate) ->
   if immediate
     target.show()
   else
     target.slideDown()
-  target.find("input").attr("required", "required")
-  target.find("textarea").attr("required", "required")
+  target.find("input.required").attr("required", "required")
+  target.find("textarea.required").attr("required", "required")
