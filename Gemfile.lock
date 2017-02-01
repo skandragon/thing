@@ -183,7 +183,6 @@ GEM
       jsonapi-renderer (= 0.1.1.beta1)
     jsonapi-parser (0.1.1.beta3)
     jsonapi-renderer (0.1.1.beta1)
-    kgio (2.11.0)
     launchy (2.4.3)
       addressable (~> 2.3)
     libv8 (3.16.14.17)
@@ -271,7 +270,6 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    raindrops (0.17.0)
     rake (11.3.0)
     rb-fchange (0.0.6)
       ffi
@@ -364,9 +362,6 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.4)
       execjs (>= 0.3.0, < 3)
-    unicorn (5.2.0)
-      kgio (~> 2.6)
-      raindrops (~> 0.7)
     warden (1.2.7)
       rack (>= 1.0)
     websocket-driver (0.6.5)
@@ -415,6 +410,7 @@ DEPENDENCIES
   postgres_ext
   prawn
   prawn-table
+  puma
   rack-mini-profiler
   railroady
   rails (= 5.0.1)
@@ -436,7 +432,6 @@ DEPENDENCIES
   therubyracer
   thin
   uglifier
-  unicorn
   will_paginate
 
 BUNDLED WITH

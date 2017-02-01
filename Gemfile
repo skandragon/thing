@@ -68,9 +68,7 @@ group :development do
   gem 'rb-readline'
 end
 
-group :production do
-  gem 'unicorn', platform: :ruby
-end
+gem 'puma'
 
 group :development do
   gem 'capistrano'
