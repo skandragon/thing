@@ -7,7 +7,7 @@ set :branch, 'master'
 set :deploy_via, :remote_cache
 
 set :rbenv_type, :user # or :system, depends on your rbenv setup
-set :rbenv_ruby, '2.1.6'
+set :rbenv_ruby, '2.4.0'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
@@ -26,26 +26,12 @@ set :keep_releases, 5
 
 set :linked_files, %w{config/secrets.yml}
 
+set :puma_conf, "#{shared_path}/config/puma.rb"
+
 namespace :deploy do
-  desc 'Restart application'
-  task :restart do
-    desc 'restart unicorn server'
-    on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      execute "/etc/unicorn/unicorn_#{fetch :application} restart"
-    end
-  end
-
-#  after :restart, :clear_cache do
-#    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-#    end
-#  end
-
-  after :finishing, 'deploy:cleanup'
+  before 'check:linked_files', 'puma:config'
+  before 'check:linked_files', 'puma:nginx_config'
+  after 'puma:smart_restart', 'nginx:restart'
 
   task :git_log do
     on roles(:app), in: :sequence, except: {no_release: true} do
@@ -55,16 +41,6 @@ namespace :deploy do
     end
   end
   after 'deploy:updated', 'deploy:git_log'
-
-#  task :setup_config do
-#    on roles(:app), in: sequence do
-#      execute "rm -f /etc/nginx/sites-enabled/#{application}"
-#      execute "rm -f /etc/unicorn/unicorn_#{application}"
-#      execute "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
-#      execute "ln -nfs #{current_path}/config/unicorn_init.sh /etc/unicorn/unicorn_#{application}"
-#    end
-#  end
-#  after "deploy:setup", "deploy:setup_config"
 
   desc 'Make sure local git is in sync with remote.'
   task :check_revision do

@@ -72,10 +72,16 @@ group :production do
   gem 'unicorn', platform: :ruby
 end
 
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'capistrano3-puma'
+  gem 'capistrano3-nginx'
+  gem 'capistrano-upload-config'
+end
+
 gem 'rack-mini-profiler'
-gem 'capistrano'
-gem 'capistrano-rails'
-gem 'capistrano-rbenv'
 gem 'haml-rails'
 gem 'simple_form'
 gem 'will_paginate'
