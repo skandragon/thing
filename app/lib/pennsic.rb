@@ -20,7 +20,7 @@ class Pennsic
   end
 
   def self.class_dates
-    (Date.parse('2016-07-29')..Date.parse('2016-08-11')).to_a.map(&:to_s)
+    (Date.parse('2016-08-01')..Date.parse('2016-08-11')).to_a.map(&:to_s)
   end
 
   def self.class_times
