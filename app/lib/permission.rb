@@ -48,11 +48,11 @@ class Permission
       end
     end
 
-    if user && user.admin?
+    if user&.admin?
       allow_all
     end
 
-    if user && user.coordinator?
+    if user&.coordinator?
       allow :instructables, [:edit, :update] do |record|
         user.tracks.include?(record.track) || record.user_id == user.id
       end
@@ -61,7 +61,7 @@ class Permission
       allow 'coordinator/locations', :all
     end
 
-    if user && user.proofreader?
+    if user&.proofreader?
       allow 'proofreader/instructables', :all do
         true
       end
