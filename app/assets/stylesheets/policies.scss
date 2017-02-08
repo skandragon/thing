@@ -2,6 +2,15 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .policy-title {
-  font-weight: bolder;
+  font-weight: bold;
   font-size: larger;
+}
+
+.policy-tldr {
+  font-weight: bold;
+}
+
+.boxed-text {
+  border: 1px solid #333;
+  padding: 5px 10px;
 }
