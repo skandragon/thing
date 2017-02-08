@@ -2,7 +2,7 @@ class PoliciesController < ApplicationController
   def show
     policy = params[:id]
     not_found unless supported_policy(policy)
-    @accept_needed = !Policy::has_current_policy?(current_user)
+    @accept_needed = (current_user and !Policy::has_current_policy?(current_user))
     render policy
   end
 
