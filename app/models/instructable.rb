@@ -109,7 +109,8 @@ class Instructable < ApplicationRecord
     'Pennsic University' => [
       'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
       'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
-      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'University-Battlefield'
+      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'A&S 18', 'A&S 19',
+      'Bog U', 'University-Battlefield',
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],
