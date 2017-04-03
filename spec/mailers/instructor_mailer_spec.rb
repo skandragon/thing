@@ -8,8 +8,8 @@ describe InstructorMailer do
 
   it 'renders if there are no track classes' do
     InstructorMailer.send_message(@user, 'Subject Goes Here').deliver
-    ActionMailer::Base.deliveries.size.should == 1
-    body = ActionMailer::Base.deliveries.first.body
-    body.should match "Greetings #{@user.titled_sca_name}"
+    expect(ActionMailer::Base.deliveries.size).to eql 1
+    body = ActionMailer::Base.deliveries.first.body.raw_source
+    expect(body).to include "Dear #{@user.titled_sca_name}"
   end
 end

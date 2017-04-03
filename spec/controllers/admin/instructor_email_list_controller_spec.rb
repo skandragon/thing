@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Admin::InstructorEmailListController, type: :controller do
   it 'requires admin' do
     visit admin_instructor_email_list_index_path
-    page.should have_content('Not authorized')
+    expect(page).to have_content('Not authorized')
   end
 
   describe 'listing' do
@@ -12,8 +12,8 @@ describe Admin::InstructorEmailListController, type: :controller do
       some_instructor = create(:instructor)
       log_in admin: true
       visit admin_instructor_email_list_index_path
-      find('h2').should have_content 'email address count: 1'
-      find('.email_address').should have_content some_instructor.email
+      expect(find('h2')).to have_content 'email address count: 1'
+      expect(find('.email_address')).to have_content some_instructor.email
     end
   end
 end

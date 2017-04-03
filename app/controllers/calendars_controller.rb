@@ -34,7 +34,7 @@ class CalendarsController < ApplicationController
           data = renderer.render_pdf(render_options, filename, cache_filename)
           cache_in_file(cache_filename, data)
         end
-        send_file(cache_filename, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
+        send_file(cache_filename, type: Mime[:pdf], disposition: "inline; filename=#{filename}", filename: filename)
       }
     end
   end

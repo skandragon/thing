@@ -12,36 +12,36 @@ describe Devise::RegistrationsController, type: :controller do
   describe 'sign up' do
     it 'works with email, password, and password confirmation' do
       attempt_sign_up email: 'example@example.com', password: 'secret123', password_confirmation: 'secret123'
-      page.should have_content 'Welcome! You have signed up successfully.'
-      page.should have_content 'Become an instructor'
+      expect(page).to have_content 'Welcome! You have signed up successfully.'
+      expect(page).to have_content 'Become an instructor'
     end
 
     it 'works and populates user record properly' do
       attempt_sign_up email: 'example@example.com', password: 'secret123', password_confirmation: 'secret123', mundane_name: 'Mundane Dude'
-      page.should have_content 'Welcome! You have signed up successfully.'
+      expect(page).to have_content 'Welcome! You have signed up successfully.'
       user1 = User.where(email: 'example@example.com').first
-      user1.should_not be_nil
-      user1.mundane_name.should == 'Mundane Dude'
+      expect(user1).to_not be_nil
+      expect(user1.mundane_name).to eql 'Mundane Dude'
     end
 
     it 'fails without email' do
       attempt_sign_up password: 'secret123', password_confirmation: 'secret123'
-      page.should_not have_content 'Welcome'
+      expect(page).to_not have_content 'Welcome'
     end
 
     it 'fails without password' do
       attempt_sign_up email: 'example@example.com', password_confirmation: 'secret123'
-      page.should_not have_content 'Welcome'
+      expect(page).to_not have_content 'Welcome'
     end
 
     it 'fails without password_confirmation' do
       attempt_sign_up email: 'example@example.com', password: 'secret123'
-      page.should_not have_content 'Welcome'
+      expect(page).to_not have_content 'Welcome'
     end
 
     it 'fails without matching password and password_confirmation' do
       attempt_sign_up email: 'example@example.com', password: 'SeCreT123', password_confirmation: 'secret123'
-      page.should_not have_content 'Welcome'
+      expect(page).to_not have_content 'Welcome'
     end
   end
 
@@ -52,7 +52,7 @@ describe Devise::RegistrationsController, type: :controller do
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'secret123'
       click_button 'Sign in'
-      page.should have_content 'Signed in successfully.'
+      expect(page).to have_content 'Signed in successfully.'
     end
 
     it 'fails with a valid email but bad password' do
@@ -61,7 +61,7 @@ describe Devise::RegistrationsController, type: :controller do
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'elsewhere'
       click_button 'Sign in'
-      page.should have_content 'Invalid email or password.'
+      expect(page).to have_content 'Invalid email or password.'
     end
 
     it 'fails with a valid email but bad password' do
@@ -70,7 +70,7 @@ describe Devise::RegistrationsController, type: :controller do
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'elsewhere'
       click_button 'Sign in'
-      page.should have_content 'Invalid email or password.'
+      expect(page).to have_content 'Invalid email or password.'
     end
 
     it 'fails with an invalid email' do
@@ -78,7 +78,7 @@ describe Devise::RegistrationsController, type: :controller do
       fill_in 'Email', with: 'whatever@example.com'
       fill_in 'Password', with: 'elsewhere'
       click_button 'Sign in'
-      page.should have_content 'Invalid email or password.'
+      expect(page).to have_content 'Invalid Email or password.'
     end
 
     it 'redirects instructors to update profile if too old' do
@@ -87,7 +87,7 @@ describe Devise::RegistrationsController, type: :controller do
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'secret123'
       click_button 'Sign in'
-      page.should have_content 'Please review your instructor profile'
+      expect(page).to have_content 'Please review your instructor profile'
     end
 
     it 'redirects instructors to update profile if available days are old' do
@@ -96,7 +96,7 @@ describe Devise::RegistrationsController, type: :controller do
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'secret123'
       click_button 'Sign in'
-      page.should have_content 'Please review your instructor profile'
+      expect(page).to have_content 'Please review your instructor profile'
     end
 
   end
@@ -105,7 +105,7 @@ describe Devise::RegistrationsController, type: :controller do
     it 'works' do
       log_in
       click_on 'Sign out'
-      page.should have_content 'Signed out successfully.'
+      expect(page).to have_content 'Signed out successfully.'
     end
   end
 
@@ -122,14 +122,14 @@ describe Devise::RegistrationsController, type: :controller do
       within '#submit' do
         click_button 'Update Profile'
       end
-      page.should have_content 'You updated your account successfully.'
+      expect(page).to have_content 'You updated your account successfully.'
     end
 
     it 'will not change when the current password is not provided' do
       within '#submit' do
         click_button 'Update Profile'
       end
-      page.should have_content "can't be blank"
+      expect(page).to have_content "can't be blank"
     end
 
     it 'will not change when the current password is incorrect' do
@@ -137,7 +137,7 @@ describe Devise::RegistrationsController, type: :controller do
       within '#submit' do
         click_button 'Update Profile'
       end
-      page.should have_content 'is invalid'
+      expect(page).to have_content 'is invalid'
     end
 
     it 'will not change when the confirmation is wrong' do
@@ -147,7 +147,7 @@ describe Devise::RegistrationsController, type: :controller do
       within '#submit' do
         click_button 'Update Profile'
       end
-      page.should have_content "doesn't match confirmation"
+      expect(page).to have_content "doesn't match confirmation"
     end
   end
 
@@ -155,14 +155,14 @@ describe Devise::RegistrationsController, type: :controller do
     it 'fails for empty email addresses' do
       visit new_user_password_path
       click_on 'Send me reset password instructions'
-      page.should have_content "can't be blank"
+      expect(page).to have_content "can't be blank"
     end
 
     it 'fails for unknown email addresses' do
       visit new_user_password_path
       fill_in 'Email', with: 'nouser@example.com'
       click_on 'Send me reset password instructions'
-      page.should have_content 'not found'
+      expect(page).to have_content 'not found'
     end
 
     it 'works for a real user' do
@@ -170,7 +170,7 @@ describe Devise::RegistrationsController, type: :controller do
       visit new_user_password_path
       fill_in 'Email', with: user.email
       click_on 'Send me reset password instructions'
-      page.should have_content 'You will receive an email with instructions about how to reset your password in a few minutes.'
+      expect(page).to have_content 'You will receive an email with instructions about how to reset your password in a few minutes.'
     end
   end
 end

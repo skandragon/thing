@@ -19,26 +19,26 @@ describe Users::SchedulesController, type: :controller do
         create(:schedule, user_id: user.id, instructables: [instructable.id], published: true)
 
         visit user_schedule_path(user)
-        page.should have_content 'Custom Schedule for Lord Griffin'
+        expect(page).to have_content 'Custom Schedule for Lord Griffin'
       end
 
       it 'disallows unpublished schedules' do
         create(:schedule, user_id: user.id, instructables: [instructable.id], published: false)
 
         visit user_schedule_path(user)
-        page.should have_content 'Not authorized.'
+        expect(page).to have_content 'Not authorized.'
       end
 
       it 'accepts access token' do
         create(:schedule, user_id: user.id, instructables: [instructable.id], published: false)
 
         visit user_schedule_path(user.access_token)
-        page.should have_content 'Custom Schedule for Lord Griffin'
+        expect(page).to have_content 'Custom Schedule for Lord Griffin'
       end
 
       it 'accepts access token' do
         visit user_schedule_path('flarg')
-        page.should have_content 'Not authorized.'
+        expect(page).to have_content 'Not authorized.'
       end
     end
   end
@@ -53,24 +53,24 @@ describe Users::SchedulesController, type: :controller do
 
       it 'redirects to #new when current_user has no schedule' do
         visit user_schedule_path(current_user)
-        current_path.should == edit_user_schedule_path(current_user)
+        expect(current_path).to eql edit_user_schedule_path(current_user)
       end
 
       it 'redirects to #new when current_user has no schedule, format csv' do
         visit user_schedule_path(current_user, format: :csv)
-        current_path.should == edit_user_schedule_path(current_user)
+        expect(current_path).to eql edit_user_schedule_path(current_user)
       end
 
       it 'redirects to / with notice when some other user has no schedule' do
         visit user_schedule_path(user)
-        current_path.should == root_path
-        page.should have_content 'No such schedule'
+        expect(current_path).to eql root_path
+        expect(page).to have_content 'No such schedule'
       end
 
       it 'redirects to / for invalid users' do
         visit user_schedule_path(0)
-        current_path.should == root_path
-        page.should have_content 'Not authorized.'
+        expect(current_path).to eql root_path
+        expect(page).to have_content 'Not authorized.'
       end
     end
 
@@ -87,7 +87,7 @@ describe Users::SchedulesController, type: :controller do
 
       it 'creates new schedule on initial edit' do
         visit edit_user_schedule_path(current_user)
-        current_user.schedule.should_not be_nil
+        expect(current_user.schedule).to_not be_nil
       end
 
       it 'clear filter button works' do
@@ -95,13 +95,13 @@ describe Users::SchedulesController, type: :controller do
         visit edit_user_schedule_path(current_user)
         fill_in 'search', with: 'XxxXXxxxXxxXXXXxxX'
         click_on 'Filter'
-        page.should_not have_content @instructable1.name
-        page.should_not have_content @instructable2.name
-        page.should_not have_content @instructable3.name
+        expect(page).to_not have_content @instructable1.name
+        expect(page).to_not have_content @instructable2.name
+        expect(page).to_not have_content @instructable3.name
         click_on 'Clear'
-        page.should have_content @instructable1.name
-        page.should have_content @instructable2.name
-        page.should have_content @instructable3.name
+        expect(page).to have_content @instructable1.name
+        expect(page).to have_content @instructable2.name
+        expect(page).to have_content @instructable3.name
       end
 
       it 'searches by partial title' do
@@ -109,9 +109,9 @@ describe Users::SchedulesController, type: :controller do
         visit edit_user_schedule_path(current_user)
         fill_in 'search', with: 'Instructable'
         click_on 'Filter'
-        page.should have_content @instructable1.name
-        page.should have_content @instructable2.name
-        page.should_not have_content @instructable3.name
+        expect(page).to have_content @instructable1.name
+        expect(page).to have_content @instructable2.name
+        expect(page).to_not have_content @instructable3.name
       end
 
       it 'searches by topic' do
@@ -119,9 +119,9 @@ describe Users::SchedulesController, type: :controller do
         visit edit_user_schedule_path(current_user)
         select 'Martial', from: 'topic'
         click_on 'Filter'
-        page.should have_content @instructable1.name
-        page.should_not have_content @instructable2.name
-        page.should_not have_content @instructable3.name
+        expect(page).to have_content @instructable1.name
+        expect(page).to_not have_content @instructable2.name
+        expect(page).to_not have_content @instructable3.name
       end
 
       it 'searches by culture' do
@@ -129,14 +129,14 @@ describe Users::SchedulesController, type: :controller do
         visit edit_user_schedule_path(current_user)
         select 'Middle Eastern', from: 'culture'
         click_on 'Filter'
-        page.should_not have_content @instructable1.name
-        page.should have_content @instructable2.name
-        page.should_not have_content @instructable3.name
+        expect(page).to_not have_content @instructable1.name
+        expect(page).to have_content @instructable2.name
+        expect(page).to_not have_content @instructable3.name
       end
 
       it 'shows public checkbox' do
         visit edit_user_schedule_path(current_user)
-        page.should have_field 'Publish publicly?'
+        expect(page).to have_field 'Publish publicly?'
       end
 
       it 'publishes when initially unchecked', js: true do
@@ -144,7 +144,7 @@ describe Users::SchedulesController, type: :controller do
         find('#options_publish').click
         sleep(0.5)
         current_user.reload
-        current_user.schedule.published.should be_truthy
+        expect(current_user.schedule.published).to be_truthy
       end
 
       it 'unpublishes when initially checked', js: true do
@@ -153,7 +153,7 @@ describe Users::SchedulesController, type: :controller do
         find('#options_publish').click
         sleep(0.5)
         current_user.reload
-        current_user.schedule.published.should be_falsey
+        expect(current_user.schedule.published).to be_falsey
       end
 
       it 'add and remove buttons work', js: true do
@@ -163,24 +163,24 @@ describe Users::SchedulesController, type: :controller do
 
         visit edit_user_schedule_path(current_user)
 
-        find(button1).should have_text 'Add'
+        expect(find(button1)).to have_text 'Add'
         find(button1).click
         sleep(0.5)
-        find(button1).should have_text 'Remove'
+        expect(find(button1)).to have_text 'Remove'
         current_user.reload
-        current_user.schedule.instructables.should == [@instructable1.id]
+        expect(current_user.schedule.instructables).to eql [@instructable1.id]
 
-        find(button2).should have_text 'Add'
+        expect(find(button2)).to have_text 'Add'
         find(button2).click
         sleep(0.5)
-        find(button2).should have_text 'Remove'
+        expect(find(button2)).to have_text 'Remove'
         current_user.reload
-        current_user.schedule.instructables.should == [@instructable1.id, @instructable2.id]
+        expect(current_user.schedule.instructables).to eql [@instructable1.id, @instructable2.id]
 
         find(button1).click
         sleep(0.5)
         current_user.reload
-        current_user.schedule.instructables.should == [@instructable2.id]
+        expect(current_user.schedule.instructables).to eql [@instructable2.id]
       end
     end
 
@@ -197,35 +197,35 @@ describe Users::SchedulesController, type: :controller do
 
       it 'renders xlsx' do
         visit user_schedule_path(current_user, format: :xlsx, uncached_for_tests: true)
-        page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        expect(page.response_headers['Content-Type']).to eql 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       end
 
       it 'renders pdf brief' do
         visit user_schedule_path(current_user, brief: true, format: :pdf, uncached_for_tests: true)
-        page.response_headers['Content-Type'].should == 'application/pdf'
-        page.body.should_not be_blank
-        page.body[0..3].should == '%PDF'
+        expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+        expect(page.body).to_not be_blank
+        expect(page.body[0..3]).to eql '%PDF'
       end
 
       it 'renders pdf long' do
         visit user_schedule_path(current_user, format: :pdf, uncached_for_tests: true)
-        page.response_headers['Content-Type'].should == 'application/pdf'
-        page.body.should_not be_blank
-        page.body[0..3].should == '%PDF'
+        expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+        expect(page.body).to_not be_blank
+        expect(page.body[0..3]).to eql '%PDF'
       end
 
       it 'renders csv' do
         visit user_schedule_path(current_user, format: :csv, uncached_for_tests: true)
-        page.response_headers['Content-Type'].should == 'text/csv'
-        page.should have_content @instructable.name
+        expect(page.response_headers['Content-Type']).to eql 'text/csv'
+        expect(page).to have_content @instructable.name
       end
 
       it 'renders ics' do
         visit user_schedule_path(current_user, format: :ics, uncached_for_tests: true)
-        page.response_headers['Content-Type'].should == 'text/calendar'
-        page.body.should_not be_blank
-        page.body[0..14].should == 'BEGIN:VCALENDAR'
-        page.body.should match @instructable.name
+        expect(page.response_headers['Content-Type']).to eql 'text/calendar'
+        expect(page.body).to_not be_blank
+        expect(page.body[0..14]).to eql 'BEGIN:VCALENDAR'
+        expect(page.body).to match @instructable.name
       end
     end
   end

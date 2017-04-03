@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec::Matchers.define :permit do |*args|
   match do |permission|
-    permission.allow?(*args).should be_truthy
+    expect(permission.allow?(*args)).to be_truthy
   end
 end
 

@@ -91,7 +91,7 @@ class Coordinator::InstructablesController < ApplicationController
           end
         end
 
-        send_data(csv_data, type: Mime::CSV, disposition: "attachment", filename: filename)
+        send_data(csv_data, type: Mime[:csv], disposition: "attachment", filename: filename)
       }
     end
   end

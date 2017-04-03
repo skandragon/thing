@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Admin::TracksController, type: :controller do
   it 'requires admin' do
     visit admin_tracks_path
-    page.should have_content('Not authorized')
+    expect(page).to have_content('Not authorized')
   end
 
   describe 'index' do
@@ -14,7 +14,7 @@ describe Admin::TracksController, type: :controller do
     it 'renders' do
       visit admin_tracks_path
       Instructable::TRACKS.keys.each { |track|
-        page.should have_content track
+        expect(page).to have_content track
       }
     end
 

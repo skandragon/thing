@@ -27,7 +27,7 @@ describe Proofreader::InstructablesController, type: :controller do
   it 'requires permission' do
     log_in proofreader: false
     visit proofreader_instructables_path
-    page.should have_content 'Not authorized.'
+    expect(page).to have_content 'Not authorized.'
   end
 
   describe 'index' do
@@ -38,72 +38,72 @@ describe Proofreader::InstructablesController, type: :controller do
     end
 
     it 'renders as proofreader' do
-      page.should have_button 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnproofed'
-      page.should have_content 'MEDanceUnscheduledProofed'
-      page.should have_content 'MEHistoryScheduledProofed'
-      page.should have_content 'PAHistoryScheduledProofed'
+      expect(page).to have_button 'Filter'
+      expect(page).to have_content 'MEMusicUnscheduledUnproofed'
+      expect(page).to have_content 'MEDanceUnscheduledProofed'
+      expect(page).to have_content 'MEHistoryScheduledProofed'
+      expect(page).to have_content 'PAHistoryScheduledProofed'
     end
 
     it 'allows selection of track' do
-      page.should have_select('track')
+      expect(page).to have_select('track')
     end
 
     it 'filters based on track' do
       select 'Middle Eastern', from: 'track'
       click_on 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnproofed'
-      page.should have_content 'MEDanceUnscheduledProofed'
-      page.should have_content 'MEHistoryScheduledProofed'
+      expect(page).to have_content 'MEMusicUnscheduledUnproofed'
+      expect(page).to have_content 'MEDanceUnscheduledProofed'
+      expect(page).to have_content 'MEHistoryScheduledProofed'
     end
 
     it 'filters based on track of No Track' do
       select 'No Track', from: 'track'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnproofed'
-      page.should_not have_content 'MEDanceUnscheduledProofed'
-      page.should_not have_content 'MEHistoryScheduledProofed'
+      expect(page).to_not have_content 'MEMusicUnscheduledUnproofed'
+      expect(page).to_not have_content 'MEDanceUnscheduledProofed'
+      expect(page).to_not have_content 'MEHistoryScheduledProofed'
     end
 
     it 'filters based on proofread = 1' do
       select 'Proofread', from: 'proofread'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnproofed'
-      page.should have_content 'MEDanceUnscheduledProofed'
-      page.should have_content 'MEHistoryScheduledProofed'
+      expect(page).to_not have_content 'MEMusicUnproofed'
+      expect(page).to have_content 'MEDanceUnscheduledProofed'
+      expect(page).to have_content 'MEHistoryScheduledProofed'
     end
 
     it 'filters based on proofread = 0' do
       select 'Not Proofread', from: 'proofread'
       click_on 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnproofed'
-      page.should_not have_content 'MEDanceUnscheduledProofed'
-      page.should_not have_content 'MEHistoryScheduledProofed'
+      expect(page).to have_content 'MEMusicUnscheduledUnproofed'
+      expect(page).to_not have_content 'MEDanceUnscheduledProofed'
+      expect(page).to_not have_content 'MEHistoryScheduledProofed'
     end
 
     it 'filters based on topic' do
       select 'Dance', from: 'topic'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnproofed'
-      page.should have_content 'MEDanceUnscheduledProofed'
-      page.should_not have_content 'MEHistoryScheduledProofed'
+      expect(page).to_not have_content 'MEMusicUnscheduledUnproofed'
+      expect(page).to have_content 'MEDanceUnscheduledProofed'
+      expect(page).to_not have_content 'MEHistoryScheduledProofed'
     end
 
     it 'filters based on partial class name' do
       fill_in 'search', with: 'Unscheduled'
       click_on 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnproofed'
-      page.should have_content 'MEDanceUnscheduledProofed'
-      page.should_not have_content 'MEHistoryScheduledProofed'
+      expect(page).to have_content 'MEMusicUnscheduledUnproofed'
+      expect(page).to have_content 'MEDanceUnscheduledProofed'
+      expect(page).to_not have_content 'MEHistoryScheduledProofed'
     end
 
     it 'clears the form' do
       select 'Dance', from: 'topic'
       click_on 'Filter'
       click_on 'Clear'
-      page.should have_content 'MEMusicUnscheduledUnproofed'
-      page.should have_content 'MEDanceUnscheduledProofed'
-      page.should have_content 'MEHistoryScheduledProofed'
+      expect(page).to have_content 'MEMusicUnscheduledUnproofed'
+      expect(page).to have_content 'MEDanceUnscheduledProofed'
+      expect(page).to have_content 'MEHistoryScheduledProofed'
     end
   end
 
@@ -117,11 +117,11 @@ describe Proofreader::InstructablesController, type: :controller do
 
     it 'renders edit form' do
       visit edit_proofreader_instructable_path(@random_instructable)
-      find_field('Class title').value.should == @random_instructable.name.to_s
-      find_field('Description (book)').value.should == @random_instructable.description_book.to_s
-      find_field('Description (web)').value.should == @random_instructable.description_web.to_s
-      find_field('Culture').value.should == @random_instructable.culture.to_s
-      find_field('Topic').value.should == @random_instructable.topic.to_s
+      expect(find_field('Class title').value).to eql @random_instructable.name.to_s
+      expect(find_field('Description (book)').value).to eql @random_instructable.description_book.to_s
+      expect(find_field('Description (web)').value).to eql @random_instructable.description_web.to_s
+      expect(find_field('Culture').value).to eql @random_instructable.culture.to_s
+      expect(find_field('Topic').value).to eql @random_instructable.topic.to_s
     end
 
     it 'submits, updates, marks proofread' do
@@ -129,24 +129,24 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Class title', with: 'Foo Class Name Here'
       click_on 'Save and Mark Proofread'
       @random_proofread.reload
-      @random_proofread.name.should == 'Foo Class Name Here'
-      @random_proofread.proofread.should_not be_truthy
-      @random_proofread.proofread_by.should == [current_user.id]
-      Changelog.count.should == 1
+      expect(@random_proofread.name).to eql 'Foo Class Name Here'
+      expect(@random_proofread.proofread).to_not be_truthy
+      expect(@random_proofread.proofread_by).to eql [current_user.id]
+      expect(Changelog.count).to eql 1
       cl = Changelog.first
-      cl.changelog.should_not == {}
-      cl.changelog.should have_key('name')
+      expect(cl.changelog).to_not eql({})
+      expect(cl.changelog).to have_key('name')
     end
 
     it 'marks proofread when really proofread' do
-      @random_proofread.proofread_by.should_not include(current_user.id)
+      expect(@random_proofread.proofread_by).to_not include(current_user.id)
       visit edit_proofreader_instructable_path(@random_proofread)
       click_on 'Save and Mark Proofread'
       @random_proofread.reload
-      @random_proofread.proofread_by.should include(current_user.id)
-      @random_proofread.proofread_by.size.should == 2
-      @random_proofread.proofread.should be_truthy
-      Changelog.count.should == 0
+      expect(@random_proofread.proofread_by).to include(current_user.id)
+      expect(@random_proofread.proofread_by.size).to eql 2
+      expect(@random_proofread.proofread).to be_truthy
+      expect(Changelog.count).to eql 0
     end
 
     it 'updates title, marks not proofread' do
@@ -154,9 +154,9 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Class title', with: 'Foo Class Name Here'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.name.should == 'Foo Class Name Here'
-      @random_instructable.proofread.should_not be_truthy
-      Changelog.count.should == 1
+      expect(@random_instructable.name).to eql 'Foo Class Name Here'
+      expect(@random_instructable.proofread).to_not be_truthy
+      expect(Changelog.count).to eql 1
     end
 
     it 'updates web description' do
@@ -164,7 +164,7 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Description (web)', with: 'Foo Class Description Here'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.description_web.should == 'Foo Class Description Here'
+      expect(@random_instructable.description_web).to eql 'Foo Class Description Here'
     end
 
     it 'updates book description' do
@@ -172,28 +172,28 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Description (book)', with: 'Foo Class Description Here'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.description_book.should == 'Foo Class Description Here'
+      expect(@random_instructable.description_book).to eql 'Foo Class Description Here'
     end
 
     it 'updates topic and subtopic', js: true do
-      @random_instructable.topic.should_not == 'Language'
-      @random_instructable.subtopic.should_not == 'Research'
+      expect(@random_instructable.topic).to_not eql 'Language'
+      expect(@random_instructable.subtopic).to_not eql 'Research'
       visit edit_proofreader_instructable_path(@random_instructable)
       select 'Language', from: 'Topic'
       select 'Research', from: 'Subtopic'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.topic.should == 'Language'
-      @random_instructable.subtopic.should == 'Research'
+      expect(@random_instructable.topic).to eql 'Language'
+      expect(@random_instructable.subtopic).to eql 'Research'
     end
 
     it 'updates culture' do
-      @random_instructable.culture.should_not == 'Multiple Cultures'
+      expect(@random_instructable.culture).to_not eql 'Multiple Cultures'
       visit edit_proofreader_instructable_path(@random_instructable)
       select 'Multiple Cultures', from: 'Culture'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.culture.should == 'Multiple Cultures'
+      expect(@random_instructable.culture).to eql 'Multiple Cultures'
     end
 
     it 'updates handout_fee' do
@@ -202,8 +202,8 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Fee itemization', with: 'This is a test!'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.handout_fee.should == 10
-      @random_instructable.fee_itemization.should == 'This is a test!'
+      expect(@random_instructable.handout_fee).to eql 10.0
+      expect(@random_instructable.fee_itemization).to eql 'This is a test!'
     end
 
     it 'updates handout_limit' do
@@ -211,7 +211,7 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Handout limit', with: '10'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.handout_limit.should == 10
+      expect(@random_instructable.handout_limit).to eql 10
     end
 
     it 'updates material_fee' do
@@ -220,8 +220,8 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Fee itemization', with: 'This is a test!'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.material_fee.should == 10
-      @random_instructable.fee_itemization.should == 'This is a test!'
+      expect(@random_instructable.material_fee).to eql 10.0
+      expect(@random_instructable.fee_itemization).to eql 'This is a test!'
     end
 
     it 'updates material_limit' do
@@ -229,7 +229,7 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Material limit', with: '10'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.material_limit.should == 10
+      expect(@random_instructable.material_limit).to eql 10
     end
 
     it 'updates fee_itemization' do
@@ -237,7 +237,7 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Fee itemization', with: 'This is a test!'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.fee_itemization.should == 'This is a test!'
+      expect(@random_instructable.fee_itemization).to eql 'This is a test!'
     end
 
     it 'updates proofreader_comments' do
@@ -245,7 +245,7 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Comments', with: 'This is a test!'
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.proofreader_comments.should == 'This is a test!'
+      expect(@random_instructable.proofreader_comments).to eql 'This is a test!'
     end
 
     it 'clears proofreader_comments' do
@@ -253,25 +253,25 @@ describe Proofreader::InstructablesController, type: :controller do
       fill_in 'Comments', with: ''
       click_on 'Save and Mark Not Proofread'
       @random_instructable.reload
-      @random_instructable.proofreader_comments.should be_blank
+      expect(@random_instructable.proofreader_comments).to be_blank
     end
 
     it 'rejects badness' do
       visit edit_proofreader_instructable_path(@random_instructable)
       fill_in 'Class title', with: ''
       click_on 'Save and Mark Not Proofread'
-      page.should have_content "can't be blank"
+      expect(page).to have_content "can't be blank"
       @random_instructable.reload
-      @random_instructable.name.should be_present
-      @random_instructable.proofread.should_not be_truthy
+      expect(@random_instructable.name).to be_present
+      expect(@random_instructable.proofread).to_not be_truthy
     end
 
     it 'does not create a changelog on badness' do
       visit edit_proofreader_instructable_path(@random_instructable)
       fill_in 'Class title', with: ''
       click_on 'Save and Mark Not Proofread'
-      page.should have_content "can't be blank"
-      Changelog.count.should == 0
+      expect(page).to have_content "can't be blank"
+      expect(Changelog.count).to eql 0
     end
   end
 end

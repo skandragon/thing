@@ -165,7 +165,7 @@ class Coordinator::LocationsController < ApplicationController
 
     data = pdf.render
     #cache_in_file(cache_filename, data)
-    send_data(data, type: Mime::PDF, disposition: "inline; filename=#{filename}", filename: filename)
+    send_data(data, type: Mime[:pdf], disposition: "inline; filename=#{filename}", filename: filename)
   end
 
   def load_data

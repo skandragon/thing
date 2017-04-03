@@ -34,33 +34,33 @@ describe Coordinator::InstructablesController, type: :controller do
     it 'renders as admin' do
       select '(track)', from: 'track'
       click_on 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnapproved'
-      page.should have_content 'MEDanceUnscheduledApproved'
-      page.should have_content 'MEHistoryScheduledApproved'
-      page.should have_content 'PAHistoryScheduledApproved'
+      expect(page).to have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to have_content 'MEDanceUnscheduledApproved'
+      expect(page).to have_content 'MEHistoryScheduledApproved'
+      expect(page).to have_content 'PAHistoryScheduledApproved'
     end
 
     it 'renders as admin for other tracks' do
       select 'Performing Arts and Music', from: 'track'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnapproved'
-      page.should_not have_content 'MEDanceUnscheduledApproved'
-      page.should_not have_content 'MEHistoryScheduledApproved'
-      page.should have_content 'PAHistoryScheduledApproved'
+      expect(page).to_not have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to_not have_content 'MEDanceUnscheduledApproved'
+      expect(page).to_not have_content 'MEHistoryScheduledApproved'
+      expect(page).to have_content 'PAHistoryScheduledApproved'
     end
 
     it 'renders as admin for trackless classes' do
       select 'No Track', from: 'track'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnapproved'
-      page.should_not have_content 'MEDanceUnscheduledApproved'
-      page.should_not have_content 'MEHistoryScheduledApproved'
-      page.should_not have_content 'PAHistoryScheduledApproved'
-      page.should have_content 'TracklessMusic'
+      expect(page).to_not have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to_not have_content 'MEDanceUnscheduledApproved'
+      expect(page).to_not have_content 'MEHistoryScheduledApproved'
+      expect(page).to_not have_content 'PAHistoryScheduledApproved'
+      expect(page).to have_content 'TracklessMusic'
     end
 
     it 'allows admin to select any track' do
-      page.should have_select('track')
+      expect(page).to have_select('track')
       Instructable::TRACKS.keys.each { |tract|
         select tract, from: 'track'
       }
@@ -75,7 +75,7 @@ describe Coordinator::InstructablesController, type: :controller do
     end
 
     it 'allows selection of track' do
-      page.should have_select('track')
+      expect(page).to have_select('track')
       current_user.allowed_tracks.each { |tract|
         select tract, from: 'track'
       }
@@ -83,7 +83,7 @@ describe Coordinator::InstructablesController, type: :controller do
 
     it 'ignores disallowed track filter' do
       visit coordinator_instructables_path(track: 'Archery')
-      page.should_not have_content 'Archery'
+      expect(page).to_not have_content 'Archery'
     end
   end
 
@@ -95,67 +95,67 @@ describe Coordinator::InstructablesController, type: :controller do
     end
 
     it 'renders as coordinator' do
-      page.should have_button 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnapproved'
-      page.should have_content 'MEDanceUnscheduledApproved'
-      page.should have_content 'MEHistoryScheduledApproved'
-      page.should_not have_content 'PAHistoryScheduledApproved'
+      expect(page).to have_button 'Filter'
+      expect(page).to have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to have_content 'MEDanceUnscheduledApproved'
+      expect(page).to have_content 'MEHistoryScheduledApproved'
+      expect(page).to_not have_content 'PAHistoryScheduledApproved'
     end
 
     it 'allows selection of track' do
-      page.should_not have_select('track')
+      expect(page).to_not have_select('track')
     end
 
     it 'filters based on scheduled = 1' do
       select 'Scheduled', from: 'scheduled'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnapproved'
-      page.should_not have_content 'MEDanceUnscheduledApproved'
-      page.should have_content 'MEHistoryScheduledApproved'
-      page.should have_content 'MEHistoryScheduledApproved'
+      expect(page).to_not have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to_not have_content 'MEDanceUnscheduledApproved'
+      expect(page).to have_content 'MEHistoryScheduledApproved'
+      expect(page).to have_content 'MEHistoryScheduledApproved'
     end
 
     it 'filters based on scheduled = 0' do
       select 'Not Scheduled', from: 'scheduled'
       click_on 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnapproved'
-      page.should have_content 'MEDanceUnscheduledApproved'
-      page.should_not have_content 'MEHistoryScheduledApproved'
+      expect(page).to have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to have_content 'MEDanceUnscheduledApproved'
+      expect(page).to_not have_content 'MEHistoryScheduledApproved'
     end
 
     it 'filters based on topic' do
       select 'Dance', from: 'topic'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnapproved'
-      page.should have_content 'MEDanceUnscheduledApproved'
-      page.should_not have_content 'MEHistoryScheduledApproved'
+      expect(page).to_not have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to have_content 'MEDanceUnscheduledApproved'
+      expect(page).to_not have_content 'MEHistoryScheduledApproved'
     end
 
     it 'filters based on partial class name' do
       fill_in 'search', with: 'Unscheduled'
       click_on 'Filter'
-      page.should have_content 'MEMusicUnscheduledUnapproved'
-      page.should have_content 'MEDanceUnscheduledApproved'
-      page.should_not have_content 'MEHistoryScheduledApproved'
+      expect(page).to have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to have_content 'MEDanceUnscheduledApproved'
+      expect(page).to_not have_content 'MEHistoryScheduledApproved'
     end
 
     it 'filters based on start date' do
       target = @meclass.instances.first.start_time.strftime('%Y-%m-%d')
       select target, from: 'date'
       click_on 'Filter'
-      page.should_not have_content 'MEMusicUnscheduledUnapproved'
-      page.should_not have_content 'MEDanceUnscheduledApproved'
-      page.should_not have_content 'PAHistoryScheduledApproved'
-      page.should have_content 'MEHistoryScheduledApproved'
+      expect(page).to_not have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to_not have_content 'MEDanceUnscheduledApproved'
+      expect(page).to_not have_content 'PAHistoryScheduledApproved'
+      expect(page).to have_content 'MEHistoryScheduledApproved'
     end
 
     it 'clears the form' do
       select 'Dance', from: 'topic'
       click_on 'Filter'
       click_on 'Clear'
-      page.should have_content 'MEMusicUnscheduledUnapproved'
-      page.should have_content 'MEDanceUnscheduledApproved'
-      page.should have_content 'MEHistoryScheduledApproved'
+      expect(page).to have_content 'MEMusicUnscheduledUnapproved'
+      expect(page).to have_content 'MEDanceUnscheduledApproved'
+      expect(page).to have_content 'MEHistoryScheduledApproved'
     end
   end
 end

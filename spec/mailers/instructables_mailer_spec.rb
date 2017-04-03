@@ -8,13 +8,13 @@ describe InstructablesMailer do
 
   it 'renders if there are no track classes' do
     InstructablesMailer.track_status('example@example.com', 'Middle Eastern', []).deliver
-    ActionMailer::Base.deliveries.size.should == 1
+    expect(ActionMailer::Base.deliveries.size).to eql 1
     body = ActionMailer::Base.deliveries.first.body
-    body.should match 'Track summary for Middle Eastern'
-    body.should =~ /0 total classes/
-    body.should =~ /0 classes need to be scheduled/
-    body.should =~ /Good job!  There are no classes which need to be scheduled./
-    body.should =~ /No conflicts found./
+    expect(body).to match 'Track summary for Middle Eastern'
+    expect(body).to match /0 total classes/
+    expect(body).to match /0 classes need to be scheduled/
+    expect(body).to match /Good job!  There are no classes which need to be scheduled./
+    expect(body).to match /No conflicts found./
   end
 
   it 'renders list if one class is unscheduled' do
@@ -24,13 +24,13 @@ describe InstructablesMailer do
     i.instances.create(start_time: get_date(1), location: 'Touch the Earth')
     instructables = Instructable.where(track: 'Middle Eastern')
     InstructablesMailer.track_status('example@example.com', 'Middle Eastern', instructables).deliver
-    ActionMailer::Base.deliveries.size.should == 1
+    expect(ActionMailer::Base.deliveries.size).to eql 1
     body = ActionMailer::Base.deliveries.first.body
-    body.should =~ /3 total classes/
-    body.should =~ /2 classes need to be scheduled/
-    body.should =~ /Unscheduled Class One/
-    body.should =~ /Unscheduled Class Two/
-    body.should_not =~ /Fully Scheduled Class One/
+    expect(body).to match /3 total classes/
+    expect(body).to match /2 classes need to be scheduled/
+    expect(body).to match /Unscheduled Class One/
+    expect(body).to match /Unscheduled Class Two/
+    expect(body).to_not match /Fully Scheduled Class One/
   end
 
   it 'renders conflicts' do
@@ -40,15 +40,15 @@ describe InstructablesMailer do
     i.instances.create(start_time: get_date(1), location: 'Touch the Earth')
     instructables = Instructable.where(track: 'Middle Eastern')
     InstructablesMailer.track_status('example@example.com', 'Middle Eastern', instructables).deliver
-    ActionMailer::Base.deliveries.size.should == 1
+    expect(ActionMailer::Base.deliveries.size).to eql 1
     body = ActionMailer::Base.deliveries.first.body
-    body.should =~ /2 total classes/
-    body.should =~ /0 classes need to be scheduled/
-    body.should =~ /1 conflict\./
-    body.should =~ /Conflicted Class One/
-    body.should =~ /Conflicted Class Two/
-    body.should =~ /Touch the Earth/
-    body.should match @user.titled_sca_name
-    body.should =~ /Conflict Type: location, instructor/
+    expect(body).to match /2 total classes/
+    expect(body).to match /0 classes need to be scheduled/
+    expect(body).to match /1 conflict\./
+    expect(body).to match /Conflicted Class One/
+    expect(body).to match /Conflicted Class Two/
+    expect(body).to match /Touch the Earth/
+    expect(body).to match @user.titled_sca_name
+    expect(body).to match /Conflict Type: location, instructor/
   end
 end

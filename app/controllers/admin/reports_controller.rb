@@ -45,7 +45,7 @@ class Admin::ReportsController < ApplicationController
             csv << row
           end
         end
-        render text: ret, content_type: Mime::CSV, layout: false
+        render text: ret, content_type: Mime[:csv], layout: false
       }
     end
   end
@@ -115,7 +115,7 @@ class Admin::ReportsController < ApplicationController
     end
 
     data = @pdf.render
-    send_data(data, type: Mime::PDF, disposition: 'inline; filename=instructor-signup.pdf', filename: 'instructor-signup.pdf')
+    send_data(data, type: Mime[:pdf], disposition: 'inline; filename=instructor-signup.pdf', filename: 'instructor-signup.pdf')
   end
 
   def render_instructor(instructor, instructables)

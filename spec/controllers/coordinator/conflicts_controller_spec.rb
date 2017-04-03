@@ -8,7 +8,7 @@ describe Coordinator::ConflictsController, type: :controller do
 
   it 'shows a message for no instances' do
     visit coordinator_conflicts_path
-    page.should have_content 'No conflicts found.'
+    expect(page).to have_content 'No conflicts found.'
   end
 
   it 'shows a message for only one instance' do
@@ -16,7 +16,7 @@ describe Coordinator::ConflictsController, type: :controller do
     @a = @ia.instances.create!(start_time: get_date(1), location: 'A&S 1')
 
     visit coordinator_conflicts_path
-    page.should have_content 'No conflicts found.'
+    expect(page).to have_content 'No conflicts found.'
   end
 
   it 'shows a message for no conflicts' do
@@ -26,7 +26,7 @@ describe Coordinator::ConflictsController, type: :controller do
     @b = @ib.instances.create!(start_time: get_date(2))
 
     visit coordinator_conflicts_path
-    page.should have_content 'No conflicts found.'
+    expect(page).to have_content 'No conflicts found.'
   end
 
   it 'shows a table if there is a conflict' do
@@ -36,7 +36,7 @@ describe Coordinator::ConflictsController, type: :controller do
     @b = @ib.instances.create!(start_time: get_date(1), location: 'A&S 1')
 
     visit coordinator_conflicts_path
-    page.should have_content @ia.name
-    page.should have_content @ib.name
+    expect(page).to have_content @ia.name
+    expect(page).to have_content @ib.name
   end
 end

@@ -32,11 +32,11 @@ describe Coordinator::LocationsController, type: :controller do
       visit coordinator_locations_path
 
       current_user.allowed_tracks.each do |track|
-        page.should have_content track
+        expect(page).to have_content track
       end
 
       Instructable::CLASS_DATES.each do |date|
-        page.should have_content date
+        expect(page).to have_content date
       end
     end
 
@@ -46,7 +46,7 @@ describe Coordinator::LocationsController, type: :controller do
         select Instructable::CLASS_DATES.first, from: 'date'
         click_on 'Go'
       end
-      page.should have_content 'Select both a date and a track'
+      expect(page).to have_content 'Select both a date and a track'
     end
 
     it 'should require a date to be selected for location' do
@@ -55,7 +55,7 @@ describe Coordinator::LocationsController, type: :controller do
         select 'Pennsic University', from: 'track'
         click_on 'Go'
       end
-      page.should have_content 'Select both a date and a track'
+      expect(page).to have_content 'Select both a date and a track'
     end
 
     it 'should require a track they are coordinator for location', js: true do
@@ -67,7 +67,7 @@ describe Coordinator::LocationsController, type: :controller do
         select 'BadBogusValue', from: 'track'
         click_on 'Go'
       end
-      page.should have_content 'Select a valid date and track you are'
+      expect(page).to have_content 'Select a valid date and track you are'
     end
 
     it 'should say if there are no classes for that track' do
@@ -77,7 +77,7 @@ describe Coordinator::LocationsController, type: :controller do
         select 'Games', from: 'track'
         click_on 'Go'
       end
-      page.should have_content 'There are no instances of'
+      expect(page).to have_content 'There are no instances of'
     end
 
     it 'should require a track to be selected for free/busy' do
@@ -85,7 +85,7 @@ describe Coordinator::LocationsController, type: :controller do
       within '#freebusy-form' do
         click_on 'Go'
       end
-      page.should have_content 'Select a track'
+      expect(page).to have_content 'Select a track'
     end
 
     it 'should require a track they are coordinator for free/busy', js: true do
@@ -96,7 +96,7 @@ describe Coordinator::LocationsController, type: :controller do
         select 'BadBogusValue', from: 'track'
         click_on 'Go'
       end
-      page.should have_content 'Select a track you are coordinator for'
+      expect(page).to have_content 'Select a track you are coordinator for'
     end
 
   end
@@ -104,26 +104,26 @@ describe Coordinator::LocationsController, type: :controller do
   describe '#timesheets' do
     it 'redirects on blank track' do
       visit timesheets_coordinator_locations_path(format: :pdf, date: Instructable::CLASS_DATES[1])
-      page.should have_content 'Select both'
+      expect(page).to have_content 'Select both'
     end
 
     it 'redirects on blank date' do
       visit timesheets_coordinator_locations_path(format: :pdf, track: 'Pennsic University')
-      page.should have_content 'Select both'
+      expect(page).to have_content 'Select both'
     end
 
     it 'renders pdf' do
       visit timesheets_coordinator_locations_path(format: :pdf, track: 'Pennsic University', date: Instructable::CLASS_DATES[1])
-      page.response_headers['Content-Type'].should == 'application/pdf'
-      page.body.should_not be_blank
-      page.body[0..3].should == '%PDF'
+      expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+      expect(page.body).to_not be_blank
+      expect(page.body[0..3]).to eql '%PDF'
     end
 
-    it "renders all days for Artisan's Row", pending: true do
+    it "renders all days for Artisan's Row" do
       visit timesheets_coordinator_locations_path(format: :pdf, track: "Artisan's Row", date: Instructable::CLASS_DATES[1])
-      page.response_headers['Content-Type'].should == 'application/pdf'
-      page.body.should_not be_blank
-      page.body[0..3].should == '%PDF'
+      expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+      expect(page.body).to_not be_blank
+      expect(page.body[0..3]).to eql '%PDF'
     end
   end
 
@@ -134,7 +134,7 @@ describe Coordinator::LocationsController, type: :controller do
         within(:css, "table\##{date}") do
           within(:xpath, './/thead/tr[1]') do
             Instructable::TRACKS['Pennsic University'].each do |location|
-              page.should have_content(location)
+              expect(page).to have_content(location)
             end
           end
         end
@@ -145,7 +145,7 @@ describe Coordinator::LocationsController, type: :controller do
       date = Instructable::CLASS_DATES.first
       visit freebusy_coordinator_locations_path(track: 'Pennsic University')
       within(:xpath, "//table[@id='#{date}']/tbody/tr[13]/td[6]") do
-        page.should have_content(@scheduled_instance.id.to_s)
+        expect(page).to have_content(@scheduled_instance.id.to_s)
       end
     end
   end

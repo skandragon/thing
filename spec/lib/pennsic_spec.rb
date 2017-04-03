@@ -2,10 +2,10 @@ require 'rails_helper'
 
 describe Pennsic do
   it 'returns the current year' do
-    Pennsic.year.should >= 43
+    expect(Pennsic.year >= 43).to be_truthy
   end
 
   it 'returns the current calendar_year' do
-    Pennsic.calendar_year.should == Time.now.year
+    expect(Pennsic.calendar_year).to eql Time.now.year
   end
 end

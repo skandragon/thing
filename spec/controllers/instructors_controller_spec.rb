@@ -14,18 +14,18 @@ describe InstructorsController, type: :controller do
   end
 
   it 'should show names' do
-    page.should have_content @instructor1.titled_sca_name
-    page.should have_content @instructor2.titled_sca_name
-    page.should_not have_content @classless_instructor1.titled_sca_name
+    expect(page).to have_content @instructor1.titled_sca_name
+    expect(page).to have_content @instructor2.titled_sca_name
+    expect(page).to_not have_content @classless_instructor1.titled_sca_name
   end
 
   it 'should show names by kingdom' do
     click_on 'By kingdom'
-    page.should have_content @instructor1.kingdom.titleize
-    page.should have_content @instructor1.titled_sca_name
-    page.should have_content @instructor2.kingdom.titleize
-    page.should have_content @instructor2.titled_sca_name
-    page.should_not have_content @classless_instructor1.kingdom.titleize
-    page.should_not have_content @classless_instructor1.titled_sca_name
+    expect(page).to have_content @instructor1.kingdom.titleize
+    expect(page).to have_content @instructor1.titled_sca_name
+    expect(page).to have_content @instructor2.kingdom.titleize
+    expect(page).to have_content @instructor2.titled_sca_name
+    expect(page).to_not have_content @classless_instructor1.kingdom.titleize
+    expect(page).to_not have_content @classless_instructor1.titled_sca_name
   end
 end
