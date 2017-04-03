@@ -364,7 +364,6 @@ describe Instructable do
     instance.reload
 
     expect(instructable.duration).to eql 5.0
-
     expect(instance.end_time - instance.start_time).to eql 5.0 * 3600
   end
 
@@ -380,15 +379,6 @@ describe Instructable do
 
     instance.reload
     expect(instance.location).to_not be_blank
-
-    instance.location
-
-    instructable.reload
-    instance.reload
-
-    expect(instructable.duration).to eql 5.0
-
-    expect(instance.end_time - instance.start_time).to eql 5.0 * 3600
   end
 
   it 'clears info_tag if the topic changes' do
