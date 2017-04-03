@@ -13,7 +13,7 @@ jQuery ->
     })
 
 jQuery ->
-  $('.watch').on 'click', ->
+  $('button.watch').on 'click', ->
     target = $(@)
     id = $(@).attr('data-id')
     value = $(@).text()

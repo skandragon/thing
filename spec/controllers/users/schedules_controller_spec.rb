@@ -142,7 +142,6 @@ describe Users::SchedulesController, type: :controller do
       it 'publishes when initially unchecked', js: true do
         visit edit_user_schedule_path(current_user)
         find('#options_publish').click
-        sleep(0.5)
         current_user.reload
         expect(current_user.schedule.published).to be_truthy
       end
@@ -151,7 +150,6 @@ describe Users::SchedulesController, type: :controller do
         current_user.create_schedule(published: true)
         visit edit_user_schedule_path(current_user)
         find('#options_publish').click
-        sleep(0.5)
         current_user.reload
         expect(current_user.schedule.published).to be_falsey
       end
@@ -165,20 +163,17 @@ describe Users::SchedulesController, type: :controller do
 
         expect(find(button1)).to have_text 'Add'
         find(button1).click
-        sleep(0.5)
         expect(find(button1)).to have_text 'Remove'
         current_user.reload
         expect(current_user.schedule.instructables).to eql [@instructable1.id]
 
         expect(find(button2)).to have_text 'Add'
         find(button2).click
-        sleep(0.5)
         expect(find(button2)).to have_text 'Remove'
         current_user.reload
         expect(current_user.schedule.instructables).to eql [@instructable1.id, @instructable2.id]
 
         find(button1).click
-        sleep(0.5)
         current_user.reload
         expect(current_user.schedule.instructables).to eql [@instructable2.id]
       end

@@ -217,9 +217,13 @@ table.classlist {
   th.limits { width: 90px; }
 }
 
-a.watch {
-  width: 50px;
+button.watch {
+  width: 6em;
   margin-bottom: 5px;
+}
+
+td.watch {
+  width: 8em;
 }
 
 .chart {
