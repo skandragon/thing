@@ -16,8 +16,8 @@ describe Backup do
   end
 
   it '#make_dirs' do
-    Dir.should_receive(:mkdir).twice
-    Dir.should_receive(:exists?).and_return(false)
+    expect(Dir).to receive(:mkdir).twice
+    expect(Dir).to receive(:exists?).and_return(false)
     backup.make_dirs
   end
 
@@ -32,8 +32,8 @@ describe Backup do
 
   it '#list_backup_files' do
     targets = [ '.', '..', 'thing-20130101-010101.zip', 'thing-20130101-010102.zip' ]
-    Dir.should_receive(:entries).with(backup.backup_path).and_return(targets)
-    File.should_receive(:file?).and_return(false, false, true, true)
+    expect(Dir).to receive(:entries).with(backup.backup_path).and_return(targets)
+    expect(File).to receive(:file?).and_return(false, false, true, true)
     expect(backup.list_backup_files.sort).to eql targets[2..3].sort
   end
 
