@@ -63,7 +63,7 @@ describe CalendarsController, type: :controller do
       describe 'without classes' do
         it 'renders full' do
           visit calendars_path(format: :csv, uncached_for_tests: true)
-          expect(page.response_headers['Content-Type']).to == 'text/csv'
+          expect(page.response_headers['Content-Type']).to eql 'text/csv'
           expect(page.body).to_not be_blank
         end
       end
@@ -75,7 +75,7 @@ describe CalendarsController, type: :controller do
 
         it 'renders full' do
           visit calendars_path(format: :csv, uncached_for_tests: true)
-          expect(page.response_headers['Content-Type']).to == 'text/csv'
+          expect(page.response_headers['Content-Type']).to eql 'text/csv'
           expect(page.body).to_not be_blank
           expect(page.body).to match @instructable1.name
           expect(page.body).to match @instructable2.name
