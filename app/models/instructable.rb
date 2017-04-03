@@ -65,6 +65,7 @@ class Instructable < ApplicationRecord
   CULTURES = [
     'Multiple Cultures',
     'European',
+    'Maghribi',
     'Middle Eastern',
     'Far Eastern',
     'Other',
@@ -173,6 +174,7 @@ class Instructable < ApplicationRecord
     ],
     'Youth Point' => [ 'Youth Point' ],
     'Bog U' => [ 'Bog U (E24)' ],
+    'Maghribi' => [ 'A&S 16'],
   }
 
   SCHEDULES = [
