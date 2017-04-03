@@ -253,7 +253,7 @@ describe InstructablesController, type: :controller do
         expect(find('td.delete_clicky .btn')).to have_content 'Delete'
         find('td.delete_clicky .btn').click
         expect(page).to have_content 'Are you sure you want to delete'
-        click_on "Yes, I'm positively certain."
+        find('.confirm').click
         expect(page).to have_content('Class deleted.')
       end
     end
