@@ -133,7 +133,7 @@ class CalendarsController < ApplicationController
           data = renderer.render_xlsx(render_options, filename)
           cache_in_file(cache_filename, data)
         end
-        send_file(cache_filename, type: Mime[:slsx], disposition: "filename=#{filename}", filename: filename)
+        send_file(cache_filename, type: Mime[:xlsx], disposition: "filename=#{filename}", filename: filename)
       }
     end
   end

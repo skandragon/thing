@@ -49,7 +49,7 @@ describe ApplicationController, type: :controller do
 
     it 'processes html entities' do
       message = controller.send(:markdown_html, 'this &amp; that&#39;s it')
-      message.strip.should == 'this & that\'s it'
+      message.strip.should == 'this &amp; that\'s it'
     end
 
     it 'Skips bold if not in the approved list' do

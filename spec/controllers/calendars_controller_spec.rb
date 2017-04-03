@@ -33,8 +33,8 @@ describe CalendarsController, type: :controller do
 
         it 'renders full' do
           visit calendars_path(uncached_for_tests: true)
-          page.should have_content @instructable1.name
-          page.should have_content @instructable2.name
+          expect(page).to have_content @instructable1.name
+          expect(page).to have_content @instructable2.name
         end
       end
     end
@@ -43,7 +43,7 @@ describe CalendarsController, type: :controller do
       describe 'without classes' do
         it 'renders full' do
           visit calendars_path(format: :xlsx, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          expect(page.response_headers['Content-Type']).to eql 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         end
       end
 
@@ -54,7 +54,7 @@ describe CalendarsController, type: :controller do
 
         it 'renders full' do
           visit calendars_path(format: :xlsx, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          expect(page.response_headers['Content-Type']).to eql 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         end
       end
     end
@@ -63,8 +63,8 @@ describe CalendarsController, type: :controller do
       describe 'without classes' do
         it 'renders full' do
           visit calendars_path(format: :csv, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'text/csv'
-          page.body.should_not be_blank
+          expect(page.response_headers['Content-Type']).to == 'text/csv'
+          expect(page.body).to_not be_blank
         end
       end
 
@@ -75,10 +75,10 @@ describe CalendarsController, type: :controller do
 
         it 'renders full' do
           visit calendars_path(format: :csv, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'text/csv'
-          page.body.should_not be_blank
-          page.body.should match @instructable1.name
-          page.body.should match @instructable2.name
+          expect(page.response_headers['Content-Type']).to == 'text/csv'
+          expect(page.body).to_not be_blank
+          expect(page.body).to match @instructable1.name
+          expect(page.body).to match @instructable2.name
         end
       end
     end
@@ -87,9 +87,9 @@ describe CalendarsController, type: :controller do
       describe 'without classes' do
         it 'renders full' do
           visit calendars_path(format: :ics, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'text/calendar'
-          page.body.should_not be_blank
-          page.body[0..14].should == 'BEGIN:VCALENDAR'
+          expect(page.response_headers['Content-Type']).to eql 'text/calendar'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..14]).to eql 'BEGIN:VCALENDAR'
         end
       end
 
@@ -100,11 +100,11 @@ describe CalendarsController, type: :controller do
 
         it 'renders full' do
           visit calendars_path(format: :ics, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'text/calendar'
-          page.body.should_not be_blank
-          page.body[0..14].should == 'BEGIN:VCALENDAR'
-          page.body.should match @instructable1.name
-          page.body.should match @instructable2.name
+          expect(page.response_headers['Content-Type']).to eql 'text/calendar'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..14]).to eql 'BEGIN:VCALENDAR'
+          expect(page.body).to match @instructable1.name
+          expect(page.body).to match @instructable2.name
         end
       end
     end
@@ -113,16 +113,16 @@ describe CalendarsController, type: :controller do
       describe 'without classes' do
         it 'renders full' do
           visit calendars_path(format: :pdf, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/pdf'
-          page.body.should_not be_blank
-          page.body[0..3].should == '%PDF'
+          expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..3]).to eql '%PDF'
         end
 
         it 'renders brief' do
           visit calendars_path(format: :pdf, brief: true, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/pdf'
-          page.body.should_not be_blank
-          page.body[0..3].should == '%PDF'
+          expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..3]).to eql '%PDF'
         end
       end
 
@@ -133,16 +133,16 @@ describe CalendarsController, type: :controller do
 
         it 'renders full' do
           visit calendars_path(format: :pdf, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/pdf'
-          page.body.should_not be_blank
-          page.body[0..3].should == '%PDF'
+          expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..3]).to eql '%PDF'
         end
 
         it 'renders brief' do
           visit calendars_path(format: :pdf, brief: true, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/pdf'
-          page.body.should_not be_blank
-          page.body[0..3].should == '%PDF'
+          expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..3]).to eql '%PDF'
         end
       end
     end
@@ -164,7 +164,7 @@ describe CalendarsController, type: :controller do
         it 'renders full' do
           visit calendar_path(Instructable::CLASS_DATES.first, uncached_for_tests: true)
           @instructables.each do |instructable|
-            page.should have_content instructable.description_book
+            expect(page).to have_content instructable.description_book
           end
         end
       end
@@ -174,9 +174,9 @@ describe CalendarsController, type: :controller do
       describe 'without classes' do
         it 'renders full' do
           visit calendar_path(Instructable::CLASS_DATES.first, format: :pdf, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/pdf'
-          page.body.should_not be_blank
-          page.body[0..3].should == '%PDF'
+          expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..3]).to eql '%PDF'
         end
       end
 
@@ -187,9 +187,9 @@ describe CalendarsController, type: :controller do
 
         it 'renders full' do
           visit calendar_path(Instructable::CLASS_DATES.first, format: :pdf, uncached_for_tests: true)
-          page.response_headers['Content-Type'].should == 'application/pdf'
-          page.body.should_not be_blank
-          page.body[0..3].should == '%PDF'
+          expect(page.response_headers['Content-Type']).to eql 'application/pdf'
+          expect(page.body).to_not be_blank
+          expect(page.body[0..3]).to eql '%PDF'
         end
       end
     end

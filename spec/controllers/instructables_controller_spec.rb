@@ -153,8 +153,8 @@ describe InstructablesController, type: :controller do
         click_on 'Update class'
         expect(page).to have_content('Class updated.')
         instructable.reload
-        expect(instructable.name).to equal 'Foo Class Name'
-        expect(instructable.description_book).to equal 'Foo Description'
+        expect(instructable.name).to eql 'Foo Class Name'
+        expect(instructable.description_book).to eql 'Foo Description'
         expect(Changelog.count).to equal 1
       end
 
@@ -331,10 +331,11 @@ describe InstructablesController, type: :controller do
     end
 
     it 'allows update of requested times with error for other field' do
+      year = Pennsic.class_dates_raw.first.strftime("%Y-%m-%d")
       @other_instructable.save!
       visit edit_user_instructable_path(@other_user, @other_instructable)
       fill_in 'Class title', with: ''
-      find(:css, '#instructable_requested_days_2016-08-01').set(true)
+      find(:css, "#instructable_requested_days_#{year}").set(true)
       first('.submit-button').click
       expect(page).to have_content "can't be blank"
     end
@@ -364,7 +365,7 @@ describe InstructablesController, type: :controller do
       first('.submit-button').click
       expect(page).to have_content 'Class updated.'
       @other_instructable.reload
-      expect(@other_instructable.track).to equal 'Performing Arts and Music'
+      expect(@other_instructable.track).to eql 'Performing Arts and Music'
       expect(Changelog.count).to equal 1
     end
 

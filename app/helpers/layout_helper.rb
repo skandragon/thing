@@ -6,11 +6,11 @@ module LayoutHelper
     flash.each do |name, msg|
       css_class = 'alert alert-block'
       case name
-      when :notice
+      when :notice, 'notice'
         css_class << ' alert-success'
-      when :error
+      when :error, 'error'
         css_class << ' alert-error'
-      when :alert
+      when :alert, 'alert'
         css_class << ' alert-error'
       else
       end
