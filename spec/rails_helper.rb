@@ -13,7 +13,7 @@ require 'database_cleaner'
 require 'capybara/poltergeist'
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, :js_errors => false)
+  Capybara::Poltergeist::Driver.new(app, {js_errors: false, window_size: [1600, 10240]})
 end
 
 Capybara.javascript_driver = :poltergeist

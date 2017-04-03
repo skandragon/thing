@@ -147,7 +147,7 @@ describe Devise::RegistrationsController, type: :controller do
       within '#submit' do
         click_button 'Update Profile'
       end
-      expect(page).to have_content "doesn't match confirmation"
+      expect(page).to have_content "doesn't match Password"
     end
   end
 

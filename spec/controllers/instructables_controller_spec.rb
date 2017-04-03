@@ -217,7 +217,7 @@ describe InstructablesController, type: :controller do
         instructable = create(:instructable, user_id: current_user.id, adult_only: true, adult_reason: 'foo')
         visit edit_user_instructable_path(current_user, instructable)
         expect(page).to have_content('Adult reason')
-        uncheck '#instructable_adult_only'
+        uncheck 'Adult only'
         expect(page).to_not have_content('Adult reason')
       end
 

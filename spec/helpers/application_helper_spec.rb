@@ -14,13 +14,13 @@ describe ApplicationHelper, type: :helper do
 
     it 'adds "ago" on the end if it is in the past' do
       now = Time.now
-      Time.should_receive(:now).at_least(:once).and_return(now)
+      expect(Time).to receive(:now).at_least(:once).and_return(now)
       expect(helper.pretty_date_from_now(now - 10)).to eql 'less than a minute ago'
     end
 
     it 'prefixes "in" if it is in the future' do
       now = Time.now
-      Time.should_receive(:now).at_least(:once).and_return(now)
+      expect(Time).to receive(:now).at_least(:once).and_return(now)
       expect(helper.pretty_date_from_now(now + 10)).to eql 'in less than a minute'
     end
   end
