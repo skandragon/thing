@@ -166,17 +166,20 @@ describe Users::SchedulesController, type: :controller do
         expect(find(button1)).to have_text 'Add'
         find(button1).click
         expect(find(button1)).to have_text 'Remove'
+        sleep(0.5)
         current_user.reload
         expect(current_user.schedule.instructables).to eql [@instructable1.id]
 
         expect(find(button2)).to have_text 'Add'
         find(button2).click
         expect(find(button2)).to have_text 'Remove'
+        sleep(0.5)
         current_user.reload
         expect(current_user.schedule.instructables).to eql [@instructable1.id, @instructable2.id]
 
         find(button1).click
         current_user.reload
+        sleep(0.5)
         expect(current_user.schedule.instructables).to eql [@instructable2.id]
       end
     end
