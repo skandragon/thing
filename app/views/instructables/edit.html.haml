@@ -97,7 +97,7 @@
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'input-xlarge' }
     = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: 'Book description, limited to 150 characters'
     = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
-    = f.input :duration, label: 'Duration (hours)', input_html: { step: 0.25, class: 'input-mini', min: '0.25', max: 4 }
+    = f.input :duration, label: 'Duration (hours)', input_html: { step: 0.25, class: 'input-mini', min: '0.25', max: 8 }
     = f.input :additional_instructors_expanded, label: 'Additional instructors', hint: 'Enter the SCA names of other instructors, separated by commas, of any additional instructors.  Leave it blank if none.'
     = f.input :repeat_count, label: 'Sessions', as: :select, input_html: { class: 'input-mini' }, collection: 1..11, default: 1, hint: 'Number of times this class will be taught.'
     = f.input :culture, collection: Instructable::CULTURES, hint: 'If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus.'
@@ -136,10 +136,10 @@
 
   %fieldset
     %legend Handouts and Materials
-    = f.input :handout_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: 'In dollars'
-    = f.input :handout_limit, as: :string, input_html: { pattern: '\d*' }
-    = f.input :material_fee, as: :string, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: 'In dollars'
-    = f.input :material_limit, as: :string, input_html: { pattern: '\d*' }
+    = f.input :handout_fee, as: :numeric, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: 'In dollars', step: 0.01
+    = f.input :handout_limit, as: :numeric, input_html: { pattern: '\d*' }, step: 1
+    = f.input :material_fee, as: :numeric, input_html: { pattern: '\d*|\d*\.\d\d' }, placeholder: 'In dollars', step: 0.01
+    = f.input :material_limit, as: :numeric, input_html: { pattern: '\d*' }, step: 1
     = f.input :fee_itemization, input_html: { rows: 3 }
 
   %fieldset
