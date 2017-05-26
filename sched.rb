@@ -34,8 +34,10 @@ entries = {}
 @morning_hours =   [  9, 10, 11, 12, 13 ]
 @afternoon_hours = [ 14, 15, 16, 17, 18 ]
 
+ANS_ROOMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19].map { |x| "A&S #{x}"}
+
 if @schedule == "Pennsic University"
-  @locs1 = (1..15).map { |x| "A&S #{x}" }
+  @locs1 = ANS_ROOMS
   @locs1 << 'University-Battlefield'
   @locs1 << 'Dance'
   @locs1 << 'Games'
@@ -503,10 +505,10 @@ def render_extra(pdf, opts)
   entries_count = opts[:entries].count
   if entries_count < 25
     font_size = 7.8 + (25 - entries_count) / 10.0
-    columns = 1
+    columns = 3
   else
     font_size = 8.5 - (entries_count / 30.0)
-    columns = 2
+    columns = 3
   end
 
   first = true
