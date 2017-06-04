@@ -145,7 +145,7 @@ class CalendarsController < ApplicationController
     @instances = Instance.where(instructable_id: @instructables.map(&:id)).order('start_time, btrsort(location)').includes(instructable: [:user])
     if schedule
       @instructables = @instructables.where("schedule = ?", schedule)
-      @instances = @instances.where("instructables.schedule = ?", schedule)
+      @instances = @instances.where("instructables.schedule = ?", schedule).references(:instructables)
     end
   end
 
