@@ -52,7 +52,7 @@ if @schedule == "Pennsic University"
     'Performing Arts Rehearsal',
     'Livonia Smithery',
     'Pine Box Traders',
-    'Bog U (E24)'
+    'Bog U (E24)',
   ].sort
 elsif @schedule == "Battlefield"
   @locs1 = [
@@ -70,6 +70,14 @@ elsif @schedule == "Battlefield"
     'Rapier List 2',
     'Rapier List 3',
     'Rapier List 4',
+  ].sort
+
+  @locs2 = []
+elsif @schedule == "Artisan's Row"
+  @locs1 = [
+    "Artisan's Row A",
+    "Artisan's Row B",
+    "Artisan's Row C",
   ].sort
 
   @locs2 = []
