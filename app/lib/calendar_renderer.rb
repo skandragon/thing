@@ -43,7 +43,7 @@ class CalendarRenderer
           if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
             dates = []
             instructable.instances.each do |inst|
-              dates << inst.start_time.strftime('%a %b %e %I:%M %p') if inst != instance and inst.start_time
+              dates << inst.start_time.strftime('%a %b %e %-I:%M %p') if inst != instance and inst.start_time
             end
             suffix << 'Also Taught: ' + dates.join(', ')
           end
@@ -77,6 +77,7 @@ class CalendarRenderer
       no_page_numbers: false,
       no_long_descriptions: false,
     })
+    pp @options
     @render_instructors = @options[:schedule] == 'Pennsic University'
 
     generate_magic_tokens unless @options[:no_long_descriptions].present?
@@ -160,13 +161,13 @@ class CalendarRenderer
       if !@options[:omit_descriptions] and instance.formatted_location =~ /A\&S /
         times = []
         times << "#{instance.formatted_location}"
-        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M %p')}"
+        times << "#{instance.start_time.strftime('%-I:%M %p')} - #{instance.end_time.strftime('%-I:%M %p')}"
         times_content = times.join("\n")
 
         location = nil
       else
         times = []
-        times << "#{instance.start_time.strftime('%I:%M %p')} - #{instance.end_time.strftime('%I:%M %p')}"
+        times << "#{instance.start_time.strftime('%-I:%M %p')} - #{instance.end_time.strftime('%-I:%M %p')}"
         times_content = times.join(@options[:omit_descriptions] ? ' ' : "\n")
         location = instance.formatted_location
       end
@@ -213,12 +214,14 @@ class CalendarRenderer
 
     unless @options[:no_long_descriptions].present?
       # Render class summary
-      pdf.start_new_page(layout: :portrait)
+
+      pdf.move_down PDF_FONT_SIZE
+      #pdf.start_new_page(layout: :portrait)
 
       instructables = []
       last_topic = nil
 
-      pdf.column_box([0, pdf.cursor ], columns: 3, spacer: 6, width: pdf.bounds.width) do
+      pdf.column_box([0, pdf.cursor ], reflow_margins: true, columns: 3, spacer: 6, width: pdf.bounds.width * 0.95) do
         @instructables.each do |instructable|
           if last_topic != instructable.topic && !instructables.empty?
             render_topic_list(pdf, instructables)
@@ -405,10 +408,10 @@ class CalendarRenderer
       ]
 
       if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
-        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
+        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e, %-I:%M %p')}" }.join(', ')
         lines << 'Location: ' + instructable.instances.first.formatted_location
       else
-        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" }.join(', ')
+        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e, %-I:%M %p')} #{x.formatted_location}" }.join(', ')
       end
 
       lines << materials_and_handout_content(instructable).join(' ')
