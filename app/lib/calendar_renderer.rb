@@ -151,7 +151,7 @@ class CalendarRenderer
         end
 
         unless pdf.cursor == pdf.bounds.top
-          pdf.move_down 12
+          pdf.move_down 8
         end
         pdf.font_size 12
         pdf.text instance.start_time.to_date.strftime('%A, %B %e').upcase, style: :bold
