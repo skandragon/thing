@@ -409,7 +409,7 @@ class CalendarRenderer
         [topic, culture].compact.join(', ')
       ]
       if instructable.schedule != "Battlefield"
-        lines << "#{instructor_name}: #{instructable.user.titled_sca_name}"
+        lines << "Instructor: #{instructable.user.titled_sca_name}"
       end
 
       if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
