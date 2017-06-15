@@ -116,19 +116,19 @@ class CalendarRenderer
     omit_table_headers = options[:omit_table_headers]
 
     header = [
-      { content: 'TIME', background_color: 'eeeeee', align: :center },
-      { content: 'EVENT', background_color: 'eeeeee', align: :center },
-      { content: 'LOCATION', background_color: 'eeeeee', align: :center },
+      { content: 'TIME', background_color: 'eeeeee' },
+      { content: 'EVENT', background_color: 'eeeeee' },
+      { content: 'LOCATION', background_color: 'eeeeee' },
     ]
     column_widths = [ 95, 180, 110 ]
 
     if @render_instructors
-      header << { content: 'INSTRUCTOR', background_color: 'eeeeee', align: :center }
+      header << { content: 'INSTRUCTOR', background_color: 'eeeeee' }
       column_widths << 95
     end
 
     unless @options[:omit_descriptions]
-      header << { content: 'DESCRIPTION', background_color: 'eeeeee', align: :center }
+      header << { content: 'DESCRIPTION', background_color: 'eeeeee' }
       column_widths << 300
     end
 
@@ -154,7 +154,7 @@ class CalendarRenderer
           pdf.move_down 12
         end
         pdf.font_size 12
-        pdf.text instance.start_time.to_date.strftime('%A, %B %e').upcase, style: :bold, align: :center
+        pdf.text instance.start_time.to_date.strftime('%A, %B %e').upcase, style: :bold
         pdf.font_size PDF_FONT_SIZE
         last_date = instance.start_time.to_date
       end
@@ -185,12 +185,12 @@ class CalendarRenderer
       end
 
       new_items = [
-          {content: times_content, align: :center},
-          {content: title, inline_format: true, align: :center },
-          {content: location, align: :center },
+          {content: times_content},
+          {content: title, inline_format: true },
+          {content: location },
       ]
       if (@render_instructors)
-        new_items << { content: instance.instructable.user.titled_sca_name, align: :center }
+        new_items << { content: instance.instructable.user.titled_sca_name }
       end
       unless @options[:omit_descriptions]
         taught_message = nil
