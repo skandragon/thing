@@ -52,7 +52,7 @@ if @schedule == "Pennsic University"
     'Performing Arts Rehearsal',
     'Livonia Smithery',
     'Pine Box Traders',
-    'Bog U (E24)',
+    'Bog U',
   ].sort
 elsif @schedule == "Battlefield"
   @locs1 = [
