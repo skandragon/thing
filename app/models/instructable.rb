@@ -173,7 +173,7 @@ class Instructable < ApplicationRecord
       "Artisan's Row C"
     ],
     'Youth Point' => [ 'Youth Point' ],
-    'Bog U' => [ 'Bog U (E24)' ],
+    'Bog U' => [ 'Bog U' ],
     'Maghribi' => [ 'A&S 16'],
   }
 

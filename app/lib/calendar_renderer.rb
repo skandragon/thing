@@ -76,6 +76,7 @@ class CalendarRenderer
       omit_descriptions: false,
       no_page_numbers: false,
       no_long_descriptions: false,
+      omit_table_headers: false
     })
     pp @options
     @render_instructors = @options[:schedule] == 'Pennsic University'
@@ -87,7 +88,7 @@ class CalendarRenderer
     margin_left = 0.5
     margin_right = 0.125
 
-    pdf = Prawn::Document.new(page_size: [ 8.5, 11 ].map { |x| x * 72 },
+    pdf = Prawn::Document.new(page_size: [ 8.5, 10.5 ].map { |x| x * 72 },
       margin: [margin_top, margin_right, margin_bottom, margin_left].map { |x| x * 72 },
       page_layout: :portrait,
       compress: true,
@@ -112,6 +113,7 @@ class CalendarRenderer
     )
 
     pdf.font 'Arial'
+    omit_table_headers = options[:omit_table_headers]
 
     header = [
       { content: 'TIME', background_color: 'eeeeee', align: :center },
@@ -144,17 +146,16 @@ class CalendarRenderer
       next unless instance.start_time
       if last_date != instance.start_time.to_date
         if items.size > 0
-          pdf_render_table(pdf, items, header, total_width, column_widths)
+          pdf_render_table(pdf, items, omit_table_headers ? nil : header, total_width, column_widths)
           items = []
         end
 
         unless pdf.cursor == pdf.bounds.top
           pdf.move_down 12
         end
-        pdf.font_size 14
-        pdf.text instance.start_time.to_date.strftime('%A, %B %e')
+        pdf.font_size 12
+        pdf.text instance.start_time.to_date.strftime('%A, %B %e').upcase, style: :bold, align: :center
         pdf.font_size PDF_FONT_SIZE
-        pdf.move_down PDF_FONT_SIZE
         last_date = instance.start_time.to_date
       end
 
@@ -184,19 +185,19 @@ class CalendarRenderer
       end
 
       new_items = [
-          {content: times_content},
-          {content: title, inline_format: true },
-          {content: location },
+          {content: times_content, align: :center},
+          {content: title, inline_format: true, align: :center },
+          {content: location, align: :center },
       ]
       if (@render_instructors)
-        new_items << { content: instance.instructable.user.titled_sca_name }
+        new_items << { content: instance.instructable.user.titled_sca_name, align: :center }
       end
       unless @options[:omit_descriptions]
         taught_message = nil
         if instance.instructable.repeat_count > 1
           times = instance.instructable.instances.pluck(:start_time).compact
           formatted_times = times.select { |t| t != instance.start_time }.map { |t| t.strftime('%m/%d') }.join(', ')
-          taught_message = "Also taught #{formatted_times}"
+          taught_message = "Also on #{formatted_times}"
         end
         new_items << {
           inline_format: true,
@@ -210,7 +211,7 @@ class CalendarRenderer
       items << new_items
     }
 
-    pdf_render_table(pdf, items, header, total_width, column_widths)
+    pdf_render_table(pdf, items, omit_table_headers ? nil : header, total_width, column_widths)
 
     unless @options[:no_long_descriptions].present?
       # Render class summary
@@ -220,6 +221,8 @@ class CalendarRenderer
 
       instructables = []
       last_topic = nil
+
+      pdf.start_new_page
 
       pdf.column_box([0, pdf.cursor ], reflow_margins: true, columns: 3, spacer: 6, width: pdf.bounds.width * 0.95) do
         @instructables.each do |instructable|
@@ -403,15 +406,17 @@ class CalendarRenderer
 
       lines = [
         heading,
-        [topic, culture].compact.join(', '),
-        "Instructor: #{instructable.user.titled_sca_name}",
+        [topic, culture].compact.join(', ')
       ]
+      if instructable.schedule != "Battlefield"
+        lines << "#{instructor_name}: #{instructable.user.titled_sca_name}"
+      end
 
       if instructable.instances.count > 1 and instructable.instances.map(&:formatted_location).uniq.count == 1
-        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e, %-I:%M %p')}" }.join(', ')
+        lines << instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e, %-I:%M %p')}" }.join(', ')
         lines << 'Location: ' + instructable.instances.first.formatted_location
       else
-        lines << 'Taught: ' + instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e, %-I:%M %p')} #{x.formatted_location}" }.join(', ')
+        lines << instructable.instances.select {|x| x.start_time }.map { |x| "#{x.start_time.strftime('%a %b %e, %-I:%M %p')} #{x.formatted_location}" }.join(', ')
       end
 
       lines << materials_and_handout_content(instructable).join(' ')
