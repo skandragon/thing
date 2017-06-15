@@ -154,7 +154,7 @@ class CalendarRenderer
           pdf.move_down 8
         end
         pdf.font_size 12
-        pdf.text instance.start_time.to_date.strftime('%A, %B %e').upcase, style: :bold
+        pdf.text instance.start_time.to_date.strftime('%A, %B %e').upcase, style: :bold, align: :center
         pdf.font_size PDF_FONT_SIZE
         last_date = instance.start_time.to_date
       end
