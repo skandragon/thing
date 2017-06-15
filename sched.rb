@@ -513,11 +513,10 @@ def render_extra(pdf, opts)
   entries_count = opts[:entries].count
   if entries_count < 25
     font_size = 7.8 + (25 - entries_count) / 10.0
-    columns = 3
   else
     font_size = 8.5 - (entries_count / 30.0)
-    columns = 3
   end
+  columns = 3
 
   first = true
   box = pdf.grid([rowoffset, 0], [pdf.grid.rows - 1, pdf.grid.columns - 1])
@@ -531,7 +530,7 @@ def render_extra(pdf, opts)
       else
         start_time = entry[:instance].formatted_location_and_time(:pennsic_time_only)
       end
-      msg = "#{entry[:id]}: #{markdown_html(entry[:name])}, #{start_time}"
+      msg = "<b>#{entry[:id]}</b>: #{markdown_html(entry[:name])}, #{start_time}"
       duration = entry[:duration]
       if duration != 1
         msg += ", #{duration} hours"
