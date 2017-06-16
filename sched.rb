@@ -18,7 +18,7 @@ puts "Rendering schedule for #{@schedule}"
 @row_height = 2
 @column_width = 8
 
-@title_font_size = 19
+@title_font_size = 15
 
 @grey = 'eeeeee'
 @grey_dark = 'dddddd'
@@ -661,11 +661,11 @@ def render_topic_list(pdf, instructables)
     end
     previous_topic = instructable.topic
 
-    pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
+    pdf.move_down 4.6 unless pdf.cursor == pdf.bounds.top
     name = markdown_html(instructable.name, tags_remove: 'strong')
     token = @instructable_magic_tokens[instructable.id]
-    topic = "Topic: #{instructable.formatted_topic}"
-    culture = instructable.culture.present? ? "Culture: #{instructable.culture}" : nil
+    topic = instructable.formatted_topic
+    culture = instructable.culture.present? ? instructable.culture : nil
 
     heading = "<strong>#{token}</strong>: <strong>#{name}</strong>"
 
@@ -677,10 +677,10 @@ def render_topic_list(pdf, instructables)
 
     scheduled_instances = instructable.instances.select { |x| x.scheduled? }
     if scheduled_instances.count > 1 and scheduled_instances.map(&:formatted_location).uniq.count == 1
-      lines << 'Taught: ' + scheduled_instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
+      lines << scheduled_instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
       lines << 'Location: ' + scheduled_instances.first.formatted_location
     else
-      lines << 'Taught: ' + scheduled_instances.map { |x| x.scheduled? ? "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" : nil }.compact.join(', ')
+      lines << scheduled_instances.map { |x| x.scheduled? ? "#{x.start_time.strftime('%a %b %e %I:%M %p')} #{x.formatted_location}" : nil }.compact.join(",\n")
     end
 
     lines << materials_and_handout_content(instructable).join(' ')
