@@ -1,16 +1,16 @@
-%ol.unstyled
+%ol.list-unstyled
   - counter = 0
   - instructable.instances.each do |instance|
     - counter += 1
     %li
       - if counter <= instructable.repeat_count
         - if instance.scheduled?
-          %span.label.label-success= instance.formatted_location_and_time
+          %span.badge.badge-success= instance.formatted_location_and_time
         - else
-          %span.label.label-important= instance.formatted_location_and_time
+          %span.badge.badge-important= instance.formatted_location_and_time
       - else
-        %span.label.label-important= instance.formatted_location_and_time
+        %span.badge.badge-important= instance.formatted_location_and_time
   - missing_instance_count = instructable.repeat_count - counter
   - missing_instance_count.times do
     %li
-      %span.label.label-important Location and time pending
+      %span.badge.badge-important Location and time pending
