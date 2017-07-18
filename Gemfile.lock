@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/twbs/bootstrap-rubygem
-  revision: b156edfee2b9629ad4751ee2a118a04f824ef9eb
-  specs:
-    bootstrap (4.0.0.alpha6)
-      autoprefixer-rails (>= 6.0.3)
-      popper_js (>= 1.9.9, < 2.0)
-      sass (>= 3.4.19)
-
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -74,6 +65,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap (4.0.0.alpha6)
+      autoprefixer-rails (>= 6.0.3)
+      sass (>= 3.4.19)
     builder (3.2.3)
     capistrano (3.8.2)
       airbrussh (>= 1.0.0)
@@ -226,7 +220,6 @@ GEM
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
-    popper_js (1.10.8)
     power_assert (1.0.2)
     prawn (2.2.2)
       pdf-core (~> 0.7.0)
@@ -385,7 +378,7 @@ DEPENDENCIES
   axlsx
   better_errors
   binding_of_caller
-  bootstrap!
+  bootstrap (~> 4.0.0.alpha6)
   capistrano
   capistrano-rails
   capistrano-rbenv
