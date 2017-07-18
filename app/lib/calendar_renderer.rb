@@ -48,11 +48,11 @@ class CalendarRenderer
             suffix << 'Also Taught: ' + dates.join(', ')
           end
 
-          event.dtstamp = now
-          event.created = instance.instructable.created_at
+          event.dtstamp = now.utc
+          event.created = instance.instructable.created_at.utc
           if instance.start_time
-            event.dtstart = instance.start_time
-            event.dtend = instance.end_time
+            event.dtstart = instance.start_time.utc
+            event.dtend = instance.end_time.utc
           end
           event.summary = instructable.name
           event.description = [prefix.join("\n"), '', instructable.description_web, '', suffix.join("\n")].join("\n")
