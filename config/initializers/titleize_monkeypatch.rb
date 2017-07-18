@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-module ActiveSupport::Inflector
-  def titleize_with_sca(word)
+module TitleizeWithSCA
+  def titleize(word)
     return 'THL' if word == 'thl'
-    titleize_without_sca(word).gsub(/æ/, 'Æ')
+    super(word).gsub(/æ/, 'Æ')
   end
-
-  alias_method_chain :titleize, :sca
 end
+
+ActiveSupport::Inflector.send(:prepend, TitleizeWithSCA)
