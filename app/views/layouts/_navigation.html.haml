@@ -16,15 +16,18 @@
           = link_to 'All: Excel (spreadsheet)', calendars_path(format: :xlsx), class: "dropdown-item"
           = link_to 'All: CSV (spreadsheet)', calendars_path(format: :csv), class: "dropdown-item"
           .dropdown-divider
-          - Instructable::CLASS_DATES.each do |date|
-            = link_to "Changes: #{date}", changelog_path(date), class: "dropdown-item"
-          .dropdown-divider
           %h6.dropdown-header Custom Schedules
           - if user_signed_in?
             = link_to 'Custom Schedule', user_schedule_path(current_user), class: "dropdown-item"
           - else
             = link_to 'Sign in to customize', new_user_session_path, class: "dropdown-item"
           = link_to 'Instructor List', instructors_path, class: "dropdown-item"
+      %li.nav-item.dropdown
+        %a.nav-link.dropdown-toggle#changesDropdown{:href => '#', :data => {:toggle => 'dropdown'}, aria: {haspopup: "true", expanded: "false"}}
+          Changes from Book
+        .dropdown-menu{aria: {labbeledby: "changesDropdown"}}
+          - Instructable::CLASS_DATES.each do |date|
+            = link_to "Changes for #{date}", changelog_path(date), class: "dropdown-item"
 
       - if instructor?
         %li.nav-item.dropdown
