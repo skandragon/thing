@@ -13,16 +13,12 @@ module GriffinMarkdown
     tags -= Array(options[:tags_remove])
     tags = tags.map(&:to_s)
 
-    @markdown_renderer ||= Redcarpet::Render::XHTML.new(
-      :filter_html => true,
-      :no_images => true,
-      :no_links => true,
-      :no_styles => true)
+    @markdown_renderer ||= Redcarpet::Render::XHTML.new(escape_html: true, no_images: true)
     @markdown ||= Redcarpet::Markdown.new(@markdown_renderer,
-                               :no_intra_emphasis => true,
-                               :strikethrough => true,
-                               :superscript => true)
+                                          no_intra_emphasis: true,
+                                          strikethrough: true,
+                                          superscript: true)
     @coder ||= HTMLEntities.new
-    ActionController::Base.helpers.sanitize(@coder.decode(@markdown.render(text.strip)), tags: tags).strip.html_safe
+    sanitize(@coder.decode(@markdown.render(text.strip)), tags: tags).gsub("'", "&#39;").strip.html_safe
   end
 end
