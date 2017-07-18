@@ -2,7 +2,7 @@
 
 %header#overview.jumbotron
   .hero-unit.opening-page
-    %h1 Pennsic University
+    %h1 Pennsic Events
     %p Pennsic #{Pennsic.year}: #{Pennsic.dates.first} through #{Pennsic.dates.last}
 
 .row
@@ -14,7 +14,7 @@
           or
           %a.btn.btn-primary{:href => new_user_registration_path } Sign up
         %p
-          You only need to log in if you wish to make a customized schedule, or teach a class.
+          You only need to log in if you wish to make a customized schedule, teach a class, or schedule some event.
       - else
         %p
           Welcome, #{current_user.best_name}.

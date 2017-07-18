@@ -438,7 +438,7 @@ h3.event_day {
 
 @media (max-width: 768px) {
   /* Remove any padding from the body */
-  body { padding: 0 0 0 0; }
+  body { padding: 80px 0 0 0; }
 
   .container-fluid {
     padding: 0 5px;
@@ -536,11 +536,6 @@ h3.event_day {
 /* LARGE DESKTOP SCREENS */
 @media (min-width: 1210px) {
   body { padding: 60px 0 0 0; }
-
-  /* Update subnav container */
-  .subnav-fixed .nav {
-    width: 1168px; /* 2px less to account for left/right borders being removed when in fixed mode */
-  }
 }
 
 nav {

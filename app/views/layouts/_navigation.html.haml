@@ -1,9 +1,9 @@
 %nav.navbar.navbar-toggleable-md.navbar-light.bg-faded.fixed-top{role: 'navigation'}
   %button.navbar-toggler{type: "button", data: {toggle: "collapse", target: "#navbar-collapse-1"}, aria: { controls: "navbar-collapse-1", expanded: "false", label: "Toggle navigation"}}
     %span.navbar-toggler-icon
-  %a.navbar-brand{href: '/'}
-    Thing
   .collapse.navbar-collapse#navbar-collapse-1
+    %a.navbar-brand{href: '/'}
+      Thing
     %ul.navbar-nav
       %li.nav-item.dropdown
         %a.nav-link.dropdown-toggle#schedulesDropdown{:href => '#', :data => {:toggle => 'dropdown'}, aria: {haspopup: "true", expanded: "false"}}
