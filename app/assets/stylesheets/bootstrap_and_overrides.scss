@@ -85,10 +85,11 @@
 body { padding: 60px 0 0 0; }
 
 .pretty-box {
-    border: 1px solid #bbb;
-    @include rounded(4px);
-    padding: 10px;
-    background-color: #eee;
+  border: 1px solid #bbb;
+  @include rounded(4px);
+  padding: 10px;
+  background-color: #eee;
+  text-align: center;
 }
 
 table#changelog-modal {

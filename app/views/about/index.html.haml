@@ -6,7 +6,7 @@
     %p Pennsic #{Pennsic.year}: #{Pennsic.dates.first} through #{Pennsic.dates.last}
 
 .row
-  .col-6.push-3
+  .col-sm.col-lg-4
     .pretty-box
       - unless user_signed_in?
         %p
@@ -21,7 +21,7 @@
 
 %section.marketing
   .row
-    .col-4.push-1
+    .col-md
       %h3 Instructors
       - if instructor?
         %p
@@ -47,7 +47,7 @@
           %p
             Sign in or sign up to request to teach a class at Pennsic,
             or to manage those you are already teaching.
-    .col-4.push-1
+    .col-md
       %h3 Students
       - if user_signed_in?
         %p
