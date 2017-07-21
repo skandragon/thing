@@ -19,6 +19,6 @@ module GriffinMarkdown
                                           strikethrough: true,
                                           superscript: true)
     @coder ||= HTMLEntities.new
-    sanitize(@coder.decode(@markdown.render(text.strip)), tags: tags).gsub("'", "&#39;").strip.html_safe
+    ActionController::Base.helpers.sanitize(@coder.decode(@markdown.render(text.strip)), tags: tags).gsub("'", "&#39;").strip.html_safe
   end
 end
