@@ -23,4 +23,4 @@
               - css = 'item-busy'
             %td{class: css}
               - item.each do |instance|
-                %div{rel: 'popover', data: {trigger: 'click', placement: 'top', title: markdown_html(instance.instructable.name), html: 'true', content: render(partial: 'instructable_content', locals: { instance: instance })}}= instance.id
+                %div{rel: 'popover', data: {trigger: 'click', placement: 'top', title: markdown_html(instance.instructable.name), html: 'true', content: render(partial: 'instructable_content', locals: { instance: instance }).gsub("\n", "")}}= instance.id
