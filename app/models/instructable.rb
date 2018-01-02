@@ -51,7 +51,7 @@ class Instructable < ApplicationRecord
   has_many :changelogs, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
-  default_scope { where(year: 2017) }
+  default_scope { where(year: 2018) }
 
   has_paper_trail
 
@@ -111,7 +111,7 @@ class Instructable < ApplicationRecord
       'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
       'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
       'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'A&S 18', 'A&S 19',
-      'Bog U', 'University-Battlefield',
+      'Bog U', 'University-Battlefield', 'RS1', 'RS2', 'RS3'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'European Dance' => [ 'Dance Tent' ],
