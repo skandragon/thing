@@ -17,12 +17,13 @@ require 'capistrano/bundler'
 require 'capistrano/rails/migrations'
 require 'capistrano/rails/assets'
 
-require 'capistrano/sidekiq'
-require 'capistrano/sidekiq/monit'
-
 require 'capistrano/nginx'
 require 'capistrano/puma'
 require 'capistrano/puma/nginx'
+
+require 'capistrano/sidekiq'
+#require 'capistrano/sidekiq/monit'
+
 require 'capistrano/upload-config'
 
 install_plugin Capistrano::Puma  # Default puma tasks
