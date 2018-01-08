@@ -5,10 +5,6 @@
     %legend Sign In
     = f.input :email, :label => 'Email'
     = f.input :password
-
-    - if devise_mapping.rememberable?
-      = f.input :remember_me, :as => :boolean
-
     = f.button :submit, 'Sign in', :class => 'btn btn-primary btn-large'
 
 = render 'links'
