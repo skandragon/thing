@@ -27,7 +27,7 @@ role :db,  'explorer@sca.flame.org', :primary => true
 
 set :nginx_server_name, 'thing.pennsicuniversity.org'
 
-set :sidekiq_monit_conf_dir, '/etc/monit/config-available'
+set :sidekiq_monit_conf_dir, '/etc/monit/conf-available'
 set :sidekiq_user, 'explorer'
 
 # Configuration
