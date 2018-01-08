@@ -29,6 +29,7 @@ set :nginx_server_name, 'thing.pennsicuniversity.org'
 
 set :sidekiq_monit_conf_dir, '/etc/monit/conf-available'
 set :sidekiq_user, 'explorer'
+set :sidekiq_monit_use_sudo, false
 
 # Configuration
 # =============
