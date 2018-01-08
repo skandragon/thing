@@ -1,21 +1,21 @@
 - create_or_update = current_user.instructor? ? 'Update' : 'Create'
 - title "#{create_or_update} Instructor Profile"
 
-= simple_form_for current_user, url: user_instructor_profile_path(current_user), html: { :class => 'form-horizontal' } do |f|
+= simple_form_for current_user, url: user_instructor_profile_path(current_user) do |f|
   %fieldset
     %legend Name and Required Contact Information
     = f.input :mundane_name, label: 'Legal name', placeholder: 'Full name'
     = f.input :sca_title, label: 'SCA title', hint: 'SCA title, if any', collection: User::TITLES, label_method: :titleize
     = f.input :sca_name, label: 'SCA name', hint: 'SCA name, up to 30 characters, without title', input_html: { maxlength: 30 }
     = f.input :kingdom, label: 'SCA kingdom', hint: 'SCA kingdom, if any', collection: User::KINGDOMS, label_method: :titleize
-    = f.input :phone_number, placeholder: '+1 405.555.1212', hint: 'Pre-pennsic contact number.'
-    = f.input :phone_number_onsite, placeholder: '+1 405.555.1212', hint: 'Cell or other on site contact number'
+    = f.input :phone_number, placeholder: '+1 405.555.1212', hint: 'Pre-pennsic contact number.  This number will only be used by Pennsic staff should you need to be contacted.'
+    = f.input :phone_number_onsite, placeholder: '+1 405.555.1212', hint: 'Cell or other on site contact number.  This number will only be used by Pennsic staff should you need to be contacted.'
     %p.alert.alert-info
       Please select the days you plan on being on site and available to
       teach classes.  These will be used by default for classes you
       request, although you can override them on a per-class basis.
       Actual class days are more limited than the selection below.
-    = f.input :available_days, as: :check_boxes, checked: current_user.available_days, collection: Instructable::PENNSIC_DATES, label_method: :to_s, wrapper: :horizontal_boolean
+    = f.input :available_days, as: :check_boxes, checked: current_user.available_days, collection: Instructable::PENNSIC_DATES, label_method: :to_s
 
   %fieldset
     %legend After Pennsic Contact
