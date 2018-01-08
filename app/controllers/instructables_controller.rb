@@ -111,16 +111,18 @@ class InstructablesController < ApplicationController
     admin_addresses -= [user_address]
 
     begin
-      InstructablesMailer.on_create(@instructable, user_address).deliver
-    rescue Exception => e
+      InstructablesMailer.on_create(@instructable, user_address).deliver_later
+    rescue StandardError => e
       flash[:error] = "Email could not be delivered to your account's email address, #{@instructable.user.email}.  However, the requested class was successfully added.  Please update your profile."
     end
 
-    admin_addresses.each do |address|
-      begin
-        InstructablesMailer.on_create(@instructable, address).deliver
-      rescue Exception => e
-        flash[:error] = 'Email could not be sent to one or more track coordinators.  However, your class was added and will appear on their pending class lists.'
+    if Rails.env == 'production'
+      admin_addresses.each do |address|
+        begin
+          InstructablesMailer.on_create(@instructable, address).deliver_later
+        rescue StandardError => e
+          flash[:error] = 'Email could not be sent to one or more track coordinators.  However, your class was added and will appear on their pending class lists.'
+        end
       end
     end
   end

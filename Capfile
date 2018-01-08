@@ -7,6 +7,12 @@ require "capistrano/deploy"
 require "capistrano/scm/git"
 install_plugin Capistrano::SCM::Git
 
+require 'capistrano/sidekiq'
+require 'capistrano/sidekiq/monit'
+
+# sidekiq seems to need this
+set :pty, false
+
 # Include capistrano-rails
 require 'capistrano/rails'
 require 'capistrano/rbenv'

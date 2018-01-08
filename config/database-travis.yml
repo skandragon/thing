@@ -2,5 +2,5 @@ test: &test
   adapter: postgresql
   encoding: unicode
   database: thing_test
-  pool: 5
+  pool: 25
   username: postgres

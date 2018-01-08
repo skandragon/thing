@@ -1,4 +1,10 @@
+require 'sidekiq/web'
+
 Thing::Application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   namespace :admin do
     resources :users do
       get :send_password_reset_email

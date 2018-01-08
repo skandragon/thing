@@ -2,7 +2,7 @@ development:
   adapter: postgresql
   encoding: unicode
   database: thing_development
-  pool: 5
+  pool: 25
   username: thing
   password:
   #host: localhost
@@ -22,7 +22,7 @@ test: &development
   adapter: postgresql
   encoding: unicode
   database: thing_test
-  pool: 5
+  pool: 25
   username: thing
   password:
 
@@ -30,7 +30,7 @@ production:
   adapter: postgresql
   encoding: unicode
   database: thing_production
-  pool: 5
+  pool: 25
   host: 127.0.0.1
   username: <%= MultaArcana::secret_for(:db_username) %>
   password: <%= MultaArcana::secret_for(:db_password) %>

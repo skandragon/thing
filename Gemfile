@@ -3,12 +3,15 @@ source 'https://rubygems.org'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
+ruby '2.4.3'
+
 gem 'rails', '5.0.6'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
+gem 'sidekiq'
 
 gem 'sass-rails'
 gem 'coffee-rails'
@@ -20,7 +23,7 @@ gem 'therubyracer', platform: :ruby, require: 'v8'
 
 gem 'uglifier'
 
-gem 'bootstrap', '~> 4.0.0.alpha6'
+gem 'bootstrap', '~> 4.0.0.beta.3'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
@@ -49,6 +52,7 @@ group :development, :test do
   gem 'launchy'
   gem 'coveralls', require: false
   gem 'test-unit'
+  gem 'capistrano-sidekiq'
 end
 
 group :development do

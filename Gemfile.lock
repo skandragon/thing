@@ -84,6 +84,9 @@ GEM
     capistrano-rbenv (2.1.3)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
+    capistrano-sidekiq (0.20.0)
+      capistrano (>= 3.9.0)
+      sidekiq (>= 3.4)
     capistrano-upload-config (0.8.2)
       capistrano (>= 3.0)
     capistrano3-nginx (2.1.6)
@@ -111,6 +114,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    connection_pool (2.2.1)
     coveralls (0.8.21)
       json (>= 1.8, < 3)
       simplecov (~> 0.14.1)
@@ -237,6 +241,8 @@ GEM
     rack (2.0.3)
     rack-mini-profiler (0.10.7)
       rack (>= 1.2.0)
+    rack-protection (2.0.0)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     railroady (1.5.3)
@@ -323,6 +329,11 @@ GEM
       tilt (>= 1.1, < 3)
     sexp_processor (4.10.0)
     shellany (0.0.1)
+    sidekiq (5.0.5)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.4, < 5)
     simple_form (3.5.0)
       actionpack (> 4, < 5.2)
       activemodel (> 4, < 5.2)
@@ -380,10 +391,11 @@ DEPENDENCIES
   axlsx
   better_errors
   binding_of_caller
-  bootstrap (~> 4.0.0.alpha6)
+  bootstrap (~> 4.0.0.beta.3)
   capistrano
   capistrano-rails
   capistrano-rbenv
+  capistrano-sidekiq
   capistrano-upload-config
   capistrano3-nginx
   capistrano3-puma
@@ -426,12 +438,16 @@ DEPENDENCIES
   rspec-rails
   rubyzip
   sass-rails
+  sidekiq
   simple_form
   test-unit
   therubyracer
   thin
   uglifier
   will_paginate
+
+RUBY VERSION
+   ruby 2.4.3p205
 
 BUNDLED WITH
    1.16.1

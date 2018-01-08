@@ -5,7 +5,7 @@ else
 end
 
 ActionMailer::Base.smtp_settings = {
-    :address              => "white.flame.org",
+    :address              => "postmark.flame.org",
     :port                 => 587,
     :domain               => "flame.org",
     :user_name            => MultaArcana::secret_for(:smtp_username),
