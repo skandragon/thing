@@ -16,6 +16,10 @@ require 'capistrano/rbenv'
 require 'capistrano/bundler'
 require 'capistrano/rails/migrations'
 require 'capistrano/rails/assets'
+
+require 'capistrano/sidekiq'
+require 'capistrano/sidekiq/monit'
+
 require 'capistrano/nginx'
 require 'capistrano/puma'
 require 'capistrano/puma/nginx'
@@ -26,6 +30,3 @@ install_plugin Capistrano::Puma::Nginx  # if you want to upload a nginx site tem
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
-
-require 'capistrano/sidekiq'
-require 'capistrano/sidekiq/monit'
