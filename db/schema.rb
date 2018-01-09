@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 20170131204915) do
     t.string   "area"
     t.integer  "user_id"
     t.datetime "accepted_on"
-    t.integer  "version"
+    t.string  "version"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.datetime "mailed_on"
