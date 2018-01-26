@@ -2,6 +2,8 @@ class Users::SchedulesController < ApplicationController
   before_action :load_user
 
   def show
+    # TODO: need to handle format here, and return an empty schedule for ISC requests
+    # where the user does exist, 404 where it does not, and redirect for html requests.
     unless @user
       render text: 'No such schedule', status: 404 and return
     end
