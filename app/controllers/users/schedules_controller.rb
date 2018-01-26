@@ -4,15 +4,9 @@ class Users::SchedulesController < ApplicationController
   def show
     # TODO: need to handle format here, and return an empty schedule for ISC requests
     # where the user does exist, 404 where it does not, and redirect for html requests.
+
     unless @user
-      render text: 'No such schedule', status: 404 and return
-    end
-    if @user.schedule.nil? or @user.schedule.instructables.count == 0
-      if current_user and current_user.id == @user.id
-        redirect_to edit_user_schedule_path(@user) and return
-      else
-        redirect_to root_path, alert: 'No such schedule' and return
-      end
+      raise ActiveRecord::RecordNotFound.new('Not Found')
     end
 
     @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
@@ -22,9 +16,21 @@ class Users::SchedulesController < ApplicationController
     uncached = params[:uncached_for_tests].present?
 
     respond_to do |format|
-      format.html
+      format.html {
+        if @user.schedule.nil? or @user.schedule.instructables.count == 0
+          if current_user and current_user.id == @user.id
+            redirect_to edit_user_schedule_path(@user) and return
+          else
+            redirect_to root_path, alert: 'No such schedule' and return
+          end
+        end
+      }
 
       format.ics {
+        if @user.schedule.nil? or @user.schedule.instructables.count == 0
+          raise ActiveRecord::RecordNotFound.new('Not Found')
+        end
+
         filename = "pennsic-#{Pennsic.year}-user#{@user.id}.ics"
         cache_filename = Rails.root.join('tmp', filename)
 
@@ -41,6 +47,10 @@ class Users::SchedulesController < ApplicationController
       }
 
       format.pdf {
+        if @user.schedule.nil? or @user.schedule.instructables.count == 0
+          raise ActiveRecord::RecordNotFound.new('Not Found')
+        end
+
         omit_descriptions = params[:brief].present?
 
         @instructables = Instructable.where(id: @instances.map(&:instructable_id))
@@ -65,6 +75,10 @@ class Users::SchedulesController < ApplicationController
       }
 
       format.csv {
+        if @user.schedule.nil? or @user.schedule.instructables.count == 0
+          raise ActiveRecord::RecordNotFound.new('Not Found')
+        end
+
         filename = "pennsic-#{Pennsic.year}-user#{@user.id}.csv"
         cache_filename = Rails.root.join('tmp', filename)
 
@@ -79,6 +93,10 @@ class Users::SchedulesController < ApplicationController
       }
 
       format.xlsx {
+        if @user.schedule.nil? or @user.schedule.instructables.count == 0
+          raise ActiveRecord::RecordNotFound.new('Not Found')
+        end
+
         filename = "pennsic-#{Pennsic.year}-#{@user.id}.xlsx"
         cache_filename = Rails.root.join('tmp', filename)
 
