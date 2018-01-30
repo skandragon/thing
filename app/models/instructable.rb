@@ -114,6 +114,7 @@ class Instructable < ApplicationRecord
       'Bog U', 'University-Battlefield', 'RS1', 'RS2', 'RS3'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
+    'Newcomers' => [ 'A&S 19' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
     'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent', 'A&S 9' ],
