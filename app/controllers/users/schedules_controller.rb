@@ -2,12 +2,10 @@ class Users::SchedulesController < ApplicationController
   before_action :load_user
 
   def show
-    # TODO: need to handle format here, and return an empty schedule for ISC requests
+    # TODO: need to handle format here, and return an empty schedule for ICS requests
     # where the user does exist, 404 where it does not, and redirect for html requests.
 
-    unless @user
-      raise ActiveRecord::RecordNotFound.new('Not Found')
-    end
+    raise ActiveRecord::RecordNotFound.new('Not Found') unless @user
 
     render_options = { user: @user }
 
@@ -176,14 +174,15 @@ class Users::SchedulesController < ApplicationController
   end
 
   def load_user
+    return @user if @user
     user_id = params[:user_id]
     if user_id =~ /^[a-zA-Z]+/
-      @user ||= User.where(access_token: user_id).first
-      if @user and @user.schedule
+      @user = User.where(access_token: user_id).first
+      if @user && @user.schedule
         @user.schedule.token_access = true
       end
-    else
-      @user ||= User.where(id: user_id).first
+    elsif current_user
+      @user = User.where(id: current_user.id).first
     end
     @user
   end
@@ -199,10 +198,11 @@ class Users::SchedulesController < ApplicationController
   end
 
   def current_resource
-    if load_user
+    load_user
+    if @user && @user.schedule
       @user.schedule
     else
-      Schedule.new(published: false)
+      Schedule.new(published: true)
     end
   end
 

@@ -18,7 +18,9 @@ class Permission
     allow 'policies', :all
 
     allow 'users/schedules', [ :show ] do |record|
-      record.published? or record.token_access
+      Rails.logger.info record.token_access
+      record.published? || record.token_access
+      true
     end
 
     allow 'users/schedules', [ :token ] do
