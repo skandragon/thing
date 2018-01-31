@@ -9,8 +9,6 @@ class Users::SchedulesController < ApplicationController
       raise ActiveRecord::RecordNotFound.new('Not Found')
     end
 
-    @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
-
     render_options = { user: @user }
 
     uncached = params[:uncached_for_tests].present?
@@ -24,12 +22,14 @@ class Users::SchedulesController < ApplicationController
             redirect_to root_path, alert: 'No such schedule' and return
           end
         end
+        @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
       }
 
       format.ics {
         if @user.schedule.nil? or @user.schedule.instructables.count == 0
           raise ActiveRecord::RecordNotFound.new('Not Found')
         end
+        @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
 
         filename = "pennsic-#{Pennsic.year}-user#{@user.id}.ics"
         cache_filename = Rails.root.join('tmp', filename)
@@ -51,6 +51,7 @@ class Users::SchedulesController < ApplicationController
           raise ActiveRecord::RecordNotFound.new('Not Found')
         end
 
+        @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
         omit_descriptions = params[:brief].present?
 
         @instructables = Instructable.where(id: @instances.map(&:instructable_id))
@@ -79,6 +80,7 @@ class Users::SchedulesController < ApplicationController
           raise ActiveRecord::RecordNotFound.new('Not Found')
         end
 
+        @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
         filename = "pennsic-#{Pennsic.year}-user#{@user.id}.csv"
         cache_filename = Rails.root.join('tmp', filename)
 
@@ -97,6 +99,7 @@ class Users::SchedulesController < ApplicationController
           raise ActiveRecord::RecordNotFound.new('Not Found')
         end
 
+        @instances = Instance.where(instructable_id: @user.schedule.instructables).order('start_time, btrsort(location)').includes(instructable: [:user])
         filename = "pennsic-#{Pennsic.year}-#{@user.id}.xlsx"
         cache_filename = Rails.root.join('tmp', filename)
 
