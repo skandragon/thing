@@ -59,7 +59,7 @@ jQuery ->
       pu_locations = window.all_locations
       for n in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         target = $('#instructable_instances_attributes_' + n + '_location')
-        if $(target).size() > 0
+        if $(target).length > 0
           override = $('#instructable_instances_attributes_' + n + '_override_location')
           overridden = override.prop('checked')
           target.empty()
@@ -78,7 +78,7 @@ jQuery ->
     hide_targets = ->
       for n in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         target = $('#instructable_instances_attributes_' + n + '_location')
-        if $(target).size() > 0
+        if $(target).length > 0
           target.empty()
           target.enabled = false
 
