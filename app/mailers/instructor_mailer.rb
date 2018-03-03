@@ -3,7 +3,7 @@ class InstructorMailer < ActionMailer::Base
 
   layout 'email'
 
-  default from: 'pennsicuniversity@flame.org', css: 'email'
+  default from: 'thing@pennsicuniversity.org', css: 'email'
 
   #
   # Send mail to an instructor, with optional replacable tags for certain
@@ -15,7 +15,7 @@ class InstructorMailer < ActionMailer::Base
     @instances = Instance.where(instructable_id: ids).includes(:instructable).order(:start_time)
     @name = @user.titled_sca_name
 
-    headers 'return-path' => 'pennsicuniversity@flame.org'
+    headers 'return-path' => 'thing@pennsicuniversity.org'
 
     mail(to: user.email, subject: "Pennsic University: #{subject}")
   end
