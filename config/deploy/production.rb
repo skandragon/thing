@@ -25,6 +25,9 @@ role :db,  'explorer@sca.flame.org', :primary => true
 
 set :nginx_server_name, 'thing.pennsicuniversity.org'
 
+set :puma_preload_app, true
+set :puma_init_active_record, true
+
 set :sidekiq_monit_conf_dir, '/etc/monit/conf-available'
 set :sidekiq_user, 'explorer'
 #set :sidekiq_monit_use_sudo, false
