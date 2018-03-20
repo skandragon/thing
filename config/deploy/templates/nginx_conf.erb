@@ -21,18 +21,21 @@ server {
 
 server {
     listen [::]:80;
+    listen 80;
     server_name www.thing.pennsicuniversity.org;
     return 301 $scheme://thing.pennsicuniversity.org$request_uri;
 }
 
 server {
     listen [::]:80;
+    listen 80;
     server_name www.pennsicuniversity.org;
     return 301 $scheme://thing.pennsicuniversity.org$request_uri;
 }
 
 server {
     listen [::]:80;
+    listen 80;
     server_name pennsicuniversity.org;
     return 301 $scheme://thing.pennsicuniversity.org$request_uri;
 }
@@ -40,6 +43,7 @@ server {
 server {
 <% if fetch(:nginx_use_ssl) -%>
   listen [::]:443 default_server;
+  listen 443 default_server;
   ssl on;
 <% if fetch(:nginx_ssl_certificate) -%>
   ssl_certificate <%= fetch(:nginx_ssl_certificate) %>;
@@ -53,6 +57,7 @@ server {
 <% end -%>
 <% else -%>
   listen [::]:80 default_server;
+  listen 80 default_server;
 <% end -%>
   server_name <%= fetch(:nginx_server_name) %>;
   root <%= current_path %>/public;
