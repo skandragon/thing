@@ -46,7 +46,7 @@ class Permission
       end
 
       allow 'users/schedules', [ :new, :create, :edit, :update, :destroy ] do |record|
-        record.user_id == user.id
+        record.user_id.nil? || record.user_id == user.id
       end
     end
 
