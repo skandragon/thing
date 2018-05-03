@@ -66,7 +66,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    bootstrap (4.0.0)
+    bootstrap (4.1.1)
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
@@ -393,7 +393,7 @@ DEPENDENCIES
   axlsx (~> 3.0.0.pre)
   better_errors
   binding_of_caller
-  bootstrap (~> 4.0.0.beta.3)
+  bootstrap
   capistrano
   capistrano-rails
   capistrano-rbenv

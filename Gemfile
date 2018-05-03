@@ -23,7 +23,7 @@ gem 'therubyracer', platform: :ruby, require: 'v8'
 
 gem 'uglifier'
 
-gem 'bootstrap', '~> 4.0.0.beta.3'
+gem 'bootstrap'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
