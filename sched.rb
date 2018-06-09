@@ -43,12 +43,12 @@ if @schedule == "Pennsic University"
   @locs1 << 'Games'
 
   @locs2 = [
+    'RS1',
     'Performing Arts',
     'Amphitheater',
     'Middle Eastern',
     'Æthelmearc 1',
     'Æthelmearc 2',
-    'Touch The Earth',
     'Performing Arts Rehearsal',
     'Livonia Smithery',
     'Pine Box Traders',
@@ -111,6 +111,7 @@ ids = instructables.map { |x| x.id }
 instances = Instance.where(instructable_id: ids).includes(:instructable).select { |x| x.scheduled? }
 
 instances.each do |instance|
+  next if instance.instructable_id == 1618
   if instance.start_time.nil?
     pp instance
     next
@@ -123,7 +124,8 @@ instances.each do |instance|
     afternoon: { loc1: [], loc2: [] },
     other_location: [],
     other_time: [],
-    other: [],
+    other_morning: [],
+    other_afternoon: []
   }
 
   hour = instance.start_time.hour
@@ -146,21 +148,25 @@ instances.each do |instance|
 
   subsection = nil
   in_loc = false
-  if not (morning_check or afternoon_check) or not (loc1_check or loc2_check)
-    section = :other
-    if (loc1_check or loc2_check) and hour < @morning_hours.first
+  if !(morning_check || afternoon_check) || !(loc1_check || loc2_check)
+    if hour <= @morning_hours.sort.last
+      section = :other_morning
+    else
+      section = :other_afternoon
+    end
+    if (loc1_check || loc2_check) && hour < @morning_hours.first
       in_loc = true
     end
-  elsif (loc1_check or loc2_check) and (morning_check)
+  elsif (loc1_check || loc2_check) && (morning_check)
     section = :morning
     subsection = loc1_check ? :loc1 : :loc2
-  elsif (loc1_check or loc2_check) and (afternoon_check)
+  elsif (loc1_check || loc2_check) && (afternoon_check)
     section = :afternoon
     subsection = loc1_check ? :loc1 : :loc2
   else
     puts "OTHER:"
     pp instance
-    section = :other
+    section = :other_afternoon
   end
 
   locindex = (loc1_check || loc2_check)
@@ -187,7 +193,7 @@ instances.each do |instance|
 
   if instance.instructable.name == 'Bellatrix: Individual Session'
     start_time = "By appointment"
-    section = :other
+    section = :other_morning
     subsection = nil
   else
     start_time = instance.start_time
@@ -410,7 +416,7 @@ def render(pdf, opts)
   draw_hour_labels(pdf, opts)
   draw_location_labels(pdf, opts)
 
-  pdf.font_size 12
+  pdf.font_size 10
   opts[:entries].each do |data|
     locindex = data[:locindex]
     hourindex = data[:hourindex]
@@ -655,7 +661,7 @@ def render_topic_list(pdf, instructables)
         end
       end
 
-      pdf.font_size 7.5
+      pdf.font_size 7.4
       pdf.fill_color @black
       pdf.stroke_color @black
     end
@@ -676,7 +682,10 @@ def render_topic_list(pdf, instructables)
     ]
 
     scheduled_instances = instructable.instances.select { |x| x.scheduled? }
-    if scheduled_instances.count > 1 and scheduled_instances.map(&:formatted_location).uniq.count == 1
+    if (name == 'Bellatrix: Individual Session')
+      lines << 'Scheduled by appointment'
+      lines << 'Location: ' + scheduled_instances.first.formatted_location
+    elsif scheduled_instances.count > 1 and scheduled_instances.map(&:formatted_location).uniq.count == 1
       lines << scheduled_instances.map { |x| "#{x.start_time.strftime('%a %b %e %I:%M %p')}" }.join(', ')
       lines << 'Location: ' + scheduled_instances.first.formatted_location
     else
@@ -749,13 +758,13 @@ entries.keys.sort.each do |key|
            entries: entries[key][:morning][:loc2],
            title: "#{date} ~ Morning")
   end
-  subentries = entries[key][:other]
+  subentries = entries[key][:other_morning]
   if subentries.count > 0
     need_new_page = true
     subentries.sort! { |a, b| a[:start_time].to_i <=> b[:start_time].to_i }
     render_extra(pdf,
                  entries: subentries,
-                 title: "#{date} ~ Additional Classes",
+                 title: "#{date} ~ Additional Morning Classes",
                  rowoffset: @locs2.count * @row_height + @header_height + 1)
   elsif @render_notes_and_doodles
     need_new_page = true
@@ -787,14 +796,22 @@ entries.keys.sort.each do |key|
            entries: entries[key][:afternoon][:loc2],
            title: "#{date} ~ Afternoon")
   end
-  note_type = next_note_type
-  if @render_notes_and_doodles
+  subentries = entries[key][:other_afternoon]
+  if subentries.count > 0
+    need_new_page = true
+    subentries.sort! { |a, b| a[:start_time].to_i <=> b[:start_time].to_i }
+    render_extra(pdf,
+                 entries: subentries,
+                 title: "#{date} ~ Additional Afternoon Classes",
+                 rowoffset: @locs2.count * @row_height + @header_height + 1)
+  elsif @render_notes_and_doodles
     need_new_page = true
     render_notes(pdf,
-                 mode: note_type,
-                 title: (note_type == :notes ? 'Notes' : 'Notes and Doodles'),
+                 mode: :notes,
+                 title: "Notes",
                  rowoffset: @locs2.count * @row_height + @header_height + 1)
   end
+
   if need_new_page
     draftit(pdf)
     pdf.start_new_page
