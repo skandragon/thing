@@ -111,7 +111,7 @@ ids = instructables.map { |x| x.id }
 instances = Instance.where(instructable_id: ids).includes(:instructable).select { |x| x.scheduled? }
 
 instances.each do |instance|
-  next if instance.instructable_id == 1618
+  next if instance.instructable.name =~ /^Empty Tent/
   if instance.start_time.nil?
     pp instance
     next
@@ -650,6 +650,7 @@ def render_topic_list(pdf, instructables)
   instructables.sort { |a, b|
     [a.formatted_topic, a.name.gsub('*', '')] <=> [b.formatted_topic, b.name.gsub('*', '')]
   }.each do |instructable|
+    next if instructable.name =~ /^Empty Tent/
     if instructable.topic != previous_topic
       pdf.move_down 7 unless pdf.cursor == pdf.bounds.top
       pdf.font_size @title_font_size
