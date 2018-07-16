@@ -63,13 +63,13 @@
           %td
             = Time.zone.parse(instance[:start_time].last).strftime('%A, %B %d %l:%M %p')
             - if instance[:start_time].first != instance[:start_time].last
-              - if Time.zone.parse(instance[:start_time].first).year == 2018 && Time.zone.parse(instance[:end_time].first).year == 2018
+              - if Time.zone.parse(instance[:start_time].first).year == Time.zone.parse(instance[:start_time].last).year
                 %br
                 (was #{Time.zone.parse(instance[:start_time].first).strftime('%A, %B %d %l:%M %p')})
           %td
             = Time.zone.parse(instance[:end_time].last).strftime('%l:%M %p')
             - if instance[:end_time].first != instance[:end_time].last
-              - if Time.zone.parse(instance[:start_time].first).year == 2018 && Time.zone.parse(instance[:end_time].first).year == 2018
+              - if Time.zone.parse(instance[:start_time].first).year == Time.zone.parse(instance[:start_time].last).year
                 %br
                 (was #{Time.zone.parse(instance[:end_time].first).strftime('%l:%M %p')})
           %td
