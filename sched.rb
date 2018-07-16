@@ -457,7 +457,7 @@ def render(pdf, opts)
       pdf.fill_color @black
       pdf.stroke_bounds
     }
-    msg = "#{markdown_html data[:name]} <i>(#{data[:id]})</i>"
+    msg = "#{markdown_pdf data[:name]} <i>(#{data[:id]})</i>"
     if duration != display_duration
       msg += "<br/><b>(#{duration} hours)</b>"
     end
@@ -536,7 +536,7 @@ def render_extra(pdf, opts)
       else
         start_time = entry[:instance].formatted_location_and_time(:pennsic_time_only)
       end
-      msg = "<b>#{entry[:id]}</b>: #{markdown_html(entry[:name])}, #{start_time}"
+      msg = "<b>#{entry[:id]}</b>: #{markdown_pdf(entry[:name])}, #{start_time}"
       duration = entry[:duration]
       if duration != 1
         msg += ", #{duration} hours"
@@ -669,7 +669,7 @@ def render_topic_list(pdf, instructables)
     previous_topic = instructable.topic
 
     pdf.move_down 4.6 unless pdf.cursor == pdf.bounds.top
-    name = markdown_html(instructable.name, tags_remove: 'strong')
+    name = markdown_pdf(instructable.name, tags_remove: 'strong')
     token = @instructable_magic_tokens[instructable.id]
     topic = instructable.formatted_topic
     culture = instructable.culture.present? ? instructable.culture : nil
@@ -698,7 +698,7 @@ def render_topic_list(pdf, instructables)
     pdf.text lines.join("\n"), inline_format: true
 
     pdf.move_down 2 unless pdf.cursor == pdf.bounds.top
-    pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
+    pdf.text markdown_pdf(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
   end
 end
 

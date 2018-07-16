@@ -179,7 +179,7 @@ class CalendarRenderer
         token = @instructable_magic_tokens[instance.instructable.id].to_s
       end
 
-      title = markdown_html(instance.instructable.name)
+      title = markdown_pdf(instance.instructable.name)
       unless @options[:no_long_descriptions].present?
         title += " (#{token})"
       end
@@ -201,7 +201,7 @@ class CalendarRenderer
         end
         new_items << {
           inline_format: true,
-          content: markdown_html([
+          content: markdown_pdf([
                                     instance.instructable.description_book,
                                     materials_and_handout_content(instance.instructable).join(' '),
                                     taught_message,
@@ -389,7 +389,7 @@ class CalendarRenderer
 
     instructables.each do |instructable|
       pdf.move_down 5 unless pdf.cursor == pdf.bounds.top
-      name = markdown_html(instructable.name, tags_remove: 'strong')
+      name = markdown_pdf(instructable.name, tags_remove: 'strong')
 
       if @instructable_magic_tokens
         token = @instructable_magic_tokens[instructable.id]
@@ -424,7 +424,7 @@ class CalendarRenderer
       pdf.text lines.join("\n"), inline_format: true
 
       pdf.move_down 2 unless pdf.cursor == pdf.bounds.top
-      pdf.text markdown_html(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
+      pdf.text markdown_pdf(instructable.description_web.present? ? instructable.description_web : instructable.description_book), inline_format: true, align: :justify
     end
   end
 
