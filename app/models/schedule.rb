@@ -14,7 +14,7 @@
 class Schedule < ApplicationRecord
   belongs_to :user
 
-  default_scope { where(year: 2018) }
+  default_scope { where(year: 2019) }
 
   attr_accessor :token_access
 end

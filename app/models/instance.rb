@@ -19,7 +19,7 @@ class Instance < ApplicationRecord
 
   has_paper_trail
 
-  default_scope { where(year: 2018) }
+  default_scope { where(year: 2019) }
 
   after_save :update_instructable
   before_validation :update_end_time

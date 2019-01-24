@@ -21,7 +21,7 @@ class Changelog < ApplicationRecord
   belongs_to :user
   belongs_to :target, polymorphic: true
 
-  default_scope { where(year: 2018) }
+  default_scope { where(year: 2019) }
 
   before_save :abort_if_useless
 

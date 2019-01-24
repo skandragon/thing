@@ -12,7 +12,7 @@ class Pennsic
   end
 
   def self.dates
-    (Date.parse('2018-07-27')..Date.parse('2018-08-12')).to_a
+    (Date.parse('2019-07-26')..Date.parse('2019-08-11')).to_a
   end
 
   def self.dates_formatted
@@ -20,7 +20,7 @@ class Pennsic
   end
 
   def self.class_dates_raw
-    (Date.parse('2018-07-30')..Date.parse('2018-08-10')).to_a
+    (Date.parse('2019-07-29')..Date.parse('2019-08-09')).to_a
   end
 
   def self.class_dates
@@ -31,3 +31,4 @@ class Pennsic
     [ '9am to Noon', 'Noon to 3pm', '3pm to 6pm', 'After 6pm' ]
   end
 end
+ 
