@@ -118,7 +118,6 @@ class Instructable < ApplicationRecord
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
     'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent', 'A&S 9' ],
-    'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 4'],
@@ -136,7 +135,7 @@ class Instructable < ApplicationRecord
       'General Archery',
       'Novelty Range'
     ],
-    'Parent/Child' => ['A&S 6'],
+    'Youth/Teen University' => ['A&S 6'],
     'First Aid' => ['A&S 14'],
     'Youth Combat' => [ 'Youth Combat List' ],
     'In Persona' => [ 'A&S 1' ],
@@ -173,6 +172,9 @@ class Instructable < ApplicationRecord
       "Artisan's Row B",
       "Artisan's Row C"
     ],
+    'East Kingdom Royal' => [ 'East Kingdom Royal' ],
+    'Horde' => [ 'Horde Camp' ],
+    'Family Activities' => [ 'Family Point Tent 1', 'Family Point Tent 2' ],
     'Youth Point' => [ 'Youth Point' ],
     'Bog U' => [ 'Bog U' ],
     'Maghribi' => [ 'A&S 16'],
