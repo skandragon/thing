@@ -5,7 +5,7 @@ Encoding.default_internal = Encoding::UTF_8
 
 ruby '2.4.3'
 
-gem 'rails', '5.0.7'
+gem 'rails', '5.0.7.2'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
