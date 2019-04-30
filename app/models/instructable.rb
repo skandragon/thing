@@ -166,7 +166,7 @@ class Instructable < ApplicationRecord
     ],
     'Party' => ['Battlefield', 'Great Hall', 'Rune Stone Park'],
     'Court' => ['Great Hall'],
-    'Courtesan College' => [],
+    'Courtesan College' => ['Courtesan College'],
     'Event' => ['Great Hall', 'Rune Stone Park'],
     "Artisan's Row" => [
       "Artisan's Row A",
