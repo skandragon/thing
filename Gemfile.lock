@@ -190,7 +190,6 @@ GEM
     jsonapi-renderer (0.2.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libv8 (3.16.14.19)
     liquid (4.0.3)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -281,7 +280,6 @@ GEM
     rb-readline (0.5.5)
     redcarpet (3.4.0)
     redis (4.1.0)
-    ref (2.0.0)
     regexp_parser (1.4.0)
     request_store (1.4.1)
       rack (>= 1.4)
@@ -369,9 +367,6 @@ GEM
       tins (~> 1.0)
     test-unit (3.3.1)
       power_assert
-    therubyracer (0.12.3)
-      libv8 (~> 3.16.14.15)
-      ref
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -453,7 +448,6 @@ DEPENDENCIES
   sidekiq
   simple_form
   test-unit
-  therubyracer
   thin
   uglifier
   will_paginate

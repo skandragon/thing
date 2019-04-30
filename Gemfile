@@ -17,7 +17,7 @@ gem 'sass-rails'
 gem 'coffee-rails'
 
 #gem 'less-rails'
-gem 'therubyracer', platform: :ruby, require: 'v8'
+#gem 'therubyracer', platform: :ruby, require: 'v8'
 
 #gem 'less-js'
 
