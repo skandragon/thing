@@ -27,6 +27,9 @@ puts "Rendering schedule for #{@schedule}"
 @grey_20 = '222222'
 @black = '000000'
 @white = 'ffffff'
+@red = 'ff0000'
+
+ADDITIONAL_SPACING = 0.5
 
 entries = {}
 
@@ -392,13 +395,13 @@ def render(pdf, opts)
     pdf.stroke_bounds
   end
 
-  box = pdf.grid([0, 0], [1, pdf.grid.columns - 1])
+  box = pdf.grid([0, 0], [0.5, pdf.grid.columns - 1])
   msg = opts[:title]
   box_opts = {
     align: :center,
     valign: :center,
     size: @title_font_size,
-    at: [box.top_left[0], box.top_left[1] - 2],
+    at: [box.top_left[0], box.top_left[1]],
     width: box.width,
     height: box.height,
   }
@@ -486,8 +489,8 @@ end
 def render_extra(pdf, opts)
   rowoffset = opts[:rowoffset]
 
-  box = pdf.grid([rowoffset, 0], [pdf.grid.rows - 1, pdf.grid.columns - 1])
-  box = pdf.grid([rowoffset, 0], [rowoffset + 1, pdf.grid.columns - 1])
+  #box = pdf.grid([rowoffset, 0], [pdf.grid.rows - 1, pdf.grid.columns - 1])
+  box = pdf.grid([rowoffset, 0], [rowoffset + 0.2, pdf.grid.columns - 1])
   box.bounding_box do
     pdf.fill_color @grey
     pdf.stroke_color @grey
@@ -500,7 +503,7 @@ def render_extra(pdf, opts)
       align: :center,
       valign: :center,
       size: @title_font_size,
-      at: [box.top_left[0], box.top_left[1] - 2],
+      at: [box.top_left[0], box.top_left[1]],
       width: box.width,
       height: box.height,
   }
@@ -514,7 +517,7 @@ def render_extra(pdf, opts)
 
   pdf.stroke_color @black
   pdf.fill_color @black
-  rowoffset += 2
+  rowoffset += 1.3
 
   entries_count = opts[:entries].count
   if entries_count < 25
@@ -534,7 +537,7 @@ def render_extra(pdf, opts)
         start_time = entry[:instance].formatted_location
         start_time += " (#{entry[:start_time]})"
       else
-        start_time = entry[:instance].formatted_location_and_time(:pennsic_time_only)
+        start_time = entry[:instance].formatted_location_and_time(:pennsic_time_only).gsub(':00', '').gsub('12 PM', 'noon')
       end
       msg = "<b>#{entry[:id]}</b>: #{markdown_pdf(entry[:name])}, #{start_time}"
       duration = entry[:duration]
@@ -766,13 +769,13 @@ entries.keys.sort.each do |key|
     render_extra(pdf,
                  entries: subentries,
                  title: "#{date} ~ Additional Morning Classes",
-                 rowoffset: @locs2.count * @row_height + @header_height + 1)
+                 rowoffset: @locs2.count * @row_height + @header_height + ADDITIONAL_SPACING)
   elsif @render_notes_and_doodles
     need_new_page = true
     render_notes(pdf,
                  mode: :notes,
                  title: "Notes",
-                 rowoffset: @locs2.count * @row_height + @header_height + 1)
+                 rowoffset: @locs2.count * @row_height + @header_height + ADDITIONAL_SPACING)
   end
 
   if (need_new_page)
@@ -804,13 +807,13 @@ entries.keys.sort.each do |key|
     render_extra(pdf,
                  entries: subentries,
                  title: "#{date} ~ Additional Afternoon Classes",
-                 rowoffset: @locs2.count * @row_height + @header_height + 1)
+                 rowoffset: @locs2.count * @row_height + @header_height + ADDITIONAL_SPACING)
   elsif @render_notes_and_doodles
     need_new_page = true
     render_notes(pdf,
                  mode: :notes,
                  title: "Notes",
-                 rowoffset: @locs2.count * @row_height + @header_height + 1)
+                 rowoffset: @locs2.count * @row_height + @header_height + ADDITIONAL_SPACING)
   end
 
   if need_new_page
