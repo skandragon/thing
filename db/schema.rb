@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 20170131204915) do
     t.string   "access_token",           limit: 255
     t.boolean  "admin",                              default: false
     t.boolean  "pu_staff"
-    t.string   "tracks",                 limit: 255, default: [],                 array: true
+    t.string   "tracks",                 limit: 255, default: [].to_yaml
     t.string   "sca_name",               limit: 255
     t.string   "sca_title",              limit: 255
     t.string   "phone_number",           limit: 255
