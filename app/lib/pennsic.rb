@@ -20,7 +20,7 @@ class Pennsic
   end
 
   def self.class_dates_raw
-    (Date.parse('2020-07-28')..Date.parse('2020-08-05')).to_a
+    (Date.parse('2020-07-28')..Date.parse('2020-08-07')).to_a
   end
 
   def self.class_dates
