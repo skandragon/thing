@@ -28,10 +28,18 @@ set :linked_files, %w{config/secrets.yml}
 
 set :puma_conf, "#{shared_path}/config/puma.rb"
 
+namespace :nginx do
+  task :restart do
+    on roles(:app), in: :sequence, except: {no_release: true} do
+      echo "would restart nginx here"
+    end
+  end
+end
+
 namespace :deploy do
   before 'check:linked_files', 'puma:config'
   before 'check:linked_files', 'puma:nginx_config'
-  after 'puma:smart_restart', 'nginx:restart'
+  #after 'puma:smart_restart', 'nginx:restart'
 
   task :git_log do
     on roles(:app), in: :sequence, except: {no_release: true} do
