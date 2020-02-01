@@ -148,7 +148,7 @@
       Requested days and times are best effort.  Leave them all blank, and we will use the days you will be attending Pennsic from your profile.
     = f.input :requested_days, as: :check_boxes, checked: @instructable.requested_days, collection: Instructable::CLASS_DATES, label_method: :to_s, hint: "Select the days you prefer to teach this class, or leave blank and your profile's days will be used."
     = f.input :requested_times, as: :check_boxes, checked: @instructable.requested_times, collection:Instructable::CLASS_TIMES, hint: 'Select the times you prefer to teach this class, or leave blank to indicate anytime is OK.'
-    = f.input :scheduling_additional, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Please describe any additional scheduling requests, such as "Avoid conflicting with battles", etc.'
+    = f.input :scheduling_additional, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Please describe any additional scheduling requests, such as "Avoid conflicting with battles", etc. If this class is being taught in a private camp or merchant booth please give the exact day and time you want the class taught.'
 
   %fieldset
     %legend Special Needs
