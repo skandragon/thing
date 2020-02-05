@@ -110,14 +110,14 @@ class Instructable < ApplicationRecord
     'Pennsic University' => [
       'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
       'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
-      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'A&S 18', 'A&S 19',
-      'Bog U', 'University-Battlefield', 'RS1', 'RS2', 'RS3'
+      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'A&S 18', 'A&S 19', 'A&S 20',
+      'University-Battlefield', 'RS1', 'RS2'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
-    'Newcomers' => [ 'A&S 19' ],
+    'Newcomers' => [ 'A&S 20' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
-    'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent', 'A&S 9' ],
+    'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts', 'Performing Rehearsal Arts Tent (PART)', 'Performing Arts Rehearsal & CLassroom (PARC)', 'A&S 9' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 4'],
@@ -135,10 +135,10 @@ class Instructable < ApplicationRecord
       'General Archery',
       'Novelty Range'
     ],
-    'Youth/Teen University' => ['A&S 6'],
-    'First Aid' => ['A&S 14'],
+    'Youth University' => ['Family Point Tent 2'],
+    'Teen University' => ['A&S 6'],
     'Youth Combat' => [ 'Youth Combat List' ],
-    'In Persona' => [ 'A&S 1' ],
+    'In Persona' => [ 'A&S 3' ],
     'Martial Activities' => [
       'Battlefield List',
       'Blue List',
@@ -175,10 +175,11 @@ class Instructable < ApplicationRecord
     ],
     'East Kingdom Royal' => [ 'East Kingdom Royal' ],
     'Horde' => [ 'Horde Camp' ],
-    'Family Activities' => [ 'Family Point Tent 1', 'Family Point Tent 2' ],
-    'Youth Point' => [ 'Youth Point' ],
+    'Family Point' => [ 'A&S 6', 'Family Point Tent 1', 'Family Point Tent 2', 'Family Games Tent', 'Playground' ],
+    'Family Games' => [ 'Family Games Tent' ],
+    '0-3 Programming' => [ 'Playground' ],
     'Bog U' => [ 'Bog U' ],
-    'Maghribi' => [ 'A&S 16'],
+    'Maghribi' => [ 'A&S 17'],
   }
 
   SCHEDULES = [

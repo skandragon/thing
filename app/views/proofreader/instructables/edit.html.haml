@@ -1,6 +1,12 @@
 - title "Proofreading #{@instructable.name}"
 
 %p.alert.alert-info Track: #{@instructable.track}
+%p.alert.alert-info Instructor: #{@instructable.user.titled_sca_name},
+AKA #{@instructable.user.mundane_name},
+= mailto_link_for_instructable(@instructable)
+
+%br
+%br
 
 = simple_form_for @instructable, url: proofreader_instructable_path(@instructable), html: { :class => 'form-group' } do |f|
   %fieldset
