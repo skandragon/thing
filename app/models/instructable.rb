@@ -180,6 +180,7 @@ class Instructable < ApplicationRecord
     '0-3 Programming' => [ 'Playground' ],
     'Bog U' => [ 'Bog U' ],
     'Maghribi' => [ 'A&S 17'],
+    'Harp' => ['Argent Fox'],
   }
 
   SCHEDULES = [
