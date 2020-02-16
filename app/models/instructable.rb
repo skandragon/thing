@@ -131,9 +131,9 @@ class Instructable < ApplicationRecord
     'Archery' => [
       'Archery',
       'Archery Tent',
-      'Family Range',
-      'General Archery',
-      'Novelty Range'
+      'Blue Range',
+      'Gold Range',
+      'Red Range'
     ],
     'Youth University' => ['Family Point Tent 2'],
     'Teen University' => ['A&S 6'],
