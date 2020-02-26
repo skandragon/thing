@@ -282,7 +282,7 @@ class Instructable < ApplicationRecord
     :culture, :topic, :subtopic,
     :handout_fee, :handout_limit,
     :material_fee, :material_limit,
-    :fee_itemization,
+    :fee_itemization, :adult_reason, :adult_only
   ]
 
   def location_nontrack?

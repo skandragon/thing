@@ -1,11 +1,11 @@
 - title "Proofreading #{@instructable.name}"
 
 %p.alert.alert-info Track: #{@instructable.track}
-%p.alert.alert-info Instructor: #{@instructable.user.titled_sca_name},
-AKA #{@instructable.user.mundane_name},
-= mailto_link_for_instructable(@instructable)
-
-%br
+%p.alert.alert-info
+  - if @instructable.user
+    Instructor: #{@instructable.user.titled_sca_name},
+    AKA #{@instructable.user.mundane_name}
+    = mailto_link_for_instructable(@instructable)
 %br
 
 = simple_form_for @instructable, url: proofreader_instructable_path(@instructable), html: { :class => 'form-group' } do |f|
@@ -14,6 +14,9 @@ AKA #{@instructable.user.mundane_name},
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'form-control' }
     = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'form-control' }, hint: 'Book description limited to 150 characters'
     = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'form-control' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
+    = f.input :adult_only
+    #adult-only
+    = f.input :adult_reason, required: true, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Describe why this class is limited to adults.'
     = f.input :culture, collection: Instructable::CULTURES, input_html: { class: 'form-control' }, hint: 'If this class focuses on a culture, please select it here.  Leave this choice blank if there is no specific focus.'
     = f.input :topic, collection: Instructable::TOPICS.keys, input_html: { class: 'form-control' }, hint: 'Select an appropriate topic for this class.  Some topics have optional subtopics, which may be selected if one applies.'
     #subtopic
