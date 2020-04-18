@@ -11,6 +11,8 @@ class Admin::TracksController < ApplicationController
     @total_hours = Instructable.sum('duration * repeat_count')
     @needs_proofread_count = @instructable_count - Instructable.where(:proofread => true).count
 
+    @cancel_count = Changelog.where(:action => 'create').where.not(:target_id => Instructable.select(:id)).count
+
     @percent_completed = {}
     Instructable::TRACKS.keys.each do |track|
       total = @totals[track]
