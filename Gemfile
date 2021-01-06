@@ -76,7 +76,6 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'capistrano3-puma'
-  gem 'capistrano3-nginx'
   gem 'capistrano-upload-config'
 end
 

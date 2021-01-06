@@ -89,8 +89,6 @@ GEM
       sidekiq (>= 3.4)
     capistrano-upload-config (0.8.2)
       capistrano (>= 3.0)
-    capistrano3-nginx (3.0.1)
-      capistrano (~> 3.0)
     capistrano3-puma (3.1.1)
       capistrano (~> 3.7)
       capistrano-bundler
@@ -404,7 +402,6 @@ DEPENDENCIES
   capistrano-rbenv
   capistrano-sidekiq
   capistrano-upload-config
-  capistrano3-nginx
   capistrano3-puma
   capybara
   coffee-rails
@@ -456,4 +453,4 @@ RUBY VERSION
    ruby 2.4.3p205
 
 BUNDLED WITH
-   2.0.1
+   2.1.4
