@@ -89,7 +89,7 @@ class InstructablesController < ApplicationController
       :heat_source, :heat_source_description, :additional_instructors_expanded,
       :culture, :topic, :subtopic,
     ]
-    allowed += [{:requested_days => [], :requested_times => [], :special_needs => []}]
+    allowed += [{:requested_days => [], :requested_times => [], :special_needs => [], :inp_virt => []}]
     if params[:action] == 'update'
       if coordinator_for?(current_resource.track)
         if admin?

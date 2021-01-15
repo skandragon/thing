@@ -9,6 +9,10 @@
 %br
 
 = simple_form_for @instructable, url: proofreader_instructable_path(@instructable), html: { :class => 'form-group' } do |f|
+ %fieldset
+    %legend Class Presentation Type
+    = f.input :inp_virt, as: :check_boxes, checked: @instructable.inp_virt, collection: ['In Person', 'Virtual' ]
+
   %fieldset
     %legend Class Information
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'form-control' }

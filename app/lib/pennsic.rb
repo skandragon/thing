@@ -1,6 +1,6 @@
 class Pennsic
   def self.year
-    Time.now.year - 1972 + 1
+    Time.now.year - 1972 
   end
 
   def self.as

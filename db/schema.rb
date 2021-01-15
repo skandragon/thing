@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170131204915) do
+ActiveRecord::Schema.define(version: 20210115150029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20170131204915) do
     t.integer  "year"
     t.string   "schedule",                  limit: 255
     t.string   "info_tag",                  limit: 255
+    t.string   "inp_virt",                  limit: 255,                                array: true
   end
 
   create_table "instructor_profile_contacts", force: :cascade do |t|
@@ -106,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170131204915) do
     t.string   "area"
     t.integer  "user_id"
     t.datetime "accepted_on"
-    t.string  "version"
+    t.string   "version"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.datetime "mailed_on"

@@ -94,6 +94,7 @@
 
   %fieldset
     %legend Class Information
+    = f.input :inp_virt, label: 'Class will be offered', as: :check_boxes, checked: @instructable.inp_virt, collection: ['In Person', 'Virtually' ]
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'input-xlarge' }
     = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: 'Book description, limited to 150 characters'
     = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'

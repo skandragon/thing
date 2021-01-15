@@ -43,6 +43,7 @@
 #  year                      :integer
 #  schedule                  :string(255)
 #  info_tag                  :string(255)
+#  inp_virt                  :string(255)      is an Array
 #
 
 class Instructable < ApplicationRecord
@@ -249,6 +250,8 @@ class Instructable < ApplicationRecord
   validates_presence_of :topic
   validates_inclusion_of :topic, :in => TOPICS.keys
 
+  validates_presence_of :inp_virt
+
   validate :validate_subtopic
 
   before_validation :compress_arrays
@@ -424,6 +427,9 @@ class Instructable < ApplicationRecord
 
     self.special_needs ||= []
     self.special_needs = special_needs.select { |x| x.present? }
+
+    self.inp_virt ||= []
+    self.inp_virt = inp_virt.select { |x| x.present? }
   end
 
   def check_fees_for_zero
