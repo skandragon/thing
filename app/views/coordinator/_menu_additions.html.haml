@@ -7,6 +7,7 @@
     = link_to 'Pending Approval', coordinator_instructables_path(approved: 0), class: 'dropdown-item'
     = link_to 'Approved', coordinator_instructables_path(approved: 1), class: 'dropdown-item'
     = link_to 'Pending Schedule', coordinator_instructables_path(scheduled: 0), class: 'dropdown-item'
+    = link_to 'Check Schedule Later', coordinator_instructables_path(check_schedule_later: 1), class: 'dropdown-item'
     = link_to 'Scheduled', coordinator_instructables_path(scheduled: 1), class: 'dropdown-item'
     .dropdown-divider
     = link_to 'Reports and Stuff', coordinator_locations_path, class: 'dropdown-item'

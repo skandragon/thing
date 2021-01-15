@@ -11,6 +11,7 @@ class Coordinator::InstructablesController < ApplicationController
     @track = get_param(:track)
     @topic = get_param(:topic)
     @search = params[:search]
+    @checklater = get_param(:check_schedule_later)
 
     if params[:commit] == 'Clear'
       @approved = nil
@@ -52,6 +53,7 @@ class Coordinator::InstructablesController < ApplicationController
     @instructables = @instructables.where(approved: @approved) if @approved.present?
     @instructables = @instructables.where(scheduled: @scheduled) if @scheduled.present?
     @instructables = @instructables.where(topic: @topic) if @topic.present?
+    @instructables = @instructables.where(check_schedule_later: @checklater) if @checklater.present?
 
     respond_to do |format|
       format.html {

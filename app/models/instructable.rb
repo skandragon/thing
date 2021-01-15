@@ -44,6 +44,7 @@
 #  schedule                  :string(255)
 #  info_tag                  :string(255)
 #  inp_virt                  :string(255)      is an Array
+#  check_schedule_later      :boolean
 #
 
 class Instructable < ApplicationRecord

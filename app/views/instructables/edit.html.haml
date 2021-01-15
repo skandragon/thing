@@ -5,6 +5,7 @@
   - if !@instructable.new_record? and coordinator_for?(@instructable.track)
     %fieldset
       %legend Scheduling
+      = f.input :check_schedule_later, as: :select, collection: { 'No' => false, 'Yes' => true }, include_blank: false, input_html: { class: 'input-mini' }
       - if admin?
         = f.input :track, collection: Instructable::TRACKS.keys.sort, include_blank: (@instructable.track.blank? or !Instructable::TRACKS.keys.include?(@instructable.track))
         = f.input :schedule, collection: Instructable::SCHEDULES.sort, include_blank: (@instructable.schedule.blank? or !Instructable::SCHEDULES.include?(@instructable.schedule))
@@ -94,7 +95,17 @@
 
   %fieldset
     %legend Class Information
-    = f.input :inp_virt, label: 'Class will be offered', as: :check_boxes, checked: @instructable.inp_virt, collection: ['In Person', 'Virtually' ]
+    = f.input :inp_virt, label: 'Class will be offered', as: :check_boxes, checked: @instructable.inp_virt, collection: ['In Person', 'Virtually', 'Either' ]
+    %p.alert.alert-block.alert-info
+      In Person - At Pennsic
+      %br
+      Virtually - video submission
+      %br
+      Either - at Pennsic if happening, otherwise on video
+      %br
+      %br
+      To teach both at Pennsic and submit a video check both In Person and Virtually.
+    %br
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'input-xlarge' }
     = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: 'Book description, limited to 150 characters'
     = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
