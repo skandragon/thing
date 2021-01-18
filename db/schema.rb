@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210115185645) do
+ActiveRecord::Schema.define(version: 20210118001311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,8 +92,11 @@ ActiveRecord::Schema.define(version: 20210115185645) do
     t.integer  "year"
     t.string   "schedule",                  limit: 255
     t.string   "info_tag",                  limit: 255
-    t.string   "inp_virt",                  limit: 255,                                array: true
-    t.boolean  "check_schedule_later"
+    t.boolean  "in_person_class",                       default: false
+    t.boolean  "virtual_class",                         default: false
+    t.boolean  "contingent_class",                      default: false
+    t.boolean  "waiver_signed",                         default: false
+    t.boolean  "check_schedule_later",                  default: false
   end
 
   create_table "instructor_profile_contacts", force: :cascade do |t|

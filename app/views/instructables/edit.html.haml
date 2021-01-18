@@ -95,17 +95,15 @@
 
   %fieldset
     %legend Class Information
-    = f.input :inp_virt, label: 'Class will be offered', as: :check_boxes, checked: @instructable.inp_virt, collection: ['In Person', 'Virtually', 'Either' ]
+    %h5 Class will be offered (You must select at least one)
+    = f.input :in_person_class, label: 'In Person - You agree to teach this class in person at Pennsic'
+    = f.input :virtual_class, label: 'Virtually - You agree to submit a video to be viewed by virtual participants'
+    = f.input :contingent_class, label: 'Contingent - If this is chosen, you will teach the class at Pennsic if it happens, virtually if not'
     %p.alert.alert-block.alert-info
-      In Person - At Pennsic
-      %br
-      Virtually - video submission
-      %br
-      Either - at Pennsic if happening, otherwise on video
-      %br
-      %br
-      To teach both at Pennsic and submit a video check both In Person and Virtually.
+      If you would like to teach the class at Pennsic AND virtually, please check both the In Person and Virtual boxes
     %br
+
+    %fieldset
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'input-xlarge' }
     = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: 'Book description, limited to 150 characters'
     = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'

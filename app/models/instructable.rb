@@ -45,6 +45,10 @@
 #  info_tag                  :string(255)
 #  inp_virt                  :string(255)      is an Array
 #  check_schedule_later      :boolean
+#  in_person_class           :boolean          default(FALSE)
+#  virtual_class             :boolean          default(FALSE)
+#  either_class              :boolean          default(FALSE)
+#  waiver_signed             :boolean          default(FALSE)
 #
 
 class Instructable < ApplicationRecord
@@ -251,9 +255,11 @@ class Instructable < ApplicationRecord
   validates_presence_of :topic
   validates_inclusion_of :topic, :in => TOPICS.keys
 
-  validates_presence_of :inp_virt
-
   validate :validate_subtopic
+
+  validate :validate_class_presentation
+
+  validate :validate_in_person_or_contingent
 
   before_validation :compress_arrays
   before_validation :check_fees_for_zero
@@ -384,6 +390,18 @@ class Instructable < ApplicationRecord
   end
 
   private
+
+  def validate_class_presentation
+    if in_person_class == false && virtual_class == false && either_class == false
+      errors.add(:in_person_class, "Must choose class presentation type")
+    end
+  end
+
+  def validate_in_person_or_contingent
+    if in_person_class == true && either_class == true
+      errors.add(:in_person_class, "Cannot choose both In Person and Contingent")
+    end
+  end
 
   def validate_subtopic
     if topic.present? and subtopic.present?
