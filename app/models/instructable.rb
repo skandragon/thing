@@ -43,11 +43,10 @@
 #  year                      :integer
 #  schedule                  :string(255)
 #  info_tag                  :string(255)
-#  inp_virt                  :string(255)      is an Array
-#  check_schedule_later      :boolean
+#  check_schedule_later      :boolean          default(FALSE)
 #  in_person_class           :boolean          default(FALSE)
 #  virtual_class             :boolean          default(FALSE)
-#  either_class              :boolean          default(FALSE)
+#  contingent_class          :boolean          default(FALSE)
 #  waiver_signed             :boolean          default(FALSE)
 #
 
@@ -392,13 +391,13 @@ class Instructable < ApplicationRecord
   private
 
   def validate_class_presentation
-    if in_person_class == false && virtual_class == false && either_class == false
+    if in_person_class == false && virtual_class == false && contingent_class == false
       errors.add(:in_person_class, "Must choose class presentation type")
     end
   end
 
   def validate_in_person_or_contingent
-    if in_person_class == true && either_class == true
+    if in_person_class == true && contingent_class == true
       errors.add(:in_person_class, "Cannot choose both In Person and Contingent")
     end
   end
@@ -447,8 +446,6 @@ class Instructable < ApplicationRecord
     self.special_needs ||= []
     self.special_needs = special_needs.select { |x| x.present? }
 
-    self.inp_virt ||= []
-    self.inp_virt = inp_virt.select { |x| x.present? }
   end
 
   def check_fees_for_zero
