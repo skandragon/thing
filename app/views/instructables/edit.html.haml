@@ -102,6 +102,15 @@
     %p.alert.alert-block.alert-info
       If you would like to teach the class at Pennsic AND virtually, please check both the In Person and Virtual boxes
     %br
+    #virtual-waiver
+      %p.alert.alert-block.alert-info
+        GRANTS OF USE -- The box below must be checked if the class is to be taught Virtually or Contingent
+        %br
+        The SCA may publish the Work electronically
+        %br
+        I represent and warrant that I am the sole creator of this Work, and I agree to indemnify and hold harmless the SCA in the event any claim is brought against the SCA by any person claiming that they have any right, title or interest in the Works superior to mine or that I did not have lawful authority to grant the above permission and rights to the SCA.
+        = f.input :waiver_signed, label: 'I agree'
+        %br
 
     %fieldset
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'input-xlarge' }

@@ -87,7 +87,7 @@ class InstructablesController < ApplicationController
       :adult_reason, :repeat_count,
       :scheduling_additional, :special_needs_description,
       :heat_source, :heat_source_description, :additional_instructors_expanded,
-      :culture, :topic, :subtopic, :in_person_class, :virtual_class, :either_class, :waiver_signed,
+      :culture, :topic, :subtopic, :in_person_class, :virtual_class, :contingent_class, :waiver_signed,
     ]
     allowed += [{:requested_days => [], :requested_times => [], :special_needs => [] }]
     if params[:action] == 'update'

@@ -45,7 +45,7 @@
 #  info_tag                  :string(255)
 #  check_schedule_later      :boolean          default(FALSE)
 #  in_person_class           :boolean          default(FALSE)
-#  virtual_class             :boolean          default(FALSE)
+#  virtual_class                :boolean          default(FALSE)
 #  contingent_class          :boolean          default(FALSE)
 #  waiver_signed             :boolean          default(FALSE)
 #
@@ -221,6 +221,10 @@ class Instructable < ApplicationRecord
     ret
   end
 
+  validate :validate_in_person_or_contingent
+
+  validate :validate_waiver_signed
+
   validates_presence_of :name
   validates_length_of :name, :within => 3..50
 
@@ -257,8 +261,6 @@ class Instructable < ApplicationRecord
   validate :validate_subtopic
 
   validate :validate_class_presentation
-
-  validate :validate_in_person_or_contingent
 
   before_validation :compress_arrays
   before_validation :check_fees_for_zero
@@ -399,6 +401,12 @@ class Instructable < ApplicationRecord
   def validate_in_person_or_contingent
     if in_person_class == true && contingent_class == true
       errors.add(:in_person_class, "Cannot choose both In Person and Contingent")
+    end
+  end
+
+  def validate_waiver_signed
+    if (virtual_class == true || contingent_class == true) && waiver_signed == false
+      errors.add(:waiver_signed, "If the class is virtual or contingent you must sign the waiver")
     end
   end
 
