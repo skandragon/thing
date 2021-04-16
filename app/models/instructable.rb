@@ -222,6 +222,7 @@ class Instructable < ApplicationRecord
   end
 
   validate :validate_in_person_or_contingent
+  validate :validate_virtual_or_contingent
 
   validate :validate_waiver_signed
 
@@ -401,6 +402,12 @@ class Instructable < ApplicationRecord
   def validate_in_person_or_contingent
     if in_person_class == true && contingent_class == true
       errors.add(:in_person_class, "Cannot choose both In Person and Contingent")
+    end
+  end
+
+  def validate_virtual_or_contingent
+    if virtual_class == true && contingent_class == true
+      errors.add(:virtual_class, "Cannot choose both Virtual and Contingent")
     end
   end
 

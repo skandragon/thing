@@ -12,6 +12,8 @@ class Coordinator::InstructablesController < ApplicationController
     @topic = get_param(:topic)
     @search = params[:search]
     @checklater = get_param(:check_schedule_later)
+    @virtclass = get_param(:virtual_class)
+    @contclass = get_param(:contingent_class)
 
     if params[:commit] == 'Clear'
       @approved = nil
@@ -54,6 +56,8 @@ class Coordinator::InstructablesController < ApplicationController
     @instructables = @instructables.where(scheduled: @scheduled) if @scheduled.present?
     @instructables = @instructables.where(topic: @topic) if @topic.present?
     @instructables = @instructables.where(check_schedule_later: @checklater) if @checklater.present?
+    @instructables = @instructables.where(virtual_class: @virtclass) if @virtclass.present?
+    @instructables = @instructables.where(contingent_class: @contclass) if @contclass.present?
 
     respond_to do |format|
       format.html {
