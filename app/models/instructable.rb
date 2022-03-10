@@ -122,7 +122,7 @@ class Instructable < ApplicationRecord
     'Newcomers' => [ 'A&S 20' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
-    'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts', 'Performing Rehearsal Arts Tent (PART)', 'Performing Arts Rehearsal & CLassroom (PARC)', 'A&S 9' ],
+    'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent (PART)', 'Performing Arts Rehearsal & CLassroom (PARC)', 'A&S 9', 'Battlefield Loud' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 4'],
