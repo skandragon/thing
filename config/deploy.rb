@@ -1,5 +1,5 @@
 set :application, 'thing'
-set :repo_url, 'git://github.com/skandragon/thing.git'
+set :repo_url, 'http://github.com/skandragon/thing.git'
 
 set :deploy_to, '/www/thing'
 set :branch, 'master'
