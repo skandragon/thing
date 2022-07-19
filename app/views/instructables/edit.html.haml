@@ -5,6 +5,7 @@
   - if !@instructable.new_record? and coordinator_for?(@instructable.track)
     %fieldset
       %legend Scheduling
+      = f.input :check_schedule_later, as: :select, collection: { 'No' => false, 'Yes' => true }, include_blank: false, input_html: { class: 'input-mini' }
       - if admin?
         = f.input :track, collection: Instructable::TRACKS.keys.sort, include_blank: (@instructable.track.blank? or !Instructable::TRACKS.keys.include?(@instructable.track))
         = f.input :schedule, collection: Instructable::SCHEDULES.sort, include_blank: (@instructable.schedule.blank? or !Instructable::SCHEDULES.include?(@instructable.schedule))
@@ -94,6 +95,25 @@
 
   %fieldset
     %legend Class Information
+    %p.alert.alert-block.alert-info
+    %h5 Class will be offered (You must select at least one)
+    = f.input :in_person_class, label: 'In Person - You agree to teach this class in person at Pennsic'
+    = f.input :virtual_class, label: 'Virtually - You agree to submit a video to be viewed by virtual participants. There are no current plans to teach classes via Zoom or other conferencing service, or record at Pennsic'
+    = f.input :contingent_class, label: 'Contingent - If this is chosen, you will teach the class at Pennsic if it happens, virtually (see above) if not', :disabled => true
+    %p.alert.alert-block.alert-info
+      <!-- If you would like to teach the class at Pennsic AND virtually, please check both the In Person and Virtual boxes -->
+    %br
+    #virtual-waiver
+      %p.alert.alert-block.alert-info
+        GRANTS OF USE -- The box below must be checked if the class is to be taught Virtually or Contingent
+        %br
+        The SCA may publish the Work electronically
+        %br
+        I represent and warrant that I am the sole creator of this Work, and I agree to indemnify and hold harmless the SCA in the event any claim is brought against the SCA by any person claiming that they have any right, title or interest in the Works superior to mine or that I did not have lawful authority to grant the above permission and rights to the SCA.
+        = f.input :waiver_signed, label: 'I agree'
+        %br
+
+    %fieldset
     = f.input :name, label: 'Class title', hint: 'Limited to 50 characters', input_html: { maxlength: 50, class: 'input-xlarge' }
     = f.input :description_book, label: 'Description (book)', input_html: { rows: 2, maxlength: 150, class: 'input-xxlarge' }, hint: 'Book description, limited to 150 characters'
     = f.input :description_web, label: 'Description (web)', input_html: { rows: 5, class: 'input-xxlarge' }, placeholder: 'Web description is not limited, but please keep it concise.  If this is blank, the book description will be used.'
@@ -124,7 +144,7 @@
       %br
       Classes designed exclusively for students under the age of 18 must
       be scheduled with Youth Point
-      = link_to '(pennsic.youth@gmail.com)', 'mailto:pennsic.yough@gmail.com'
+      = link_to '(fpoint@pennsicwar.org)', 'mailto:fpoint@pennsicwar.org'
       %br
       %br
       Pennsic University classes targeted at students under 18 years of
@@ -148,7 +168,7 @@
       Requested days and times are best effort.  Leave them all blank, and we will use the days you will be attending Pennsic from your profile.
     = f.input :requested_days, as: :check_boxes, checked: @instructable.requested_days, collection: Instructable::CLASS_DATES, label_method: :to_s, hint: "Select the days you prefer to teach this class, or leave blank and your profile's days will be used."
     = f.input :requested_times, as: :check_boxes, checked: @instructable.requested_times, collection:Instructable::CLASS_TIMES, hint: 'Select the times you prefer to teach this class, or leave blank to indicate anytime is OK.'
-    = f.input :scheduling_additional, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Please describe any additional scheduling requests, such as "Avoid conflicting with battles", etc.'
+    = f.input :scheduling_additional, input_html: { rows: 3, class: 'input-xxlarge' }, placeholder: 'Please describe any additional scheduling requests, such as "Avoid conflicting with battles", etc. If this class is being taught in a private camp or merchant booth please give the exact day and time you want the class taught.'
 
   %fieldset
     %legend Special Needs

@@ -23,8 +23,6 @@ role :web, 'explorer@sca.flame.org'
 role :app, 'explorer@sca.flame.org'
 role :db,  'explorer@sca.flame.org', :primary => true
 
-set :nginx_server_name, 'thing.pennsicuniversity.org'
-
 set :puma_preload_app, true
 set :puma_init_active_record, true
 

@@ -1,10 +1,10 @@
 class Pennsic
   def self.year
-    Time.now.year - 1972 + 1
+    Time.now.year - 1973
   end
 
   def self.as
-    'LII'
+    'XLIX'
   end
 
   def self.calendar_year
@@ -12,7 +12,7 @@ class Pennsic
   end
 
   def self.dates
-    (Date.parse('2018-07-27')..Date.parse('2018-08-12')).to_a
+    (Date.parse('2022-07-29')..Date.parse('2022-08-14')).to_a
   end
 
   def self.dates_formatted
@@ -20,7 +20,7 @@ class Pennsic
   end
 
   def self.class_dates_raw
-    (Date.parse('2018-07-30')..Date.parse('2018-08-10')).to_a
+    (Date.parse('2022-07-29')..Date.parse('2022-08-14')).to_a
   end
 
   def self.class_dates

@@ -43,6 +43,11 @@
 #  year                      :integer
 #  schedule                  :string(255)
 #  info_tag                  :string(255)
+#  check_schedule_later      :boolean          default(FALSE)
+#  in_person_class           :boolean          default(FALSE)
+#  virtual_class                :boolean          default(FALSE)
+#  contingent_class          :boolean          default(FALSE)
+#  waiver_signed             :boolean          default(FALSE)
 #
 
 class Instructable < ApplicationRecord
@@ -51,7 +56,7 @@ class Instructable < ApplicationRecord
   has_many :changelogs, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
-  default_scope { where(year: 2018) }
+  default_scope { where(year: 2022) }
 
   has_paper_trail
 
@@ -97,8 +102,8 @@ class Instructable < ApplicationRecord
     'Meetings' => [],
     'Parent/Child' => [],
     'Party' => [],
-    'Performance' => %w(Bardic Commedia Music Rehersal Storytelling Theater),
-    'Performing Arts and Music' => [ 'Bardic', 'Commedia', 'Instrumental Music', 'Juggling', 'Rehersal', 'Storytelling', 'Theater', 'Vocal Music' ],
+    'Performance' => %w(Bardic Commedia Music Rehearsal Storytelling Theater),
+    'Performing Arts and Music' => [ 'Bardic', 'Commedia', 'Instrumental Music', 'Juggling', 'Rehearsal', 'Storytelling', 'Theater', 'Vocal Music' ],
     'SCA Life' => %W(Court Heraldry Meetings Newcomers Persona),
     'Sciences' => [ 'Astronomy', 'Animals', 'Black Powder', 'Equestrian', 'Gardens', 'Research' ],
     'Scribal Arts' => %w(Calligraphy Illumination),
@@ -110,15 +115,14 @@ class Instructable < ApplicationRecord
     'Pennsic University' => [
       'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
       'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
-      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'A&S 18', 'A&S 19',
-      'Bog U', 'University-Battlefield', 'RS1', 'RS2', 'RS3'
+      'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'A&S 18', 'A&S 19', 'A&S 20',
+      'University-Battlefield', 'RS1', 'RS2'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
-    'Newcomers' => [ 'A&S 19' ],
+    'Newcomers' => [ 'A&S 20' ],
     'European Dance' => [ 'Dance Tent' ],
     'Games' => [ 'Games Tent' ],
-    'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent', 'A&S 9' ],
-    'Cooking Lab' => [ 'Æthelmearc Cooking Lab' ],
+    'Performing Arts and Music' => [ 'Amphitheater', 'Performing Arts Tent', 'Performing Arts Rehearsal Tent (PART)', 'Performing Arts Rehearsal & CLassroom (PARC)', 'A&S 9', 'Battlefield Loud' ],
     'Æthelmearc Scribal' => ['Æthelmearc 1', 'Æthelmearc 2', 'Æthelmearc 3' ],
     'Heraldry' => ['A&S 2'],
     'Glass' => ['A&S 4'],
@@ -132,30 +136,29 @@ class Instructable < ApplicationRecord
     'Archery' => [
       'Archery',
       'Archery Tent',
-      'Family Range',
-      'General Archery',
-      'Novelty Range'
+      'Blue Range',
+      'Gold Range',
+      'Red Range'
     ],
-    'Parent/Child' => ['A&S 6'],
-    'First Aid' => ['A&S 14'],
+    'Youth University' => ['Family Point Tent 2'],
+    'Teen University' => ['A&S 6'],
     'Youth Combat' => [ 'Youth Combat List' ],
-    'In Persona' => [ 'A&S 1' ],
+    'In Persona' => [ 'A&S 3' ],
     'Martial Activities' => [
-      'Battlefield List',
-      'Blue List',
-      'East Battlefield',
+      'Armored List Blue',
+      'Battlefield East',
       'Fort',
-      'Green List',
+      'Armored List Green',
       'Gunnery Point',
       'Inspection Point',
-      'Main Battlefield',
-      "Marshal's Point",
-      'North Battlefield',
-      'Red List',
-      'South Battlefield',
-      'West Battlefield',
-      'White List',
-    ],
+      'Battlefield',
+      "Marshall's Point",
+      'Battlefield North',
+      'Armored List Red',
+      'Battlefield South',
+      'Battlefield West',
+      'Armored List White',
+    ].sort,
     'Rapier Activities' => [
       'Rapier List 1',
       'Rapier List 2',
@@ -167,15 +170,21 @@ class Instructable < ApplicationRecord
     ],
     'Party' => ['Battlefield', 'Great Hall', 'Rune Stone Park'],
     'Court' => ['Great Hall'],
+    'Courtesan College' => ['Courtesan College'],
     'Event' => ['Great Hall', 'Rune Stone Park'],
     "Artisan's Row" => [
       "Artisan's Row A",
       "Artisan's Row B",
       "Artisan's Row C"
     ],
-    'Youth Point' => [ 'Youth Point' ],
+    'East Kingdom Royal' => [ 'East Kingdom Royal' ],
+    'Horde' => [ 'Horde Camp' ],
+    'Family Point' => [ 'A&S 6', 'Family Point Tent 1', 'Family Point Tent 2', 'Family Games Tent', 'Playground' ],
+    'Family Games' => [ 'Family Games Tent' ],
+    '0-3 Programming' => [ 'Playground' ],
     'Bog U' => [ 'Bog U' ],
-    'Maghribi' => [ 'A&S 16'],
+    'Maghribi' => [ 'A&S 17'],
+    'Harp' => ['Argent Fox'],
   }
 
   SCHEDULES = [
@@ -212,6 +221,11 @@ class Instructable < ApplicationRecord
     ret
   end
 
+  validate :validate_in_person_or_contingent
+  validate :validate_virtual_or_contingent
+
+  validate :validate_waiver_signed
+
   validates_presence_of :name
   validates_length_of :name, :within => 3..50
 
@@ -247,6 +261,8 @@ class Instructable < ApplicationRecord
 
   validate :validate_subtopic
 
+  validate :validate_class_presentation
+
   before_validation :compress_arrays
   before_validation :check_fees_for_zero
   before_validation :set_default_track, on: :create
@@ -278,7 +294,7 @@ class Instructable < ApplicationRecord
     :culture, :topic, :subtopic,
     :handout_fee, :handout_limit,
     :material_fee, :material_limit,
-    :fee_itemization,
+    :fee_itemization, :adult_reason, :adult_only
   ]
 
   def location_nontrack?
@@ -377,6 +393,30 @@ class Instructable < ApplicationRecord
 
   private
 
+  def validate_class_presentation
+    if in_person_class == false && virtual_class == false && contingent_class == false
+      errors.add(:in_person_class, "Must choose class presentation type")
+    end
+  end
+
+  def validate_in_person_or_contingent
+    if in_person_class == true && contingent_class == true
+      errors.add(:in_person_class, "Cannot choose both In Person and Contingent")
+    end
+  end
+
+  def validate_virtual_or_contingent
+    if virtual_class == true && contingent_class == true
+      errors.add(:virtual_class, "Cannot choose both Virtual and Contingent")
+    end
+  end
+
+  def validate_waiver_signed
+    if (virtual_class == true || contingent_class == true) && waiver_signed == false
+      errors.add(:waiver_signed, "If the class is virtual or contingent you must sign the waiver")
+    end
+  end
+
   def validate_subtopic
     if topic.present? and subtopic.present?
       choices = TOPICS[topic]
@@ -420,6 +460,7 @@ class Instructable < ApplicationRecord
 
     self.special_needs ||= []
     self.special_needs = special_needs.select { |x| x.present? }
+
   end
 
   def check_fees_for_zero

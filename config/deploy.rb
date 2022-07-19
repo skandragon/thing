@@ -1,5 +1,5 @@
 set :application, 'thing'
-set :repo_url, 'git://github.com/skandragon/thing.git'
+set :repo_url, 'http://github.com/skandragon/thing.git'
 
 set :deploy_to, '/www/thing'
 set :branch, 'master'
@@ -30,8 +30,6 @@ set :puma_conf, "#{shared_path}/config/puma.rb"
 
 namespace :deploy do
   before 'check:linked_files', 'puma:config'
-  before 'check:linked_files', 'puma:nginx_config'
-  after 'puma:smart_restart', 'nginx:restart'
 
   task :git_log do
     on roles(:app), in: :sequence, except: {no_release: true} do

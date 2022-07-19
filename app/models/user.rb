@@ -49,6 +49,8 @@ class User < ApplicationRecord
     count countess viscount viscountess
     baron baroness
     master mistress
+    noble
+    armiger
     lord lady
     sir
     king queen

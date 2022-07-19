@@ -87,11 +87,12 @@ class InstructablesController < ApplicationController
       :adult_reason, :repeat_count,
       :scheduling_additional, :special_needs_description,
       :heat_source, :heat_source_description, :additional_instructors_expanded,
-      :culture, :topic, :subtopic,
+      :culture, :topic, :subtopic, :in_person_class, :virtual_class, :contingent_class, :waiver_signed,
     ]
-    allowed += [{:requested_days => [], :requested_times => [], :special_needs => []}]
+    allowed += [{:requested_days => [], :requested_times => [], :special_needs => [] }]
     if params[:action] == 'update'
       if coordinator_for?(current_resource.track)
+        allowed += [:check_schedule_later]
         if admin?
           allowed += [ :schedule, :approved, :instances_attributes => [ :id, :start_time, :location, :override_location ] ]
         else

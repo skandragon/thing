@@ -4,9 +4,12 @@
   .dropdown-menu{aria: {labelledby: "coordinatorDropdown"}}
     %h6.dropdown-header Classes in Track
     = link_to 'All classes in track', coordinator_instructables_path, class: 'dropdown-item'
+    = link_to 'Virtual Classes', coordinator_instructables_path(virtual_class: 1), class: 'dropdown-item'
+    = link_to 'Contingent Classes', coordinator_instructables_path(contingent_class: 1), class: 'dropdown-item'
     = link_to 'Pending Approval', coordinator_instructables_path(approved: 0), class: 'dropdown-item'
     = link_to 'Approved', coordinator_instructables_path(approved: 1), class: 'dropdown-item'
     = link_to 'Pending Schedule', coordinator_instructables_path(scheduled: 0), class: 'dropdown-item'
+    = link_to 'Check Schedule Later', coordinator_instructables_path(check_schedule_later: 1), class: 'dropdown-item'
     = link_to 'Scheduled', coordinator_instructables_path(scheduled: 1), class: 'dropdown-item'
     .dropdown-divider
     = link_to 'Reports and Stuff', coordinator_locations_path, class: 'dropdown-item'

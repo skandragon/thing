@@ -197,6 +197,8 @@ section {
   border-right: 0;
 }
 .subnav .dropdown-menu {
+  max-height: 350px;
+  overflow-y: auto;
   @include rounded(0 0 4px 4px);
 }
 
