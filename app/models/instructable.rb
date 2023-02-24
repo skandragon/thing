@@ -235,7 +235,7 @@ class Instructable < ApplicationRecord
   validates_presence_of :duration
   validates_numericality_of :duration, greater_than: 0
 
-  validates_numericality_of :handout_limit, greater_than: 0, allow_blank: true, only_integer: true
+  validates_numericality_of :handout_limit, greater_than: -1, allow_blank: true, only_integer: true
   validates_numericality_of :handout_fee, greater_than: 0, allow_blank: true
 
   validates_numericality_of :material_limit, greater_than: 0, allow_blank: true, only_integer: true
