@@ -12,7 +12,7 @@ class Pennsic
   end
 
   def self.dates
-    (Date.parse('2022-07-29')..Date.parse('2022-08-14')).to_a
+    (Date.parse('2023-07-28')..Date.parse('2023-08-143')).to_a
   end
 
   def self.dates_formatted
@@ -20,7 +20,7 @@ class Pennsic
   end
 
   def self.class_dates_raw
-    (Date.parse('2022-07-29')..Date.parse('2022-08-14')).to_a
+    (Date.parse('2023-07-28')..Date.parse('2023-08-13')).to_a
   end
 
   def self.class_dates

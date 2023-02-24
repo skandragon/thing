@@ -56,7 +56,7 @@ class Instructable < ApplicationRecord
   has_many :changelogs, as: :target
   accepts_nested_attributes_for :instances, allow_destroy: true
 
-  default_scope { where(year: 2022) }
+  default_scope { where(year: 2023) }
 
   has_paper_trail
 
