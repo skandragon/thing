@@ -19,9 +19,9 @@
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-role :web, 'explorer@thing.pennsicuniversity.org'
-role :app, 'explorer@thing.pennsicuniversity.org'
-role :db,  'explorer@thing.pennsicuniversity.org', :primary => true
+role :web, 'explorer@44.199.198.41'
+role :app, 'explorer@44.199.198.41'
+role :db,  'explorer@44.199.198.41', :primary => true
 
 set :puma_preload_app, true
 set :puma_init_active_record, true
