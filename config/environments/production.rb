@@ -60,14 +60,14 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: "thing.pennsicuniversity.org" }
   config.action_mailer.smtp_settings = {
-        address: "thing.pennsicuniversity.org",
+#         address: "thing.pennsicuniversity.org",
         port: 25,
-        domain: 'thing.pennsicuniversity.org',
+#         domain: 'thing.pennsicuniversity.org',
 #        user_name: Rails.application.secrets.smtp_username,
 #        password: Rails.application.secrets.smtp_password,
 #        authentication: :plain,
 #        enable_starttls_auto: true,
-        openssl_verify_mode: 'none'
+#        openssl_verify_mode: 'none'
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
