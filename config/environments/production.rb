@@ -58,11 +58,11 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: "sca.flame.org" }
+  config.action_mailer.default_url_options = { host: "thing.pennsicuniversity.org" }
   config.action_mailer.smtp_settings = {
-        address: "postmark.flame.org",
+        address: "thing.pennsicuniversity.org",
         port: 587,
-        domain: 'sca.flame.org',
+        domain: 'thing.pennsicuniversity.org',
         user_name: Rails.application.secrets.smtp_username,
         password: Rails.application.secrets.smtp_password,
         authentication: :plain,

@@ -23,7 +23,7 @@ class CalendarRenderer
 
     calendar = RiCal.Calendar do |cal|
       cal.default_tzid = 'America/New_York'
-      cal.prodid = '//flame.org//PennsicU Converter.0//EN'
+      cal.prodid = '//thing.pennsicuniversity.org//PennsicU Converter.0//EN'
       cal.add_x_property('X-WR-CALNAME', @options[:calendar_name])
       cal.add_x_property('X-WR-RELCALID', make_uid) # should be static per calendar
       cal.add_x_property('X-WR-CALDESC', "PennsicU #{Pennsic.year} Master Schedule")
@@ -432,6 +432,6 @@ class CalendarRenderer
     items << @options[:calendar_id] or 'all'
     d = Digest::SHA1.new
     d << items.join('/')
-    d.hexdigest + '@pennsic.flame.org'
+    d.hexdigest + '@thing.pennsicuniversity.org'
   end
 end

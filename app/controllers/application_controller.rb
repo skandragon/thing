@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   def miniprofiler
-    if current_user && admin? && current_user.email == 'explorer@flame.org'
+    if current_user && admin? && current_user.email == 'explorer@thing.pennsicuniversity.org'
       Rack::MiniProfiler.authorize_request
     end
   end
