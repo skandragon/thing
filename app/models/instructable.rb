@@ -70,7 +70,7 @@ class Instructable < ApplicationRecord
   CULTURES = [
     'Multiple Cultures',
     'European',
-    'Africa and Bronze Age',
+    'Africa or Bronze Age',
     'Middle Eastern',
     'Far Eastern',
     'Other',
