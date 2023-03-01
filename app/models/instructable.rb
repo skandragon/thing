@@ -70,7 +70,7 @@ class Instructable < ApplicationRecord
   CULTURES = [
     'Multiple Cultures',
     'European',
-    'Maghribi',
+    'Africa and Bronze Age',
     'Middle Eastern',
     'Far Eastern',
     'Other',
@@ -100,7 +100,7 @@ class Instructable < ApplicationRecord
       'War Points',
     ],
     'Meetings' => [],
-    'Parent/Child' => [],
+    'Family Activities' => [],
     'Party' => [],
     'Performance' => %w(Bardic Commedia Music Rehearsal Storytelling Theater),
     'Performing Arts and Music' => [ 'Bardic', 'Commedia', 'Instrumental Music', 'Juggling', 'Rehearsal', 'Storytelling', 'Theater', 'Vocal Music' ],
