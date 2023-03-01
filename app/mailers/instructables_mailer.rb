@@ -1,7 +1,8 @@
 class InstructablesMailer < ActionMailer::Base
   layout 'email'
 
-  # default from: 'thing@pennsicuniversity.org', css: 'email'
+  default from: 'thing@pennsicuniversity.org'
+  #, css: 'email'
 
   #
   # On create, send mail to the user who created it so they know it
