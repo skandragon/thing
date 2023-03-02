@@ -1,6 +1,7 @@
 - title 'Classes'
 
 - if @target_user.instructor?
+  <%= "Environment: #{RAILS_ENV}" %>
   %p.alert.alert-block.alert-info
     You have requested #{@target_user.instructables_session_count} of your
     allowed #{@target_user.class_limit} classes.
