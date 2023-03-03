@@ -19,6 +19,16 @@ class InstructablesMailer < ActionMailer::Base
     mail(to: address, subject: "Class added: #{@instructable.name}")
   end
 
+  def on_update(instructable, address)
+    @instructable = instructable
+    if address == @instructable.user.email
+      @reason = 'you updated this class'
+    else
+      @reason = 'you are an admin of the system'
+    end
+
+    mail(to: address, subject: "Class UPDATED: #{@instructable.name}")
+  end
   #
   # Send mail when the track changes to the appropriate track coordinators
   #
