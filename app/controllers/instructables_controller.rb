@@ -120,7 +120,7 @@ class InstructablesController < ApplicationController
     if Rails.env == 'production'
       admin_addresses.each do |address|
         begin
-          InstructablesMailer.on_create(@instructable, address).deliver_later
+          InstructablesMailer.on_create(@instructable, address).deliver_now
         rescue StandardError => e
           flash[:error] = 'Email could not be sent to one or more track coordinators.  However, your class was added and will appear on their pending class lists.'
         end
