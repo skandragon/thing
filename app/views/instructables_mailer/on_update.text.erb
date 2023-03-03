@@ -6,40 +6,15 @@ A class has been MODIFIED in the Pennsic University scheduling system.
 Instructor: <%= @instructable.user.titled_sca_name %>
 <% end -%>
 
-<% changelogs = @instructable.changelogs.order('created_at DESC') %>
-<% changelogs.each do |changelog| %>
-  <% next if changelog.useless? %>
-  <h4>
-    <%= changelog.created_at.to_s(:pennsic) %>
-  </h4>
-  <% if changelog.user %>
-    <h5>
-      <%= changelog.user.best_name %>
-    </h5>
-  <% else %>
-    <h5>[deleted]</h5>
-  <% end %>
-  <table class="table table-bordered" id="changelog-modal">
-    <thead>
-      <tr>
-        <th class="field">Field</th>
-        <th class="old-value">Change</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% Changelog.decompose(changelog.changelog).each do |field, changes| %>
-        <tr>
-          <td>
-            <%= field %>
-          </td>
-          <td>
-            <%= html_diff(changes[0].to_s, changes[1].to_s) %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+Book Description:
+
+<%= @instructable.description_book %>
+
+<% if @instructable.description_web.present? -%>
+Web Description:
+
+<%= @instructable.description_web %>
+<% end -%>
 
 
 NOTE:  You are receiving this mail because <%= @reason %>.

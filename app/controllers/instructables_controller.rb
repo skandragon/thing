@@ -55,7 +55,7 @@ class InstructablesController < ApplicationController
       @instructable.cleanup_unneeded_instances
       changelog.original = preflight
       changelog.validate_and_save # failure is an option...
-      send_email_on_update
+      send_email_on_update(changelog, changelog.original)
       redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: 'Class updated.'
     else
       render action: :edit
@@ -129,7 +129,7 @@ class InstructablesController < ApplicationController
     end
   end
 
-  def send_email_on_update
+  def send_email_on_update(changes, original)
     user_address = @instructable.user.email
     admin_addresses = User.where(admin: true).pluck(:email)
     admin_addresses -= [user_address]
@@ -143,7 +143,7 @@ class InstructablesController < ApplicationController
     if Rails.env == 'production'
       admin_addresses.each do |address|
         begin
-          InstructablesMailer.on_update(@instructable, address).deliver_now
+          InstructablesMailer.on_update(@instructable, address, changes, original).deliver_now
         rescue StandardError => e
           flash[:error] = 'Email could not be sent to one or more track coordinators.  However, your class was added and will appear on their pending class lists.'
         end

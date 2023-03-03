@@ -19,7 +19,7 @@ class InstructablesMailer < ActionMailer::Base
     mail(to: address, subject: "Class added: #{@instructable.name}")
   end
 
-  def on_update(instructable, address)
+  def on_update(instructable, address, changes, original)
     @instructable = instructable
     if address == @instructable.user.email
       @reason = 'you updated this class'
