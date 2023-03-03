@@ -55,7 +55,7 @@ class InstructablesController < ApplicationController
       @instructable.cleanup_unneeded_instances
       changelog.original = preflight
       changelog.validate_and_save # failure is an option...
-      send_email_on_update(changelog, changelog.original)
+      send_email_on_update(changelog, preflight)
       redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: 'Class updated.'
     else
       render action: :edit
@@ -135,7 +135,7 @@ class InstructablesController < ApplicationController
     admin_addresses -= [user_address]
 
     begin
-      InstructablesMailer.on_update(@instructable, user_address).deliver_now
+      InstructablesMailer.on_update(@instructable, user_address, changes, original).deliver_now
     rescue StandardError => e
       flash[:error] = "Email could not be delivered to your account's email address, #{@instructable.user.email}.  However, the requested class was successfully added.  Please update your profile."
     end
