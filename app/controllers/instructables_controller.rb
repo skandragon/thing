@@ -112,7 +112,7 @@ class InstructablesController < ApplicationController
     admin_addresses -= [user_address]
 
     begin
-      InstructablesMailer.on_create(@instructable, user_address).deliver_later
+      InstructablesMailer.on_create(@instructable, user_address).deliver_now
     rescue StandardError => e
       flash[:error] = "Email could not be delivered to your account's email address, #{@instructable.user.email}.  However, the requested class was successfully added.  Please update your profile."
     end
