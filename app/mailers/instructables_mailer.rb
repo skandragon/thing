@@ -29,6 +29,18 @@ class InstructablesMailer < ActionMailer::Base
 
     mail(to: address, subject: "Class UPDATED: #{@instructable.name}")
   end
+
+  def on_delete(instructable, address)
+    @instructable = instructable
+    if address == @instructable.user.email
+      @reason = 'you deleted this class'
+    else
+      @reason = 'you are an admin of the system'
+    end
+
+    mail(to: address, subject: "Class DELETED: #{@instructable.name}")
+  end
+
   #
   # Send mail when the track changes to the appropriate track coordinators
   #

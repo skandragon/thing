@@ -55,7 +55,7 @@ class InstructablesController < ApplicationController
       @instructable.cleanup_unneeded_instances
       changelog.original = preflight
       changelog.validate_and_save # failure is an option...
-      send_email_on_update(changelog, preflight)
+#      send_email_on_update(changelog, preflight)
       redirect_to session[:instructable_back] || user_instructables_path(@target_user), notice: 'Class updated.'
     else
       render action: :edit
@@ -68,6 +68,7 @@ class InstructablesController < ApplicationController
       changelog.save # failure is an option...
       @instructable.destroy
     end
+    send_email_delete
     redirect_to user_instructables_path(@target_user), notice: 'Class deleted.'
   end
 
@@ -128,6 +129,29 @@ class InstructablesController < ApplicationController
       end
     end
   end
+
+  def send_email_on_delete
+    user_address = @instructable.user.email
+    admin_addresses = User.where(admin: true).pluck(:email)
+    admin_addresses -= [user_address]
+
+    begin
+      InstructablesMailer.on_delete(@instructable, user_address).deliver_now
+    rescue StandardError => e
+      flash[:error] = "Email could not be delivered to your account's email address, #{@instructable.user.email}.  However, the requested class was successfully added.  Please update your profile."
+    end
+
+    if Rails.env == 'production'
+      admin_addresses.each do |address|
+        begin
+          InstructablesMailer.on_delete(@instructable, address).deliver_now
+        rescue StandardError => e
+          flash[:error] = 'Email could not be sent to one or more track coordinators.  However, your class was added and will appear on their pending class lists.'
+        end
+      end
+    end
+  end
+
 
   def send_email_on_update(changes, original)
     user_address = @instructable.user.email

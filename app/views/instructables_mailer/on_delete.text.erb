@@ -1,4 +1,4 @@
-A class has been MODIFIED in the Pennsic University scheduling system.
+A class was deleted from the Pennsic University scheduling system.
 
       Name:  <%= @instructable.name %>
    Subject:  <%= @instructable.formatted_culture_and_topic %>
@@ -6,6 +6,15 @@ A class has been MODIFIED in the Pennsic University scheduling system.
 Instructor: <%= @instructable.user.titled_sca_name %>
 <% end -%>
 
+Book Description:
+
+<%= @instructable.description_book %>
+
+<% if @instructable.description_web.present? -%>
+Web Description:
+
+<%= @instructable.description_web %>
+<% end -%>
 
 
 NOTE:  You are receiving this mail because <%= @reason %>.
