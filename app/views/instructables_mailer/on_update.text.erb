@@ -5,16 +5,17 @@ A class has been MODIFIED in the Pennsic University scheduling system.
 <% if @instructable.user.instructor? -%>
 Instructor: <%= @instructable.user.titled_sca_name %>
 <% end -%>
-
-Book Description:
-
-<%= @instructable.description_book %>
-
-<% if @instructable.description_web.present? -%>
-Web Description:
-
-<%= @instructable.description_web %>
-<% end -%>
-
+<% @changes.each do |change| %>
+      <%= change.id %>
+      <%= change.user_id %>
+      <%= change.action %>
+      <%= change.target_id %>
+      <%= change.changelog %>
+      <%= change.notified %>
+      <%= change.created_at %>
+      <%= change.updated_at %>
+      <%= change.original %>
+      <%= change.year %>
+<% end %>
 
 NOTE:  You are receiving this mail because <%= @reason %>.
