@@ -68,7 +68,7 @@ class InstructablesController < ApplicationController
       changelog.save # failure is an option...
       @instructable.destroy
     end
-    send_email_delete
+    send_email_on_delete
     redirect_to user_instructables_path(@target_user), notice: 'Class deleted.'
   end
 
