@@ -5,19 +5,6 @@ A class has been MODIFIED in the Pennsic University scheduling system.
 <% if @instructable.user.instructor? -%>
 Instructor: <%= @instructable.user.titled_sca_name %>
 <% end -%>
-<% @changes.each do |change| %>
-  <li>
-      <div><%= change.id %></div>
-      <div><%= change.user_id %></div>
-      <div><%= change.action %></div>
-      <div><%= change.target_id %></div>
-      <div><%= change.changelog %></div>
-      <div><%= change.notified %></div>
-      <div><%= change.created_at %></div>
-      <div><%= change.updated_at %></div>
-      <div><%= change.original %></div>
-      <div><%= change.year %></div>
-  </li>
-<% end %>
+
 
 NOTE:  You are receiving this mail because <%= @reason %>.
