@@ -183,7 +183,7 @@ class Instructable < ApplicationRecord
     'Family Games' => [ 'Family Games Tent' ],
     '0-3 Programming' => [ 'Playground' ],
     'Bog U' => [ 'Bog U' ],
-    'Maghribi' => [ 'A&S 17'],
+    'Africa or Bronze Age' => [ 'A&S 17'],
     'Harp' => ['Argent Fox'],
   }
 
