@@ -70,7 +70,8 @@ class Instructable < ApplicationRecord
   CULTURES = [
     'Multiple Cultures',
     'European',
-    'Africa or Bronze Age',
+    'Africa',
+    'Bronze Age',
     'Middle Eastern',
     'Far Eastern',
     'Other',
@@ -183,7 +184,8 @@ class Instructable < ApplicationRecord
     'Family Games' => [ 'Family Games Tent' ],
     '0-3 Programming' => [ 'Playground' ],
     'Bog U' => [ 'Bog U' ],
-    'Africa or Bronze Age' => [ 'A&S 17'],
+    'Africa' => [ 'A&S 17'],
+    'Bronze Age' => [ 'A&S 17'],
     'Harp' => ['Argent Fox'],
   }
 
