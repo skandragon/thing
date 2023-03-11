@@ -185,7 +185,7 @@ class Instructable < ApplicationRecord
     '0-3 Programming' => [ 'Playground' ],
     'Bog U' => [ 'Bog U' ],
     'Africa' => [ 'A&S 17'],
-    'Bronze Age' => [ 'A&S 1'],
+    'Bronze Age' => [ 'A&S 3'],
     'Harp' => ['Argent Fox'],
   }
 
