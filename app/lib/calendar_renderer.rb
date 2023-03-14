@@ -302,7 +302,7 @@ class CalendarRenderer
 
     wb.styles do |s|
       header_style = s.add_style bg_color: '00', fg_color: 'FF'
-      date_format = wb.styles.add_style format_code: 'MM-DD hh:mm'
+#      date_format = wb.styles.add_style format_code: 'MM-DD hh:mm'
 
       column_names = %W(
         name track culture formatted_topic
