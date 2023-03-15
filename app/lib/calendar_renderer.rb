@@ -323,7 +323,7 @@ class CalendarRenderer
           data = [
               instructable.id,
               instance.formatted_location,
-              start_time,
+              (start_time + 144000),
               end_time,
               instructable.titled_sca_name,
               instance.instructable.user.kingdom,
