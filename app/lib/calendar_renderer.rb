@@ -318,7 +318,7 @@ class CalendarRenderer
 
         @instances.each { |instance|
           instructable = instance.instructable
-          start_time = Time.at(instance.start_time.to_f + instance.start_time.utc_offset.to_f +14400)
+          # start_time = Time.at(instance.start_time.to_f + instance.start_time.utc_offset.to_f +14400)
           end_time = Time.at(instance.end_time.to_f + instance.end_time.utc_offset.to_f )
           data = [
               instructable.id,
