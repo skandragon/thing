@@ -13,7 +13,8 @@
           = link_to 'All: PDF', calendars_path(format: :pdf), target: '_blank', class: "dropdown-item"
           = link_to 'All: PDF (brief)', calendars_path(format: :pdf, brief: true), target: '_blank', class: "dropdown-item"
           = link_to 'All: iCalendar', calendars_path(format: :ics), class: "dropdown-item"
-          = link_to 'All: Excel (spreadsheet)', calendars_path(format: :xlsx), class: "dropdown-item"
+          - if admin?
+            = link_to 'All: Excel (spreadsheet)', calendars_path(format: :xlsx), class: "dropdown-item"
           = link_to 'All: CSV (spreadsheet)', calendars_path(format: :csv), class: "dropdown-item"
           .dropdown-divider
           %h6.dropdown-header Custom Schedules
