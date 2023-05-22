@@ -46,7 +46,7 @@ if @schedule == "Pennsic University"
   @locs1 << 'Games'
 
   @locs2 = [
-    'Loud 2',
+    'Battlefield Loud 2',
     'Performing Arts',
     'Amphitheater',
     'Middle Eastern',
