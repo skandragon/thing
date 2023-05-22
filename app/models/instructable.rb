@@ -117,7 +117,7 @@ class Instructable < ApplicationRecord
       'A&S 1', 'A&S 2', 'A&S 3', 'A&S 4', 'A&S 5', 'A&S 6',
       'A&S 7', 'A&S 8', 'A&S 9', 'A&S 10', 'A&S 11', 'A&S 12',
       'A&S 13', 'A&S 14', 'A&S 15', 'A&S 16', 'A&S 17', 'A&S 18', 'A&S 19', 'A&S 20',
-      'University-Battlefield', 'RS1', 'RS2'
+      'University-Battlefield', 'Loud 2'
     ],
     'Middle Eastern' => [ 'Touch The Earth', 'Middle Eastern Tent' ],
     'Newcomers' => [ 'A&S 20' ],
