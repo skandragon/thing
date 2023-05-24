@@ -186,7 +186,7 @@ class Instructable < ApplicationRecord
     'Bog U' => [ 'Bog U' ],
     'Africa' => [ 'A&S 17'],
     'Bronze Age' => [ 'A&S 3'],
-    'Harp' => ['Argent Fox'],
+    'Harp' => ['Battlefield Loud 2'],
   }
 
   SCHEDULES = [
