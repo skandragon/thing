@@ -265,7 +265,7 @@ class CalendarRenderer
     @options = {} if @options.nil?
 
     column_names = %w(
-      name track culture topic_and_subtopic
+      name track culture topic subtopic
       adult_only
       description_book description_web
       duration fee_itemization handout_fee handout_limit material_fee

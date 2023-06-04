@@ -69,7 +69,7 @@ class Coordinator::InstructablesController < ApplicationController
         filename = 'instructables.csv'
 
         column_names = %w(
-          name schedule track culture topic_and_subtopic
+          name schedule track culture topic subtopic
           adult_only duration repeat_count
         )
         csv_data = CSV.generate do |csv|
